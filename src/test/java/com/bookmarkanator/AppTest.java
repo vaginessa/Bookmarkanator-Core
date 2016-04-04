@@ -1,4 +1,4 @@
-package com.micah.bookmarking;
+package com.bookmarkanator;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

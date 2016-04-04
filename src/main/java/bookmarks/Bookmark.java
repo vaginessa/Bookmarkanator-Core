@@ -7,8 +7,18 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Bookmark {
+	
+	//static fields
+	public static String SHARING_THIS_SYSTEM_ONLY = "Share only for this computer system";//only valid on this system
+	public static String SHARING_THIS_USER_ONLY = "Share with all systems this user owns";//this user on all systems
+	public static String SHARING_THIS_GROUP_ONLY = "Share with this group only";
+	public static String SHARING_WITH_EVERYONE = "Share with everyone";
+		
+	//Sharing related fields
+	private UUID ownerID;
+	
+	//Bookmark specific fields
 	private UUID tagUUID;
-	private UUID ownerID;//who does this tag belong to?
 	private String name;
 	private String Description;
 	private URI resourceAddress;//web or file address.

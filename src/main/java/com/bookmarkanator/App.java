@@ -1,4 +1,4 @@
-package com.micah.bookmarking;
+package com.bookmarkanator;
 
 import java.io.File;
 import java.net.URI;
