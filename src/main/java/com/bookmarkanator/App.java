@@ -1,8 +1,7 @@
 package com.bookmarkanator;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.*;
+import com.bookmarkanator.parsers.*;
 
 /**
  * Hello world!
@@ -12,18 +11,24 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        try {
-			URI uri = new URI("www.yahoo.com");
-			
-			File f = new File(uri.toString());
-			if (f.exists())
-			{
-				System.out.println("file exists "+f.getCanonicalPath());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		SystemResourceParser p = new SystemResourceParser();
+		File t = new File("");
+		try
+		{
+			System.out.println(t.getCanonicalPath().toString());
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
-    }
+		File f = new File("/Users/lloyd1/Projects/Bookmark-anator/src/main/system_resource_settings.xml");
+		try
+		{
+			p.parse(f);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

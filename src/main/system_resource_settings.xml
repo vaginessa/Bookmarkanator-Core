@@ -10,26 +10,11 @@
                 -e
             </post-command>
         </terminal-resource>
-        <resource name="System-File">
-            <pre-command>
-                nano
-            </pre-command>
-            <post-command>
-            </post-command>
-        </resource>
-        <resource name="System-Terminal">
-            <pre-command>
-                open
-            </pre-command>
-            <post-command>
-                -e
-            </post-command>
-        </resource>
     </system>
     <system name="Linux Mint" version="17.3" versionname="">
 
     </system>
-    <system name="Windows 7" version="2" versionname="">
+    <!--<system name="Windows 7" version="2" versionname="">-->
 
-    </system>
+    <!--</system>-->
 </settings>
