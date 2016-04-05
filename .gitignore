@@ -10,6 +10,8 @@
 *.project
 *.settings
 .classpath
+.idea
+.settings
 
 */.idea/workspace.xml
 */.idea/tasks.xml
