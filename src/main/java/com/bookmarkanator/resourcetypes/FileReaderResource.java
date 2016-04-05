@@ -2,6 +2,8 @@ package com.bookmarkanator.resourcetypes;
 
 /**
  * Represents text processed from a file resource.
+ *
+ * *Note: This resource is not defined in the resources list because it is a pure Java resource.
  */
 public class FileReaderResource extends StringResource
 {

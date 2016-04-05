@@ -13,6 +13,10 @@ public class SystemResourceParser
         settings("settings"),
         system("system"),
         terminal("terminal-resource"),
+        web("web"),
+        file("file"),
+        folder("folder"),
+        filesegment("file-segment"),
         precommand("pre-command"),
         postcommand("post-command"),
         unknown("_unknown_");
@@ -112,6 +116,9 @@ public class SystemResourceParser
                 break;
             case system:
                 state =match(state, Tags.terminal, currentTag);
+                state =match(state, Tags.web, currentTag);
+                state =match(state, Tags.file, currentTag);
+                state =match(state, Tags.folder, currentTag);
                 break;
             case terminal:
                 state =match(state, Tags.precommand, currentTag);
