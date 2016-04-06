@@ -27,7 +27,7 @@ public class Bookmark {
     private Date lastAccessedDate;
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
-    private StringResource resource;//represents the type, and values of the resource this bookmark points to.
+    private List<BasicResource> resource;//represents the type, and values of the resource this bookmark points to.
 	
 	private Map<String, String> settingsMap;
 
@@ -136,12 +136,12 @@ public class Bookmark {
         this.numberOfAccesses = numberOfAccesses;
     }
 
-    public StringResource getResource()
+    public List<BasicResource> getResource()
     {
         return resource;
     }
 
-    public void setResource(StringResource resource)
+    public void setResource(List<BasicResource> resource)
     {
         this.resource = resource;
     }

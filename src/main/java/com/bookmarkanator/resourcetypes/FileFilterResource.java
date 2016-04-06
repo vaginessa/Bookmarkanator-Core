@@ -5,7 +5,7 @@ package com.bookmarkanator.resourcetypes;
  *
  * *Note: This resource is not defined in the resources list because it is a pure Java resource.
  */
-public class FileReaderResource extends StringResource
+public class FileFilterResource extends BasicResource
 {
     private String commentIdentifier;
     private String keyValueIdentifier;

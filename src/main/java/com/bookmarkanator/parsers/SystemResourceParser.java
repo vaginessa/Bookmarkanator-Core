@@ -3,7 +3,7 @@ package com.bookmarkanator.parsers;
 import java.io.*;
 import java.util.*;
 import javax.xml.stream.*;
-import com.bookmarkanator.resourcetypes.*;
+import com.bookmarkanator.settings.*;
 
 public class SystemResourceParser
 {
@@ -49,7 +49,8 @@ public class SystemResourceParser
 
     }
 
-    private List<StringResource> resources;
+    private List<SystemType> systemTypes;
+    private SystemType currentSystem;
     private XMLStreamReader reader;
     private Stack<Tags> stateStack;
     private Stack<StringBuilder> charsStack;
@@ -68,12 +69,15 @@ public class SystemResourceParser
         }
     }
 
-    public List<StringResource> parse(Reader in)
+    public List<SystemType> parse(Reader in)
         throws XMLStreamException
     {
         XMLInputFactory xif = XMLInputFactory.newInstance();
         xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
         reader = xif.createXMLStreamReader(in);
+
+        systemTypes = new ArrayList<SystemType>();
+
         stateStack = new Stack<Tags>();
         charsStack = new Stack<StringBuilder>();
         stateStack.push(Tags.root);
@@ -98,7 +102,7 @@ public class SystemResourceParser
             }
         }
 
-        return resources;
+        return systemTypes;
     }
 
     public void startTag(String currentTag)

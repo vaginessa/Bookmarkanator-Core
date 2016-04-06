@@ -3,7 +3,7 @@ package com.bookmarkanator.resourcetypes;
 /**
  * Represents a resource that will can be called from the command prompt or terminal.
  */
-public class SystemResource extends StringResource
+public class TerminalResource extends BasicResource
 {
     private String preCommand;
     private String postCommand;
@@ -26,5 +26,13 @@ public class SystemResource extends StringResource
     public void setPostCommand(String postCommand)
     {
         this.postCommand = postCommand;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+
+        return getText();
     }
 }

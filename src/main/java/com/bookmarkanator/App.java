@@ -10,7 +10,8 @@ import com.bookmarkanator.parsers.*;
 public class App 
 {
     public static void main( String[] args )
-    {
+		throws Exception
+	{
 		SystemResourceParser p = new SystemResourceParser();
 		File t = new File("");
 		try

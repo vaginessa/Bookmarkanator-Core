@@ -2,10 +2,11 @@
 <settings>
     <!--Defines output devices for each operating system and mapps them to the commands used-->
     <system name="OSX" version="1.0" versionname="yosemite">
-        <!--how to call the terminal on this system.-->
+        <!--how to call the terminal on this system. Allows running various commands in the terminal.-->
         <terminal-resource name="System-folder">
             <pre-command>
                 open
+                <!--add support for running programs?-->
             </pre-command>
             <post-command>
                 -e
@@ -13,15 +14,15 @@
         </terminal-resource>
         <!--The command to open a web browser to the appropriate web address on this system.-->
         <web>
-
+            <!--Can do with java. Set this only when overriding?-->
         </web>
         <!--The command to open a file on this system-->
         <file>
-
+            <!--Can do with java. Set this only when overriding?-->
         </file>
         <!--The command to open a folder on this system.-->
         <folder>
-
+            <!--Can do with java. Set this only when overriding?-->
         </folder>
     </system>
     <system name="Linux Mint" version="17.3" versionname="">
