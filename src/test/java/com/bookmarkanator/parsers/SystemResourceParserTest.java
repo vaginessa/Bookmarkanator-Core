@@ -28,7 +28,9 @@ public class SystemResourceParserTest
     public void testParseMethod()
         throws Exception
     {
-        File f = new File("/Users/lloyd1/Projects/Bookmark-anator/src/main/system_resource_settings_test.xml");
+        File b = new File("");
+        System.out.println(b.getCanonicalPath());
+        File f = new File("/media/micah/Backup/Programming/Java/myprojects/Bookmark-anator/Bookmark-anator/system_resource_settings_test.xml");
         Writer sw = new Writer();
         Settings s1 = generateSystemTypes();
         sw.writeSettings(s1, f);
