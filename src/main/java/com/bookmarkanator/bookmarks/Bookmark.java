@@ -5,16 +5,20 @@ import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
 public class Bookmark implements XMLWritable{
-	
-	//static fields
+
+    // ============================================================
+    // Fields
+    // ============================================================
+
+    //static fields
 	public static String SHARING_THIS_SYSTEM_ONLY = "Share only for this computer system";//only valid on this system
 	public static String SHARING_THIS_USER_ONLY = "Share with all systems this user owns";//this user on all systems
 	public static String SHARING_WITH_OTHERS = "Share with this group only";//Shares with the list of user or group id's specified.
 
     //Bookmark specific fields
     private UUID tagUUID;
-    private String name;
-    private String Description;
+    private String name;//name of the tag
+    private String Description;//description of the tag
 
     private List<String> tags;//tags to associate with this bookmark
 
@@ -28,14 +32,22 @@ public class Bookmark implements XMLWritable{
     private Date lastAccessedDate;
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
-    private List<BasicResource> resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
-	
-	private Map<String, String> settingsMap;
+    private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
+    //TODO Add a way to add different bookmarks to the text of this bookmark, in any order, and with added text such as a space, or a comma or whatever.
+
+
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     public Bookmark()
     {
         tagUUID = UUID.randomUUID();
     }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     public UUID getTagUUID()
     {
@@ -137,30 +149,22 @@ public class Bookmark implements XMLWritable{
         this.numberOfAccesses = numberOfAccesses;
     }
 
-    public List<BasicResource> getResource()
+    public BasicResource getResource()
     {
         return resource;
     }
 
-    public void setResource(List<BasicResource> resource)
+    public void setResource(BasicResource resource)
     {
         this.resource = resource;
-    }
-
-    public Map<String, String> getSettingsMap()
-    {
-        return settingsMap;
-    }
-
-    public void setSettingsMap(Map<String, String> settingsMap)
-    {
-        this.settingsMap = settingsMap;
     }
 
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<bookmark uuid=\"");
         sb.append(getTagUUID());
+        sb.append(" sharing=\"");
+        sb.append(getSharing());
         sb.append("\">");
         sb.append("\n");
         sb.append(prependTabs+"\t<name>");
@@ -181,6 +185,8 @@ public class Bookmark implements XMLWritable{
         sb.append("\n");
         sb.append(prependTabs+"\t</tag-owner>");
         sb.append("\n");
+        //TODO add write tags here.
+        //TODO add write
         sb.append(prependTabs+"</bookmark>");
         //TODO finish xml output...
     }

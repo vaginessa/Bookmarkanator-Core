@@ -60,13 +60,13 @@ public class DefaultSystemResource extends TerminalResource
     {
         switch (type)
         {
-            case 0:
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER:
                 webToXML(sb, prependTabs);
                 break;
-            case 1:
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR:
                 fileEditorToXML(sb, prependTabs);
                 break;
-            case 2:
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER:
                 fileBrowserToXML(sb, prependTabs);
                 break;
             default:

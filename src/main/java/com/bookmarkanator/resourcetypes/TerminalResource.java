@@ -34,7 +34,6 @@ public class TerminalResource extends BasicResource
     public String execute()
         throws Exception
     {
-
         return getText();
     }
 

@@ -9,12 +9,26 @@
 				Show this basic text!
 			</text>
 		</basic-resource>
-		<file-browser>
+		<file-editor>
 			<name>
-				null
+				Applications
 			</name>
 			<text>
+				/Users/lloyd1/applications.txt
+			</text>
+			<pre-command>
+				nano 
+			</pre-command>
+			<post-command>
 				null
+			</post-command>
+		</file-editor>
+		<file-browser>
+			<name>
+				Home
+			</name>
+			<text>
+				~
 			</text>
 			<pre-command>
 				null
@@ -23,26 +37,12 @@
 				null
 			</post-command>
 		</file-browser>
-		<file-editor>
-			<name>
-				null
-			</name>
-			<text>
-				null
-			</text>
-			<pre-command>
-				null
-			</pre-command>
-			<post-command>
-				null
-			</post-command>
-		</file-editor>
 		<web>
 			<name>
-				Home
+				Yahoo
 			</name>
 			<text>
-				~
+				http://www.yahoo.com
 			</text>
 			<pre-command>
 				null
@@ -65,26 +65,6 @@
 				hello.odt
 			</post-command>
 		</terminal-resource>
-		<file-filter-resource>
-			<name>
-				CSV filter
-			</name>
-			<text>
-				Filters a file based on comma separated values.
-			</text>
-			<comment-identifier>
-				#
-			</comment-identifier>
-			<key-value-separator>
-				=
-			</key-value-separator>
-			<key-value-pair-separator>
-				,
-			</key-value-pair-separator>
-			<escape-string>
-				%
-			</escape-string>
-		</file-filter-resource>
 		<custom-file-filter-resource>
 			<name>
 				Bob file filter 1
@@ -92,6 +72,31 @@
 			<text>
 				Text describing the custom file filter
 			</text>
+			<class>
+				class com.bookmarkanator.resourcetypes.CustomFileFilter
+			</class>
+			<parameter required="true">
+				<key>
+					key-value-separator
+				</key>
+				<value>
+					=
+				</value>
+				<description>
+					defines the separator between key value pairs
+				</description>
+			</parameter>
+			<parameter required="true">
+				<key>
+					key-value-pair-separator
+				</key>
+				<value>
+					,
+				</value>
+				<description>
+					defines the separator of the key value pairs
+				</description>
+			</parameter>
 		</custom-file-filter-resource>
 	</system>
 </settings>

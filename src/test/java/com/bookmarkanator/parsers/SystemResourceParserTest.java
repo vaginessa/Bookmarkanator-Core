@@ -2,6 +2,7 @@ package com.bookmarkanator.parsers;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarkanator.filefilter.*;
 import com.bookmarkanator.resourcetypes.*;
 import com.bookmarkanator.settings.*;
 import com.bookmarkanator.writers.Writer;
@@ -28,9 +29,8 @@ public class SystemResourceParserTest
     public void testParseMethod()
         throws Exception
     {
-        File b = new File("");
-        System.out.println(b.getCanonicalPath());
-        File f = new File("/media/micah/Backup/Programming/Java/myprojects/Bookmark-anator/Bookmark-anator/system_resource_settings_test.xml");
+        File f = new File("system_resource_settings_test.xml");
+        System.out.println(f.getCanonicalPath());
         Writer sw = new Writer();
         Settings s1 = generateSystemTypes();
         sw.writeSettings(s1, f);
@@ -68,12 +68,13 @@ public class SystemResourceParserTest
         defSysWeb.setText("http://www.yahoo.com");
 
         DefaultSystemResource defSysEdit = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR);
-        defSysWeb.setName("Applications");
-        defSysWeb.setText("/Users/lloyd1/applications.txt");
+        defSysEdit.setName("Applications");
+        defSysEdit.setText("/Users/lloyd1/applications.txt");
+        defSysEdit.setPreCommand("nano ");
 
         DefaultSystemResource defSysFile = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
-        defSysWeb.setName("Home");
-        defSysWeb.setText("~");
+        defSysFile.setName("Home");
+        defSysFile.setText("~");
 
         TerminalResource tr = new TerminalResource();
         tr.setName("OpenOffice");
@@ -81,25 +82,45 @@ public class SystemResourceParserTest
         tr.setPreCommand("xterm soffice");
         tr.setPostCommand("hello.odt");
 
-        FileFilterResource ff = new FileFilterResource();
-        ff.setName("CSV filter");
-        ff.setText("Filters a file based on comma separated values.");
-        ff.setCommentIdentifier("#");
-        ff.setEscapeString("%");
-        ff.setKeyValuePairSeparator(",");
-        ff.setKeyValueSeparator("=");
-
         CustomFileFilter cf = new CustomFileFilter();
         cf.setName("Bob file filter 1");
         cf.setText("Text describing the custom file filter");
+        List<CustomClassParameter> params = new ArrayList<>();
 
+        CustomClassParameter p = new CustomClassParameter();
+        p.setKey("key-value-separator");
+        p.setDescription("defines the separator between key value pairs");
+        p.setOverridden(true);
+        p.setRequired(true);
+        p.setValue("=");
+
+        params.add(p);
+
+        p = new CustomClassParameter();
+        p.setKey("key-value-pair-separator");
+        p.setDescription("defines the separator of the key value pairs");
+        p.setOverridden(true);
+        p.setRequired(true);
+        p.setValue(",");
+
+        params.add(p);
+
+        p = new CustomClassParameter();
+        p.setKey("optional param 1");
+        p.setDescription("defines optional param 1");
+        p.setOverridden(false);
+        p.setRequired(true);
+        p.setValue("option!");
+
+        params.add(p);
+
+        cf.setParameters(params);
 
         sysType.getResourceList().add(basic);
         sysType.getResourceList().add(defSysEdit);
         sysType.getResourceList().add(defSysFile);
         sysType.getResourceList().add(defSysWeb);
         sysType.getResourceList().add(tr);
-        sysType.getResourceList().add(ff);
         sysType.getResourceList().add(cf);
 
         systems.add(sysType);
