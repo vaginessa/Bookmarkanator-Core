@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<settings>
+<settings version="1.0">
     <!--Defines output devices for each operating system and mapps them to the commands used-->
     <system name="OSX" version="1.0" versionname="yosemite">
         <!--how to call the terminal on this system. Allows running various commands in the terminal.-->

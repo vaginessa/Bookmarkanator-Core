@@ -3,14 +3,15 @@ package com.bookmarkanator.resourcetypes;
 /**
  * Represents text processed from a file resource.
  *
- * *Note: This resource is not defined in the resources list because it is a pure Java resource.
+ * Users can define this class in the settings file for various kinds of file formats. For more control over file filtering use the CustomFileFilter class.
+ *
  */
 public class FileFilterResource extends BasicResource
 {
     private String commentIdentifier;
-    private String keyValueIdentifier;
-    private String fileSeparator;
-    private String escapeCharacter;
+    private String keyValueSeparator;
+    private String keyValuePairSeparator;
+    private String escapeString;
 
     public String getCommentIdentifier()
     {
@@ -22,33 +23,77 @@ public class FileFilterResource extends BasicResource
         this.commentIdentifier = commentIdentifier;
     }
 
-    public String getKeyValueIdentifier()
+    public String getKeyValueSeparator()
     {
-        return keyValueIdentifier;
+        return keyValueSeparator;
     }
 
-    public void setKeyValueIdentifier(String keyValueIdentifier)
+    public void setKeyValueSeparator(String keyValueSeparator)
     {
-        this.keyValueIdentifier = keyValueIdentifier;
+        this.keyValueSeparator = keyValueSeparator;
     }
 
-    public String getFileSeparator()
+    public String getKeyValuePairSeparator()
     {
-        return fileSeparator;
+        return keyValuePairSeparator;
     }
 
-    public void setFileSeparator(String fileSeparator)
+    public void setKeyValuePairSeparator(String keyValuePairSeparator)
     {
-        this.fileSeparator = fileSeparator;
+        this.keyValuePairSeparator = keyValuePairSeparator;
     }
 
-    public String getEscapeCharacter()
+    public String getEscapeString()
     {
-        return escapeCharacter;
+        return escapeString;
     }
 
-    public void setEscapeCharacter(String escapeCharacter)
+    public void setEscapeString(String escapeString)
     {
-        this.escapeCharacter = escapeCharacter;
+        this.escapeString = escapeString;
+    }
+
+    @Override
+    public void toXML(StringBuilder sb, String prependTabs)
+    {
+        sb.append(prependTabs+"<file-filter-resource>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getName());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<text>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getText());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</text>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<comment-identifier>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getCommentIdentifier());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</comment-identifier>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<key-value-separator>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+ getKeyValueSeparator());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</key-value-separator>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<key-value-pair-separator>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+ getKeyValuePairSeparator());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</key-value-pair-separator>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<escape-string>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+ getEscapeString());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</escape-string>");
+        sb.append("\n");
+        sb.append(prependTabs+"</file-filter-resource>");
     }
 }

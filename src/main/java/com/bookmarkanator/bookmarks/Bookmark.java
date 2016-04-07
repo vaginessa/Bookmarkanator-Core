@@ -1,9 +1,10 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
-public class Bookmark {
+public class Bookmark implements XMLWritable{
 	
 	//static fields
 	public static String SHARING_THIS_SYSTEM_ONLY = "Share only for this computer system";//only valid on this system
@@ -27,7 +28,7 @@ public class Bookmark {
     private Date lastAccessedDate;
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
-    private List<BasicResource> resource;//represents the type, and values of the resource this bookmark points to.
+    private List<BasicResource> resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
 	
 	private Map<String, String> settingsMap;
 
@@ -154,5 +155,33 @@ public class Bookmark {
     public void setSettingsMap(Map<String, String> settingsMap)
     {
         this.settingsMap = settingsMap;
+    }
+
+    public void toXML(StringBuilder sb, String prependTabs)
+    {
+        sb.append(prependTabs+"<bookmark uuid=\"");
+        sb.append(getTagUUID());
+        sb.append("\">");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getName());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<description>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getDescription());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</description>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<tag-owner>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t\t"+getOwnerID());
+        sb.append("\n");
+        sb.append(prependTabs+"\t</tag-owner>");
+        sb.append("\n");
+        sb.append(prependTabs+"</bookmark>");
+        //TODO finish xml output...
     }
 }
