@@ -33,7 +33,7 @@ public class Bookmark implements XMLWritable{
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
     private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
-    //TODO Add a way to add different bookmarks to the text of this bookmark, in any order, and with added text such as a space, or a comma or whatever.
+    private List<BasicResource> addedBookmarks;//A list of the bookmarks that have been added to this bookmark (they will be converted into strings).
 
 
     // ============================================================
@@ -159,6 +159,16 @@ public class Bookmark implements XMLWritable{
         this.resource = resource;
     }
 
+    public List<BasicResource> getAddedBookmarks()
+    {
+        return addedBookmarks;
+    }
+
+    public void setAddedBookmarks(List<BasicResource> addedBookmarks)
+    {
+        this.addedBookmarks = addedBookmarks;
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<bookmark uuid=\"");
@@ -186,8 +196,7 @@ public class Bookmark implements XMLWritable{
         sb.append(prependTabs+"\t</tag-owner>");
         sb.append("\n");
         //TODO add write tags here.
-        //TODO add write
+        //TODO add write bookmark resources here.
         sb.append(prependTabs+"</bookmark>");
-        //TODO finish xml output...
     }
 }

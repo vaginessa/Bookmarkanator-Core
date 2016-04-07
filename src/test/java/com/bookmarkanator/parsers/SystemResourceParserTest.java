@@ -29,7 +29,7 @@ public class SystemResourceParserTest
     public void testParseMethod()
         throws Exception
     {
-        File f = new File("system_resource_settings_test.xml");
+        File f = new File("src/test/java/com/bookmarkanator/parsers/system_resource_settings_test.xml");
         System.out.println(f.getCanonicalPath());
         Writer sw = new Writer();
         Settings s1 = generateSystemTypes();
@@ -55,9 +55,14 @@ public class SystemResourceParserTest
     private Settings generateSystemTypes()
     {
         Settings settings = new Settings();
+        settings.setVersion("1.0");
+
 
         List<SystemType> systems = new ArrayList<SystemType>();
         SystemType sysType = new SystemType();
+        sysType.setSystemName("OSX");
+        sysType.setSystemVersion("6.9");
+        sysType.setSystemVersionName("Bob");
 
         BasicResource basic = new BasicResource();
         basic.setName("Basic resource name");

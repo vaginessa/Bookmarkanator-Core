@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<settings version="null">
-	<system name="null" version="null" versionname="null">
+<settings version="1.0">
+	<system name="OSX" version="6.9" versionname="Bob">
 		<basic-resource index-within-bookmark="0">
 			<name>
 				Basic resource name
