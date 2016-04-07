@@ -33,7 +33,7 @@ public class Bookmark implements XMLWritable{
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
     private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
-    private List<BasicResource> addedBookmarks;//A list of the bookmarks that have been added to this bookmark (they will be converted into strings).
+    private List<UUID> addedBookmarks;//A list of the bookmark UUIDs that have been added to this bookmark (they will be converted into strings).
 
 
     // ============================================================
@@ -159,12 +159,12 @@ public class Bookmark implements XMLWritable{
         this.resource = resource;
     }
 
-    public List<BasicResource> getAddedBookmarks()
+    public List<UUID> getAddedBookmarks()
     {
         return addedBookmarks;
     }
 
-    public void setAddedBookmarks(List<BasicResource> addedBookmarks)
+    public void setAddedBookmarks(List<UUID> addedBookmarks)
     {
         this.addedBookmarks = addedBookmarks;
     }
