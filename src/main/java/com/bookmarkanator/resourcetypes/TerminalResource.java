@@ -2,8 +2,13 @@ package com.bookmarkanator.resourcetypes;
 
 /**
  * Represents a resource that will can be called from the command prompt or terminal.
- *
- * This class enables custom commands to be mapped, and to show up as system resources.
+ * <p>
+ * This class enables custom commands to be mapped, and to show up as system resources when the user is creating new bookmarks.
+ * <p>
+ * <p>
+ * For instance a bookmark could be added that calls a grep command with specific flags, or other parameters. When the user creates a bookmark they
+ * will only need to specify the text inserted into the bookmark, and be placed inbetween the preCommand, and postCommand strings.
+ * </p>
  */
 public class TerminalResource extends BasicResource
 {
@@ -40,32 +45,34 @@ public class TerminalResource extends BasicResource
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<terminal-resource>");
+        sb.append(prependTabs + "<terminal-resource index-within-bookmark=\"");
+        sb.append(getIndexWithinBookmark());
+        sb.append("\">");
         sb.append("\n");
-        sb.append(prependTabs+"\t<name>");
+        sb.append(prependTabs + "\t<name>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getName());
+        sb.append(prependTabs + "\t\t" + getName());
         sb.append("\n");
-        sb.append(prependTabs+"\t</name>");
+        sb.append(prependTabs + "\t</name>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<text>");
+        sb.append(prependTabs + "\t<text>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getText());
+        sb.append(prependTabs + "\t\t" + getText());
         sb.append("\n");
-        sb.append(prependTabs+"\t</text>");
+        sb.append(prependTabs + "\t</text>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<pre-command>");
+        sb.append(prependTabs + "\t<pre-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getPreCommand());
+        sb.append(prependTabs + "\t\t" + getPreCommand());
         sb.append("\n");
-        sb.append(prependTabs+"\t</pre-command>");
+        sb.append(prependTabs + "\t</pre-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<post-command>");
+        sb.append(prependTabs + "\t<post-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getPostCommand());
+        sb.append(prependTabs + "\t\t" + getPostCommand());
         sb.append("\n");
-        sb.append(prependTabs+"\t</post-command>");
+        sb.append(prependTabs + "\t</post-command>");
         sb.append("\n");
-        sb.append(prependTabs+"</terminal-resource>");
+        sb.append(prependTabs + "</terminal-resource>");
     }
 }

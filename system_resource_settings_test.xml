@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <settings version="null">
 	<system name="null" version="null" versionname="null">
-		<basic-resource>
+		<basic-resource index-within-bookmark="0">
 			<name>
 				Basic resource name
 			</name>
@@ -9,7 +9,7 @@
 				Show this basic text!
 			</text>
 		</basic-resource>
-		<file-editor>
+		<file-editor index-within-bookmark="0">
 			<name>
 				Applications
 			</name>
@@ -23,7 +23,7 @@
 				null
 			</post-command>
 		</file-editor>
-		<file-browser>
+		<file-browser index-within-bookmark="0">
 			<name>
 				Home
 			</name>
@@ -37,7 +37,7 @@
 				null
 			</post-command>
 		</file-browser>
-		<web>
+		<web index-within-bookmark="0">
 			<name>
 				Yahoo
 			</name>
@@ -51,7 +51,7 @@
 				null
 			</post-command>
 		</web>
-		<terminal-resource>
+		<terminal-resource index-within-bookmark="0">
 			<name>
 				OpenOffice
 			</name>
@@ -65,7 +65,7 @@
 				hello.odt
 			</post-command>
 		</terminal-resource>
-		<custom-file-filter-resource>
+		<custom-file-filter-resource index-within-bookmark="0">
 			<name>
 				Bob file filter 1
 			</name>

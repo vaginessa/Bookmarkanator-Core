@@ -40,7 +40,7 @@ public class DefaultSystemResource extends TerminalResource
         }
         else
         {
-            throw new Exception("Cannot identify default system resource type: "+getType());
+            throw new Exception("Cannot identify default system resource type: " + getType());
         }
         return getText();
     }
@@ -76,51 +76,57 @@ public class DefaultSystemResource extends TerminalResource
 
     private void webToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<web>");
+        sb.append(prependTabs + "<web index-within-bookmark=\"");
+        sb.append(getIndexWithinBookmark());
+        sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append(prependTabs+"</web>");
+        sb.append(prependTabs + "</web>");
     }
 
     private void fileEditorToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<file-editor>");
+        sb.append(prependTabs + "<file-editor index-within-bookmark=\"");
+        sb.append(getIndexWithinBookmark());
+        sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append(prependTabs+"</file-editor>");
+        sb.append(prependTabs + "</file-editor>");
     }
 
     private void fileBrowserToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<file-browser>");
+        sb.append(prependTabs + "<file-browser index-within-bookmark=\"");
+        sb.append(getIndexWithinBookmark());
+        sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append(prependTabs+"</file-browser>");
+        sb.append(prependTabs + "</file-browser>");
     }
 
     private void writeGuts(StringBuilder sb, String prependTabs)
     {
         sb.append("\n");
-        sb.append(prependTabs+"\t<name>");
+        sb.append(prependTabs + "\t<name>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getName());
+        sb.append(prependTabs + "\t\t" + getName());
         sb.append("\n");
-        sb.append(prependTabs+"\t</name>");
+        sb.append(prependTabs + "\t</name>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<text>");
+        sb.append(prependTabs + "\t<text>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getText());
+        sb.append(prependTabs + "\t\t" + getText());
         sb.append("\n");
-        sb.append(prependTabs+"\t</text>");
+        sb.append(prependTabs + "\t</text>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<pre-command>");
+        sb.append(prependTabs + "\t<pre-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getPreCommand());
+        sb.append(prependTabs + "\t\t" + getPreCommand());
         sb.append("\n");
-        sb.append(prependTabs+"\t</pre-command>");
+        sb.append(prependTabs + "\t</pre-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<post-command>");
+        sb.append(prependTabs + "\t<post-command>");
         sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getPostCommand());
+        sb.append(prependTabs + "\t\t" + getPostCommand());
         sb.append("\n");
-        sb.append(prependTabs+"\t</post-command>");
+        sb.append(prependTabs + "\t</post-command>");
         sb.append("\n");
     }
 }
