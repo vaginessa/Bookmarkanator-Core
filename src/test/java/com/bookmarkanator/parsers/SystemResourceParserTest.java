@@ -2,7 +2,7 @@ package com.bookmarkanator.parsers;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarkanator.filefilter.*;
+import com.bookmarkanator.customClass.*;
 import com.bookmarkanator.resourcetypes.*;
 import com.bookmarkanator.settings.*;
 import com.bookmarkanator.writers.Writer;
@@ -36,20 +36,20 @@ public class SystemResourceParserTest
         sw.writeSettings(s1, f);
 
 
-//
-//        SystemResourceParser p = new SystemResourceParser();
-//
-//
-//
-//
-//        try
-//        {
-//            p.parse(f);
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
+
+        SystemResourceParser p = new SystemResourceParser();
+
+
+
+
+        try
+        {
+            p.parse(f);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private Settings generateSystemTypes()

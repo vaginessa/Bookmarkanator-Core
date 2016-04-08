@@ -1,7 +1,7 @@
 package com.bookmarkanator.abstracted;
 
 import java.util.*;
-import com.bookmarkanator.filefilter.*;
+import com.bookmarkanator.customClass.*;
 import com.bookmarkanator.resourcetypes.*;
 
 public abstract class CustomClass extends BasicResource
@@ -36,7 +36,7 @@ public abstract class CustomClass extends BasicResource
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs + "<custom-file-filter-resource index-within-bookmark=\"");
+        sb.append(prependTabs + "<custom-class index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
         sb.append("\n");
@@ -52,13 +52,13 @@ public abstract class CustomClass extends BasicResource
         sb.append("\n");
         sb.append(prependTabs + "\t</text>");
         sb.append("\n");
-        sb.append(prependTabs + "\t<class>");
+        sb.append(prependTabs + "\t<class-pointer>");
         sb.append("\n");
         sb.append(prependTabs + "\t\t" + getClass());
         sb.append("\n");
-        sb.append(prependTabs + "\t</class>");
+        sb.append(prependTabs + "\t</class-pointer>");
         parametersToXML(sb, prependTabs);
-        sb.append(prependTabs + "</custom-file-filter-resource>");
+        sb.append(prependTabs + "</custom-class>");
 
     }
 

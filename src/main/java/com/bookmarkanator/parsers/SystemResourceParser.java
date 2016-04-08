@@ -12,11 +12,19 @@ public class SystemResourceParser
         root("root"),
         settings("settings"),
         system("system"),
-        terminal("terminal-resource"),
+        basicresource("basic-resource"),
+        fileeditor("file-editor"),
+        filebrowser("file-browser"),
         web("web"),
-        file("file"),
-        folder("folder"),
-        filesegment("file-segment"),
+        name("name"),
+        text("text"),
+        key("key"),
+        value("value"),
+        description("description"),
+        classpointer("class-pointer"),
+        parameter("parameter"),
+        terminalresource("terminal-resource"),
+        customclass("custom-class"),
         precommand("pre-command"),
         postcommand("post-command"),
         unknown("_unknown_");
@@ -119,18 +127,37 @@ public class SystemResourceParser
                 state =match(state, Tags.system, currentTag);
                 break;
             case system:
-                state =match(state, Tags.terminal, currentTag);
+                state =match(state, Tags.basicresource, currentTag);
+                state =match(state, Tags.fileeditor, currentTag);
+                state =match(state, Tags.filebrowser, currentTag);
                 state =match(state, Tags.web, currentTag);
-                state =match(state, Tags.file, currentTag);
-                state =match(state, Tags.folder, currentTag);
+                state =match(state, Tags.terminalresource, currentTag);
+                state =match(state, Tags.customclass, currentTag);
                 break;
-            case terminal:
+            case basicresource:
+                state =match(state, Tags.name, currentTag);
+                state =match(state, Tags.text, currentTag);
+                break;
+            case customclass:
+                state =match(state, Tags.classpointer, currentTag);
+                state =match(state, Tags.parameter, currentTag);
+            case terminalresource:
+            case web:
+            case fileeditor:
+            case filebrowser:
+                state =match(state, Tags.name, currentTag);
+                state =match(state, Tags.text, currentTag);
                 state =match(state, Tags.precommand, currentTag);
                 state =match(state, Tags.postcommand, currentTag);
                 break;
+            case parameter:
+                state =match(state, Tags.key, currentTag);
+                state =match(state, Tags.value, currentTag);
+                state =match(state, Tags.description, currentTag);
+                break;
         }
 
-        if (prevTag == Tags.unknown)
+        if (state == Tags.unknown)
         {
             throw new RuntimeException("Unknown [" + prevTag + "][" + currentTag + "]");
         }

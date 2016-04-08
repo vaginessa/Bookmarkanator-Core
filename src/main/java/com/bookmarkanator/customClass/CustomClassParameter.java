@@ -1,4 +1,4 @@
-package com.bookmarkanator.filefilter;
+package com.bookmarkanator.customClass;
 
 import javax.swing.*;
 import com.bookmarkanator.interfaces.*;

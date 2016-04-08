@@ -65,16 +65,16 @@
 				hello.odt
 			</post-command>
 		</terminal-resource>
-		<custom-file-filter-resource index-within-bookmark="0">
+		<custom-class index-within-bookmark="0">
 			<name>
 				Bob file filter 1
 			</name>
 			<text>
 				Text describing the custom file filter
 			</text>
-			<class>
+			<class-pointer>
 				class com.bookmarkanator.resourcetypes.CustomFileFilter
-			</class>
+			</class-pointer>
 			<parameter required="true">
 				<key>
 					key-value-separator
@@ -97,6 +97,6 @@
 					defines the separator of the key value pairs
 				</description>
 			</parameter>
-		</custom-file-filter-resource>
+		</custom-class>
 	</system>
 </settings>
