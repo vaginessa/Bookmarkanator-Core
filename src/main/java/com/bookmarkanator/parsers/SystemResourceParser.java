@@ -87,7 +87,7 @@ public class SystemResourceParser
     }
 
     public Settings parse(Reader in)
-        throws XMLStreamException
+            throws Exception
     {
         XMLInputFactory xif = XMLInputFactory.newInstance();
         xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
@@ -121,8 +121,7 @@ public class SystemResourceParser
         return currentSettings;
     }
 
-    public void startTag(String currentTag)
-    {
+    public void startTag(String currentTag) throws Exception {
         Tags prevTag = stateStack.peek();
         Tags state = Tags.unknown;
 
@@ -156,25 +155,54 @@ public class SystemResourceParser
                     currentBasicResource = new BasicResource();
                     //todo set attributes
                 }
-                else if (state==Tags.filebrowser)
+                else if (state==Tags.filebrowser || state==Tags.fileeditor || state==Tags.web)
                 {
-
-                }
-                else if (state==Tags.fileeditor)
-                {
-
-                }
-                else if (state==Tags.web)
-                {
-
+                    if (currentDefaultSystemResource!=null)
+                    {
+                        throw new Exception("Improperly nested DefaultSystemResource tags encountered");
+                    }
+                    else
+                    {
+                        switch (state)
+                        {
+                            case filebrowser:
+                                currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
+                                //TODO set attributes
+                                break;
+                            case fileeditor:
+                                currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR);
+                                //TODO set attributes
+                                break;
+                            case web:
+                                currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
+                                //TODO set attributes
+                                break;
+                        }
+                    }
                 }
                 else if (state==Tags.terminalresource)
                 {
-
+                    if (currentTerminalResource!=null)
+                    {
+                        throw new Exception("Improperly nested TerminalResource tags encountered");
+                    }
+                    else
+                    {
+                        currentTerminalResource = new TerminalResource();
+                        //TODO set attributes
+                    }
                 }
                 else if (state==Tags.customclass)
                 {
-
+                    if (currentCustomFileFilter!=null)
+                    {
+                        throw new Exception("Improperly nested CustomFileFilterResource tags encountered");
+                    }
+                    else
+                    {
+                        currentCustomFileFilter = new CustomFileFilter();
+                        //TODO set attributes
+                    }
                 }
                 break;
             case basicresource:
@@ -190,18 +218,9 @@ public class SystemResourceParser
                 state =match(state, Tags.precommand, currentTag);
                 state =match(state, Tags.postcommand, currentTag);
                 break;
+
             case web:
-                state =match(state, Tags.name, currentTag);
-                state =match(state, Tags.text, currentTag);
-                state =match(state, Tags.precommand, currentTag);
-                state =match(state, Tags.postcommand, currentTag);
-                break;
             case fileeditor:
-                state =match(state, Tags.name, currentTag);
-                state =match(state, Tags.text, currentTag);
-                state =match(state, Tags.precommand, currentTag);
-                state =match(state, Tags.postcommand, currentTag);
-                break;
             case filebrowser:
                 state =match(state, Tags.name, currentTag);
                 state =match(state, Tags.text, currentTag);
