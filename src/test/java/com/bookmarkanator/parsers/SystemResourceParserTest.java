@@ -127,8 +127,23 @@ public class SystemResourceParserTest
         sysType.getResourceList().add(tr);
         sysType.getResourceList().add(cf);
 
+
+
         systems.add(sysType);
 
+        sysType = new SystemType();
+        sysType.setSystemName("Linux mint");
+        sysType.setSystemVersion("17.3");
+        sysType.setSystemVersionName("Rosa");
+
+        sysType.getResourceList().add(basic);
+        sysType.getResourceList().add(defSysEdit);
+        sysType.getResourceList().add(defSysFile);
+        sysType.getResourceList().add(defSysWeb);
+        sysType.getResourceList().add(tr);
+        sysType.getResourceList().add(cf);
+
+        systems.add(sysType);
         settings.setSystemTypes(systems);
         return settings;
     }

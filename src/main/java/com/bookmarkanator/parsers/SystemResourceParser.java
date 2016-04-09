@@ -359,9 +359,11 @@ public class SystemResourceParser
                 break;
             case terminalresource:
                 currentSystem.addResource(currentTerminalResource);
+                currentTerminalResource = null;
                 break;
             case customclass:
                 currentSystem.addResource(currentCustomFileFilter);
+                currentCustomFileFilter = null;
                 break;
             case parameter:
                 currentCustomFileFilter.addParameter(currentParameter);

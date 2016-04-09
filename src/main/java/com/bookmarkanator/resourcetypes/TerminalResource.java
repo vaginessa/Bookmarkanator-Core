@@ -36,70 +36,29 @@ public class TerminalResource extends BasicResource {
         return getText();
     }
 
-//    @Override
-//    public void toXML(StringBuilder sb, String prependTabs) {
-//        sb.append(prependTabs + "<terminal-resource index-within-bookmark=\"");
-//        sb.append(getIndexWithinBookmark());
-//        sb.append("\">");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<name>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getName());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</name>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<text>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getText());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</text>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<pre-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getPreCommand());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</pre-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<post-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getPostCommand());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</post-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "</terminal-resource>");
-//    }
-
     @Override
     public void toXML(StringBuilder sb, String prependTabs) {
-        sb.append("<terminal-resource index-within-bookmark=\"");
+        sb.append(prependTabs + "<terminal-resource index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
-
-        sb.append("<name>");
-
-        sb.append("" + getName());
-
+        sb.append("\n");
+        sb.append(prependTabs + "\t<name>");
+        sb.append(getName());
         sb.append("</name>");
-
-        sb.append("<text>");
-
-        sb.append("" + getText());
-
+        sb.append("\n");
+        sb.append(prependTabs + "\t<text>");
+        sb.append(getText());
         sb.append("</text>");
-
-        sb.append("<pre-command>");
-
-        sb.append("" + getPreCommand());
-
+        sb.append("\n");
+        sb.append(prependTabs + "\t<pre-command>");
+        sb.append(getPreCommand());
         sb.append("</pre-command>");
-
-        sb.append("<post-command>");
-
-        sb.append("" + getPostCommand());
-
+        sb.append("\n");
+        sb.append(prependTabs + "\t<post-command>");
+        sb.append(getPostCommand());
         sb.append("</post-command>");
-
-        sb.append("</terminal-resource>");
+        sb.append("\n");
+        sb.append(prependTabs + "</terminal-resource>");
     }
 
     @Override

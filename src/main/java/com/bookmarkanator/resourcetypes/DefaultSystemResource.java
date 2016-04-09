@@ -103,75 +103,52 @@ public class DefaultSystemResource extends TerminalResource
 
     private void webToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append("<web index-within-bookmark=\"");
+        sb.append(prependTabs+"<web index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append("</web>");
+        sb.append(prependTabs+"</web>");
     }
 
     private void fileEditorToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append("<file-editor index-within-bookmark=\"");
+        sb.append(prependTabs+"<file-editor index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append("</file-editor>");
+        sb.append(prependTabs+"</file-editor>");
     }
 
     private void fileBrowserToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append("<file-browser index-within-bookmark=\"");
+        sb.append(prependTabs+"<file-browser index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
         writeGuts(sb, prependTabs);
-        sb.append("</file-browser>");
+        sb.append(prependTabs+"</file-browser>");
     }
-
-//    private void writeGuts(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<name>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getName());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</name>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<text>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getText());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</text>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<pre-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getPreCommand());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</pre-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t<post-command>");
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t\t" + getPostCommand());
-//        sb.append("\n");
-//        sb.append(prependTabs + "\t</post-command>");
-//        sb.append("\n");
-//    }
 
     private void writeGuts(StringBuilder sb, String prependTabs)
     {
-        sb.append("<name>");
+        sb.append("\n");
+        sb.append(prependTabs + "\t<name>");
         sb.append(getName());
         sb.append("</name>");
-        sb.append("<text>");
-        sb.append(getText());
+        sb.append("\n");
+        sb.append(prependTabs + "\t<text>");
+        sb.append( getText());
         sb.append("</text>");
-        sb.append("<pre-command>");
+        sb.append("\n");
+        sb.append(prependTabs + "\t<pre-command>");
         sb.append(getPreCommand());
         sb.append("</pre-command>");
-        sb.append("<post-command>");
+        sb.append("\n");
+        sb.append(prependTabs + "\t<post-command>");
         sb.append(getPostCommand());
         sb.append("</post-command>");
+        sb.append("\n");
     }
+
     @Override
     public int hashCode() {
         return super.hashCode() + type + getPreCommand().hashCode()+getPostCommand().hashCode();

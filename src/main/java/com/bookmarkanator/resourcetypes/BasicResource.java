@@ -53,39 +53,21 @@ public class BasicResource implements XMLWritable
         return getText();
     }
 
-//    public void toXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append(prependTabs+"<basic-resource index-within-bookmark=\"");
-//        sb.append(indexWithinBookmark);
-//        sb.append("\">");
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t<name>");
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t\t"+getName());
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t</name>");
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t<text>");
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t\t"+getText());
-//        sb.append("\n");
-//        sb.append(prependTabs+"\t</text>");
-//        sb.append("\n");
-//        sb.append(prependTabs+"</basic-resource>");
-//    }
-
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<basic-resource index-within-bookmark=\"");
         sb.append(indexWithinBookmark);
         sb.append("\">");
-        sb.append("<name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<name>");
         sb.append(getName());
         sb.append("</name>");
-        sb.append("<text>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<text>");
         sb.append(getText());
         sb.append("</text>");
-        sb.append("</basic-resource>");
+        sb.append("\n");
+        sb.append(prependTabs+"</basic-resource>");
     }
 
     @Override

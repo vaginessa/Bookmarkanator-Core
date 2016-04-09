@@ -60,31 +60,16 @@ public class Settings implements XMLWritable
         systemTypes.add(systemType);
     }
 
-//    public void toXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append("\n<settings version=\"");
-//        sb.append(getVersion());
-//        sb.append("\">\n");
-//
-//        for (SystemType systemType: getSystemTypes())
-//        {
-//            systemType.toXML(sb,"\t");
-//            sb.append("\n");
-//        }
-//
-//        sb.append("</settings>");
-//    }
-
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append("<settings version=\"");
+        sb.append("\n<settings version=\"");
         sb.append(getVersion());
-        sb.append("\">");
+        sb.append("\">\n");
 
         for (SystemType systemType: getSystemTypes())
         {
-            systemType.toXML(sb,"");
-            sb.append("");
+            systemType.toXML(sb,"\t");
+            sb.append("\n");
         }
 
         sb.append("</settings>");

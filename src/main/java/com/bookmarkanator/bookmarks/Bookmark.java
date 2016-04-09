@@ -171,32 +171,22 @@ public class Bookmark implements XMLWritable{
 
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<bookmark uuid=\"");
+        sb.append("<bookmark uuid=\"");
         sb.append(getTagUUID());
         sb.append(" sharing=\"");
         sb.append(getSharing());
         sb.append("\">");
-        sb.append("\n");
-        sb.append(prependTabs+"\t<name>");
-        sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getName());
-        sb.append("\n");
-        sb.append(prependTabs+"\t</name>");
-        sb.append("\n");
-        sb.append(prependTabs+"\t<description>");
-        sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getDescription());
-        sb.append("\n");
-        sb.append(prependTabs+"\t</description>");
-        sb.append("\n");
-        sb.append(prependTabs+"\t<tag-owner>");
-        sb.append("\n");
-        sb.append(prependTabs+"\t\t"+getOwnerID());
-        sb.append("\n");
-        sb.append(prependTabs+"\t</tag-owner>");
-        sb.append("\n");
+        sb.append("<name>");
+        sb.append(getName());
+        sb.append("</name>");
+        sb.append("<description>");
+        sb.append(getDescription());
+        sb.append("</description>");
+        sb.append("<tag-owner>");
+        sb.append(getOwnerID());
+        sb.append("</tag-owner>");
         //TODO add write tags here.
         //TODO add write bookmark resources here.
-        sb.append(prependTabs+"</bookmark>");
+        sb.append("</bookmark>");
     }
 }

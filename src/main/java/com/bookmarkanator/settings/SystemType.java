@@ -61,25 +61,6 @@ public class SystemType implements XMLWritable
         resourceList.add(resource);
     }
 
-//    public void toXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append(prependTabs+"<system name=\"");
-//        sb.append(getSystemName());
-//        sb.append("\" version=\"");
-//        sb.append(getSystemVersion());
-//        sb.append("\" versionname=\"");
-//        sb.append(getSystemVersionName());
-//        sb.append("\">");
-//        sb.append("\n");
-//
-//        for (BasicResource br: getResourceList())
-//        {
-//            br.toXML(sb,prependTabs+"\t");
-//            sb.append("\n");
-//        }
-//        sb.append(prependTabs+"</system>");
-//    }
-
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<system name=\"");
@@ -89,10 +70,12 @@ public class SystemType implements XMLWritable
         sb.append("\" versionname=\"");
         sb.append(getSystemVersionName());
         sb.append("\">");
+        sb.append("\n");
 
         for (BasicResource br: getResourceList())
         {
-            br.toXML(sb,prependTabs+"");
+            br.toXML(sb,prependTabs+"\t");
+            sb.append("\n");
         }
         sb.append(prependTabs+"</system>");
     }
