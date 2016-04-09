@@ -85,34 +85,55 @@ public class CustomClassParameter implements XMLWritable{
         isOverridden = overridden;
     }
 
+//    @Override
+//    public void toXML(StringBuilder sb, String prependTabs)
+//    {
+//        if (isOverridden)
+//        {//only write out overridden parameters.
+//            sb.append(prependTabs + "<parameter required=\"");
+//            sb.append(required);
+//            sb.append("\">");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t<key>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t\t" + getKey());
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t</key>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t<value>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t\t" + getValue());
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t</value>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t<description>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t\t" + getDescription());
+//            sb.append("\n");
+//            sb.append(prependTabs + "\t</description>");
+//            sb.append("\n");
+//            sb.append(prependTabs + "</parameter>");
+//        }
+//    }
+
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
         if (isOverridden)
         {//only write out overridden parameters.
-            sb.append(prependTabs + "<parameter required=\"");
+            sb.append( "<parameter required=\"");
             sb.append(required);
             sb.append("\">");
-            sb.append("\n");
-            sb.append(prependTabs + "\t<key>");
-            sb.append("\n");
-            sb.append(prependTabs + "\t\t" + getKey());
-            sb.append("\n");
-            sb.append(prependTabs + "\t</key>");
-            sb.append("\n");
-            sb.append(prependTabs + "\t<value>");
-            sb.append("\n");
-            sb.append(prependTabs + "\t\t" + getValue());
-            sb.append("\n");
-            sb.append(prependTabs + "\t</value>");
-            sb.append("\n");
-            sb.append(prependTabs + "\t<description>");
-            sb.append("\n");
-            sb.append(prependTabs + "\t\t" + getDescription());
-            sb.append("\n");
-            sb.append(prependTabs + "\t</description>");
-            sb.append("\n");
-            sb.append(prependTabs + "</parameter>");
+            sb.append("<key>");
+            sb.append("" + getKey());
+            sb.append("</key>");
+            sb.append("<value>");
+            sb.append(getValue());
+            sb.append("</value>");
+            sb.append("<description>");
+            sb.append(getDescription());
+            sb.append("</description>");
+            sb.append("</parameter>");
         }
     }
 }

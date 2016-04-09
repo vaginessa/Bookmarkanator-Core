@@ -9,7 +9,8 @@ public class ParserUtil {
 
     public static String limitWhiteSpace(String string)
     {
-        return string.replaceAll("\\n( )*", " ");
+//        return string.replaceAll("\\n( )*", " ");
+        return string.replaceAll("\\s+","");
     }
 
     public static String getStartElementAttributes(XMLStreamReader reader)

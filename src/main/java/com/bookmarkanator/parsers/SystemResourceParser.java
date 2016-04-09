@@ -98,8 +98,8 @@ public class SystemResourceParser
         reader = xif.createXMLStreamReader(in);
 
 
-        stateStack = new Stack<Tags>();
-        charsStack = new Stack<StringBuilder>();
+        stateStack = new Stack<>();
+        charsStack = new Stack<>();
         stateStack.push(Tags.root);
 
         while (reader.hasNext())
@@ -113,7 +113,7 @@ public class SystemResourceParser
                     break;
 
                 case XMLStreamConstants.CHARACTERS:
-                    charsStack.peek().append(reader.getText());
+                    charsStack.peek().append(reader.getText().trim());
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:

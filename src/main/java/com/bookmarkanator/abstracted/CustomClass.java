@@ -34,7 +34,7 @@ public abstract class CustomClass extends BasicResource
     }
 
     /**
-     * Called by the main program to initiate the action defined by the custom code.
+     * Called by the main program to initiate the action defined by the custom code (parameters must be set first)
      *
      * @param sb A string builder to write the output to.
      * @throws Exception
@@ -42,32 +42,52 @@ public abstract class CustomClass extends BasicResource
     public abstract void execute(StringBuilder sb)
         throws Exception;
 
+//    @Override
+//    public void toXML(StringBuilder sb, String prependTabs)
+//    {
+//        sb.append(prependTabs + "<custom-class index-within-bookmark=\"");
+//        sb.append(getIndexWithinBookmark());
+//        sb.append("\">");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t<name>");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t\t" + getName());
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t</name>");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t<text>");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t\t" + getText());
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t</text>");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t<class-pointer>");
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t\t" + getClass());
+//        sb.append("\n");
+//        sb.append(prependTabs + "\t</class-pointer>");
+//        parametersToXML(sb, prependTabs);
+//        sb.append(prependTabs + "</custom-class>");
+//
+//    }
+
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs + "<custom-class index-within-bookmark=\"");
+        sb.append("<custom-class index-within-bookmark=\"");
         sb.append(getIndexWithinBookmark());
         sb.append("\">");
-        sb.append("\n");
-        sb.append(prependTabs + "\t<name>");
-        sb.append("\n");
-        sb.append(prependTabs + "\t\t" + getName());
-        sb.append("\n");
-        sb.append(prependTabs + "\t</name>");
-        sb.append("\n");
-        sb.append(prependTabs + "\t<text>");
-        sb.append("\n");
-        sb.append(prependTabs + "\t\t" + getText());
-        sb.append("\n");
-        sb.append(prependTabs + "\t</text>");
-        sb.append("\n");
-        sb.append(prependTabs + "\t<class-pointer>");
-        sb.append("\n");
-        sb.append(prependTabs + "\t\t" + getClass());
-        sb.append("\n");
-        sb.append(prependTabs + "\t</class-pointer>");
+        sb.append("<name>");
+        sb.append(getName());
+        sb.append("</name>");
+        sb.append("<text>");
+        sb.append(getText());
+        sb.append("</text>");
+        sb.append("<class-pointer>");
+        sb.append("" + getClass());
+        sb.append("</class-pointer>");
         parametersToXML(sb, prependTabs);
-        sb.append(prependTabs + "</custom-class>");
+        sb.append("</custom-class>");
 
     }
 
@@ -75,8 +95,9 @@ public abstract class CustomClass extends BasicResource
     {
         for (CustomClassParameter param : getParameters())
         {
-            sb.append("\n");
-            param.toXML(sb, prependTabs + "\t");
+            param.toXML(sb, prependTabs + "");
         }
     }
+
+
 }
