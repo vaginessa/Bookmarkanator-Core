@@ -13,7 +13,7 @@ public class SystemType implements XMLWritable
 
     public SystemType()
     {
-        resourceList = new ArrayList<BasicResource>();
+        resourceList = new ArrayList<>();
     }
 
     public String getSystemName()
@@ -56,6 +56,11 @@ public class SystemType implements XMLWritable
         this.resourceList = resourceList;
     }
 
+    public void addResource(BasicResource resource)
+    {
+        resourceList.add(resource);
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<system name=\"");
@@ -73,5 +78,56 @@ public class SystemType implements XMLWritable
             sb.append("\n");
         }
         sb.append(prependTabs+"</system>");
+    }
+
+    @Override
+    public int hashCode() {
+        return systemName.hashCode()+systemVersion.hashCode()+systemVersionName.hashCode()+resourceList.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null)
+        {
+            if (obj == this) {
+                return true;
+            }
+
+            if (obj instanceof SystemType)
+            {
+                SystemType st = (SystemType)obj;
+
+                if (st.getSystemName().equals(systemName))
+                {
+                    if (st.getSystemVersion().equals(getSystemVersion()))
+                    {
+                        if (st.getSystemVersionName().equals(getSystemVersionName()))
+                        {
+                            if (st.getResourceList().size()==getResourceList().size())
+                            {//deep equals
+                                for (BasicResource b: st.getResourceList())
+                                {
+                                    int a = getResourceList().indexOf(b);
+
+                                    if (a>-1)
+                                    {
+                                        if (!b.equals(getResourceList().get(a)))
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

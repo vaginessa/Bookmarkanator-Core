@@ -74,18 +74,20 @@ public class SystemResourceParser
     private Stack<Tags> stateStack;
     private Stack<StringBuilder> charsStack;
 
-    public void parse(File file)
+    public Settings parse(File file)
         throws Exception
     {
         Reader in = new FileReader(file);
+        Settings s;
         try
         {
-            parse(in);
+            s = parse(in);
         }
         finally
         {
             in.close();
         }
+        return s;
     }
 
     public Settings parse(Reader in)
@@ -338,13 +340,106 @@ public class SystemResourceParser
 
     public void endTag()
     {
-        Tags state = stateStack.pop();
+        Tags prevTag = stateStack.pop();
+        String text = charsStack.pop().toString();
 
-        if (state==Tags.filebrowser || state==Tags.fileeditor || state==Tags.web)
+        switch (prevTag)
         {
-            currentDefaultSystemResource = null;
+            case filebrowser:
+            case fileeditor:
+            case web:
+                currentSystem.addResource(currentDefaultSystemResource);
+                currentDefaultSystemResource = null;
+                break;
+            case system:
+                currentSettings.addSystemType(currentSystem);
+                break;
+            case basicresource:
+                currentSystem.addResource(currentBasicResource);
+                break;
+            case terminalresource:
+                currentSystem.addResource(currentTerminalResource);
+                break;
+            case customclass:
+                currentSystem.addResource(currentCustomFileFilter);
+                break;
+            case parameter:
+                currentCustomFileFilter.addParameter(currentParameter);
+                break;
+            case key:
+                currentParameter.setKey(text);
+                break;
+            case value:
+                currentParameter.setValue(text);
+                break;
+            case description:
+                currentParameter.setDescription(text);
+                break;
+            case name:
+                switch (stateStack.peek())
+                {
+                    case basicresource:
+                        currentBasicResource.setName(text);
+                        break;
+                    case fileeditor:
+                    case filebrowser:
+                    case web:
+                        currentDefaultSystemResource.setName(text);
+                        break;
+                    case terminalresource:
+                        currentTerminalResource.setName(text);
+                        break;
+                    case customclass:
+                        currentCustomFileFilter.setName(text);
+                        break;
+                }
+                break;
+            case text:
+                switch (stateStack.peek())
+                {
+                    case basicresource:
+                        currentBasicResource.setText(text);
+                        break;
+                    case fileeditor:
+                    case filebrowser:
+                    case web:
+                        currentDefaultSystemResource.setText(text);
+                        break;
+                    case terminalresource:
+                        currentTerminalResource.setText(text);
+                        break;
+                    case customclass:
+                        currentCustomFileFilter.setText(text);
+                        break;
+                }
+                break;
+            case precommand:
+                switch (stateStack.peek())
+                {
+                    case fileeditor:
+                    case filebrowser:
+                    case web:
+                        currentDefaultSystemResource.setPreCommand(text);
+                        break;
+                    case terminalresource:
+                        currentTerminalResource.setPreCommand(text);
+                        break;
+                }
+                break;
+            case postcommand:
+                switch (stateStack.peek())
+                {
+                    case fileeditor:
+                    case filebrowser:
+                    case web:
+                        currentDefaultSystemResource.setPostCommand(text);
+                        break;
+                    case terminalresource:
+                        currentTerminalResource.setPostCommand(text);
+                        break;
+                }
+                break;
         }
-        StringBuilder chars = charsStack.pop();
     }
 
     public static Tags match(Tags unchangedState, Tags state, String tag)

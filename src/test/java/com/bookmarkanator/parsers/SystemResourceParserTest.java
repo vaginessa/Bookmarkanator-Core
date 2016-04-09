@@ -35,8 +35,6 @@ public class SystemResourceParserTest
         Settings s1 = generateSystemTypes();
         sw.writeSettings(s1, f);
 
-
-
         SystemResourceParser p = new SystemResourceParser();
 
 
@@ -44,7 +42,8 @@ public class SystemResourceParserTest
 
         try
         {
-            p.parse(f);
+            Settings parsedS = p.parse(f);
+            Assert.assertTrue(s1.equals(parsedS));
         }
         catch (Exception e)
         {

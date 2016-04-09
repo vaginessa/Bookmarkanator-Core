@@ -31,6 +31,10 @@ public class Settings implements XMLWritable
     private String version;
     private List<SystemType> systemTypes;
 
+    public Settings() {
+        systemTypes = new ArrayList<>();
+    }
+
     public String getVersion()
     {
         return version;
@@ -51,6 +55,11 @@ public class Settings implements XMLWritable
         this.systemTypes = systemTypes;
     }
 
+    public void addSystemType(SystemType systemType)
+    {
+        systemTypes.add(systemType);
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append("\n<settings version=\"");
@@ -66,5 +75,47 @@ public class Settings implements XMLWritable
         sb.append("</settings>");
     }
 
+    @Override
+    public boolean equals(Object obj) {
 
+        if (obj!=null )
+        {
+            if (obj == this)
+            {
+                return true;
+            }
+
+           if (obj instanceof Settings)
+           {
+               Settings s = (Settings)obj;
+
+               if (s.version.equals(this.getVersion()))
+               {
+                   if (s.getSystemTypes().size()==this.getSystemTypes().size())
+                   {//deep equals
+                       for (SystemType st: systemTypes)
+                       {
+                           int a = systemTypes.indexOf(st);
+
+                           if (a>-1)
+                           {
+                               SystemType other = systemTypes.get(a);
+                               if (!other.equals(st))
+                               {
+                                   return false;
+                               }
+                           }
+                       }
+                       return true;
+                   }
+               }
+           }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return version.hashCode()+systemTypes.hashCode();
+    }
 }

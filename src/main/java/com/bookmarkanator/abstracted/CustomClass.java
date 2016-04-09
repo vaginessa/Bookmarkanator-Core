@@ -8,6 +8,10 @@ public abstract class CustomClass extends BasicResource
 {
     private List<CustomClassParameter> parameters;//the actual parameters set.
 
+    public CustomClass() {
+        parameters = new ArrayList<>();
+    }
+
     /**
      * The main program will call this method to get a list of parameters to display to the user. They will modify the parameters, and submit them
      * once again. After that execute can be called to run the custom code.
@@ -22,6 +26,11 @@ public abstract class CustomClass extends BasicResource
     public void setParameters(List<CustomClassParameter> parameters)
     {
         this.parameters = parameters;
+    }
+
+    public void addParameter(CustomClassParameter parameter)
+    {
+        this.parameters.add(parameter);
     }
 
     /**
