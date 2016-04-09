@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import javax.xml.stream.*;
 
+import com.bookmarkanator.customClass.*;
 import com.bookmarkanator.resourcetypes.BasicResource;
 import com.bookmarkanator.resourcetypes.CustomFileFilter;
 import com.bookmarkanator.resourcetypes.DefaultSystemResource;
@@ -68,6 +69,7 @@ public class SystemResourceParser
     private DefaultSystemResource currentDefaultSystemResource;
     private CustomFileFilter currentCustomFileFilter;
     private TerminalResource currentTerminalResource;
+    private CustomClassParameter currentParameter;
     private XMLStreamReader reader;
     private Stack<Tags> stateStack;
     private Stack<StringBuilder> charsStack;
@@ -124,6 +126,7 @@ public class SystemResourceParser
     public void startTag(String currentTag) throws Exception {
         Tags prevTag = stateStack.peek();
         Tags state = Tags.unknown;
+        String attr;
 
         switch (prevTag)
         {
@@ -132,7 +135,12 @@ public class SystemResourceParser
                 if (state==Tags.settings)
                 {
                     currentSettings = new Settings();
-                    //todo set attributes
+                    attr = ParserUtil.getStartElementAttribute(reader, "version");
+                    if (attr==null)
+                    {
+                        throw new Exception("Settings version attribute missing");
+                    }
+                    currentSettings.setVersion(attr);
                 }
                 break;
             case settings:
@@ -140,7 +148,24 @@ public class SystemResourceParser
                 if (state==Tags.system)
                 {
                     currentSystem = new SystemType();
-                    //todo set attributes
+                    attr = ParserUtil.getStartElementAttribute(reader, "name");
+                    if (attr==null)
+                    {
+                        throw new Exception("System type name attribute missing");
+                    }
+                    currentSystem.setSystemName(attr);
+                    attr = ParserUtil.getStartElementAttribute(reader, "version");
+                    if (attr==null)
+                    {
+                        throw new Exception("System type version attribute missing");
+                    }
+                    currentSystem.setSystemVersion(attr);
+                    attr = ParserUtil.getStartElementAttribute(reader, "versionname");
+                    if (attr==null)
+                    {
+                        throw new Exception("System type versionname attribute missing");
+                    }
+                    currentSystem.setSystemVersionName(attr);
                 }
                 break;
             case system:
@@ -153,7 +178,16 @@ public class SystemResourceParser
                 if (state==Tags.basicresource)
                 {
                     currentBasicResource = new BasicResource();
-                    //todo set attributes
+                    attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                    if (attr==null)
+                    {
+                        currentBasicResource.setIndexWithinBookmark(0);
+                    }
+                    else
+                    {
+                        currentBasicResource.setIndexWithinBookmark(Integer.parseInt(attr));
+                    }
+
                 }
                 else if (state==Tags.filebrowser || state==Tags.fileeditor || state==Tags.web)
                 {
@@ -167,15 +201,39 @@ public class SystemResourceParser
                         {
                             case filebrowser:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
-                                //TODO set attributes
+                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                                if (attr==null)
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
+                                }
+                                else
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
+                                }
                                 break;
                             case fileeditor:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR);
-                                //TODO set attributes
+                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                                if (attr==null)
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
+                                }
+                                else
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
+                                }
                                 break;
                             case web:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
-                                //TODO set attributes
+                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                                if (attr==null)
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
+                                }
+                                else
+                                {
+                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
+                                }
                                 break;
                         }
                     }
@@ -189,7 +247,15 @@ public class SystemResourceParser
                     else
                     {
                         currentTerminalResource = new TerminalResource();
-                        //TODO set attributes
+                        attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                        if (attr==null)
+                        {
+                            currentTerminalResource.setIndexWithinBookmark(0);
+                        }
+                        else
+                        {
+                            currentTerminalResource.setIndexWithinBookmark(Integer.parseInt(attr));
+                        }
                     }
                 }
                 else if (state==Tags.customclass)
@@ -201,7 +267,15 @@ public class SystemResourceParser
                     else
                     {
                         currentCustomFileFilter = new CustomFileFilter();
-                        //TODO set attributes
+                        attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
+                        if (attr==null)
+                        {
+                            currentCustomFileFilter.setIndexWithinBookmark(0);
+                        }
+                        else
+                        {
+                            currentCustomFileFilter.setIndexWithinBookmark(Integer.parseInt(attr));
+                        }
                     }
                 }
                 break;
@@ -212,6 +286,19 @@ public class SystemResourceParser
             case customclass:
                 state =match(state, Tags.classpointer, currentTag);
                 state =match(state, Tags.parameter, currentTag);
+                if (state==Tags.parameter)
+                {
+                    currentParameter = new CustomClassParameter();
+                    attr = ParserUtil.getStartElementAttribute(reader, "required");
+                    if (attr==null)
+                    {
+                        currentParameter.setRequired(false);
+                    }
+                    else
+                    {
+                        currentParameter.setRequired(Boolean.parseBoolean(attr));
+                    }
+                }
             case terminalresource:
                 state =match(state, Tags.name, currentTag);
                 state =match(state, Tags.text, currentTag);
@@ -231,6 +318,7 @@ public class SystemResourceParser
                 state =match(state, Tags.key, currentTag);
                 state =match(state, Tags.value, currentTag);
                 state =match(state, Tags.description, currentTag);
+
                 break;
         }
 
@@ -251,6 +339,11 @@ public class SystemResourceParser
     public void endTag()
     {
         Tags state = stateStack.pop();
+
+        if (state==Tags.filebrowser || state==Tags.fileeditor || state==Tags.web)
+        {
+            currentDefaultSystemResource = null;
+        }
         StringBuilder chars = charsStack.pop();
     }
 
