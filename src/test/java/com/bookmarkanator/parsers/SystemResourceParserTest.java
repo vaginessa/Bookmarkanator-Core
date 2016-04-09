@@ -2,57 +2,48 @@ package com.bookmarkanator.parsers;
 
 import java.io.*;
 import java.util.*;
+
 import com.bookmarkanator.customClass.*;
 import com.bookmarkanator.resourcetypes.*;
 import com.bookmarkanator.settings.*;
 import com.bookmarkanator.writers.Writer;
 import org.junit.*;
 
-public class SystemResourceParserTest
-{
+public class SystemResourceParserTest {
     private File file;
+
     @Before
     public void setUp()
-        throws Exception
-    {
-        file = new File("");
+            throws Exception {
+        file = new File("src/test/java/com/bookmarkanator/parsers/system_resource_settings_test.xml");
     }
 
     @After
     public void tearDown()
-        throws Exception
-    {
+            throws Exception {
         file.delete();
     }
 
     @Test
     public void testParseMethod()
-        throws Exception
-    {
-        File f = new File("src/test/java/com/bookmarkanator/parsers/system_resource_settings_test.xml");
-        System.out.println(f.getCanonicalPath());
+            throws Exception {
+        System.out.println("Enter testParseMethod in SystemResourceParserTest");
         Writer sw = new Writer();
         Settings s1 = generateSystemTypes();
-        sw.writeSettings(s1, f);
+        sw.writeSettings(s1, file);
 
         SystemResourceParser p = new SystemResourceParser();
 
-
-
-
-        try
-        {
-            Settings parsedS = p.parse(f);
+        try {
+            Settings parsedS = p.parse(file);
             Assert.assertTrue(s1.equals(parsedS));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Exit testParseMethod in SystemResourceParserTest");
     }
 
-    private Settings generateSystemTypes()
-    {
+    private Settings generateSystemTypes() {
         Settings settings = new Settings();
         settings.setVersion("1.0");
 
@@ -126,7 +117,6 @@ public class SystemResourceParserTest
         sysType.getResourceList().add(defSysWeb);
         sysType.getResourceList().add(tr);
         sysType.getResourceList().add(cf);
-
 
 
         systems.add(sysType);

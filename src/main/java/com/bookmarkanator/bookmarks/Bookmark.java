@@ -20,7 +20,8 @@ public class Bookmark implements XMLWritable{
     private String name;//name of the tag
     private String Description;//description of the tag
 
-    private List<String> tags;//tags to associate with this bookmark
+    private Map<String, String> tags;//tags to associate with this bookmark. Hashmap used to force unique tags, and
+    //enable faster searching.
 
 	//Sharing related fields
 	private UUID ownerID;
@@ -43,6 +44,14 @@ public class Bookmark implements XMLWritable{
     public Bookmark()
     {
         tagUUID = UUID.randomUUID();
+        createdDate = new Date();
+        lastAccessedDate = new Date();
+        numberOfAccesses = 0;
+        sharing = Bookmark.SHARING_THIS_USER_ONLY;
+
+        tags = new HashMap<>();
+        shareWith = new ArrayList<>();
+        addedBookmarks = new ArrayList<>();
     }
 
     // ============================================================
@@ -79,14 +88,19 @@ public class Bookmark implements XMLWritable{
         Description = description;
     }
 
-    public List<String> getTags()
+    public Map<String, String> getTags()
     {
         return tags;
     }
 
-    public void setTags(List<String> tags)
+    public void setTags(Map<String, String> tags)
     {
         this.tags = tags;
+    }
+
+    public void addTag(String tag)
+    {
+        tags.put(tag, tag);
     }
 
     public UUID getOwnerID()
@@ -107,6 +121,11 @@ public class Bookmark implements XMLWritable{
     public void setShareWith(List<UUID> shareWith)
     {
         this.shareWith = shareWith;
+    }
+
+    public void addShare(UUID toShareWith)
+    {
+        shareWith.add(toShareWith);
     }
 
     public String getSharing()
@@ -169,24 +188,33 @@ public class Bookmark implements XMLWritable{
         this.addedBookmarks = addedBookmarks;
     }
 
+    public void addChildBookmark(UUID bookmarkID)
+    {
+        addedBookmarks.add(bookmarkID);
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append("<bookmark uuid=\"");
+        sb.append(prependTabs+"<bookmark uuid=\"");
         sb.append(getTagUUID());
-        sb.append(" sharing=\"");
+        sb.append("\" sharing=\"");
         sb.append(getSharing());
         sb.append("\">");
-        sb.append("<name>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<name>");
         sb.append(getName());
         sb.append("</name>");
-        sb.append("<description>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<description>");
         sb.append(getDescription());
         sb.append("</description>");
-        sb.append("<tag-owner>");
+        sb.append("\n");
+        sb.append(prependTabs+"\t<tag-owner>");
         sb.append(getOwnerID());
         sb.append("</tag-owner>");
+        sb.append("\n");
         //TODO add write tags here.
         //TODO add write bookmark resources here.
-        sb.append("</bookmark>");
+        sb.append(prependTabs+"</bookmark>");
     }
 }

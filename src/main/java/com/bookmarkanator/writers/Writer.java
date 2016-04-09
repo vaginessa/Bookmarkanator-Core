@@ -24,7 +24,7 @@ public class Writer
         fout.close();
     }
 
-    public void writeBookmark(Bookmark bookmark, File file)
+    public void writeBookmarks(Bookmarks bookmarks, File file)
         throws Exception
     {
         StringBuilder sb= new StringBuilder();
@@ -32,7 +32,7 @@ public class Writer
         BufferedOutputStream bout = new BufferedOutputStream(fout);
 
         bout.write("<?xml version=\"1.0\" encoding=\"utf-8\" ?>".getBytes());
-        bookmark.toXML(sb, "");
+        bookmarks.toXML(sb, "");
         bout.write(sb.toString().getBytes());
 
         bout.flush();
