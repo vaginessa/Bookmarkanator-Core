@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <bookmarks program-version="null">
-	<bookmark uuid="0fcab4cd-9007-492d-9408-0bae6b9b9208" sharing="Share with all systems this user owns">
+	<bookmark uuid="35021310-9205-4bc5-a0f1-11ab4fe8355d" sharing="Share with all systems this user owns">
 		<name>My awesome bookmark!</name>
 		<description>A bookmark about how awesome I am!!!</description>
-		<tag-owner>c2954bcd-9bd5-43e1-a5a2-ad335cd965ef</tag-owner>
+		<bookmark-owner>9f81ccd2-369d-49b9-a2c3-b16bf6bbefd4</bookmark-owner>
+		<tags>
+		</tags>
+		<child-bookmarks>
+		</child-bookmarks>	
+	</bookmark>
+	<bookmark uuid="b7d0d69d-9f2e-4f8a-8e29-e874b3edd233" sharing="Share with all systems this user owns">
+		<name>Another bookmark.</name>
+		<description>A bookmark describing how awesome this other bookmark is.</description>
+		<bookmark-owner>35678e2d-5130-4e66-92ba-9ca00e7312d8</bookmark-owner>
+		<tags>
+			<tag>123</tag>
+			<tag>abc</tag>
+			<tag>hello</tag>
+		</tags>
+		<child-bookmarks>
+			<child-bookmark index="9" uuid="5dbb71d4-4462-4be9-b2df-6e817a5f45d4" />
+			<child-bookmark index="8" uuid="18905a7c-1548-4547-8aab-4d2179e59a7b" />
+			<child-bookmark index="13" uuid="481db764-9fc7-4298-bc0c-9a43a4e99bad" />
+		</child-bookmarks>	
 	</bookmark>
 </bookmarks>

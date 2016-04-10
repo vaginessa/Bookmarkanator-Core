@@ -21,7 +21,7 @@ public class SystemResourceParserTest {
     @After
     public void tearDown()
             throws Exception {
-        file.delete();
+//        file.delete();
     }
 
     @Test

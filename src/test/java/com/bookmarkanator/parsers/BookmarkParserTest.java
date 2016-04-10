@@ -47,14 +47,24 @@ public class BookmarkParserTest {
         Bookmarks bookmarks = new Bookmarks();
 
         Bookmark bookmark = new Bookmark();
-
         bookmark.setName("My awesome bookmark!");
         bookmark.setDescription("A bookmark about how awesome I am!!!");
         bookmark.setOwnerID(UUID.randomUUID());
 
-
         bookmarks.addBookmark(bookmark);
 
+        bookmark = new Bookmark();
+        bookmark.setName("Another bookmark.");
+        bookmark.setDescription("A bookmark describing how awesome this other bookmark is.");
+        bookmark.setOwnerID(UUID.randomUUID());
+        bookmark.addTag("hello");
+        bookmark.addTag("abc");
+        bookmark.addTag("123");
+        bookmark.addChildBookmark(UUID.randomUUID(), 8);
+        bookmark.addChildBookmark(UUID.randomUUID(), 9);
+        bookmark.addChildBookmark(UUID.randomUUID(), 13);
+
+        bookmarks.addBookmark(bookmark);
 
         return bookmarks;
     }

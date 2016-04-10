@@ -34,7 +34,7 @@ public class Bookmark implements XMLWritable{
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
     private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
-    private List<UUID> addedBookmarks;//A list of the bookmark UUIDs that have been added to this bookmark (they will be converted into strings).
+    private Map<UUID, Integer> addedBookmarks;//A list of the bookmark UUIDs that have been added to this bookmark and their indexes within the list.
 
 
     // ============================================================
@@ -51,7 +51,7 @@ public class Bookmark implements XMLWritable{
 
         tags = new HashMap<>();
         shareWith = new ArrayList<>();
-        addedBookmarks = new ArrayList<>();
+        addedBookmarks = new HashMap<UUID, Integer>();
     }
 
     // ============================================================
@@ -100,6 +100,9 @@ public class Bookmark implements XMLWritable{
 
     public void addTag(String tag)
     {
+        tag = tag.replaceAll(","," ");
+        tag = tag.trim();
+        tag = tag.toUpperCase();
         tags.put(tag, tag);
     }
 
@@ -178,43 +181,88 @@ public class Bookmark implements XMLWritable{
         this.resource = resource;
     }
 
-    public List<UUID> getAddedBookmarks()
+    public Map<UUID, Integer> getAddedBookmarks()
     {
         return addedBookmarks;
     }
 
-    public void setAddedBookmarks(List<UUID> addedBookmarks)
+    public void setAddedBookmarks(Map<UUID, Integer> addedBookmarks)
     {
         this.addedBookmarks = addedBookmarks;
     }
 
-    public void addChildBookmark(UUID bookmarkID)
+    public void addChildBookmark(UUID bookmarkID, int index)
     {
-        addedBookmarks.add(bookmarkID);
+        addedBookmarks.put(bookmarkID, index);
     }
 
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<bookmark uuid=\"");
+        sb.append(prependTabs);
+        sb.append("<bookmark uuid=\"");
         sb.append(getTagUUID());
         sb.append("\" sharing=\"");
         sb.append(getSharing());
         sb.append("\">");
         sb.append("\n");
-        sb.append(prependTabs+"\t<name>");
+        sb.append(prependTabs);
+        sb.append("\t<name>");
         sb.append(getName());
         sb.append("</name>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<description>");
+        sb.append(prependTabs);
+        sb.append("\t<description>");
         sb.append(getDescription());
         sb.append("</description>");
         sb.append("\n");
-        sb.append(prependTabs+"\t<tag-owner>");
+        sb.append(prependTabs);
+        sb.append("\t<bookmark-owner>");
         sb.append(getOwnerID());
-        sb.append("</tag-owner>");
+        sb.append("</bookmark-owner>");
         sb.append("\n");
-        //TODO add write tags here.
-        //TODO add write bookmark resources here.
-        sb.append(prependTabs+"</bookmark>");
+        tagsToXML(sb, prependTabs);
+        sb.append("\n");
+        childBookmarksToXML(sb, prependTabs);
+        sb.append(prependTabs);
+        sb.append("\n");
+        sb.append(prependTabs);
+        sb.append("</bookmark>");
     }
+
+    private void tagsToXML(StringBuilder sb, String prependTabs)
+    {
+        sb.append(prependTabs);
+        sb.append("\t<tags>");
+        sb.append("\n");
+        for (String s: getTags().keySet())
+        {
+            sb.append(prependTabs);
+            sb.append("\t\t<tag>");
+            sb.append(s);
+            sb.append("</tag>");
+            sb.append("\n");
+        }
+        sb.append(prependTabs);
+        sb.append("\t</tags>");
+    }
+
+    private void childBookmarksToXML(StringBuilder sb, String prependTabs)
+    {
+        sb.append(prependTabs);
+        sb.append("\t<child-bookmarks>");
+        sb.append("\n");
+        for (UUID uuid: getAddedBookmarks().keySet())
+        {
+            sb.append(prependTabs);
+            sb.append("\t\t<child-bookmark index=\"");
+            sb.append(getAddedBookmarks().get(uuid));
+            sb.append("\" uuid=\"");
+            sb.append(uuid.toString());
+            sb.append("\" />");
+            sb.append("\n");
+        }
+        sb.append(prependTabs);
+        sb.append("\t</child-bookmarks>");
+    }
+
 }
