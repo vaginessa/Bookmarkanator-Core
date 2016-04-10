@@ -180,16 +180,6 @@ public class SystemResourceParser
                 if (state==Tags.basicresource)
                 {
                     currentBasicResource = new BasicResource();
-                    attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                    if (attr==null)
-                    {
-                        currentBasicResource.setIndexWithinBookmark(0);
-                    }
-                    else
-                    {
-                        currentBasicResource.setIndexWithinBookmark(Integer.parseInt(attr));
-                    }
-
                 }
                 else if (state==Tags.filebrowser || state==Tags.fileeditor || state==Tags.web)
                 {
@@ -203,39 +193,12 @@ public class SystemResourceParser
                         {
                             case filebrowser:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
-                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                                if (attr==null)
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
-                                }
-                                else
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
-                                }
                                 break;
                             case fileeditor:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR);
-                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                                if (attr==null)
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
-                                }
-                                else
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
-                                }
                                 break;
                             case web:
                                 currentDefaultSystemResource = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
-                                attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                                if (attr==null)
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(0);
-                                }
-                                else
-                                {
-                                    currentDefaultSystemResource.setIndexWithinBookmark(Integer.parseInt(attr));
-                                }
                                 break;
                         }
                     }
@@ -249,15 +212,6 @@ public class SystemResourceParser
                     else
                     {
                         currentTerminalResource = new TerminalResource();
-                        attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                        if (attr==null)
-                        {
-                            currentTerminalResource.setIndexWithinBookmark(0);
-                        }
-                        else
-                        {
-                            currentTerminalResource.setIndexWithinBookmark(Integer.parseInt(attr));
-                        }
                     }
                 }
                 else if (state==Tags.customclass)
@@ -269,15 +223,6 @@ public class SystemResourceParser
                     else
                     {
                         currentCustomFileFilter = new CustomFileFilter();
-                        attr = ParserUtil.getStartElementAttribute(reader, "index-within-bookmark");
-                        if (attr==null)
-                        {
-                            currentCustomFileFilter.setIndexWithinBookmark(0);
-                        }
-                        else
-                        {
-                            currentCustomFileFilter.setIndexWithinBookmark(Integer.parseInt(attr));
-                        }
                     }
                 }
                 break;

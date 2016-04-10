@@ -45,9 +45,7 @@ public abstract class CustomClass extends BasicResource
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs + "<custom-class index-within-bookmark=\"");
-        sb.append(getIndexWithinBookmark());
-        sb.append("\">");
+        sb.append(prependTabs + "<custom-class>");
         sb.append("\n");
         sb.append(prependTabs + "\t<name>");
         sb.append(getName());

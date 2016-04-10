@@ -38,9 +38,7 @@ public class TerminalResource extends BasicResource {
 
     @Override
     public void toXML(StringBuilder sb, String prependTabs) {
-        sb.append(prependTabs + "<terminal-resource index-within-bookmark=\"");
-        sb.append(getIndexWithinBookmark());
-        sb.append("\">");
+        sb.append(prependTabs + "<terminal-resource>");
         sb.append("\n");
         sb.append(prependTabs + "\t<name>");
         sb.append(getName());
@@ -74,11 +72,9 @@ public class TerminalResource extends BasicResource {
 
                 if (d.getName().equals(getName())) {
                     if (d.getText().equals(getText())) {
-                        if (d.getIndexWithinBookmark() == getIndexWithinBookmark()) {
-                            if (d.getPreCommand().equals(getPreCommand())) {
-                                if (d.getPostCommand().equals(getPostCommand())) {
-                                    return true;
-                                }
+                        if (d.getPreCommand().equals(getPreCommand())) {
+                            if (d.getPostCommand().equals(getPostCommand())) {
+                                return true;
                             }
                         }
                     }

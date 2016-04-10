@@ -15,7 +15,6 @@ public class BasicResource implements XMLWritable
 {
     private String name;//the display name of this resource.
     private String text;
-    private int indexWithinBookmark;
 
     public String getName()
     {
@@ -37,16 +36,6 @@ public class BasicResource implements XMLWritable
         this.text = text;
     }
 
-    public int getIndexWithinBookmark()
-    {
-        return indexWithinBookmark;
-    }
-
-    public void setIndexWithinBookmark(int indexWithinBookmark)
-    {
-        this.indexWithinBookmark = indexWithinBookmark;
-    }
-
     public String execute()
         throws Exception
     {
@@ -55,9 +44,7 @@ public class BasicResource implements XMLWritable
 
     public void toXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs+"<basic-resource index-within-bookmark=\"");
-        sb.append(indexWithinBookmark);
-        sb.append("\">");
+        sb.append(prependTabs+"<basic-resource>");
         sb.append("\n");
         sb.append(prependTabs+"\t<name>");
         sb.append(getName());
@@ -72,7 +59,7 @@ public class BasicResource implements XMLWritable
 
     @Override
     public int hashCode() {
-        return name.hashCode()+text.hashCode()+indexWithinBookmark;
+        return name.hashCode()+text.hashCode();
     }
 
     @Override
@@ -87,10 +74,7 @@ public class BasicResource implements XMLWritable
                 {
                     if (b.getText().equals(getText()))
                     {
-                        if (b.getIndexWithinBookmark()==getIndexWithinBookmark())
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
