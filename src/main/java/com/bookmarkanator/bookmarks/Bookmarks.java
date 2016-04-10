@@ -15,6 +15,7 @@ public class Bookmarks implements XMLWritable {
 
     public Bookmarks() {
         bookmarkList = new ArrayList<>();
+        version = "1.0.0-1";
     }
 
     public List<Bookmark> getBookmarkList() {
@@ -50,5 +51,49 @@ public class Bookmarks implements XMLWritable {
             sb.append("\n");
         }
         sb.append("</bookmarks>");
+    }
+
+    @Override
+    public int hashCode() {
+        return getBookmarkList().hashCode()+getVersion().hashCode();
+    }
+
+    /**
+     * Equal if and only if all child bookmarks are equal. Child bookmark equality is compared
+     * using UUID's.
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null)
+        {
+            if (obj instanceof Bookmarks)
+            {
+                Bookmarks b = (Bookmarks)obj;
+
+                if (b.getVersion().equals(getVersion()))
+                {
+                    if (b.getBookmarkList().size()!=getBookmarkList().size())
+                    {
+                        return false;
+                    }
+                    for (Bookmark bm : b.getBookmarkList())
+                    {//deep equals
+                        int a = getBookmarkList().indexOf(bm);
+                        if (a<0)
+                        {
+                            return false;
+                        }
+                        if (!bm.equals(getBookmarkList().get(a)))
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

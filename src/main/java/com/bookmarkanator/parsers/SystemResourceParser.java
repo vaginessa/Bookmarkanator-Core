@@ -333,11 +333,6 @@ public class SystemResourceParser
         charsStack.push(new StringBuilder());
     }
 
-    public void textTag()
-    {
-
-    }
-
     public void endTag()
     {
         Tags prevTag = stateStack.pop();

@@ -4,10 +4,12 @@ import com.bookmarkanator.bookmarks.Bookmark;
 import com.bookmarkanator.bookmarks.Bookmarks;
 import com.bookmarkanator.writers.Writer;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -39,6 +41,12 @@ public class BookmarkParserTest {
         Bookmarks bookarks = generateTestBookmarks();
         sw.writeBookmarks(bookarks, file);
 
+        BookmarkParser p = new BookmarkParser();
+
+        Bookmarks parsed = p.parse(file);
+
+        Assert.assertTrue(parsed.equals(bookarks));
+
         System.out.println("Exit testParseMethod in SystemResourceParserTest");
     }
 
@@ -57,6 +65,7 @@ public class BookmarkParserTest {
         bookmark.setName("Another bookmark.");
         bookmark.setDescription("A bookmark describing how awesome this other bookmark is.");
         bookmark.setOwnerID(UUID.randomUUID());
+        bookmark.setLastAccessedDate(new Date(System.currentTimeMillis()+1000000));
         bookmark.addTag("hello");
         bookmark.addTag("abc");
         bookmark.addTag("123");

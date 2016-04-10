@@ -1,5 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
@@ -11,9 +12,9 @@ public class Bookmark implements XMLWritable{
     // ============================================================
 
     //static fields
-	public static String SHARING_THIS_SYSTEM_ONLY = "Share only for this computer system";//only valid on this system
-	public static String SHARING_THIS_USER_ONLY = "Share with all systems this user owns";//this user on all systems
-	public static String SHARING_WITH_OTHERS = "Share with this group only";//Shares with the list of user or group id's specified.
+	public static int SHARING_THIS_SYSTEM_ONLY = 0;//only valid on this system
+	public static int SHARING_THIS_USER_ONLY = 1;//this user on all systems
+	public static int SHARING_WITH_OTHERS = 2;//Shares with the list of user or group id's specified.
 
     //Bookmark specific fields
     private UUID tagUUID;
@@ -26,7 +27,7 @@ public class Bookmark implements XMLWritable{
 	//Sharing related fields
 	private UUID ownerID;
     private List<UUID> shareWith;//a list of user or group UUID's to share this bookmark with.
-    private String sharing;//type of sharing
+    private int sharing;//type of sharing
 
     //Access related
     private Date createdDate;
@@ -131,12 +132,12 @@ public class Bookmark implements XMLWritable{
         shareWith.add(toShareWith);
     }
 
-    public String getSharing()
+    public int getSharing()
     {
         return sharing;
     }
 
-    public void setSharing(String sharing)
+    public void setSharing(int sharing)
     {
         this.sharing = sharing;
     }
@@ -203,6 +204,8 @@ public class Bookmark implements XMLWritable{
         sb.append(getTagUUID());
         sb.append("\" sharing=\"");
         sb.append(getSharing());
+        sb.append("\" tags=\"");
+        tagsToXML(sb);
         sb.append("\">");
         sb.append("\n");
         sb.append(prependTabs);
@@ -220,49 +223,70 @@ public class Bookmark implements XMLWritable{
         sb.append(getOwnerID());
         sb.append("</bookmark-owner>");
         sb.append("\n");
-        tagsToXML(sb, prependTabs);
+        sb.append(prependTabs);
+        sb.append("\t<dates created=\"");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        String dateStr = sdf.format(getCreatedDate());
+
+        sb.append(dateStr);
+        sb.append("\" last-accessed=\"");
+        dateStr = sdf.format(getLastAccessedDate());
+
+        sb.append(dateStr);
+        sb.append("\" />");
         sb.append("\n");
         childBookmarksToXML(sb, prependTabs);
-        sb.append(prependTabs);
-        sb.append("\n");
         sb.append(prependTabs);
         sb.append("</bookmark>");
     }
 
-    private void tagsToXML(StringBuilder sb, String prependTabs)
+    private void tagsToXML(StringBuilder sb)
     {
-        sb.append(prependTabs);
-        sb.append("\t<tags>");
-        sb.append("\n");
-        for (String s: getTags().keySet())
+        Iterator<String> i = getTags().keySet().iterator();
+        while (i.hasNext())
         {
-            sb.append(prependTabs);
-            sb.append("\t\t<tag>");
-            sb.append(s);
-            sb.append("</tag>");
-            sb.append("\n");
+            sb.append(i.next());
+            if (i.hasNext())
+            {
+                sb.append(",");
+            }
         }
-        sb.append(prependTabs);
-        sb.append("\t</tags>");
     }
 
     private void childBookmarksToXML(StringBuilder sb, String prependTabs)
     {
-        sb.append(prependTabs);
-        sb.append("\t<child-bookmarks>");
-        sb.append("\n");
         for (UUID uuid: getAddedBookmarks().keySet())
         {
             sb.append(prependTabs);
-            sb.append("\t\t<child-bookmark index=\"");
+            sb.append("\t<child-bookmark index=\"");
             sb.append(getAddedBookmarks().get(uuid));
             sb.append("\" uuid=\"");
             sb.append(uuid.toString());
             sb.append("\" />");
             sb.append("\n");
         }
-        sb.append(prependTabs);
-        sb.append("\t</child-bookmarks>");
     }
 
+    @Override
+    public int hashCode() {
+        return getAddedBookmarks().hashCode()+getName().hashCode()+
+                getTags().hashCode()+getSharing()+getCreatedDate().hashCode()+
+                getLastAccessedDate().hashCode()+getOwnerID().hashCode()+
+                getTagUUID().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj!=null)
+        {
+            if (obj instanceof Bookmark)
+            {
+                Bookmark b = (Bookmark)obj;
+
+                return b.getTagUUID().equals(getTagUUID());
+            }
+        }
+        return false;
+    }
 }
