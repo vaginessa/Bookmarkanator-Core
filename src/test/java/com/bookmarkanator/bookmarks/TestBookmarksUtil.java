@@ -11,7 +11,7 @@ public class TestBookmarksUtil {
     @Test
     public void testTagSuggestions()
     {
-        System.out.println("Length "+BookmarksUtil.getAllSubStrings(getTags()).size());
+//        System.out.println("Length "+BookmarksUtil.getAllSubStrings(getTags()).size());
 
 
         BookmarksUtil.getAllSubStrings(getTags()).forEach(System.out::println);
@@ -19,45 +19,45 @@ public class TestBookmarksUtil {
 
 //        Map<String, Set<String>> tagsList =  BookmarksUtil.makeTagsList(getTags());
 //
-//        List<String> res = BookmarksUtil.getSuggestedTags(getTags(), "1", 0);
-//        List<String> res2 = BookmarksUtil.getSuggestedTags(getTags(), "123", 0);
-//        List<String> res3 = BookmarksUtil.getSuggestedTags(getTags(), "56618", 0);
+        List<String> res = BookmarksUtil.getSuggestedTags(getTags(), "1", 10);
+        List<String> res2 = BookmarksUtil.getSuggestedTags(getTags(), "123", 10);
+        List<String> res3 = BookmarksUtil.getSuggestedTags(getTags(), "56618", 10);
 
-
+        System.out.println();
 
     }
 
-    public Map<String, String> getTags()
+    public Set<String> getTags()
     {
-        Map<String, String> tags = new HashMap<>();
+        Set<String> tags = new HashSet<>();
 
-        tags.put("ABC","ABC" );
-        tags.put("123","123" );
-        tags.put("DEF","DEF" );
-        tags.put("456","456" );
-        tags.put("GHI","GHI" );
-        tags.put("789","789" );
-        tags.put("JKL","JKL" );
-        tags.put("MNO","MNO" );
-        tags.put("PQR","PQR" );
-        tags.put("STU","STU" );
-        tags.put("DEF","DEF" );
-        tags.put("456","456" );
-        tags.put("GHI","GHI" );
-        tags.put("789","789" );
-        tags.put("JKL","JKL" );
-        tags.put("MNO","MNO" );
-        tags.put("PQR","PQR" );
-        tags.put("STU","STU" );
-        tags.put("DEF","DEF" );
-        tags.put("456","456" );
-        tags.put("GHI","GHI" );
-        tags.put("789","789" );
-        tags.put("JKL","JKL" );
-        tags.put("MNO","MNO" );
-        tags.put("PQR","PQR" );
-        tags.put("STU","STU" );
-
+        tags.add("ABC");
+        tags.add("123");
+        tags.add("DEF");
+        tags.add("456");
+        tags.add("GHI");
+        tags.add("789");
+        tags.add("JKL");
+        tags.add("MNO");
+        tags.add("PQR");
+        tags.add("STU");
+        tags.add("DEF");
+        tags.add("456");
+        tags.add("GHI");
+        tags.add("789");
+        tags.add("JKL");
+        tags.add("MNO");
+        tags.add("PQR");
+        tags.add("STU");
+        tags.add("DEF");
+        tags.add("456");
+        tags.add("GHI");
+        tags.add("789");
+        tags.add("JKL");
+        tags.add("MNO");
+        tags.add("PQR");
+        tags.add("STU");
+        tags.add("123ABC");
 
         return tags;
     }

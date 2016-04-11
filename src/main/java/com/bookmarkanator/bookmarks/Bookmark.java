@@ -21,7 +21,7 @@ public class Bookmark implements XMLWritable{
     private String name;//name of the tag
     private String Description;//description of the tag
 
-    private Map<String, String> tags;//tags to associate with this bookmark. Hashmap used to force unique tags, and
+    private Set<String> tags;//tags to associate with this bookmark. Hashmap used to force unique tags, and
     //enable faster searching.
 
 	//Sharing related fields
@@ -50,7 +50,7 @@ public class Bookmark implements XMLWritable{
         numberOfAccesses = 0;
         sharing = Bookmark.SHARING_THIS_USER_ONLY;
 
-        tags = new HashMap<>();
+        tags = new HashSet<>();
         shareWith = new ArrayList<>();
         addedBookmarks = new HashMap<UUID, Integer>();
     }
@@ -89,12 +89,12 @@ public class Bookmark implements XMLWritable{
         Description = description;
     }
 
-    public Map<String, String> getTags()
+    public Set<String> getTags()
     {
         return tags;
     }
 
-    public void setTags(Map<String, String> tags)
+    public void setTags(Set<String> tags)
     {
         this.tags = tags;
     }
@@ -104,7 +104,7 @@ public class Bookmark implements XMLWritable{
         tag = tag.replaceAll(","," ");
         tag = tag.trim();
         tag = tag.toUpperCase();
-        tags.put(tag, tag);
+        tags.add(tag);
     }
 
     public UUID getOwnerID()
@@ -243,7 +243,7 @@ public class Bookmark implements XMLWritable{
 
     private void tagsToXML(StringBuilder sb)
     {
-        Iterator<String> i = getTags().keySet().iterator();
+        Iterator<String> i = getTags().iterator();
         while (i.hasNext())
         {
             sb.append(i.next());
