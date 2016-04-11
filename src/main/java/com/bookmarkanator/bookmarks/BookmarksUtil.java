@@ -146,18 +146,47 @@ public class BookmarksUtil {
      * @param tags the tags to extract the sub-strings from.
      * @return A set of all tags, and all sub-strings of those tags.
      */
+//    public static Set<String> getAllSubStrings(Map<String, String> tags)
+//    {
+//        Set<String> subStrings = new HashSet<>();
+//
+//        for (String s: tags.keySet())
+//        {
+//            for (int c=0;c<s.length();c++)
+//            {
+//                subStrings.add(s.substring(0,s.length()-c));
+//                subStrings.add(s.substring(c,s.length()));
+//                subStrings.add(""+s.charAt(c));
+//            }
+//        }
+//        return subStrings;
+//    }
+
     public static Set<String> getAllSubStrings(Map<String, String> tags)
     {
         Set<String> subStrings = new HashSet<>();
 
         for (String s: tags.keySet())
         {
-            for (int c=0;c<s.length();c++)
+            int a = s.length();
+            System.out.println("--> "+s);
+            while (a>1)
             {
-                subStrings.add(s.substring(0,s.length()-c));
-                subStrings.add(s.substring(c,s.length()));
-                subStrings.add(""+s.charAt(c));
+               int pos = 0;
+                System.out.println("A "+a);
+                while (a+pos<s.length()+1)
+                {
+                    System.out.println(s.substring(pos,a)+" "+pos);
+                    pos = pos+1;
+                }
+                a = a-1;
             }
+//            for (int c=0;c<s.length();c++)
+//            {
+//                subStrings.add(s.substring(0,s.length()-c));
+//                subStrings.add(s.substring(c,s.length()));
+//                subStrings.add(""+s.charAt(c));
+//            }
         }
         return subStrings;
     }
