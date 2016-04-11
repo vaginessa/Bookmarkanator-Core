@@ -1,11 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import org.junit.*;
 
 /**
  * Created by micah on 4/10/16.
@@ -15,7 +11,7 @@ public class TestBookmarksUtil {
     @Test
     public void testTagSuggestions()
     {
-
+        System.out.println("Length "+BookmarksUtil.getAllSubStrings(getTags()).size());
 
 
         BookmarksUtil.getAllSubStrings(getTags()).forEach(System.out::println);
@@ -28,7 +24,7 @@ public class TestBookmarksUtil {
 //        List<String> res3 = BookmarksUtil.getSuggestedTags(getTags(), "56618", 0);
 
 
-        System.out.println("hb".substring(1,2)+" "+"hb".length());
+
     }
 
     public Map<String, String> getTags()
@@ -36,7 +32,7 @@ public class TestBookmarksUtil {
         Map<String, String> tags = new HashMap<>();
 
         tags.put("ABC","ABC" );
-        tags.put("123654566184894619849","123654566184894619849" );
+        tags.put("123","123" );
         tags.put("DEF","DEF" );
         tags.put("456","456" );
         tags.put("GHI","GHI" );

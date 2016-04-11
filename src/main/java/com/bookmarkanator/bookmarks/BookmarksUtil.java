@@ -1,8 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
-import com.bookmarkanator.resourcetypes.BasicResource;
-
 import java.util.*;
+import com.bookmarkanator.resourcetypes.*;
 
 /**
  * Created by micah on 4/9/16.
@@ -146,47 +145,27 @@ public class BookmarksUtil {
      * @param tags the tags to extract the sub-strings from.
      * @return A set of all tags, and all sub-strings of those tags.
      */
-//    public static Set<String> getAllSubStrings(Map<String, String> tags)
-//    {
-//        Set<String> subStrings = new HashSet<>();
-//
-//        for (String s: tags.keySet())
-//        {
-//            for (int c=0;c<s.length();c++)
-//            {
-//                subStrings.add(s.substring(0,s.length()-c));
-//                subStrings.add(s.substring(c,s.length()));
-//                subStrings.add(""+s.charAt(c));
-//            }
-//        }
-//        return subStrings;
-//    }
-
     public static Set<String> getAllSubStrings(Map<String, String> tags)
     {
         Set<String> subStrings = new HashSet<>();
 
         for (String s: tags.keySet())
         {
-            int a = s.length();
-            System.out.println("--> "+s);
-            while (a>1)
+            int a = 1;
+//            System.out.println("--> "+s);
+            while (a<s.length())
             {
                int pos = 0;
-                System.out.println("A "+a);
-                while (a+pos<s.length()+1)
+//                System.out.println("length "+a);
+                while (a+pos<=s.length())
                 {
-                    System.out.println(s.substring(pos,a)+" "+pos);
+//                    System.out.println("Result "+s.substring(pos,pos+a)+" position "+pos);
+                    subStrings.add(s.substring(pos,pos+a));
                     pos = pos+1;
                 }
-                a = a-1;
+                a = a+1;
             }
-//            for (int c=0;c<s.length();c++)
-//            {
-//                subStrings.add(s.substring(0,s.length()-c));
-//                subStrings.add(s.substring(c,s.length()));
-//                subStrings.add(""+s.charAt(c));
-//            }
+            subStrings.add(s);
         }
         return subStrings;
     }
