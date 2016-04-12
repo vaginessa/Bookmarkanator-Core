@@ -3,9 +3,6 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import com.bookmarkanator.resourcetypes.*;
 
-/**
- * Created by micah on 4/9/16.
- */
 public class BookmarksUtil {
 
     /**
@@ -105,6 +102,7 @@ public class BookmarksUtil {
      */
     public static List<String> getSuggestedTags(Set<String> tags, String text, int preferedNumberOfResults)
     {
+        //TODO Implement a more accurate tag search algorithm.
         Map<String, Set<String[]>> tagList = makeTagsList(tags);
         Set<String[]> res = tagList.get(text);
         List<String> resSet;

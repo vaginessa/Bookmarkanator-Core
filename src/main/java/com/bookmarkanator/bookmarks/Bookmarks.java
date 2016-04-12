@@ -5,9 +5,6 @@ import com.bookmarkanator.interfaces.XMLWritable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by micah on 4/9/16.
- */
 public class Bookmarks implements XMLWritable {
     private String version;
     private List<Bookmark> bookmarkList;
