@@ -54,6 +54,15 @@ public class SystemResourceParserTest {
         sysType.setSystemVersion("6.9");
         sysType.setSystemVersionName("Bob");
 
+        QuickAccessTagGroup q = new QuickAccessTagGroup();
+        q.addTag("hello");
+        q.addTag("bye");
+        q.addTag("your mom");
+        q.setIndex(1);
+        q.setLabel("My favorite tag group");
+
+        sysType.addQuickAccessTagGroup(q);
+
         BasicResource basic = new BasicResource();
         basic.setName("Basic resource name");
         basic.setText("Show this basic text!");

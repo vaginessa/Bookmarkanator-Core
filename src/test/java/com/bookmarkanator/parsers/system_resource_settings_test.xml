@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <settings version="1.0">
 	<system name="OSX" version="6.9" versionname="Bob">
+		<quick-access-tag-group label="My favorite tag group" index="1" tags="your mom,hello,bye"/>
 		<basic-resource>
 			<name>Basic resource name</name>
 			<text>Show this basic text!</text>

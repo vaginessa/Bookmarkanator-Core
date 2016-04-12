@@ -10,10 +10,12 @@ public class SystemType implements XMLWritable
     private String systemVersionName;
     private String systemVersion;
     private List<BasicResource> resourceList;
+    private List<QuickAccessTagGroup> quickDisplayTagGroup;//stores a list of tag display shortcuts for each system.
 
     public SystemType()
     {
         resourceList = new ArrayList<>();
+        quickDisplayTagGroup = new ArrayList<>();
     }
 
     public String getSystemName()
@@ -61,6 +63,21 @@ public class SystemType implements XMLWritable
         resourceList.add(resource);
     }
 
+    public List<QuickAccessTagGroup> getQuickDisplayTagGroup()
+    {
+        return quickDisplayTagGroup;
+    }
+
+    public void setQuickDisplayTagGroup(List<QuickAccessTagGroup> quickDisplayTagGroup)
+    {
+        this.quickDisplayTagGroup = quickDisplayTagGroup;
+    }
+
+    public void addQuickAccessTagGroup(QuickAccessTagGroup quick)
+    {
+        getQuickDisplayTagGroup().add(quick);
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<system name=\"");
@@ -71,6 +88,12 @@ public class SystemType implements XMLWritable
         sb.append(getSystemVersionName());
         sb.append("\">");
         sb.append("\n");
+
+        for (QuickAccessTagGroup q: getQuickDisplayTagGroup())
+        {
+            q.toXML(sb, prependTabs);
+            sb.append("\n");
+        }
 
         for (BasicResource br: getResourceList())
         {
