@@ -33,6 +33,7 @@ public class SystemResourceParser
         customclass("custom-class"),
         precommand("pre-command"),
         postcommand("post-command"),
+        quickaccesstags("quick-access-tag-group"),
         unknown("_unknown_");
 
         private String tag;
@@ -73,6 +74,7 @@ public class SystemResourceParser
     private XMLStreamReader reader;
     private Stack<Tags> stateStack;
     private Stack<StringBuilder> charsStack;
+    private QuickAccessTagGroup currentQuickAccessTagGroup;
 
     public Settings parse(File file)
         throws Exception
@@ -177,7 +179,46 @@ public class SystemResourceParser
                 state =match(state, Tags.web, currentTag);
                 state =match(state, Tags.terminalresource, currentTag);
                 state =match(state, Tags.customclass, currentTag);
-                if (state==Tags.basicresource)
+                state =match(state, Tags.quickaccesstags, currentTag);
+
+                if (state == Tags.quickaccesstags)
+                {
+                    currentQuickAccessTagGroup = new QuickAccessTagGroup();
+
+                    attr = ParserUtil.getStartElementAttribute(reader, "label");
+                    if (attr!=null)
+                    {
+                        currentQuickAccessTagGroup.setLabel(attr);
+                    }
+                    else
+                    {
+                        throw new Exception("Quick access tag encountered with out label attribute.");
+                    }
+                    attr = ParserUtil.getStartElementAttribute(reader, "index");
+                    if (attr!=null)
+                    {
+                        currentQuickAccessTagGroup.setIndex(Integer.parseInt(attr));
+                    }
+                    else
+                    {
+                        throw new Exception("Quick access tag encountered with out index attribute.");
+                    }
+                    attr = ParserUtil.getStartElementAttribute(reader, "tags");
+                    if (attr!=null)
+                    {
+                        String[] s = attr.split(",");
+
+                        for (String st: s)
+                        {
+                            currentQuickAccessTagGroup.addTag(st);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Quick access tag encountered with out tags attribute.");
+                    }
+                }
+                else if (state==Tags.basicresource)
                 {
                     currentBasicResource = new BasicResource();
                 }
@@ -381,6 +422,10 @@ public class SystemResourceParser
                         break;
                 }
                 break;
+            case quickaccesstags:
+                currentSystem.addQuickAccessTagGroup(currentQuickAccessTagGroup);
+                break;
+
         }
     }
 
