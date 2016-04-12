@@ -22,6 +22,7 @@ public class TestBookmarksUtil {
         List<String> res = BookmarksUtil.getSuggestedTags(getTags(), "1", 10);
         List<String> res2 = BookmarksUtil.getSuggestedTags(getTags(), "123", 10);
         List<String> res3 = BookmarksUtil.getSuggestedTags(getTags(), "56618", 10);
+        List<String> res4 = BookmarksUtil.getSuggestedTags(getTags(), "ACAABBDDASEDF", 10);
 
         System.out.println();
 
@@ -58,6 +59,7 @@ public class TestBookmarksUtil {
         tags.add("PQR");
         tags.add("STU");
         tags.add("123ABC");
+        tags.add("dhgdjhgjdhg1");
 
         return tags;
     }

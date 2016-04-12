@@ -107,32 +107,42 @@ public class BookmarksUtil {
     {
         Map<String, Set<String[]>> tagList = makeTagsList(tags);
         Set<String[]> res = tagList.get(text);
-        Set<String[]> resSet = new LinkedHashSet<>();
-        Set<String> returnResult = new LinkedHashSet<>();
+        List<String> resSet;
+        Set<String> returnResult = new HashSet<>();
 
         if (res!=null)
         {
             for (String[] s: res)
             {//if there is a direct substring match, remove all results that are shorter than the supplied string
-                if (s[0].length()>=text.length())
-                {
-                    returnResult.add(s[1]);//creates a list of unique tag entries that were found.
-                }
+                returnResult.add(s[1]);//adding the actual tag found instead of the string used to find it.
             }
         }
+
+        List<String> li = new ArrayList<>(returnResult);
+
+        returnResult.clear();
+
+        sortByLength(li, true);
 
         if (res==null || returnResult.size()<preferedNumberOfResults)
         {
             resSet = getMatchesForTextSubstring(tagList,text);
 
-            for (String[] st: resSet)
+            for (String st: resSet)
             {
-                returnResult.add(st[1]);
+                returnResult.add(st);
             }
         }
 
-        //        sortByLength(li);
-        return new ArrayList<>(returnResult);
+        for (String s: returnResult)
+        {
+            if (!li.contains(s))
+            {//don't add any duplicates to the end of the list
+                li.add(s);
+            }
+        }
+
+        return li;
     }
 
     /**
@@ -141,24 +151,97 @@ public class BookmarksUtil {
      *     This method breaks the tag string up and searches for each substring in the list of tag substrings.
      * </p>
      */
-    private static Set<String[]> getMatchesForTextSubstring(Map<String, Set<String[]>> tagList, String text)
+    private static List<String> getMatchesForTextSubstring(Map<String, Set<String[]>> tagList, String text)
     {
-        Set<String[]> res = new HashSet<>();
-        //TODO implement method.
+        //TODO modify this method to produce more accurate search results.
+        //TODO modify it so that it sorts by found tag first, and then replaces found tags by the real tags.
+        Set<String[]> res;
+        Set<String[]> substrings = getAllSubStrings(text);
+        Set<String> tags = new HashSet<>();
 
-        return res;
+        for (String[] str: substrings)
+        {//iterate through all substrings found for the supplied text
+            res = tagList.get(str[0]);
+
+            if (res!=null)
+            {
+                for (String[] s: res)
+                {//add tags found
+                    tags.add(s[1]);
+                }
+            }
+        }
+
+        List<String> tagsFound = new ArrayList<>();
+
+        tagsFound.addAll(tags);
+
+        sortByLength(tagsFound, text);
+
+        return tagsFound;
     }
 
-    private static void sortByLength(List<String[]> li)
+    /**
+     * Sorts the supplied list ordering the items closest to the length of the supplied text first, followed by all
+     * larger, and then all shorter.
+     * @param li
+     * @param text
+     */
+    private static void sortByLength(List<String> li, String text)
     {
-        Collections.sort(li, new Comparator<String[]>()
+        List<String> tmpStr = new ArrayList<>(li);//make a copy to work with
+        List<String> equalList = new ArrayList<>();
+        List<String> largerList = new ArrayList<>();
+        List<String> smallerList = new ArrayList<>();
+
+        li.clear();
+
+        int l = text.length();
+
+        for (String s: tmpStr)
         {
-            @Override
-            public int compare(String[] o1, String[] o2)
+            if (s.length()==l)
             {
-                return o1[0].length()-o2[0].length();
+                equalList.add(s);
             }
-        });
+            else if (s.length()>l)
+            {
+                largerList.add(s);
+            }
+            else
+            {
+                smallerList.add(s);
+            }
+        }
+
+        sortByLength(largerList, true);
+        sortByLength(smallerList, true);
+        li.addAll(equalList);
+        li.addAll(largerList);
+        li.addAll(smallerList);
+    }
+
+    private static void sortByLength(List<String> li, boolean ascending)
+    {
+        if (!ascending)
+        {
+            Collections.sort(li, new Comparator<String>()
+            {
+                @Override
+                public int compare(String o1, String o2)
+                {
+                    return o2.length()-o1.length();
+                }
+            });
+        }
+        else {
+            Collections.sort(li, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return o1.length() - o2.length();
+                }
+            });
+        }
     }
 
     /**
@@ -219,6 +302,13 @@ public class BookmarksUtil {
             subStrings.add(tmpS);
         }
         return subStrings;
+    }
+
+    public static Set<String[]> getAllSubStrings(String text)
+    {
+        Set<String> set = new HashSet<>();
+        set.add(text);
+        return getAllSubStrings(set);
     }
 
     //TODO Add a tags map creation function?
