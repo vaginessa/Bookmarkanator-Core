@@ -1,6 +1,6 @@
 package com.bookmarkanator;
 
-import com.bookmarkanator.gui.*;
+import com.bookmarkanator.ui.*;
 
 /**
  * Hello world!
