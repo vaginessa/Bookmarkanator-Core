@@ -47,49 +47,63 @@ public class TerminalResource extends BasicResource
 //        System.out.println("gnome-terminal -e 'bash -c \"" + getText() + "\";\"exec bash\"'");
 //        //        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
 //        //        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
-//        String args = "open -a Terminal";//opens blank terminal on mac osx
+        String args = "open -a Terminal";//opens blank terminal on mac osx
 //        //See:
 //        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
-//        Runtime rt = Runtime.getRuntime();
-//        Process pr = rt.exec(args);
-//        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
-//        br.write(getText().getBytes());
-//        br.flush();
-//        br.close();
+        Runtime rt = Runtime.getRuntime();
+        Process pr = rt.exec(args);
+        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
+        br.write(getText().getBytes());
+        br.write("bytererer ".getBytes());
+        br.flush();
+        br.close();
 //        //        String command = "gnome-terminal ping -c 3 www.google.com";
         //
         //        Process proc = Runtime.getRuntime().exec(command);
         //see:
         //http://stackoverflow.com/questions/3643939/java-process-with-input-output-stream
         //http://stackoverflow.com/questions/11573457/java-processbuilder-input-output-stream
+        //http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html?page=2
+        //http://illegalargumentexception.blogspot.com/2010/09/java-systemconsole-ides-and-testing.html
+//        Console console;
+//
+//
+//        String command=getText();
+//        try {
+//            Process process = Runtime.getRuntime().exec(command);
+////            ProcessBuilder pb = new ProcessBuilder();
+////            pb.command(command);
+////            pb.redirectErrorStream(true);
+////            Process process = pb.start();
+//            System.out.println("the output stream is "+process.getOutputStream());
+////            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+////            writer.write("mkdir hello2");
+////            writer.flush();
+////            writer.close();
+//
+//            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
+//
+//
+//            String s;
+//            while ((s = reader.readLine()) != null){
+//                System.out.println("The inout stream is " + s);
+//            }
 
+//        InputStream inp = System.in;
+////            Console con = System.console();
+////        con.writer().write("hello");
+//OutputStream out = System.out;
+//
+//        out.write("hello".getBytes());
+//
+//            while (inp.available()>0)
+//            {
+//                System.out.println(inp.read());
+//            }
 
-        String command=getText();
-        try {
-            Process process = Runtime.getRuntime().exec(command);
-//            ProcessBuilder pb = new ProcessBuilder();
-//            pb.command(command);
-//            pb.redirectErrorStream(true);
-//            Process process = pb.start();
-            System.out.println("the output stream is "+process.getOutputStream());
-//            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-//            writer.write("mkdir hello2");
-//            writer.flush();
-//            writer.close();
-
-            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
-
-
-            String s;
-            while ((s = reader.readLine()) != null){
-                System.out.println("The inout stream is " + s);
-            }
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return getText();
     }
@@ -150,4 +164,6 @@ public class TerminalResource extends BasicResource
         }
         return false;
     }
+
+
 }
