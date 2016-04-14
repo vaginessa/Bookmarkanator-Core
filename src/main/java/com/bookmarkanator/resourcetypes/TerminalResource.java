@@ -1,5 +1,9 @@
 package com.bookmarkanator.resourcetypes;
 
+import java.awt.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+
 /**
  * Represents a resource that will can be called from the command prompt or terminal.
  * <p>
@@ -33,6 +37,23 @@ public class TerminalResource extends BasicResource {
     @Override
     public String execute()
             throws Exception {
+//        String command= "gnome-terminal -x \"ping www.yahoo.com\"";
+        //Must use the following on linux mint:
+        //gnome-terminal -e 'bash -c "cd /etc";"exec bash"'
+        System.out.println("gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'");
+//        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
+//        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
+        String args = "gnome-terminal -e \"sh -c \"ls\"\"";
+
+        Runtime rt = Runtime.getRuntime();
+        Process pr = rt.exec(args);
+        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
+        br.write(getText().getBytes());
+        br.flush();
+        br.close();
+//        String command = "gnome-terminal ping -c 3 www.google.com";
+//
+//        Process proc = Runtime.getRuntime().exec(command);
         return getText();
     }
 
