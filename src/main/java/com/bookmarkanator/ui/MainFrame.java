@@ -1,14 +1,11 @@
 package com.bookmarkanator.ui;
 
-import com.bookmarkanator.bookmarks.Bookmark;
-import com.bookmarkanator.resourcetypes.DefaultSystemResource;
-import com.bookmarkanator.resourcetypes.TerminalResource;
-
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.Border;
+import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.resourcetypes.*;
 
 public class MainFrame  {
     private JFrame frame;
@@ -43,12 +40,28 @@ public class MainFrame  {
 
 
         Bookmark terminal = new Bookmark();
-        terminal.setName("/etc");
-
+        terminal.setName("pwd");
         TerminalResource tr = new TerminalResource();
-        tr.setText("cd /etc");
-
+        tr.setText("pwd");
         terminal.setResource(tr);
+
+        Bookmark terminal2 = new Bookmark();
+        terminal2.setName("ls");
+        tr = new TerminalResource();
+        tr.setText("ls");
+        terminal2.setResource(tr);
+
+        Bookmark terminal3 = new Bookmark();
+        terminal3.setName("mkdir");
+        tr = new TerminalResource();
+        tr.setText("mkdir hello");
+        terminal3.setResource(tr);
+
+        Bookmark terminal4 = new Bookmark();
+        terminal4.setName("remove hello");
+        tr = new TerminalResource();
+        tr.setText("rm hello");
+        terminal4.setResource(tr);
 
         Bookmark fileOpen = new Bookmark();
         fileOpen.setName("open home");
@@ -61,6 +74,8 @@ public class MainFrame  {
         List<Bookmark> bm = new ArrayList<>();
         bm.add(web);
         bm.add(terminal);
+        bm.add(terminal2);
+        bm.add(terminal3);
         bm.add(fileOpen);
 
         bookmarksPan.setBookmarkList(bm);
