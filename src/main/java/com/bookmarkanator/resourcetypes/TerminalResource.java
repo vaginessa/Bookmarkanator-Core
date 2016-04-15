@@ -50,13 +50,13 @@ public class TerminalResource extends BasicResource
         String args = "open -a Terminal";//opens blank terminal on mac osx
 //        //See:
 //        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
-        Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec(args);
-        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
-        br.write(getText().getBytes());
-        br.write("bytererer ".getBytes());
-        br.flush();
-        br.close();
+//        Runtime rt = Runtime.getRuntime();
+//        Process pr = rt.exec(args);
+//        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
+//        br.write(getText().getBytes());
+//        br.write("bytererer ".getBytes());
+//        br.flush();
+//        br.close();
 //        //        String command = "gnome-terminal ping -c 3 www.google.com";
         //
         //        Process proc = Runtime.getRuntime().exec(command);

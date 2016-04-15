@@ -8,6 +8,7 @@ import com.bookmarkanator.resourcetypes.DefaultSystemResource;
 import com.bookmarkanator.resourcetypes.TerminalResource;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,11 +22,17 @@ public class BookmarkPanel extends JPanel{
     public BookmarkPanel(Bookmark bookmark) {
         this.bookmark = bookmark;
         BookmarkPanel thisPan = this;
-        this.setBackground(Color.CYAN);
+
+        thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
+
+        this.setBackground(new Color(240, 238, 188));
         label = new JLabel(bookmark.getName());
+        label.setBorder(BorderFactory.createLineBorder(Color.black));//.createBevelBorder(BevelBorder.RAISED));
         System.out.println("Bookmark "+label.getText());
         sybmol = new JLabel();
-        this.setPreferredSize(new Dimension(150,50));
+        sybmol.setBorder(BorderFactory.createLineBorder(Color.black));
+
+//        this.setPreferredSize(new Dimension(165,35));
         System.out.println(bookmark.getResource().getClass().getName());
 
         if (bookmark.getResource() instanceof DefaultSystemResource)
@@ -33,15 +40,15 @@ public class BookmarkPanel extends JPanel{
             DefaultSystemResource df = (DefaultSystemResource)bookmark.getResource();
             if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER)
             {
-                sybmol.setText("SR Web");
+                sybmol.setText("Web");
             }
             else if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR)
             {
-                sybmol.setText("SR Edit");
+                sybmol.setText("Edit");
             }
             else if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER)
             {
-                sybmol.setText("SR File");
+                sybmol.setText("Folder");
             }
             else
             {

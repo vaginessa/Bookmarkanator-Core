@@ -12,9 +12,9 @@ public class Bookmark implements XMLWritable{
     // ============================================================
 
     //static fields
-	public static int SHARING_THIS_SYSTEM_ONLY = 0;//only valid on this system
-	public static int SHARING_THIS_USER_ONLY = 1;//this user on all systems
-	public static int SHARING_WITH_OTHERS = 2;//Shares with the list of user or group id's specified.
+	public static int SHARING_THIS_SYSTEM_ONLY = 0;//only valid on this system for this user
+	public static int SHARING_THIS_USER_ONLY = 1;//this user on all systems (if there is a tag distribution system in place)
+	public static int SHARING_WITH_OTHERS = 2;//Shares with the list of user or group id's specified. (if there is a tag distribution system in place)
 
     //Bookmark specific fields
     private UUID tagUUID;
@@ -28,6 +28,7 @@ public class Bookmark implements XMLWritable{
 	private UUID ownerID;
     private List<UUID> shareWith;//a list of user or group UUID's to share this bookmark with.
     private int sharing;//type of sharing
+    private Map<String, String> osParams;//stores the parameters of the system this tag was created on.
 
     //Access related
     private Date createdDate;

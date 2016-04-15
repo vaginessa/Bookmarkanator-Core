@@ -3,7 +3,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>150</x>
+      <x>160</x>
       <y>0</y>
       <w>920</w>
       <h>600</h>
@@ -14,7 +14,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>1050</x>
+      <x>1060</x>
       <y>0</y>
       <w>20</w>
       <h>520</h>
@@ -25,7 +25,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>1050</x>
+      <x>1060</x>
       <y>60</y>
       <w>20</w>
       <h>60</h>
@@ -36,7 +36,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>150</x>
+      <x>160</x>
       <y>730</y>
       <w>920</w>
       <h>600</h>
@@ -47,7 +47,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>260</x>
+      <x>270</x>
       <y>730</y>
       <w>340</w>
       <h>270</h>
@@ -58,7 +58,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>260</x>
+      <x>270</x>
       <y>1030</y>
       <w>340</w>
       <h>220</h>
@@ -69,7 +69,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>260</x>
+      <x>270</x>
       <y>1000</y>
       <w>340</w>
       <h>30</h>
@@ -80,7 +80,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>150</x>
+      <x>160</x>
       <y>730</y>
       <w>110</w>
       <h>520</h>
@@ -92,7 +92,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>780</y>
       <w>80</w>
       <h>40</h>
@@ -103,7 +103,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>830</y>
       <w>80</w>
       <h>40</h>
@@ -114,7 +114,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>880</y>
       <w>80</w>
       <h>40</h>
@@ -125,7 +125,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>930</y>
       <w>80</w>
       <h>40</h>
@@ -136,7 +136,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>980</y>
       <w>80</w>
       <h>40</h>
@@ -147,7 +147,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>1080</y>
       <w>80</w>
       <h>40</h>
@@ -158,7 +158,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>1030</y>
       <w>80</w>
       <h>40</h>
@@ -169,7 +169,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>160</x>
+      <x>170</x>
       <y>1130</y>
       <w>80</w>
       <h>40</h>
@@ -180,7 +180,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>1070</y>
       <w>130</w>
       <h>40</h>
@@ -191,7 +191,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>420</x>
+      <x>430</x>
       <y>1070</y>
       <w>130</w>
       <h>40</h>
@@ -202,7 +202,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>1130</y>
       <w>210</w>
       <h>40</h>
@@ -213,7 +213,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>1190</y>
       <w>130</w>
       <h>40</h>
@@ -224,7 +224,7 @@
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>420</x>
+      <x>430</x>
       <y>1190</y>
       <w>130</w>
       <h>40</h>
@@ -235,7 +235,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>180</x>
+      <x>190</x>
       <y>50</y>
       <w>120</w>
       <h>40</h>
@@ -246,7 +246,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>180</x>
+      <x>190</x>
       <y>110</y>
       <w>120</w>
       <h>40</h>
@@ -257,7 +257,7 @@
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>320</x>
+      <x>330</x>
       <y>50</y>
       <w>120</w>
       <h>40</h>
@@ -269,7 +269,7 @@ Settings</panel_attributes>
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>320</x>
+      <x>330</x>
       <y>110</y>
       <w>120</w>
       <h>40</h>
@@ -280,7 +280,7 @@ Settings</panel_attributes>
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>460</x>
+      <x>470</x>
       <y>50</y>
       <w>120</w>
       <h>40</h>
@@ -292,7 +292,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>600</x>
+      <x>610</x>
       <y>730</y>
       <w>470</w>
       <h>520</h>
@@ -303,7 +303,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>780</y>
       <w>130</w>
       <h>40</h>
@@ -314,7 +314,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>420</x>
+      <x>430</x>
       <y>780</y>
       <w>130</w>
       <h>40</h>
@@ -325,7 +325,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>840</y>
       <w>210</w>
       <h>40</h>
@@ -336,7 +336,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>270</x>
+      <x>280</x>
       <y>900</y>
       <w>210</w>
       <h>40</h>
@@ -347,7 +347,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>780</y>
       <w>210</w>
       <h>40</h>
@@ -358,7 +358,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>830</y>
       <w>210</w>
       <h>40</h>
@@ -369,7 +369,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>880</y>
       <w>210</w>
       <h>40</h>
@@ -380,7 +380,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>930</y>
       <w>210</w>
       <h>40</h>
@@ -391,7 +391,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>980</y>
       <w>210</w>
       <h>40</h>
@@ -402,7 +402,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>1030</y>
       <w>210</w>
       <h>40</h>
@@ -413,7 +413,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>1030</y>
       <w>60</w>
       <h>40</h>
@@ -424,7 +424,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>880</y>
       <w>60</w>
       <h>40</h>
@@ -435,7 +435,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>780</y>
       <w>60</w>
       <h>40</h>
@@ -446,7 +446,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>1080</y>
       <w>210</w>
       <h>40</h>
@@ -457,7 +457,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>1080</y>
       <w>60</w>
       <h>40</h>
@@ -468,7 +468,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>930</y>
       <w>60</w>
       <h>40</h>
@@ -479,7 +479,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>980</y>
       <w>60</w>
       <h>40</h>
@@ -490,7 +490,7 @@ tag types</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>620</x>
+      <x>630</x>
       <y>830</y>
       <w>60</w>
       <h>40</h>
@@ -502,7 +502,7 @@ Folder</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>1050</x>
+      <x>1060</x>
       <y>730</y>
       <w>20</w>
       <h>520</h>
@@ -513,7 +513,7 @@ Folder</panel_attributes>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>1050</x>
+      <x>1060</x>
       <y>820</y>
       <w>20</w>
       <h>60</h>
@@ -525,7 +525,7 @@ Folder</panel_attributes>
     <element>
       <type>com.umlet.element.custom.Systemborder</type>
       <coordinates>
-        <x>150</x>
+        <x>160</x>
         <y>520</y>
         <w>920</w>
         <h>80</h>
@@ -536,7 +536,7 @@ Folder</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>180</x>
+        <x>190</x>
         <y>540</y>
         <w>120</w>
         <h>40</h>
@@ -547,7 +547,7 @@ Folder</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>320</x>
+        <x>330</x>
         <y>540</y>
         <w>120</w>
         <h>40</h>
@@ -558,7 +558,7 @@ Folder</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>940</x>
+        <x>950</x>
         <y>540</y>
         <w>120</w>
         <h>40</h>
@@ -572,7 +572,7 @@ mode</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>940</x>
+        <x>950</x>
         <y>1270</y>
         <w>120</w>
         <h>40</h>
@@ -584,7 +584,7 @@ Mode</panel_attributes>
     <element>
       <type>com.umlet.element.custom.Systemborder</type>
       <coordinates>
-        <x>150</x>
+        <x>160</x>
         <y>1250</y>
         <w>920</w>
         <h>80</h>
@@ -595,7 +595,7 @@ Mode</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>320</x>
+        <x>330</x>
         <y>1270</y>
         <w>120</w>
         <h>40</h>
@@ -606,7 +606,7 @@ Mode</panel_attributes>
     <element>
       <type>com.umlet.element.UseCase</type>
       <coordinates>
-        <x>180</x>
+        <x>190</x>
         <y>1270</y>
         <w>120</w>
         <h>40</h>
