@@ -16,14 +16,16 @@ public class BookmarksPanel extends JPanel {
 
     public BookmarksPanel() {
         super();
-        setBorder(BorderFactory.createLineBorder(Color.black));
 
+        setBorder(BorderFactory.createLineBorder(Color.black));
+//        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         scroll = new JScrollPane();
         scroll.setPreferredSize(new Dimension(500,500));
 //        scroll.setMinimumSize(new Dimension(300,300));
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         pan = new JPanel();
+        pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
 //        GridLayout gl = new GridLayout();
 //        gl.setHgap(20);
 //        gl.setVgap(10);

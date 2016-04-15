@@ -41,11 +41,8 @@ public class MainFrame  {
         BookmarkTypesPanel bookmarkTypes = new BookmarkTypesPanel();
         bookmarkTypes.setMinimumSize(new Dimension(80,500));
         bookmarkTypes.setMaximumSize(new Dimension(200,500));
-        JPanel tmp = new JPanel();
-        tmp.setLayout(new BoxLayout(tmp, BoxLayout.Y_AXIS));
-//        tmp.setMaximumSize(new Dimension(30,700));
-        tmp.add(bookmarkTypes);
-        frame.add(tmp, con);
+
+        frame.add(bookmarkTypes, con);
 
         con.fill = GridBagConstraints.BOTH;
         con.weightx = .5;
@@ -57,7 +54,7 @@ public class MainFrame  {
 
         con.gridy = 1;
         con.gridx = 1;
-        TagsSelectionPanel tagsSelectionPan = new TagsSelectionPanel();
+        TagsSelectionPanel tagsSelectionPan = getTestTagSelectionPanel();
         frame.add(tagsSelectionPan,con);
 
         con.weightx = 1.0;
@@ -67,7 +64,7 @@ public class MainFrame  {
         BookmarksPanel bookmarksPan = getTestBookmarks();
         frame.add(bookmarksPan,con);
 
-        con.fill = GridBagConstraints.HORIZONTAL;
+//        con.fill = GridBagConstraints.HORIZONTAL;
         con.gridx = 0;
         con.gridy = 2;
         con.gridwidth = 3;
@@ -79,6 +76,19 @@ public class MainFrame  {
         frame.add(options, con);
     }
 
+    private TagsSelectionPanel getTestTagSelectionPanel()
+    {
+        TagsSelectionPanel tp = new TagsSelectionPanel();
+
+        Set<String> tags = new HashSet<>();
+
+        tags.add("hello");
+        tags.add("bye");
+        tags.add("yo!");
+
+        tp.setTags(tags);
+        return tp;
+    }
 
     private BookmarksPanel getTestBookmarks()
     {
@@ -130,6 +140,11 @@ public class MainFrame  {
 //        bm.add(terminal2);
 //        bm.add(terminal3);
         bm.add(fileOpen);
+
+        for (int c=0;c<100;c++)
+        {
+            bm.add(fileOpen);
+        }
 
         bookmarksPan.setBookmarkList(bm);
         return bookmarksPan;
