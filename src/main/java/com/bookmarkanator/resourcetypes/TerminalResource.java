@@ -1,6 +1,9 @@
 package com.bookmarkanator.resourcetypes;
 
-import java.io.*;
+import java.awt.*;
+import java.awt.datatransfer.*;
+import javax.swing.*;
+import com.bookmarkanator.settings.*;
 
 /**
  * Represents a resource that will can be called from the command prompt or terminal.
@@ -44,20 +47,40 @@ public class TerminalResource extends BasicResource
         //        String command= "gnome-terminal -x \"ping www.yahoo.com\"";
         //Must use the following on linux mint:
         //gnome-terminal -e 'bash -c "cd /etc";"exec bash"'
-//        System.out.println("gnome-terminal -e 'bash -c \"" + getText() + "\";\"exec bash\"'");
-//        //        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
-//        //        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
-        String args = "open -a Terminal";//opens blank terminal on mac osx
-//        //See:
-//        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
-//        Runtime rt = Runtime.getRuntime();
-//        Process pr = rt.exec(args);
-//        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
-//        br.write(getText().getBytes());
-//        br.write("bytererer ".getBytes());
-//        br.flush();
-//        br.close();
-//        //        String command = "gnome-terminal ping -c 3 www.google.com";
+        //        System.out.println("gnome-terminal -e 'bash -c \"" + getText() + "\";\"exec bash\"'");
+        //        //        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
+        //        //        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
+        //        StringSelection selection = new StringSelection(theString);
+        //        String myString =
+        StringSelection stringSelection = new StringSelection(this.getText());
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
+
+        JTextArea textArea = new JTextArea(
+            "The following text has already been copied to your clipboard for your convenience. Paste it int the terminal after closing this " +
+                "window if you wish to run it.\n\n\n\"" +
+                this.getText() + "\"");
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        scrollPane.setPreferredSize(new Dimension(500, 500));
+        JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
+
+        Runtime rt = Runtime.getRuntime();
+        Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
+
+        //        String args = "open -a Terminal";//opens blank terminal on mac osx
+        //        //See:
+        //        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
+
+        //        System.out.println(SettingsUtil.getOSName());
+
+        //        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
+        //        br.write(getText().getBytes());
+        //        br.write("bytererer ".getBytes());
+        //        br.flush();
+        //        br.close();
+        //        //        String command = "gnome-terminal ping -c 3 www.google.com";
         //
         //        Process proc = Runtime.getRuntime().exec(command);
         //see:
@@ -65,45 +88,45 @@ public class TerminalResource extends BasicResource
         //http://stackoverflow.com/questions/11573457/java-processbuilder-input-output-stream
         //http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html?page=2
         //http://illegalargumentexception.blogspot.com/2010/09/java-systemconsole-ides-and-testing.html
-//        Console console;
-//
-//
-//        String command=getText();
-//        try {
-//            Process process = Runtime.getRuntime().exec(command);
-////            ProcessBuilder pb = new ProcessBuilder();
-////            pb.command(command);
-////            pb.redirectErrorStream(true);
-////            Process process = pb.start();
-//            System.out.println("the output stream is "+process.getOutputStream());
-////            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-////            writer.write("mkdir hello2");
-////            writer.flush();
-////            writer.close();
-//
-//            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
-//
-//
-//            String s;
-//            while ((s = reader.readLine()) != null){
-//                System.out.println("The inout stream is " + s);
-//            }
+        //        Console console;
+        //
+        //
+        //        String command=getText();
+        //        try {
+        //            Process process = Runtime.getRuntime().exec(command);
+        ////            ProcessBuilder pb = new ProcessBuilder();
+        ////            pb.command(command);
+        ////            pb.redirectErrorStream(true);
+        ////            Process process = pb.start();
+        //            System.out.println("the output stream is "+process.getOutputStream());
+        ////            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+        ////            writer.write("mkdir hello2");
+        ////            writer.flush();
+        ////            writer.close();
+        //
+        //            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
+        //
+        //
+        //            String s;
+        //            while ((s = reader.readLine()) != null){
+        //                System.out.println("The inout stream is " + s);
+        //            }
 
-//        InputStream inp = System.in;
-////            Console con = System.console();
-////        con.writer().write("hello");
-//OutputStream out = System.out;
-//
-//        out.write("hello".getBytes());
-//
-//            while (inp.available()>0)
-//            {
-//                System.out.println(inp.read());
-//            }
+        //        InputStream inp = System.in;
+        ////            Console con = System.console();
+        ////        con.writer().write("hello");
+        //OutputStream out = System.out;
+        //
+        //        out.write("hello".getBytes());
+        //
+        //            while (inp.available()>0)
+        //            {
+        //                System.out.println(inp.read());
+        //            }
 
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
 
         return getText();
     }
@@ -164,6 +187,5 @@ public class TerminalResource extends BasicResource
         }
         return false;
     }
-
 
 }

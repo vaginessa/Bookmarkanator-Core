@@ -102,29 +102,11 @@ public class MainFrame  {
         web.setResource(dsr);
 
 
-//        Bookmark terminal = new Bookmark();
-//        terminal.setName("pwd");
-//        TerminalResource tr = new TerminalResource();
-//        tr.setText("pwd");
-//        terminal.setResource(tr);
-//
-//        Bookmark terminal2 = new Bookmark();
-//        terminal2.setName("ls");
-//        tr = new TerminalResource();
-//        tr.setText("ls");
-//        terminal2.setResource(tr);
-//
-//        Bookmark terminal3 = new Bookmark();
-//        terminal3.setName("mkdir");
-//        tr = new TerminalResource();
-//        tr.setText("mkdir hello");
-//        terminal3.setResource(tr);
-//
-//        Bookmark terminal4 = new Bookmark();
-//        terminal4.setName("remove hello");
-//        tr = new TerminalResource();
-//        tr.setText("rm hello");
-//        terminal4.setResource(tr);
+        Bookmark terminal = new Bookmark();
+        terminal.setName("pwd");
+        TerminalResource tr = new TerminalResource();
+        tr.setText("pwd");
+        terminal.setResource(tr);
 
         Bookmark fileOpen = new Bookmark();
         fileOpen.setName("open home");
@@ -136,15 +118,9 @@ public class MainFrame  {
 
         List<Bookmark> bm = new ArrayList<>();
         bm.add(web);
-//        bm.add(terminal);
-//        bm.add(terminal2);
-//        bm.add(terminal3);
+        bm.add(terminal);
         bm.add(fileOpen);
 
-        for (int c=0;c<100;c++)
-        {
-            bm.add(fileOpen);
-        }
 
         bookmarksPan.setBookmarkList(bm);
         return bookmarksPan;
