@@ -13,12 +13,27 @@ import com.bookmarkanator.settings.*;
  * <p>
  * For instance a bookmark could be added that calls a grep command with specific flags, or other parameters. When the user creates a bookmark they
  * will only need to specify the text inserted into the bookmark, and be placed inbetween the preCommand, and postCommand strings.
+ * </P>
+ * <p>
+ * Note because of the limitations of Java's terminal access on different systems, it was decided to simply open a text window, and a terminal window
+ * when the execute method is called. The user can then copy the command in the text window into the open terminal. This is made easier by automatically
+ * inserting the text of the node into the system clipboard. This has an unexpected security advantage though because the program won't be able to
+ * automatically run dangerous commands. The user will have to manually place them in the terminal and run them.
  * </p>
  */
 public class TerminalResource extends BasicResource
 {
+    public static final int OPEN_TERMINAL_ONLY = 0;
+    public static final int RUN_PROGRAM_WO_TERMINAL = 1;//can only be used to run a program not run commands such as ls, sudo, mkdir etc...
+
     private String preCommand;
     private String postCommand;
+    private int type;
+
+    public TerminalResource(int type)
+    {
+        this.type = type;
+    }
 
     public String getPreCommand()
     {
@@ -40,94 +55,103 @@ public class TerminalResource extends BasicResource
         this.postCommand = postCommand;
     }
 
+    public int getType()
+    {
+        return type;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
-        //        String command= "gnome-terminal -x \"ping www.yahoo.com\"";
-        //Must use the following on linux mint:
-        //gnome-terminal -e 'bash -c "cd /etc";"exec bash"'
-        //        System.out.println("gnome-terminal -e 'bash -c \"" + getText() + "\";\"exec bash\"'");
-        //        //        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
-        //        //        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
-        //        StringSelection selection = new StringSelection(theString);
-        //        String myString =
-        StringSelection stringSelection = new StringSelection(this.getText());
-        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clpbrd.setContents(stringSelection, null);
+        if (getType()==TerminalResource.OPEN_TERMINAL_ONLY)
+        {
+            StringSelection stringSelection = new StringSelection(this.getText());
+            Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clpbrd.setContents(stringSelection, null);
 
-        JTextArea textArea = new JTextArea(
-            "The following text has already been copied to your clipboard for your convenience. Paste it int the terminal after closing this " +
-                "window if you wish to run it.\n\n\n\"" +
-                this.getText() + "\"");
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        scrollPane.setPreferredSize(new Dimension(500, 500));
-        JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
+            JTextArea textArea = new JTextArea(
+                "The following text has already been copied to your clipboard for your convenience. Paste it int the terminal after closing this " +
+                    "window if you wish to run it.\n\n\n\"" +
+                    this.getText() + "\"");
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            scrollPane.setPreferredSize(new Dimension(500, 500));
+            JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
 
-        Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
+        }
+        else
+        {
+            //        String command= "gnome-terminal -x \"ping www.yahoo.com\"";
+            //Must use the following on linux mint:
+            //gnome-terminal -e 'bash -c "cd /etc";"exec bash"'
+            //        System.out.println("gnome-terminal -e 'bash -c \"" + getText() + "\";\"exec bash\"'");
+            //        //        String args = "gnome-terminal -e 'bash -c \"cd /etc\";\"exec bash\"'";
+            //        //        String args = "gnome-terminal -e 'bash -c \""+getText()+"\";\"exec bash\"'";
+            //        StringSelection selection = new StringSelection(theString);
+            //        String myString =
+            //        String args = "open -a Terminal";//opens blank terminal on mac osx
+            //        //See:
+            //        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
 
-        //        String args = "open -a Terminal";//opens blank terminal on mac osx
-        //        //See:
-        //        //http://askubuntu.com/questions/484993/run-command-on-anothernew-terminal-window
+            //        System.out.println(SettingsUtil.getOSName());
 
-        //        System.out.println(SettingsUtil.getOSName());
+            //        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
+            //        br.write(getText().getBytes());
+            //        br.write("bytererer ".getBytes());
+            //        br.flush();
+            //        br.close();
+            //        //        String command = "gnome-terminal ping -c 3 www.google.com";
+            //
+            //        Process proc = Runtime.getRuntime().exec(command);
+            //see:
+            //http://stackoverflow.com/questions/3643939/java-process-with-input-output-stream
+            //http://stackoverflow.com/questions/11573457/java-processbuilder-input-output-stream
+            //http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html?page=2
+            //http://illegalargumentexception.blogspot.com/2010/09/java-systemconsole-ides-and-testing.html
+            //        Console console;
+            //
+            //
+            //        String command=getText();
+            //        try {
+            //            Process process = Runtime.getRuntime().exec(command);
+            ////            ProcessBuilder pb = new ProcessBuilder();
+            ////            pb.command(command);
+            ////            pb.redirectErrorStream(true);
+            ////            Process process = pb.start();
+            //            System.out.println("the output stream is "+process.getOutputStream());
+            ////            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+            ////            writer.write("mkdir hello2");
+            ////            writer.flush();
+            ////            writer.close();
+            //
+            //            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
+            //
+            //
+            //            String s;
+            //            while ((s = reader.readLine()) != null){
+            //                System.out.println("The inout stream is " + s);
+            //            }
 
-        //        BufferedOutputStream br = new BufferedOutputStream(pr.getOutputStream());
-        //        br.write(getText().getBytes());
-        //        br.write("bytererer ".getBytes());
-        //        br.flush();
-        //        br.close();
-        //        //        String command = "gnome-terminal ping -c 3 www.google.com";
-        //
-        //        Process proc = Runtime.getRuntime().exec(command);
-        //see:
-        //http://stackoverflow.com/questions/3643939/java-process-with-input-output-stream
-        //http://stackoverflow.com/questions/11573457/java-processbuilder-input-output-stream
-        //http://www.javaworld.com/article/2071275/core-java/when-runtime-exec---won-t.html?page=2
-        //http://illegalargumentexception.blogspot.com/2010/09/java-systemconsole-ides-and-testing.html
-        //        Console console;
-        //
-        //
-        //        String command=getText();
-        //        try {
-        //            Process process = Runtime.getRuntime().exec(command);
-        ////            ProcessBuilder pb = new ProcessBuilder();
-        ////            pb.command(command);
-        ////            pb.redirectErrorStream(true);
-        ////            Process process = pb.start();
-        //            System.out.println("the output stream is "+process.getOutputStream());
-        ////            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
-        ////            writer.write("mkdir hello2");
-        ////            writer.flush();
-        ////            writer.close();
-        //
-        //            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
-        //
-        //
-        //            String s;
-        //            while ((s = reader.readLine()) != null){
-        //                System.out.println("The inout stream is " + s);
-        //            }
+            //        InputStream inp = System.in;
+            ////            Console con = System.console();
+            ////        con.writer().write("hello");
+            //OutputStream out = System.out;
+            //
+            //        out.write("hello".getBytes());
+            //
+            //            while (inp.available()>0)
+            //            {
+            //                System.out.println(inp.read());
+            //            }
 
-        //        InputStream inp = System.in;
-        ////            Console con = System.console();
-        ////        con.writer().write("hello");
-        //OutputStream out = System.out;
-        //
-        //        out.write("hello".getBytes());
-        //
-        //            while (inp.available()>0)
-        //            {
-        //                System.out.println(inp.read());
-        //            }
-
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
-
+            //        } catch (IOException e) {
+            //            e.printStackTrace();
+            //        }
+        }
         return getText();
     }
 
