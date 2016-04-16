@@ -45,7 +45,7 @@ public class MainFrame  {
         frame.add(bookmarkTypes, con);
 
         con.fill = GridBagConstraints.BOTH;
-        con.weightx = .5;
+        con.weightx = 1.0;
         con.gridheight = 1;
         con.gridx = 1;
         con.gridy = 0;
@@ -57,12 +57,16 @@ public class MainFrame  {
         TagsSelectionPanel tagsSelectionPan = getTestTagSelectionPanel();
         frame.add(tagsSelectionPan,con);
 
-        con.weightx = 1.0;
+        con.weightx = .75;
         con.gridx = 2;
         con.gridy = 0;
         con.gridheight = 2;
         BookmarksPanel bookmarksPan = getTestBookmarks();
-        frame.add(bookmarksPan,con);
+//        bookmarksPan.setPreferredSize(new Dimension(100, 1));
+        JPanel tmpPan = new JPanel();
+        tmpPan.setLayout(new GridLayout());
+        tmpPan.add(bookmarksPan);
+        frame.add(tmpPan,con);
 
 //        con.fill = GridBagConstraints.HORIZONTAL;
         con.gridx = 0;
@@ -121,6 +125,10 @@ public class MainFrame  {
         bm.add(terminal);
         bm.add(fileOpen);
 
+        for (int c=0;c<100;c++)
+        {
+            bm.add(fileOpen);
+        }
 
         bookmarksPan.setBookmarkList(bm);
         return bookmarksPan;

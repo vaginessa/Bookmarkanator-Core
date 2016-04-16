@@ -22,7 +22,10 @@ public class BookmarkPanel extends JPanel{
     public BookmarkPanel(Bookmark bookmark) {
         this.bookmark = bookmark;
         BookmarkPanel thisPan = this;
-
+////        this.setMinimumSize(this.getMinimumSize());
+//        this.setMinimumSize(new Dimension(150,30));
+//        this.setPreferredSize(new Dimension(150,30));
+//        this.setMaximumSize(new Dimension(151,31));
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
 
         this.setBackground(new Color(240, 238, 188));

@@ -29,15 +29,15 @@ public class SettingsUtil
 
         if (os.contains("MAC"))
         {
-            st = new String[]{"open -a Terminal"};
+            st = new String[]{"open -a Terminal","iTerm2","xterm"};
         }
         else if (os.contains("WINDOW"))
         {
-            st = new String[]{"cmd.exe /c start"};
+            st = new String[]{"cmd.exe /c start","Cygwin","PuTTY"};
         }
         else
         {
-           st = new String[]{"gnome-terminal","Xterm","Konsole","Guake","rxvt"};
+           st = new String[]{"gnome-terminal","Xterm","Konsole","Terminal","Terminator","Guake","rxvt","Yakuake","Tilda"};
         }
 
         Process process;

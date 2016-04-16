@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class BookmarksPanel extends JPanel {
+public class BookmarksPanel extends JScrollPane {
     private JScrollPane scroll;
     private List<Bookmark> bookmarkList;
     private JPanel pan;
@@ -18,33 +18,49 @@ public class BookmarksPanel extends JPanel {
         super();
 
         setBorder(BorderFactory.createLineBorder(Color.black));
-//        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+//        this.setLayout(new GridBagLayout());
+//        GridBagConstraints con = new GridBagConstraints();
+//        con.fill = GridBagConstraints.BOTH;
+//        con.weightx = 1;
+//        con.weighty = 1;
+        pan = new JPanel();
+//        pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+//        pan.setPreferredSize(new Dimension(100,-1));
+//        pan.getMaximumSize();
+//        pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+//        GridLayout grid = new GridLayout(0,1);
+//        grid.setVgap(10);
+//        grid.setHgap(10);
+//        pan.setLayout(grid);
 
         scroll = new JScrollPane();
-        scroll.setPreferredSize(new Dimension(500,500));
-//        scroll.setMinimumSize(new Dimension(300,300));
-        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        pan = new JPanel();
-        pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-//        GridLayout gl = new GridLayout();
-//        gl.setHgap(20);
-//        gl.setVgap(10);
-//        gl.setColumns(4);
-//        gl.setRows(5);
-//
-//        pan.setLayout(gl);
-        pan.setBackground(new Color(214,214,214));
-
-        scroll.getViewport().add(pan);
-        this.add(scroll);
+//        this.setLayout(new ModifiedFlowLayout(2));
+//        this.setLayout(new GridLayout());
+//        scroll.setMinimumSize(new Dimension(500,500));
+//        scroll.setMaximumSize(new Dimension(100,500));
+//        scroll.setPreferredSize(new Dimension(100,500));
+//        scroll.getViewport().setMaximumSize(new Dimension(100,100));
+//        pan.setBackground(new Color(214,214,214));
+//        JPanel tmpPan = new JPanel();
+//        tmpPan.setLayout(new BoxLayout(tmpPan, BoxLayout.PAGE_AXIS));
+//        tmpPan.add(pan);
+//        pan.setLayout(new GridLayout(0,1));
+//        scroll.getViewport().add(pan);
+        this.getViewport().add(pan);
+        pan.setLayout(new ModifiedFlowLayout(1));
+//        pan.setPreferredSize(new Dimension(150,-1));
         this.setBackground(Color.yellow);
+//        this.setPreferredSize(new Dimension(150,500));
     }
+
+
 
     public void refresh()
     {
         for (Bookmark b: getBookmarkList())
         {
             BookmarkPanel bp = new BookmarkPanel(b);
+            bp.setAlignmentX(Component.CENTER_ALIGNMENT);
             pan.add(bp);
         }
     }
