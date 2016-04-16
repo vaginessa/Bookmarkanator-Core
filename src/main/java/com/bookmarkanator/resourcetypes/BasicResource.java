@@ -16,6 +16,9 @@ public class BasicResource implements XMLWritable
     private String name;//the display name of this resource.
     private String text;
 
+    public BasicResource() {
+    }
+
     public String getName()
     {
         return name;

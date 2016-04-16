@@ -17,6 +17,7 @@ public class DefaultSystemResource extends TerminalResource {
     private int type;
 
     public DefaultSystemResource(int type) {
+        super();
         this.type = type;
     }
 

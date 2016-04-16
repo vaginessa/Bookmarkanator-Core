@@ -35,6 +35,10 @@ public class TerminalResource extends BasicResource
         this.type = type;
     }
 
+    public TerminalResource() {
+        this.type = OPEN_TERMINAL_ONLY;
+    }
+
     public String getPreCommand()
     {
         return preCommand;
@@ -80,8 +84,9 @@ public class TerminalResource extends BasicResource
             scrollPane.setPreferredSize(new Dimension(500, 500));
             JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
 
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
+//            Runtime rt = Runtime.getRuntime();
+//            Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
+            SettingsUtil.openTerminal();
         }
         else
         {

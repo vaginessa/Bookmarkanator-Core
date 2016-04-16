@@ -104,7 +104,7 @@ public class MainFrame  {
 
         Bookmark terminal = new Bookmark();
         terminal.setName("pwd");
-        TerminalResource tr = new TerminalResource();
+        TerminalResource tr = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
         tr.setText("pwd");
         terminal.setResource(tr);
 

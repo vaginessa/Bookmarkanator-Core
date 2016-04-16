@@ -252,7 +252,7 @@ public class SystemResourceParser
                     }
                     else
                     {
-                        currentTerminalResource = new TerminalResource();
+                        currentTerminalResource = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
                     }
                 }
                 else if (state==Tags.customclass)
