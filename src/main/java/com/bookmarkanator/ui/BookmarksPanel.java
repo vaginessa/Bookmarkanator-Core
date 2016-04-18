@@ -4,10 +4,7 @@ import com.bookmarkanator.bookmarks.Bookmark;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.List;
 
 public class BookmarksPanel extends JPanel {
@@ -33,6 +30,22 @@ public class BookmarksPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Clicked jcombobox "+search.getSelectedIndex());
+            }
+        });
+        search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("key typed "+e.getKeyChar());
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("key pressed "+e.getKeyChar());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("key released "+e.getKeyChar());
             }
         });
 
