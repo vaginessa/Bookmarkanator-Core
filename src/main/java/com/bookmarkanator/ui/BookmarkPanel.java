@@ -15,29 +15,57 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 
 public class BookmarkPanel extends JPanel{
-    private Bookmark bookmark;
+    private final Bookmark bookmark;
     private JLabel label;
     private JLabel sybmol;
+    private Icon icon;
 
-    public BookmarkPanel(Bookmark bookmark) {
+    public BookmarkPanel(final Bookmark bookmark) {
         this.bookmark = bookmark;
-        BookmarkPanel thisPan = this;
-////        this.setMinimumSize(this.getMinimumSize());
-//        this.setMinimumSize(new Dimension(150,30));
-//        this.setPreferredSize(new Dimension(150,30));
-//        this.setMaximumSize(new Dimension(151,31));
+        final BookmarkPanel thisPan = this;
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
+        this.setBackground(new Color(240, 238, 138));
 
-        this.setBackground(new Color(240, 238, 188));
         label = new JLabel(bookmark.getName());
         label.setBorder(BorderFactory.createLineBorder(Color.black));//.createBevelBorder(BevelBorder.RAISED));
-        System.out.println("Bookmark "+label.getText());
+
         sybmol = new JLabel();
         sybmol.setBorder(BorderFactory.createLineBorder(Color.black));
 
-//        this.setPreferredSize(new Dimension(165,35));
-        System.out.println(bookmark.getResource().getClass().getName());
+        init();
 
+        this.add(sybmol);
+        this.add(label);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("Bookmark "+thisPan.getLabel().getText());
+                bookmark.setLastAccessedDate(new Date());
+                try {
+                    bookmark.getResource().execute();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+//        JButton button = new JButton();
+//        button.setIcon(new ImageIcon(UIUtil.getTerminalIcon()));
+//        this.add(button);
+    }
+
+    public Bookmark getBookmark() {
+        return bookmark;
+    }
+
+    public JLabel getLabel() {
+        return label;
+    }
+
+    private void init()
+    {
         if (bookmark.getResource() instanceof DefaultSystemResource)
         {
             DefaultSystemResource df = (DefaultSystemResource)bookmark.getResource();
@@ -74,31 +102,6 @@ public class BookmarkPanel extends JPanel{
         {
             sybmol.setText("???");
         }
-
-        this.add(sybmol);
-        this.add(label);
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                System.out.println("Bookmark "+thisPan.getLabel().getText());
-                bookmark.setLastAccessedDate(new Date());
-                try {
-                    bookmark.getResource().execute();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public Bookmark getBookmark() {
-        return bookmark;
-    }
-
-    public JLabel getLabel() {
-        return label;
     }
 
     public JLabel getSybmol() {

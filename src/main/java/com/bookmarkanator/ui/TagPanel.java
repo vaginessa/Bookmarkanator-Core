@@ -14,7 +14,7 @@ public class TagPanel extends JPanel {
 
     public TagPanel(String tagText) {
         label = new JLabel(tagText);
-        TagPanel thisPan = this;
+        final TagPanel thisPan = this;
         thisPan.setLayout(new BoxLayout(thisPan, BoxLayout.PAGE_AXIS));
 //        thisPan.setPreferredSize(new Dimension(80,50));
         this.addMouseListener(new MouseAdapter() {

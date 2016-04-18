@@ -37,7 +37,7 @@ public class SettingsUtil
         }
         else
         {
-           st = new String[]{"gnome-terminal","Xterm","Konsole","Terminal","Terminator","Guake","rxvt","Yakuake","Tilda"};
+           st = new String[]{"gnome-terminal","Xterm","Konsole","Terminal","Terminator","Guake","rxvt","Yakuake","Tilda","mrxvt","Wterm"};
         }
 
         Process process;

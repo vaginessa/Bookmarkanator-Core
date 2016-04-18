@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui  ;
 
 import java.awt.*;
 import java.util.*;
@@ -62,11 +62,7 @@ public class MainFrame  {
         con.gridy = 0;
         con.gridheight = 2;
         BookmarksPanel bookmarksPan = getTestBookmarks();
-//        bookmarksPan.setPreferredSize(new Dimension(100, 1));
-        JPanel tmpPan = new JPanel();
-        tmpPan.setLayout(new GridLayout());
-        tmpPan.add(bookmarksPan);
-        frame.add(tmpPan,con);
+        frame.add(bookmarksPan,con);
 
 //        con.fill = GridBagConstraints.HORIZONTAL;
         con.gridx = 0;
@@ -76,7 +72,6 @@ public class MainFrame  {
         con.weighty = .20;
         OptionsPanel options = new OptionsPanel();
         options.setMinimumSize(new Dimension(-1,80));
-//        options.setPreferredSize(new Dimension(-1, 80));
         frame.add(options, con);
     }
 
@@ -125,7 +120,7 @@ public class MainFrame  {
         bm.add(terminal);
         bm.add(fileOpen);
 
-        for (int c=0;c<100;c++)
+        for (int c=0;c<1000;c++)
         {
             bm.add(fileOpen);
         }

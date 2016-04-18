@@ -2,6 +2,9 @@ package com.bookmarkanator.resourcetypes;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.swing.*;
 import com.bookmarkanator.settings.*;
 
@@ -84,9 +87,20 @@ public class TerminalResource extends BasicResource
             scrollPane.setPreferredSize(new Dimension(500, 500));
             JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
 
-//            Runtime rt = Runtime.getRuntime();
-//            Process pr = rt.exec(SettingsUtil.getSystemSpecificTerminalCommand(SettingsUtil.getOSName()));
-            SettingsUtil.openTerminal();
+            Process process = SettingsUtil.openTerminal();
+//            StringBuilder sb = new StringBuilder();
+//            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
+//
+//            String s;
+//            while ((s = reader.readLine()) != null) {
+//                System.out.println("The inout stream is " + s);
+//            }
+//
+////            if (process.exitValue()!=0)
+////            {
+//                System.out.println("error "+process.exitValue());
+//                System.out.println();
+////            }
         }
         else
         {

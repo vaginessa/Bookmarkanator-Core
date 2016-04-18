@@ -14,8 +14,10 @@ public class TestBookmarksUtil {
 //        System.out.println("Length "+BookmarksUtil.getAllSubStrings(getTags()).size());
 
 
-        BookmarksUtil.getAllSubStrings(getTags()).forEach(System.out::println);
-
+        for (String[] sr: BookmarksUtil.getAllSubStrings(getTags()))
+        {
+            System.out.println(sr);
+        }
 
 //        Map<String, Set<String>> tagsList =  BookmarksUtil.makeTagsList(getTags());
 //
