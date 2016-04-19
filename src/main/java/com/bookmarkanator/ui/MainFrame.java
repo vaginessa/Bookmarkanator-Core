@@ -143,10 +143,19 @@ public class MainFrame  {
         bm.add(terminal);
         bm.add(fileOpen);
 
-        for (int c=0;c<1000;c++)
+        for (int c=0;c<10;c++)
         {
             bm.add(fileOpen);
         }
+
+        Bookmark gitignore = new Bookmark();
+        gitignore.setName("gitignore");
+        dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR);
+        dsr.setName("gitignore");
+        dsr.setText("/users/lloyd1/.gitignore_global");
+        gitignore.setResource(dsr);
+
+        bm.add(gitignore);
 
         bookmarksPan.setBookmarkList(bm);
         return bookmarksPan;

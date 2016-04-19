@@ -16,8 +16,6 @@ public class BookmarksPanel extends JPanel {
     private JComboBox search;
     private Set<String> bookmarkNames;
     private Map<String, List<Bookmark>> bookmarksSearchMap;
-    private StringBuilder sb;
-
 
     public BookmarksPanel() {
         super();
@@ -63,9 +61,6 @@ public class BookmarksPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 getSelectedBookmarks();
 
-                //Uncomment below to remove previous search items.
-//                List<String> res = new ArrayList<String>();
-//                search.setModel(new DefaultComboBoxModel(res.toArray()));
             }
         });
         search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
