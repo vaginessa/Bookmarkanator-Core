@@ -1,18 +1,12 @@
 package com.bookmarkanator.ui;
 
-import com.bookmarkanator.abstracted.CustomClass;
-import com.bookmarkanator.bookmarks.Bookmark;
-import com.bookmarkanator.resourcetypes.BasicResource;
-import com.bookmarkanator.resourcetypes.CustomFileFilter;
-import com.bookmarkanator.resourcetypes.DefaultSystemResource;
-import com.bookmarkanator.resourcetypes.TerminalResource;
-
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Date;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import com.bookmarkanator.abstracted.*;
+import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.resourcetypes.*;
 
 public class BookmarkPanel extends JPanel{
     private final Bookmark bookmark;
@@ -24,13 +18,14 @@ public class BookmarkPanel extends JPanel{
         this.bookmark = bookmark;
         final BookmarkPanel thisPan = this;
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
-        this.setBackground(new Color(240, 238, 138));
+//        this.setBackground(new Color(240, 238, 138));
 
         label = new JLabel(bookmark.getName());
-        label.setBorder(BorderFactory.createLineBorder(Color.black));//.createBevelBorder(BevelBorder.RAISED));
+//        label.setBorder(BorderFactory.createLineBorder(Color.black));//.createBevelBorder(BevelBorder.RAISED));
 
         sybmol = new JLabel();
-        sybmol.setBorder(BorderFactory.createLineBorder(Color.black));
+        sybmol.setBorder(BorderFactory.createLineBorder(Color.blue));
+
 
         init();
 

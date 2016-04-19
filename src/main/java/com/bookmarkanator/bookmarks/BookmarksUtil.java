@@ -6,6 +6,31 @@ import com.bookmarkanator.resourcetypes.*;
 public class BookmarksUtil {
 
     /**
+     * Get all the text of the bookmarks as a set.
+     * @param bookmarks
+     * @return
+     */
+    public static Map<String, List<Bookmark>> getBookmarksText(List<Bookmark> bookmarks)
+    {
+        Map<String, List<Bookmark>> res = new HashMap<>();
+        for (Bookmark b: bookmarks)
+        {
+            List<Bookmark> bl = res.get(b.getName());
+            if (bl==null)
+            {
+                bl = new ArrayList<>();
+                bl.add(b);
+                res.put(b.getName(), bl);
+            }
+            else
+            {
+                bl.add(b);
+            }
+        }
+        return res;
+    }
+
+    /**
      * Accepts a list of Bookmarks, and tags, and returns a list of Bookmarks that have one or more of the supplied
      * tags in them. Essentially it removes all Bookmarks that don't contain any of the supplied tags.
      *

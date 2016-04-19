@@ -100,6 +100,26 @@ public class MainFrame  {
         dsr.setText("http://www.yahoo.com");
         web.setResource(dsr);
 
+        Bookmark web1 = new Bookmark();
+        web1.setName("google.com");
+        dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
+        dsr.setName("google.com");
+        dsr.setText("http://www.google.com");
+        web1.setResource(dsr);
+
+        Bookmark web2 = new Bookmark();
+        web2.setName("msn");
+        dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
+        dsr.setName("msn");
+        dsr.setText("http://www.msn.com");
+        web2.setResource(dsr);
+
+        Bookmark web3 = new Bookmark();
+        web3.setName("acronymfinder");
+        dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
+        dsr.setName("acronymfinder");
+        dsr.setText("http://www.acronymfinder.com");
+        web3.setResource(dsr);
 
         Bookmark terminal = new Bookmark();
         terminal.setName("pwd");
@@ -117,6 +137,9 @@ public class MainFrame  {
 
         List<Bookmark> bm = new ArrayList<>();
         bm.add(web);
+        bm.add(web1);
+        bm.add(web2);
+        bm.add(web3);
         bm.add(terminal);
         bm.add(fileOpen);
 
