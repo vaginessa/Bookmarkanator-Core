@@ -14,8 +14,8 @@ public class BookmarksPanel extends JPanel {
     private List<Bookmark> currentBookmarkList;
     private JPanel pan;
     private JComboBox search;
-    private Set<String> bookmarkNames;
-    private Map<String, List<Bookmark>> bookmarksSearchMap;
+    private Set<String> itemNames;
+    private Map<String, List<Bookmark>> itemsSearchMap;
 
     public BookmarksPanel() {
         super();
@@ -23,11 +23,9 @@ public class BookmarksPanel extends JPanel {
         this.setLayout(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
 
-        bookmarkNames = new HashSet<>();
-        bookmarksSearchMap = new HashMap<>();
+        itemNames = new HashSet<>();
+        itemsSearchMap = new HashMap<>();
 
-//        this.setBackground(Color.red);
-        setBorder(BorderFactory.createLineBorder(Color.red));
 
         search  = new JComboBox(new String[]{""});
         search.addItemListener(new ItemListener()
@@ -60,7 +58,6 @@ public class BookmarksPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getSelectedBookmarks();
-
             }
         });
         search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
@@ -78,7 +75,7 @@ public class BookmarksPanel extends JPanel {
 
                 if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER && e.getKeyCode() != KeyEvent.VK_RIGHT && e.getKeyCode() != KeyEvent.VK_LEFT)
                 {
-                    List<String> res = BookmarksUtil.getSuggestedTags(bookmarkNames, st[0], 10);
+                    List<String> res = BookmarksUtil.getSuggestedTags(itemNames, st[0], 10);
                     res.add(0, st[0]);
                     search.setModel(new DefaultComboBoxModel(res.toArray()));
                     search.setPopupVisible(true);
@@ -124,7 +121,7 @@ public class BookmarksPanel extends JPanel {
         System.out.println("selected method "+ selected);
         search.setPopupVisible(false);
         search.getEditor().setItem(null);
-        List<Bookmark> l = bookmarksSearchMap.get(selected);
+        List<Bookmark> l = itemsSearchMap.get(selected);
         if (l==null)
         {
             l = new ArrayList<>();
@@ -137,18 +134,17 @@ public class BookmarksPanel extends JPanel {
     public void refresh()
     {
         pan.removeAll();
-        bookmarkNames.clear();
-
+        itemNames.clear();
 
         for (Bookmark b: getCurrentBookmarkList())
         {
             BookmarkPanel bp = new BookmarkPanel(b);
             bp.setAlignmentX(Component.CENTER_ALIGNMENT);
             pan.add(bp);
-            bookmarkNames.add(b.getName());
+            itemNames.add(b.getName());
         }
 
-        bookmarksSearchMap = BookmarksUtil.getBookmarksText(getBookmarkList());
+        itemsSearchMap = BookmarksUtil.getBookmarksText(getBookmarkList());
         this.scroll.updateUI();
     }
 

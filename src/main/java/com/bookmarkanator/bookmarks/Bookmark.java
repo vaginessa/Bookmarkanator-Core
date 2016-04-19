@@ -2,10 +2,11 @@ package com.bookmarkanator.bookmarks;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
-public class Bookmark implements XMLWritable{
+public class Bookmark implements XMLWritable, ListableItem{
 
     // ============================================================
     // Fields
@@ -68,11 +69,6 @@ public class Bookmark implements XMLWritable{
     public void setTagUUID(UUID tagUUID)
     {
         this.tagUUID = tagUUID;
-    }
-
-    public String getName()
-    {
-        return name;
     }
 
     public void setName(String name)
@@ -267,6 +263,37 @@ public class Bookmark implements XMLWritable{
             sb.append("\" />");
             sb.append("\n");
         }
+    }
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
+    @Override
+    public String getTypeString()
+    {
+        return getResource().getTypeString();
+    }
+
+    @Override
+    public Icon getIcon()
+    {
+        return getResource().getIcon();
+    }
+
+    @Override
+    public void execute()
+        throws Exception
+    {
+        getResource().execute();
+    }
+
+    @Override
+    public String getText()
+    {
+        return resource.getText();
     }
 
     @Override

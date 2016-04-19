@@ -1,5 +1,6 @@
 package com.bookmarkanator.resourcetypes;
 
+import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 
 /**
@@ -32,6 +33,16 @@ public class BasicResource implements XMLWritable
     public String getText()
     {
         return text;
+    }
+
+    public String getTypeString()
+    {
+        return "";
+    }
+
+    public Icon getIcon()
+    {
+        return null;
     }
 
     public void setText(String text)
