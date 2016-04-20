@@ -9,7 +9,8 @@ import javax.swing.event.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.interfaces.*;
 
-public class ListableItemsPanel extends JPanel {
+public class ListableItemsPanel extends JPanel
+{
     private JScrollPane scroll;
     private List<ListableItem> itemsList;
     private List<ListableItem> currentlyShowingItemsList;
@@ -18,7 +19,8 @@ public class ListableItemsPanel extends JPanel {
     private Set<String> itemNames;
     private Map<String, List<ListableItem>> itemsSearchMap;
 
-    public ListableItemsPanel() {
+    public ListableItemsPanel()
+    {
         super();
         this.setLayout(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
@@ -26,8 +28,7 @@ public class ListableItemsPanel extends JPanel {
         itemNames = new HashSet<>();
         itemsSearchMap = new HashMap<>();
 
-
-        search  = new JComboBox();
+        search = new JComboBox();
         search.addItemListener(new ItemListener()
         {
             @Override
@@ -41,13 +42,16 @@ public class ListableItemsPanel extends JPanel {
 
         //The following 13 lines gotten from stackoverflow.com
         final JTextField tfListText = (JTextField) search.getEditor().getEditorComponent();
-        tfListText.addCaretListener(new CaretListener() {
+        tfListText.addCaretListener(new CaretListener()
+        {
             private String lastText;
 
             @Override
-            public void caretUpdate(CaretEvent e) {
+            public void caretUpdate(CaretEvent e)
+            {
                 String text = tfListText.getText();
-                if (!text.equals(lastText)) {
+                if (!text.equals(lastText))
+                {
                     lastText = text;
                     st[0] = lastText;
                 }
@@ -55,26 +59,34 @@ public class ListableItemsPanel extends JPanel {
         });
 
         search.setEditable(true);
-        search.addActionListener(new ActionListener() {
+        search.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 getSelectedItems();
             }
         });
-        search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
+        search.getEditor().getEditorComponent().addKeyListener(new KeyListener()
+        {
             @Override
-            public void keyTyped(KeyEvent e) {
+            public void keyTyped(KeyEvent e)
+            {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {}
+            public void keyPressed(KeyEvent e)
+            {
+            }
 
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(KeyEvent e)
+            {
 
                 //TODO Get rid of sound when backspace reaches the left side of the text area.
 
-                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER && e.getKeyCode() != KeyEvent.VK_RIGHT && e.getKeyCode() != KeyEvent.VK_LEFT)
+                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER &&
+                    e.getKeyCode() != KeyEvent.VK_RIGHT && e.getKeyCode() != KeyEvent.VK_LEFT)
                 {
                     List<String> res = BookmarksUtil.getSuggestedTags(itemNames, st[0], 10);
                     res.add(0, st[0]);
@@ -87,8 +99,8 @@ public class ListableItemsPanel extends JPanel {
                         refresh();
                     }
                 }
-                System.out.println("Element size "+ getCurrentlyShowingItemsList().isEmpty());
-                if (search.getModel().getSize()==1)
+                System.out.println("Element size " + getCurrentlyShowingItemsList().isEmpty());
+                if (search.getModel().getSize() == 1)
                 {
                     search.setPopupVisible(false);
                 }
@@ -99,8 +111,9 @@ public class ListableItemsPanel extends JPanel {
 
         pan = new JPanel();
         pan.setBorder(BorderFactory.createLineBorder(Color.black));
-        pan.setLayout(new ModifiedFlowLayout(1,10,10));
-        pan.setPreferredSize(new Dimension(150, 1000));
+        pan.setLayout(new ModifiedFlowLayout(1, 10, 10));
+        //setting any dimension causes the layout manager to layout the components immediatly, rather than after the size changes.
+        pan.setPreferredSize(new Dimension(150, 100));
 
         scroll.getViewport().add(pan);
         con.fill = GridBagConstraints.BOTH;
@@ -119,11 +132,11 @@ public class ListableItemsPanel extends JPanel {
     private List<ListableItem> getSelectedItems()
     {
         String selected = search.getSelectedItem().toString();
-        System.out.println("selected method "+ selected);
+        System.out.println("selected method " + selected);
         search.setPopupVisible(false);
-        search.getEditor().setItem(null);
+        search.getEditor().setItem(selected);
         List<ListableItem> l = itemsSearchMap.get(selected);
-        if (l==null)
+        if (l == null)
         {
             l = new ArrayList<>();
         }
@@ -137,7 +150,7 @@ public class ListableItemsPanel extends JPanel {
         pan.removeAll();
         itemNames.clear();
 
-        for (ListableItem b: getCurrentlyShowingItemsList())
+        for (ListableItem b : getCurrentlyShowingItemsList())
         {
             ListableItemPanel bp = new ListableItemPanel(b);
             bp.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -149,7 +162,8 @@ public class ListableItemsPanel extends JPanel {
         this.scroll.updateUI();
     }
 
-    public List<ListableItem> getItemsList() {
+    public List<ListableItem> getItemsList()
+    {
         return itemsList;
     }
 
@@ -158,7 +172,8 @@ public class ListableItemsPanel extends JPanel {
         return currentlyShowingItemsList;
     }
 
-    public void setItemsList(List<ListableItem> itemsList) {
+    public void setItemsList(List<ListableItem> itemsList)
+    {
         this.itemsList = itemsList;
         currentlyShowingItemsList = itemsList;
         refresh();

@@ -18,13 +18,14 @@ public class ListableItemPanel extends JPanel{
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
 
         label = new JLabel(item.getName());
-        sybmol = new JLabel(item.getTypeString());
-        sybmol.setBorder(BorderFactory.createLineBorder(Color.blue));
 
+        if (item.getTypeString()!=null && !item.getTypeString().isEmpty())
+        {
+            sybmol = new JLabel(item.getTypeString());
+            sybmol.setBorder(BorderFactory.createLineBorder(Color.blue));
+            this.add(sybmol);
+        }
 
-//        init();
-
-        this.add(sybmol);
         this.add(label);
 
         this.addMouseListener(new MouseAdapter() {
@@ -52,46 +53,6 @@ public class ListableItemPanel extends JPanel{
     public JLabel getLabel() {
         return label;
     }
-
-//    private void init()
-//    {
-//        if (item.getResource() instanceof DefaultSystemResource)
-//        {
-//            DefaultSystemResource df = (DefaultSystemResource)item.getResource();
-//            if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER)
-//            {
-//                sybmol.setText("Web");
-//            }
-//            else if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR)
-//            {
-//                sybmol.setText("Edit");
-//            }
-//            else if (df.getType()==DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER)
-//            {
-//                sybmol.setText("Folder");
-//            }
-//            else
-//            {
-//                sybmol.setText("SR ???");
-//            }
-//        }
-//        else if (item.getResource() instanceof TerminalResource)
-//        {
-//            sybmol.setText("Term");
-//        }
-//        else if (item.getResource() instanceof CustomClass)
-//        {
-//            sybmol.setText("Custom");
-//        }
-//        else if (item.getResource() instanceof BasicResource)
-//        {
-//            sybmol.setText("Basic");
-//        }
-//        else
-//        {
-//            sybmol.setText("???");
-//        }
-//    }
 
     public JLabel getSybmol() {
         return sybmol;

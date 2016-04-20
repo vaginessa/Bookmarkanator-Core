@@ -55,7 +55,7 @@ public class MainFrame  {
 
         con.gridy = 1;
         con.gridx = 1;
-        TagsSelectionPanel tagsSelectionPan = getTestTagSelectionPanel();
+        JPanel tagsSelectionPan = getTestTagSelectionPanel();
         frame.add(tagsSelectionPan,con);
 
         con.weightx = .75;
@@ -76,18 +76,18 @@ public class MainFrame  {
         frame.add(options, con);
     }
 
-    private TagsSelectionPanel getTestTagSelectionPanel()
+    private JPanel getTestTagSelectionPanel()
     {
-        TagsSelectionPanel tp = new TagsSelectionPanel();
+        ListableItemsPanel tagsPanel = new ListableItemsPanel();
 
-        Set<String> tags = new HashSet<>();
+        List<ListableItem> tags = new ArrayList<>();
 
-        tags.add("hello");
-        tags.add("bye");
-        tags.add("yo!");
+        tags.add(new Tag("hello"));
+        tags.add(new Tag("bye"));
+        tags.add(new Tag("yo!"));
 
-        tp.setTags(tags);
-        return tp;
+        tagsPanel.setItemsList(tags);
+        return tagsPanel;
     }
 
     private ListableItemsPanel getTestBookmarks()
@@ -130,10 +130,8 @@ public class MainFrame  {
 
         Bookmark fileOpen = new Bookmark();
         fileOpen.setName("open home");
-
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
         dsr.setText("/home");
-
         fileOpen.setResource(dsr);
 
         List<ListableItem> bm = new ArrayList<>();
