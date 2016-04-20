@@ -1,6 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
 public class BookmarksUtil {
@@ -10,12 +11,12 @@ public class BookmarksUtil {
      * @param bookmarks
      * @return
      */
-    public static Map<String, List<Bookmark>> getBookmarksText(List<Bookmark> bookmarks)
+    public static Map<String, List<ListableItem>> getListableItemsTextStrings(List<ListableItem> bookmarks)
     {
-        Map<String, List<Bookmark>> res = new HashMap<>();
-        for (Bookmark b: bookmarks)
+        Map<String, List<ListableItem>> res = new HashMap<>();
+        for (ListableItem b: bookmarks)
         {
-            List<Bookmark> bl = res.get(b.getName());
+            List<ListableItem> bl = res.get(b.getName());
             if (bl==null)
             {
                 bl = new ArrayList<>();

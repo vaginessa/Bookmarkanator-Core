@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
 public class MainFrame  {
@@ -61,7 +62,7 @@ public class MainFrame  {
         con.gridx = 2;
         con.gridy = 0;
         con.gridheight = 2;
-        BookmarksPanel bookmarksPan = getTestBookmarks();
+        ListableItemsPanel bookmarksPan = getTestBookmarks();
         frame.add(bookmarksPan,con);
 
 //        con.fill = GridBagConstraints.HORIZONTAL;
@@ -89,9 +90,9 @@ public class MainFrame  {
         return tp;
     }
 
-    private BookmarksPanel getTestBookmarks()
+    private ListableItemsPanel getTestBookmarks()
     {
-        BookmarksPanel bookmarksPan = new BookmarksPanel();
+        ListableItemsPanel bookmarksPan = new ListableItemsPanel();
 
         Bookmark web = new Bookmark();
         web.setName("yahoo.com");
@@ -135,7 +136,7 @@ public class MainFrame  {
 
         fileOpen.setResource(dsr);
 
-        List<Bookmark> bm = new ArrayList<>();
+        List<ListableItem> bm = new ArrayList<>();
         bm.add(web);
         bm.add(web1);
         bm.add(web2);
@@ -157,7 +158,7 @@ public class MainFrame  {
 
         bm.add(gitignore);
 
-        bookmarksPan.setBookmarkList(bm);
+        bookmarksPan.setItemsList(bm);
         return bookmarksPan;
     }
 

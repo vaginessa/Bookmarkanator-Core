@@ -7,17 +7,18 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.interfaces.*;
 
-public class BookmarksPanel extends JPanel {
+public class ListableItemsPanel extends JPanel {
     private JScrollPane scroll;
-    private List<Bookmark> bookmarkList;
-    private List<Bookmark> currentBookmarkList;
+    private List<ListableItem> itemsList;
+    private List<ListableItem> currentlyShowingItemsList;
     private JPanel pan;
     private JComboBox search;
     private Set<String> itemNames;
-    private Map<String, List<Bookmark>> itemsSearchMap;
+    private Map<String, List<ListableItem>> itemsSearchMap;
 
-    public BookmarksPanel() {
+    public ListableItemsPanel() {
         super();
         this.setBackground(Color.yellow);
         this.setLayout(new GridBagLayout());
@@ -27,18 +28,19 @@ public class BookmarksPanel extends JPanel {
         itemsSearchMap = new HashMap<>();
 
 
-        search  = new JComboBox(new String[]{""});
+        search  = new JComboBox();
         search.addItemListener(new ItemListener()
         {
             @Override
             public void itemStateChanged(ItemEvent e)
             {
                 System.out.println("clicked ");
-                getSelectedBookmarks();
+                getSelectedItems();
             }
         });
         final String[] st = new String[1];//final container for inputted text
 
+        //The following 13 lines gotten from stackoverflow.com
         final JTextField tfListText = (JTextField) search.getEditor().getEditorComponent();
         tfListText.addCaretListener(new CaretListener() {
             private String lastText;
@@ -57,7 +59,7 @@ public class BookmarksPanel extends JPanel {
         search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getSelectedBookmarks();
+                getSelectedItems();
             }
         });
         search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
@@ -82,11 +84,11 @@ public class BookmarksPanel extends JPanel {
                     System.out.println("Key released");
                     if (st[0].isEmpty())
                     {
-                        currentBookmarkList = getBookmarkList();
+                        currentlyShowingItemsList = getItemsList();
                         refresh();
                     }
                 }
-                System.out.println("Element size "+getCurrentBookmarkList().isEmpty());
+                System.out.println("Element size "+ getCurrentlyShowingItemsList().isEmpty());
                 if (search.getModel().getSize()==1)
                 {
                     search.setPopupVisible(false);
@@ -115,18 +117,18 @@ public class BookmarksPanel extends JPanel {
 
     }
 
-    private List<Bookmark> getSelectedBookmarks()
+    private List<ListableItem> getSelectedItems()
     {
         String selected = search.getSelectedItem().toString();
         System.out.println("selected method "+ selected);
         search.setPopupVisible(false);
         search.getEditor().setItem(null);
-        List<Bookmark> l = itemsSearchMap.get(selected);
+        List<ListableItem> l = itemsSearchMap.get(selected);
         if (l==null)
         {
             l = new ArrayList<>();
         }
-        currentBookmarkList = l;
+        currentlyShowingItemsList = l;
         refresh();
         return l;
     }
@@ -136,30 +138,30 @@ public class BookmarksPanel extends JPanel {
         pan.removeAll();
         itemNames.clear();
 
-        for (Bookmark b: getCurrentBookmarkList())
+        for (ListableItem b: getCurrentlyShowingItemsList())
         {
-            BookmarkPanel bp = new BookmarkPanel(b);
+            ListableItemPanel bp = new ListableItemPanel(b);
             bp.setAlignmentX(Component.CENTER_ALIGNMENT);
             pan.add(bp);
             itemNames.add(b.getName());
         }
 
-        itemsSearchMap = BookmarksUtil.getBookmarksText(getBookmarkList());
+        itemsSearchMap = BookmarksUtil.getListableItemsTextStrings(getItemsList());
         this.scroll.updateUI();
     }
 
-    public List<Bookmark> getBookmarkList() {
-        return bookmarkList;
+    public List<ListableItem> getItemsList() {
+        return itemsList;
     }
 
-    public List<Bookmark> getCurrentBookmarkList()
+    public List<ListableItem> getCurrentlyShowingItemsList()
     {
-        return currentBookmarkList;
+        return currentlyShowingItemsList;
     }
 
-    public void setBookmarkList(List<Bookmark> bookmarkList) {
-        this.bookmarkList = bookmarkList;
-        currentBookmarkList = bookmarkList;
+    public void setItemsList(List<ListableItem> itemsList) {
+        this.itemsList = itemsList;
+        currentlyShowingItemsList = itemsList;
         refresh();
     }
 }
