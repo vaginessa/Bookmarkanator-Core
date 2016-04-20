@@ -20,7 +20,6 @@ public class ListableItemsPanel extends JPanel {
 
     public ListableItemsPanel() {
         super();
-        this.setBackground(Color.yellow);
         this.setLayout(new GridBagLayout());
         GridBagConstraints con = new GridBagConstraints();
 
@@ -99,7 +98,7 @@ public class ListableItemsPanel extends JPanel {
         scroll = new JScrollPane();
 
         pan = new JPanel();
-        pan.setBorder(BorderFactory.createLineBorder(Color.blue));
+        pan.setBorder(BorderFactory.createLineBorder(Color.black));
         pan.setLayout(new ModifiedFlowLayout(1,10,10));
         pan.setPreferredSize(new Dimension(150, 1000));
 

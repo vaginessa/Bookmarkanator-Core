@@ -1,9 +1,8 @@
 package com.bookmarkanator.ui;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import javax.swing.*;
 
 /**
  * Created by micah on 4/12/16.
@@ -13,7 +12,7 @@ public class TagsSelectionPanel extends JPanel {
 
     public TagsSelectionPanel() {
         this.setPreferredSize(new Dimension(500,500));
-        setBackground(Color.CYAN);
+//        setBackground(Color.CYAN);
         setBorder(BorderFactory.createLineBorder(Color.black));
         tags = new HashSet<>();
     }

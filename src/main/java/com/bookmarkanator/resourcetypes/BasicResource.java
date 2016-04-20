@@ -37,7 +37,7 @@ public class BasicResource implements XMLWritable
 
     public String getTypeString()
     {
-        return "";
+        return "Basic";
     }
 
     public Icon getIcon()

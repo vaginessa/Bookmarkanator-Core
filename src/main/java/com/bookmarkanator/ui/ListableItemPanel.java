@@ -18,9 +18,7 @@ public class ListableItemPanel extends JPanel{
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
 
         label = new JLabel(item.getName());
-//        label.setBorder(BorderFactory.createLineBorder(Color.black));//.createBevelBorder(BevelBorder.RAISED));
-
-        sybmol = new JLabel();
+        sybmol = new JLabel(item.getTypeString());
         sybmol.setBorder(BorderFactory.createLineBorder(Color.blue));
 
 

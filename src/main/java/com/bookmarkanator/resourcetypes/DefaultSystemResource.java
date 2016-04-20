@@ -15,10 +15,12 @@ public class DefaultSystemResource extends TerminalResource {
     public static final int RESOURCE_TYPE_DEFAULT_FILE_EDITOR = 2;
 
     private int type;
+    private String typeString;
 
     public DefaultSystemResource(int type) {
         super();
         this.type = type;
+        typeString = determineTypeString(type);
     }
 
     @Override
@@ -42,6 +44,22 @@ public class DefaultSystemResource extends TerminalResource {
 
     public void setType(int type) {
         this.type = type;
+        typeString = determineTypeString(type);
+    }
+
+    private String determineTypeString(int type)
+    {
+        switch (type)
+        {
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER:
+                return "Folder";
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR:
+                return "Edit";
+            case DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER:
+                return "Web";
+            default:
+                return "Unknown";
+        }
     }
 
     @Override
@@ -60,33 +78,6 @@ public class DefaultSystemResource extends TerminalResource {
                 super.toXML(sb, prependTabs);
         }
     }
-
-//    private void webToXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append(prependTabs + "<web index-within-bookmark=\"");
-//        sb.append(getIndexWithinBookmark());
-//        sb.append("\">");
-//        writeGuts(sb, prependTabs);
-//        sb.append(prependTabs + "</web>");
-//    }
-//
-//    private void fileEditorToXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append(prependTabs + "<file-editor index-within-bookmark=\"");
-//        sb.append(getIndexWithinBookmark());
-//        sb.append("\">");
-//        writeGuts(sb, prependTabs);
-//        sb.append(prependTabs + "</file-editor>");
-//    }
-//
-//    private void fileBrowserToXML(StringBuilder sb, String prependTabs)
-//    {
-//        sb.append(prependTabs + "<file-browser index-within-bookmark=\"");
-//        sb.append(getIndexWithinBookmark());
-//        sb.append("\">");
-//        writeGuts(sb, prependTabs);
-//        sb.append(prependTabs + "</file-browser>");
-//    }
 
     private void webToXML(StringBuilder sb, String prependTabs) {
         sb.append(prependTabs + "<web>");
@@ -124,6 +115,12 @@ public class DefaultSystemResource extends TerminalResource {
         sb.append(getPostCommand());
         sb.append("</post-command>");
         sb.append("\n");
+    }
+
+    @Override
+    public String getTypeString()
+    {
+        return typeString;
     }
 
     @Override

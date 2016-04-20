@@ -13,4 +13,10 @@ public class CustomFileFilter extends CustomClass
     {
         System.out.println("Running custom file filter class now.");
     }
+
+    @Override
+    public String getTypeString()
+    {
+        return "Custom";
+    }
 }

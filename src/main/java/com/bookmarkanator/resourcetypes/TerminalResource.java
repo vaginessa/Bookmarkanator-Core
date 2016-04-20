@@ -2,9 +2,6 @@ package com.bookmarkanator.resourcetypes;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import javax.swing.*;
 import com.bookmarkanator.settings.*;
 
@@ -172,6 +169,12 @@ public class TerminalResource extends BasicResource
             //        }
         }
         return getText();
+    }
+
+    @Override
+    public String getTypeString()
+    {
+        return "Term";
     }
 
     @Override
