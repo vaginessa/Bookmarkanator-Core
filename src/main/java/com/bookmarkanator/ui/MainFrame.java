@@ -63,6 +63,7 @@ public class MainFrame  {
         con.gridy = 0;
         con.gridheight = 2;
         ListableItemsPanel bookmarksPan = getTestBookmarks();
+        bookmarksPan.setPreferredSize(new Dimension(200, 600));
         frame.add(bookmarksPan,con);
 
 //        con.fill = GridBagConstraints.HORIZONTAL;

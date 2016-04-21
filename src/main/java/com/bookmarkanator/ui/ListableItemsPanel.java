@@ -40,7 +40,7 @@ public class ListableItemsPanel extends JPanel
         });
         final String[] st = new String[1];//final container for inputted text
 
-        //The following 13 lines gotten from stackoverflow.com
+        //The following lines were inspired by stackoverflow.com
         final JTextField tfListText = (JTextField) search.getEditor().getEditorComponent();
         tfListText.addCaretListener(new CaretListener()
         {
@@ -57,6 +57,7 @@ public class ListableItemsPanel extends JPanel
                 }
             }
         });
+        //end stackoverflow.com
 
         search.setEditable(true);
         search.addActionListener(new ActionListener()
@@ -108,12 +109,25 @@ public class ListableItemsPanel extends JPanel
         });
 
         scroll = new JScrollPane();
+        scroll.getViewport().addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (scroll.getVerticalScrollBar().isVisible())
+                {
+                    search.setVisible(true);
+                }
+                else
+                {
+                    search.setVisible(false);
+                }
+            }
+        });
 
         pan = new JPanel();
         pan.setBorder(BorderFactory.createLineBorder(Color.black));
         pan.setLayout(new ModifiedFlowLayout(1, 10, 10));
         //setting any dimension causes the layout manager to layout the components immediatly, rather than after the size changes.
-        pan.setPreferredSize(new Dimension(150, 100));
+
 
         scroll.getViewport().add(pan);
         con.fill = GridBagConstraints.BOTH;
@@ -160,6 +174,7 @@ public class ListableItemsPanel extends JPanel
 
         itemsSearchMap = BookmarksUtil.getListableItemsTextStrings(getItemsList());
         this.scroll.updateUI();
+
     }
 
     public List<ListableItem> getItemsList()
