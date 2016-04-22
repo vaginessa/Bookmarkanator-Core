@@ -33,11 +33,15 @@ public class TerminalResource extends BasicResource
     public TerminalResource(int type)
     {
         this.type = type;
+        preCommand = new String();
+        postCommand = new String();
     }
 
     public TerminalResource()
     {
         this.type = OPEN_TERMINAL_ONLY;
+        preCommand = new String();
+        postCommand = new String();
     }
 
     public String getPreCommand()

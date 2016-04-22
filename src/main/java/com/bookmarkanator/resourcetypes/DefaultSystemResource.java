@@ -3,6 +3,7 @@ package com.bookmarkanator.resourcetypes;
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 /**
  * This class represents a generic Desktop.getDesktop().[service] that can be called from java.
@@ -19,6 +20,7 @@ public class DefaultSystemResource extends TerminalResource {
 
     public DefaultSystemResource(int type) {
         super();
+        Objects.requireNonNull(type);
         this.type = type;
         typeString = determineTypeString(type);
     }

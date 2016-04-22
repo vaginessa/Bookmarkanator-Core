@@ -308,6 +308,20 @@ public class MainFrame implements Observer {
         else if (o instanceof BookmarkType)
         {
             System.out.println("bookmark type clicked");
+            List<Bookmark> b = (List<Bookmark>)(Object)bookmarksPan.getItemsList();
+            Set<BasicResource> br = new HashSet<>();
+
+            for (Bookmark bk: b)
+            {//get resources and add to set
+                br.add(bk.getResource());
+            }
+
+            b = BookmarksUtil.getBookmarksByType(b,new ArrayList<>(br));
+
+            for (Bookmark bk: b)
+            {
+                System.out.println(bk.getName());
+            }
         }
         else
         {

@@ -18,6 +18,8 @@ public class BasicResource implements XMLWritable
     private String text;
 
     public BasicResource() {
+        name = new String();
+        text = new String();
     }
 
     public String getName()
