@@ -93,7 +93,7 @@ public class MainFrame implements Observer {
     {
         List<ListableItem> b = bookmarksPan.getItemsList();
         Set<String> strings = new HashSet<>();
-
+        List<ListableItem> b2 = new ArrayList<>();
 
         for (ListableItem l: b)
         {
@@ -101,38 +101,31 @@ public class MainFrame implements Observer {
             strings.add(bk.getResource().getTypeString());
         }
 
-        b.clear();
-
         for (String s: strings)
         {
             BookmarkType st = new BookmarkType(s);
             st.addObserver(this);
-            b.add(st);
+            b2.add(st);
         }
 
-        bookmarkTypes.setItemsList(b);
+        bookmarkTypes.setItemsList(b2);
     }
 
-//    private ListableItemsPanel getTestTagSelectionPanel()
-//    {
-//        ListableItemsPanel tagsPanel = new ListableItemsPanel();
-//
-//        List<ListableItem> tags = new ArrayList<>();
-//        SelectableTag s = new SelectableTag("Hello");
-//        s.addObserver(this);
-//        tags.add(s);
-//
-//        s = new SelectableTag("Bye");
-//        s.addObserver(this);
-//        tags.add(s);
-//
-//        s = new SelectableTag("yo!");
-//        s.addObserver(this);
-//        tags.add(s);
-//
-//        tagsPanel.setItemsList(tags);
-//        return tagsPanel;
-//    }
+    private void getBookmarkTags()
+    {
+        List<String> li = BookmarksUtil.getSortedList(BookmarksUtil.getTags(bookmarks));
+
+        List<ListableItem> li2 = new ArrayList<>(li.size());
+
+        for (String s:li)
+        {
+            SelectableTag st = new SelectableTag(s);
+            st.addObserver(this);
+            li2.add(st);
+        }
+
+        tagsSelectionPan.setItemsList(li2);
+    }
 
     private List<ListableItem> convertToSelectedTags(List<String> strings){
         List<ListableItem> res = new ArrayList<>();
@@ -258,22 +251,6 @@ public class MainFrame implements Observer {
         return bookmarksPan;
     }
 
-    private void getBookmarkTags()
-    {//adds the initial list of tags to select from.
-        List<String> li = BookmarksUtil.getSortedList(BookmarksUtil.getTags(bookmarks));
-
-        List<ListableItem> li2 = new ArrayList<>(li.size());
-
-        for (String s:li)
-        {
-            SelectableTag st = new SelectableTag(s);
-            st.addObserver(this);
-            li2.add(st);
-        }
-
-        tagsSelectionPan.setItemsList(li2);
-    }
-
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SelectableTag)
@@ -302,7 +279,7 @@ public class MainFrame implements Observer {
                 }
 
                 tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
-//                addBookmarkTypesToPanel();
+                addBookmarkTypesToPanel();
             }
         }
         else if (o instanceof SelectedTag)
@@ -322,7 +299,7 @@ public class MainFrame implements Observer {
             }
 
             tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
-//            addBookmarkTypesToPanel();
+            addBookmarkTypesToPanel();
         }
         else if (o instanceof Bookmark)
         {
