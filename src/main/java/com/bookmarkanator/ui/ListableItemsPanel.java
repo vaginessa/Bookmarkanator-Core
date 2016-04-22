@@ -12,13 +12,13 @@ import com.bookmarkanator.interfaces.*;
 
 public class ListableItemsPanel extends JPanel {
     //TODO Add a way to show search panel or not.
-    private JScrollPane scroll;
+    protected JScrollPane scroll;
     private List<ListableItem> itemsList;
     private List<ListableItem> currentlyShowingItemsList;
-    private JPanel pan;
+    protected JPanel pan;
     private JComboBox search;
-    private Set<String> itemNames;
-    private Map<String, List<ListableItem>> itemsSearchMap;
+    protected Set<String> itemNames;
+    protected Map<String, List<ListableItem>> itemsSearchMap;
 
     public ListableItemsPanel() {
         super();
@@ -177,7 +177,6 @@ public class ListableItemsPanel extends JPanel {
 
         itemsSearchMap = BookmarksUtil.getListableItemsTextStrings(getItemsList());
         this.scroll.updateUI();
-
     }
 
     public List<ListableItem> getItemsList() {

@@ -1,15 +1,31 @@
 package com.bookmarkanator.ui;
 
 import java.awt.*;
-import javax.swing.*;
+import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.interfaces.*;
 
 /**
  * Created by micah on 4/12/16.
  */
-public class SelectedTagsPanel extends JPanel{
+public class SelectedTagsPanel extends ListableItemsPanel{
     public SelectedTagsPanel() {
-        this.setPreferredSize(new Dimension(500,500));
-//        this.setBackground(Color.orange);
-        setBorder(BorderFactory.createLineBorder(Color.black));
+
+    }
+
+    @Override
+    public void refresh()
+    {
+        pan.removeAll();
+        itemNames.clear();
+
+        for (ListableItem b : getCurrentlyShowingItemsList()) {
+            ListableButtonItemPanel bp = new ListableButtonItemPanel(b);
+            bp.setAlignmentX(Component.CENTER_ALIGNMENT);
+            pan.add(bp);
+            itemNames.add(b.getName());
+        }
+
+        itemsSearchMap = BookmarksUtil.getListableItemsTextStrings(getItemsList());
+        this.scroll.updateUI();
     }
 }

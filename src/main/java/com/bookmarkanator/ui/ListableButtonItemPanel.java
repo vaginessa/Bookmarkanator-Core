@@ -6,15 +6,17 @@ import java.util.*;
 import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 
-public class ListableItemPanel extends JPanel{
+public class ListableButtonItemPanel extends JPanel
+{
     private final ListableItem item;
     private JLabel label;
     private JLabel sybmol;
     private Icon icon;
+    private JButton button;
 
-    public ListableItemPanel(final ListableItem item) {
+    public ListableButtonItemPanel(final ListableItem item) {
         this.item = item;
-        final ListableItemPanel thisPan = this;
+        final ListableButtonItemPanel thisPan = this;
         thisPan.setBorder(BorderFactory.createRaisedBevelBorder());
 
         label = new JLabel(item.getName());
@@ -35,10 +37,27 @@ public class ListableItemPanel extends JPanel{
 
         this.add(label);
 
-        this.addMouseListener(new MouseAdapter() {
+//        this.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                item.setLastAccessedDate(new Date());
+//                try {
+//                    item.execute();
+//                } catch (Exception e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//        });
+//
+        button = new JButton("X");
+        button.setPreferredSize(new Dimension(15,15));
+
+        button.addActionListener(new ActionListener()
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void actionPerformed(ActionEvent e)
+            {
                 item.setLastAccessedDate(new Date());
                 try {
                     item.execute();
@@ -48,9 +67,12 @@ public class ListableItemPanel extends JPanel{
             }
         });
 
-//        JButton button = new JButton();
-//        button.setIcon(new ImageIcon(UIUtil.getTerminalIcon()));
-//        this.add(button);
+
+        this.add(button);
+
+        //        JButton button = new JButton();
+        //        button.setIcon(new ImageIcon(UIUtil.getTerminalIcon()));
+        //        this.add(button);
     }
 
     public ListableItem getItem() {

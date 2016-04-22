@@ -42,14 +42,57 @@ public class BookmarksUtil {
     public static List<Bookmark> getBookmarksWithTheseTagsOnly(List<Bookmark> bookmarks, Set<String> theseTagsOnly) {
         List<Bookmark> res = new ArrayList<>();
 
-        for (Bookmark b : bookmarks) {//iterate through bookmarks
-            for (String s : b.getTags()) {//iterate through this bookmarks tags
-                if (!theseTagsOnly.contains(s)) {//add if it has a tag in the list
-                    res.add(b);
-                }
+        for (Bookmark b : bookmarks)
+        {//iterate through bookmarks
+            if (intersect(b.getTags(), theseTagsOnly))
+            {
+                res.add(b);
             }
         }
         return res;
+    }
+
+    public static List<Bookmark> getBookmarksWithAllOfTheseTagsOnly(List<Bookmark> bookmarks, Set<String> hasAllTheseTags) {
+        List<Bookmark> res = new ArrayList<>();
+
+        for (Bookmark b : bookmarks)
+        {//iterate through bookmarks
+            if (contains(b.getTags(), hasAllTheseTags))
+            {
+                res.add(b);
+            }
+        }
+        return res;
+    }
+
+    public static boolean contains(Set<String> setTocheck, Set<String> mustHaveAllThese)
+    {
+        boolean hasAll = false;
+
+        for (String s: mustHaveAllThese)
+        {//iterate over all must have tags.
+            if (!setTocheck.contains(s))
+            {//return immediately when item not found in setToCheck
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks that there is at least one matching item between the two sets.
+     * @param a  First set to check
+     * @param b  Second set to check
+     * @return  Returns true if there is at lease one matching item between the two sets.
+     */
+    public static boolean intersect(Set<String> a, Set<String> b)
+    {
+        for (String s: a)
+        {
+            if (b.contains(s))
+                return true;
+        }
+        return false;
     }
 
     /**

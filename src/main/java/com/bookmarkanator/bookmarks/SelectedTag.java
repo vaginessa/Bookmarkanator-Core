@@ -1,10 +1,8 @@
 package com.bookmarkanator.bookmarks;
 
-import com.bookmarkanator.interfaces.ListableItem;
-
+import java.util.*;
 import javax.swing.*;
-import java.util.Date;
-import java.util.Observable;
+import com.bookmarkanator.interfaces.*;
 
 /**
  * Created by micah on 4/21/16.
@@ -23,7 +21,6 @@ public class SelectedTag extends Observable implements ListableItem {
 
     @Override
     public void execute() throws Exception {
-        System.out.println("Selected tag clicked: "+text);
         this.setChanged();
         this.notifyObservers();
     }
@@ -47,4 +44,6 @@ public class SelectedTag extends Observable implements ListableItem {
     public Icon getIcon() {
         return null;
     }
+
+
 }

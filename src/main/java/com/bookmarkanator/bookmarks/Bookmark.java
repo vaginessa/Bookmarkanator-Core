@@ -1,6 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
@@ -319,4 +319,5 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
         }
         return false;
     }
+
 }

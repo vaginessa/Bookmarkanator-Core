@@ -1,7 +1,6 @@
 package com.bookmarkanator.ui  ;
 
 import java.awt.*;
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -14,7 +13,7 @@ public class MainFrame implements Observer {
     private GridBagConstraints con;
     private ListableItemsPanel bookmarksPan;
     private ListableItemsPanel tagsSelectionPan;
-    private ListableItemsPanel selectedTags;
+    private SelectedTagsPanel selectedTags;
     private List<Bookmark> bookmarks;
 
     public MainFrame()
@@ -28,6 +27,7 @@ public class MainFrame implements Observer {
 
         init();
 
+        frame.getContentPane().doLayout();
         frame.pack();
         frame.setVisible(true);
     }
@@ -55,7 +55,7 @@ public class MainFrame implements Observer {
         con.gridheight = 1;
         con.gridx = 1;
         con.gridy = 0;
-        selectedTags = new ListableItemsPanel();
+        selectedTags = new SelectedTagsPanel();
         frame.add(selectedTags, con);
 
         con.gridy = 1;
@@ -82,6 +82,8 @@ public class MainFrame implements Observer {
         frame.add(options, con);
 
         getBookmarkTags();
+
+
     }
 
     private void getBookmarkTags()
@@ -126,6 +128,17 @@ public class MainFrame implements Observer {
         for (String s: strings)
         {
            SelectedTag st = new SelectedTag(s);
+            st.addObserver(this);
+            res.add(st);
+        }
+        return res;
+    }
+
+    private List<ListableItem> convertToSelectableTags(List<String> strings){
+        List<ListableItem> res = new ArrayList<>();
+        for (String s: strings)
+        {
+            SelectableTag st = new SelectableTag(s);
             st.addObserver(this);
             res.add(st);
         }
@@ -180,8 +193,8 @@ public class MainFrame implements Observer {
         web3.addObserver(this);
         web3.setResource(dsr);
         web3.addTag("web");
-        web2.addTag("acronym");
-        web2.addTag("search");
+        web3.addTag("acronym");
+        web3.addTag("search");
 
 
         Bookmark terminal = new Bookmark();
@@ -226,6 +239,7 @@ public class MainFrame implements Observer {
         dsr.setName("gitignore");
         dsr.setText("/users/lloyd1/.gitignore_global");
         gitignore.setResource(dsr);
+        gitignore.addTag("Bob");
 
         bookmarks.add(gitignore);
 
@@ -248,11 +262,39 @@ public class MainFrame implements Observer {
             if (a.size()>length)
             {//it added an item. Update the view.
                 selectedTags.setItemsList(convertToSelectedTags(BookmarksUtil.getSortedList(a)));
+
+                //update bookmarks
+                bookmarksPan.setItemsList((List<ListableItem>)(Object)BookmarksUtil.getBookmarksWithAllOfTheseTagsOnly((List<Bookmark>)(Object)bookmarksPan.getItemsList(), selectedTags.getItemNames()));
+
+                //update tag selection panels
+                Set<String> b = BookmarksUtil.getTags((List<Bookmark>)(Object)bookmarksPan.getItemsList());
+
+                for (String st: selectedTags.getItemNames())
+                {//making sure that the selected tags don't appear in the tag selection window.
+                    b.remove(st);
+                }
+
+                tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
+                //TODO finish implementing.
             }
         }
         else if (o instanceof SelectedTag)
         {
+            selectedTags.getItemsList().remove(o);
+            selectedTags.refresh();
             System.out.println("selected tag clicked");
+
+            bookmarksPan.setItemsList((List<ListableItem>)(Object)BookmarksUtil.getBookmarksWithAllOfTheseTagsOnly((List<Bookmark>)(Object)bookmarks, selectedTags.getItemNames()));
+
+            //update tag selection panels
+            Set<String> b = BookmarksUtil.getTags((List<Bookmark>)(Object)bookmarksPan.getItemsList());
+
+            for (String st: selectedTags.getItemNames())
+            {//making sure that the selected tags don't appear in the tag selection window.
+                b.remove(st);
+            }
+
+            tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
         }
         else if (o instanceof Bookmark)
         {
@@ -262,7 +304,5 @@ public class MainFrame implements Observer {
         {
             System.out.println("Unspecified object action "+o.getClass().getName());
         }
-
-
     }
 }
