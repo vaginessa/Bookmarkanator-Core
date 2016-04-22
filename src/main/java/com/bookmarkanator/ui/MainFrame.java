@@ -1,6 +1,7 @@
 package com.bookmarkanator.ui  ;
 
 import java.awt.*;
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -120,6 +121,17 @@ public class MainFrame implements Observer {
         return tagsPanel;
     }
 
+    private List<ListableItem> convertToSelectedTags(List<String> strings){
+        List<ListableItem> res = new ArrayList<>();
+        for (String s: strings)
+        {
+           SelectedTag st = new SelectedTag(s);
+            st.addObserver(this);
+            res.add(st);
+        }
+        return res;
+    }
+
     private ListableItemsPanel getTestBookmarks()
     {
         ListableItemsPanel bookmarksPan = new ListableItemsPanel();
@@ -227,10 +239,16 @@ public class MainFrame implements Observer {
         {
             System.out.println("selectable tag clicked");
 
-            SelectedTag st = new SelectedTag(((SelectableTag)o).getText());
-            st.addObserver(this);
-            selectedTags.addItem(st);
+            String s = ((SelectableTag)o).getText();
+            Set<String> a = selectedTags.getItemNames();
+            int length = a.size();
 
+            a.add(s);
+
+            if (a.size()>length)
+            {//it added an item. Update the view.
+                selectedTags.setItemsList(convertToSelectedTags(BookmarksUtil.getSortedList(a)));
+            }
         }
         else if (o instanceof SelectedTag)
         {

@@ -194,10 +194,15 @@ public class ListableItemsPanel extends JPanel {
         refresh();
     }
 
+    public Set<String> getItemNames() {
+        return itemNames;
+    }
+
     public void addItem(ListableItem listableItem)
     {
         List l = getItemsList();
         l.add(listableItem);
         setItemsList(l);
+
     }
 }
