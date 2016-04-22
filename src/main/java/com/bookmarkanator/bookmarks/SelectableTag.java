@@ -4,7 +4,7 @@ import java.util.*;
 import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 
-public class SelectableTag implements ListableItem
+public class SelectableTag extends Observable implements ListableItem
 {
     private String text;
 
@@ -24,6 +24,8 @@ public class SelectableTag implements ListableItem
         throws Exception
     {
         System.out.println("Executing tag "+text);
+        this.setChanged();
+        this.notifyObservers();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class UIUtil {
         {
             e.printStackTrace();
         }
-        URL imageURL = App.class.getResource("/img/test__Icon.gif");
+        URL imageURL = App.class.getResource("/img/icon_terminal_2x.jpg");
 //        Image image = Toolkit.getDefaultToolkit().getImage("resources/com/bookmarkanator/img/test_Icon.gif");
         return new ImageIcon(imageURL).getImage();
     }

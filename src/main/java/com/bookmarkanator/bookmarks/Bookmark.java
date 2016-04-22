@@ -6,7 +6,7 @@ import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
-public class Bookmark implements XMLWritable, ListableItem{
+public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
     // ============================================================
     // Fields
@@ -287,6 +287,8 @@ public class Bookmark implements XMLWritable, ListableItem{
     public void execute()
         throws Exception
     {
+        this.setChanged();
+        this.notifyObservers();
         getResource().execute();
     }
 

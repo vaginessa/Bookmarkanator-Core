@@ -69,6 +69,13 @@ public class BookmarksUtil {
         return tags;
     }
 
+    public static List<String> getSortedList(Set<String> items)
+    {
+        List<String> l = new ArrayList<>(items);
+        Collections.sort(l);
+        return l;
+    }
+
     public static List<Bookmark> getBookmarksByType(List<Bookmark> bookmarks, List<BasicResource> tagTypesToGet) {
         List<Bookmark> res = new ArrayList<>(bookmarks.size());
 

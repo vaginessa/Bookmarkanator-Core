@@ -29,6 +29,9 @@ public class DefaultSystemResource extends TerminalResource {
         if (getType() == DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER) {
             Desktop.getDesktop().browse(new URI(getText()));
         } else if (getType() == DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_EDITOR) {
+            //doesn't work on linux mint. See below:
+
+            //http://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform
             Desktop.getDesktop().edit(new File(getText()));
         } else if (getType() == DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER) {
             Desktop.getDesktop().open(new File(getText()));
