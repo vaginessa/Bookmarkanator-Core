@@ -150,6 +150,16 @@ public class ListableItemsPanel extends JPanel {
 
     }
 
+    public JComboBox getSearch()
+    {
+        return search;
+    }
+
+    public void setSearch(JComboBox search)
+    {
+        this.search = search;
+    }
+
     private List<ListableItem> getSelectedItems() {
         String selected = search.getSelectedItem().toString();
         System.out.println("selected method " + selected);

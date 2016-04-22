@@ -14,6 +14,7 @@ public class MainFrame implements Observer {
     private ListableItemsPanel bookmarksPan;
     private ListableItemsPanel tagsSelectionPan;
     private SelectedTagsPanel selectedTags;
+    private ListableItemsPanel bookmarkTypes;
     private List<Bookmark> bookmarks;
 
     public MainFrame()
@@ -27,6 +28,8 @@ public class MainFrame implements Observer {
 
         init();
 
+        //TODO Replace separate panels with splitpanes.
+
         frame.getContentPane().doLayout();
         frame.pack();
         frame.setVisible(true);
@@ -35,7 +38,7 @@ public class MainFrame implements Observer {
 
     private void init()
     {
-
+//        JSplitPane
         con = new GridBagConstraints();
         con.fill = GridBagConstraints.BOTH;
         con.weightx = .20;
@@ -44,14 +47,15 @@ public class MainFrame implements Observer {
         con.gridy = 0;
         con.gridwidth = 1;
         con.gridheight = 2;
-        BookmarkTypesPanel bookmarkTypes = new BookmarkTypesPanel();
+        bookmarkTypes = new ListableItemsPanel();
+        bookmarkTypes.getSearch().setVisible(false);
         bookmarkTypes.setMinimumSize(new Dimension(80,500));
         bookmarkTypes.setMaximumSize(new Dimension(200,500));
 
         frame.add(bookmarkTypes, con);
 
         con.fill = GridBagConstraints.BOTH;
-        con.weightx = 1.0;
+        con.weightx = .70;
         con.gridheight = 1;
         con.gridx = 1;
         con.gridy = 0;
@@ -64,7 +68,7 @@ public class MainFrame implements Observer {
         tagsSelectionPan.setPreferredSize(new Dimension(500,500));
         frame.add(tagsSelectionPan,con);
 
-        con.weightx = .75;
+        con.weightx = 1;
         con.gridx = 2;
         con.gridy = 0;
         con.gridheight = 2;
@@ -82,46 +86,53 @@ public class MainFrame implements Observer {
         frame.add(options, con);
 
         getBookmarkTags();
-
-
+        addBookmarkTypesToPanel();
     }
 
-    private void getBookmarkTags()
+    private void addBookmarkTypesToPanel()
     {
-        List<String> li = BookmarksUtil.getSortedList(BookmarksUtil.getTags(bookmarks));
+        List<ListableItem> b = bookmarksPan.getItemsList();
+        Set<String> strings = new HashSet<>();
 
-        List<ListableItem> li2 = new ArrayList<>(li.size());
 
-        for (String s:li)
+        for (ListableItem l: b)
         {
-            SelectableTag st = new SelectableTag(s);
-            st.addObserver(this);
-            li2.add(st);
+            Bookmark bk = ((Bookmark)l);
+            strings.add(bk.getResource().getTypeString());
         }
 
-        tagsSelectionPan.setItemsList(li2);
+        b.clear();
+
+        for (String s: strings)
+        {
+            BookmarkType st = new BookmarkType(s);
+            st.addObserver(this);
+            b.add(st);
+        }
+
+        bookmarkTypes.setItemsList(b);
     }
 
-    private ListableItemsPanel getTestTagSelectionPanel()
-    {
-        ListableItemsPanel tagsPanel = new ListableItemsPanel();
-
-        List<ListableItem> tags = new ArrayList<>();
-        SelectableTag s = new SelectableTag("Hello");
-        s.addObserver(this);
-        tags.add(s);
-
-        s = new SelectableTag("Bye");
-        s.addObserver(this);
-        tags.add(s);
-
-        s = new SelectableTag("yo!");
-        s.addObserver(this);
-        tags.add(s);
-
-        tagsPanel.setItemsList(tags);
-        return tagsPanel;
-    }
+//    private ListableItemsPanel getTestTagSelectionPanel()
+//    {
+//        ListableItemsPanel tagsPanel = new ListableItemsPanel();
+//
+//        List<ListableItem> tags = new ArrayList<>();
+//        SelectableTag s = new SelectableTag("Hello");
+//        s.addObserver(this);
+//        tags.add(s);
+//
+//        s = new SelectableTag("Bye");
+//        s.addObserver(this);
+//        tags.add(s);
+//
+//        s = new SelectableTag("yo!");
+//        s.addObserver(this);
+//        tags.add(s);
+//
+//        tagsPanel.setItemsList(tags);
+//        return tagsPanel;
+//    }
 
     private List<ListableItem> convertToSelectedTags(List<String> strings){
         List<ListableItem> res = new ArrayList<>();
@@ -247,6 +258,22 @@ public class MainFrame implements Observer {
         return bookmarksPan;
     }
 
+    private void getBookmarkTags()
+    {//adds the initial list of tags to select from.
+        List<String> li = BookmarksUtil.getSortedList(BookmarksUtil.getTags(bookmarks));
+
+        List<ListableItem> li2 = new ArrayList<>(li.size());
+
+        for (String s:li)
+        {
+            SelectableTag st = new SelectableTag(s);
+            st.addObserver(this);
+            li2.add(st);
+        }
+
+        tagsSelectionPan.setItemsList(li2);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof SelectableTag)
@@ -275,7 +302,7 @@ public class MainFrame implements Observer {
                 }
 
                 tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
-                //TODO finish implementing.
+//                addBookmarkTypesToPanel();
             }
         }
         else if (o instanceof SelectedTag)
@@ -295,10 +322,15 @@ public class MainFrame implements Observer {
             }
 
             tagsSelectionPan.setItemsList(convertToSelectableTags(BookmarksUtil.getSortedList(b)));
+//            addBookmarkTypesToPanel();
         }
         else if (o instanceof Bookmark)
         {
             System.out.println("bookmark clicked");
+        }
+        else if (o instanceof BookmarkType)
+        {
+            System.out.println("bookmark type clicked");
         }
         else
         {
