@@ -138,6 +138,15 @@ public class BookmarksUtil {
         //TODO Implement a more accurate tag search algorithm.
         Map<String, Set<String[]>> tagList = makeTagsList(tags);
         Set<String[]> res = tagList.get(text);
+        if (res==null)
+        {
+            res = tagList.get(text.toUpperCase());
+        }
+        if (res==null)
+        {
+            res = tagList.get(text.toLowerCase());
+        }
+
         List<String> resSet;
         Set<String> returnResult = new HashSet<>();
 

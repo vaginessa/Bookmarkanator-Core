@@ -85,7 +85,7 @@ public class ListableItemsPanel extends JPanel {
                     res.add(0, st[0]);
                     search.setModel(new DefaultComboBoxModel(res.toArray()));
                     search.setPopupVisible(true);
-                    System.out.println("Key released");
+                    System.out.println("Key released, names = "+itemNames.size()+", res "+res.size()+" st[0] "+st[0]);
                     if (st[0].isEmpty()) {
                         currentlyShowingItemsList = getItemsList();
                         refresh();

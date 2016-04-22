@@ -100,7 +100,7 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     {
         tag = tag.replaceAll(","," ");
         tag = tag.trim();
-        tag = tag.toUpperCase();
+//        tag = tag.toUpperCase();
         tags.add(tag);
     }
 
