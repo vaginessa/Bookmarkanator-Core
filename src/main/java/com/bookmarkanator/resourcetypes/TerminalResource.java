@@ -23,7 +23,7 @@ import com.bookmarkanator.settings.*;
  */
 public class TerminalResource extends BasicResource
 {
-    public static final int OPEN_TERMINAL_ONLY = 0;
+    public static final int OPEN_TERMINAL_ONLY = 0;//opens the terminal to paste any command one chooses.
     public static final int RUN_PROGRAM_WO_TERMINAL = 1;//can only be used to run a program not run commands such as ls, sudo, mkdir etc...
 
     private String preCommand;
@@ -35,7 +35,8 @@ public class TerminalResource extends BasicResource
         this.type = type;
     }
 
-    public TerminalResource() {
+    public TerminalResource()
+    {
         this.type = OPEN_TERMINAL_ONLY;
     }
 
@@ -68,7 +69,7 @@ public class TerminalResource extends BasicResource
     public String execute()
         throws Exception
     {
-        if (getType()==TerminalResource.OPEN_TERMINAL_ONLY)
+        if (getType() == TerminalResource.OPEN_TERMINAL_ONLY)
         {
             StringSelection stringSelection = new StringSelection(this.getText());
             Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -85,19 +86,19 @@ public class TerminalResource extends BasicResource
             JOptionPane.showMessageDialog(null, scrollPane, "Copy this text and insert it into the terminal please.", JOptionPane.YES_NO_OPTION);
 
             Process process = SettingsUtil.openTerminal();
-//            StringBuilder sb = new StringBuilder();
-//            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
-//
-//            String s;
-//            while ((s = reader.readLine()) != null) {
-//                System.out.println("The inout stream is " + s);
-//            }
-//
-////            if (process.exitValue()!=0)
-////            {
-//                System.out.println("error "+process.exitValue());
-//                System.out.println();
-////            }
+            //            StringBuilder sb = new StringBuilder();
+            //            BufferedReader reader=new BufferedReader( new InputStreamReader(process.getInputStream()));
+            //
+            //            String s;
+            //            while ((s = reader.readLine()) != null) {
+            //                System.out.println("The inout stream is " + s);
+            //            }
+            //
+            ////            if (process.exitValue()!=0)
+            ////            {
+            //                System.out.println("error "+process.exitValue());
+            //                System.out.println();
+            ////            }
         }
         else
         {

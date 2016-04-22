@@ -56,6 +56,7 @@ public class MainFrame  {
         con.gridy = 1;
         con.gridx = 1;
         JPanel tagsSelectionPan = getTestTagSelectionPanel();
+        tagsSelectionPan.setPreferredSize(new Dimension(500,500));
         frame.add(tagsSelectionPan,con);
 
         con.weightx = .75;
@@ -83,9 +84,9 @@ public class MainFrame  {
 
         List<ListableItem> tags = new ArrayList<>();
 
-        tags.add(new Tag("hello"));
-        tags.add(new Tag("bye"));
-        tags.add(new Tag("yo!"));
+        tags.add(new SelectableTag("hello"));
+        tags.add(new SelectableTag("bye"));
+        tags.add(new SelectableTag("yo!"));
 
         tagsPanel.setItemsList(tags);
         return tagsPanel;

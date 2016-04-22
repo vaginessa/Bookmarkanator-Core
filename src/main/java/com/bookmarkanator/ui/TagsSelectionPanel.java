@@ -7,12 +7,13 @@ import javax.swing.*;
 /**
  * Created by micah on 4/12/16.
  */
-public class TagsSelectionPanel extends JPanel {
+public class TagsSelectionPanel extends ListableItemsPanel {
     private Set<String> tags;
+    private ListableItemsPanel bookmarksPanel;
+    private SelectedTagsPanel selectedTagsPanel;
 
     public TagsSelectionPanel() {
-        this.setPreferredSize(new Dimension(500,500));
-//        setBackground(Color.CYAN);
+
         setBorder(BorderFactory.createLineBorder(Color.black));
         tags = new HashSet<>();
     }

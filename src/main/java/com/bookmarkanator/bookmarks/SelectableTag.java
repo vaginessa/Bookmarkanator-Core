@@ -4,11 +4,11 @@ import java.util.*;
 import javax.swing.*;
 import com.bookmarkanator.interfaces.*;
 
-public class Tag implements ListableItem
+public class SelectableTag implements ListableItem
 {
     private String text;
 
-    public Tag(String text)
+    public SelectableTag(String text)
     {
         this.text = text;
     }
