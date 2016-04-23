@@ -50,8 +50,11 @@ public class ListableButtonItemPanel extends JPanel
 //            }
 //        });
 //
-        button = new JButton("X");
+        button = new JButton("x");
         button.setPreferredSize(new Dimension(15,15));
+        button.setMinimumSize(new Dimension(15,15));
+        button.setMargin(new Insets(0, 0, 0, 0));
+//        button.setBorderPainted(false);
 
         button.addActionListener(new ActionListener()
         {

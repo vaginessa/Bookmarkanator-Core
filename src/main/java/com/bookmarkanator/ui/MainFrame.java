@@ -213,6 +213,17 @@ public class MainFrame implements Observer {
         terminal.addTag("prompt");
         terminal.addTag("run");
 
+        Bookmark terminal2 = new Bookmark();
+        terminal2.setName("change java");
+        tr = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
+        tr.setText("sudo update-alternatives --config java");
+        terminal2.addObserver(this);
+        terminal2.setResource(tr);
+        terminal2.addTag("java");
+        terminal2.addTag("change");
+        terminal2.addTag("version");
+        terminal2.addTag("Java 8");
+
         Bookmark fileOpen = new Bookmark();
         fileOpen.setName("open home");
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
@@ -230,6 +241,7 @@ public class MainFrame implements Observer {
         bookmarks.add(web2);
         bookmarks.add(web3);
         bookmarks.add(terminal);
+        bookmarks.add(terminal2);
         bookmarks.add(fileOpen);
 
         for (int c=0;c<10;c++)
