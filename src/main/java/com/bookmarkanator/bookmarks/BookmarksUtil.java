@@ -4,20 +4,22 @@ import java.util.*;
 import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
-public class BookmarksUtil {
+public class BookmarksUtil
+{
 
     /**
      * Get all the text of the bookmarks as a set.
+     *
      * @param bookmarks
      * @return
      */
     public static Map<String, List<ListableItem>> getListableItemsTextStrings(List<ListableItem> bookmarks)
     {
         Map<String, List<ListableItem>> res = new HashMap<>();
-        for (ListableItem b: bookmarks)
+        for (ListableItem b : bookmarks)
         {
             List<ListableItem> bl = res.get(b.getName());
-            if (bl==null)
+            if (bl == null)
             {
                 bl = new ArrayList<>();
                 bl.add(b);
@@ -39,7 +41,8 @@ public class BookmarksUtil {
      * @param theseTagsOnly The list of allowed tags a bookmark can have. If it has a single tag it is added to the return list.
      * @return A list of Bookmars that have one or more tags from the supplied tags list.
      */
-    public static List<Bookmark> getBookmarksWithTheseTagsOnly(List<Bookmark> bookmarks, Set<String> theseTagsOnly) {
+    public static List<Bookmark> getBookmarksWithTheseTagsOnly(List<Bookmark> bookmarks, Set<String> theseTagsOnly)
+    {
         List<Bookmark> res = new ArrayList<>();
 
         for (Bookmark b : bookmarks)
@@ -52,7 +55,8 @@ public class BookmarksUtil {
         return res;
     }
 
-    public static List<Bookmark> getBookmarksWithAllOfTheseTagsOnly(List<Bookmark> bookmarks, Set<String> hasAllTheseTags) {
+    public static List<Bookmark> getBookmarksWithAllOfTheseTagsOnly(List<Bookmark> bookmarks, Set<String> hasAllTheseTags)
+    {
         List<Bookmark> res = new ArrayList<>();
 
         for (Bookmark b : bookmarks)
@@ -69,7 +73,7 @@ public class BookmarksUtil {
     {
         boolean hasAll = false;
 
-        for (String s: mustHaveAllThese)
+        for (String s : mustHaveAllThese)
         {//iterate over all must have tags.
             if (!setTocheck.contains(s))
             {//return immediately when item not found in setToCheck
@@ -81,13 +85,14 @@ public class BookmarksUtil {
 
     /**
      * Checks that there is at least one matching item between the two sets.
-     * @param a  First set to check
-     * @param b  Second set to check
-     * @return  Returns true if there is at lease one matching item between the two sets.
+     *
+     * @param a First set to check
+     * @param b Second set to check
+     * @return Returns true if there is at lease one matching item between the two sets.
      */
     public static boolean intersect(Set<String> a, Set<String> b)
     {
-        for (String s: a)
+        for (String s : a)
         {
             if (b.contains(s))
                 return true;
@@ -101,11 +106,14 @@ public class BookmarksUtil {
      * @param bookmarks The list of Bookmarks to extract the list of tags from.
      * @return A map of tags that the supplied bookmarks contained. Map<String, String> where both strings are the tag.
      */
-    public static Set<String> getTags(List<Bookmark> bookmarks) {
+    public static Set<String> getTags(List<Bookmark> bookmarks)
+    {
         Set<String> tags = new HashSet<>();
 
-        for (Bookmark b : bookmarks) {
-            for (String s : b.getTags()) {
+        for (Bookmark b : bookmarks)
+        {
+            for (String s : b.getTags())
+            {
                 tags.add(s);
             }
         }
@@ -119,12 +127,16 @@ public class BookmarksUtil {
         return l;
     }
 
-    public static List<Bookmark> getBookmarksByType(List<Bookmark> bookmarks, List<BasicResource> tagTypesToGet) {
+    public static List<Bookmark> getBookmarksByType(List<Bookmark> bookmarks, List<BasicResource> tagTypesToGet)
+    {
         List<Bookmark> res = new ArrayList<>(bookmarks.size());
 
-        for (Bookmark b : bookmarks) {
-            for (BasicResource bb : tagTypesToGet) {
-                if (b.getResource().getClass().getName().equals(bb.getClass().getName())) {
+        for (Bookmark b : bookmarks)
+        {
+            for (BasicResource bb : tagTypesToGet)
+            {
+                if (b.getResource().getClass().getName().equals(bb.getClass().getName()))
+                {
                     res.add(b);
                 }
             }
@@ -132,60 +144,90 @@ public class BookmarksUtil {
         return res;
     }
 
-
-    public static void sortByCreatedDate(List<Bookmark> bookmarks, boolean ascending) {
-        if (ascending) {
-            Collections.sort(bookmarks, new Comparator<Bookmark>() {
+    public static void sortByCreatedDate(List<Bookmark> bookmarks, boolean ascending)
+    {
+        if (ascending)
+        {
+            Collections.sort(bookmarks, new Comparator<Bookmark>()
+            {
                 @Override
-                public int compare(Bookmark o1, Bookmark o2) {
+                public int compare(Bookmark o1, Bookmark o2)
+                {
                     return o2.getCreatedDate().compareTo(o1.getCreatedDate());
                 }
             });
-        } else {
-            Collections.sort(bookmarks, new Comparator<Bookmark>() {
+        }
+        else
+        {
+            Collections.sort(bookmarks, new Comparator<Bookmark>()
+            {
                 @Override
-                public int compare(Bookmark o1, Bookmark o2) {
+                public int compare(Bookmark o1, Bookmark o2)
+                {
                     return o1.getCreatedDate().compareTo(o2.getCreatedDate());
                 }
             });
         }
     }
 
-    public static void sortByLastAccessed(List<Bookmark> bookmarks, boolean ascending) {
-        if (ascending) {
-            Collections.sort(bookmarks, new Comparator<Bookmark>() {
+    public static void sortByLastAccessed(List<Bookmark> bookmarks, boolean ascending)
+    {
+        if (ascending)
+        {
+            Collections.sort(bookmarks, new Comparator<Bookmark>()
+            {
                 @Override
-                public int compare(Bookmark o1, Bookmark o2) {
+                public int compare(Bookmark o1, Bookmark o2)
+                {
                     return o2.getLastAccessedDate().compareTo(o1.getLastAccessedDate());
                 }
             });
-        } else {
-            Collections.sort(bookmarks, new Comparator<Bookmark>() {
+        }
+        else
+        {
+            Collections.sort(bookmarks, new Comparator<Bookmark>()
+            {
                 @Override
-                public int compare(Bookmark o1, Bookmark o2) {
+                public int compare(Bookmark o1, Bookmark o2)
+                {
                     return o1.getLastAccessedDate().compareTo(o2.getLastAccessedDate());
                 }
             });
         }
     }
 
-
     /**
      * This method is used to get search suggestions for the supplied map of tags and text.
-     * @param tags  A map of available tags.
-     * @param text  The text to search for.
-     * @return  A list of tag strings that contain the supplied text within them.
+     *
+     * @param tags                    a set of tags to search through.
+     * @param text                    The text to search for.
+     * @param preferedNumberOfResults The preferred number of results. It will try to get this number if possible
+     * @return A list of tag strings that contain the supplied text within them.
      */
     public static List<String> getSuggestedTags(Set<String> tags, String text, int preferedNumberOfResults)
     {
+        Map<String, Set<SubStringResults>> tagList = makeTagsList(tags);
+        return getSuggestedTags(tagList, text, preferedNumberOfResults);
+    }
+
+    /**
+     * This method is used to get search suggestions for the supplied map of tags and text.
+     *
+     * @param tagList                 The list of tags to search.
+     * @param text                    The text to search for.
+     * @param preferedNumberOfResults The preferred number of results. It will try to get this number if possible
+     * @return A list of tag strings that contain the supplied text within them.
+     */
+    public static List<String> getSuggestedTags(Map<String, Set<SubStringResults>> tagList, String text, int preferedNumberOfResults)
+    {
         //TODO Implement a more accurate tag search algorithm.
-        Map<String, Set<String[]>> tagList = makeTagsList(tags);
-        Set<String[]> res = tagList.get(text);
-        if (res==null)
+
+        Set<SubStringResults> res = tagList.get(text);
+        if (res == null)
         {
             res = tagList.get(text.toUpperCase());
         }
-        if (res==null)
+        if (res == null)
         {
             res = tagList.get(text.toLowerCase());
         }
@@ -193,11 +235,11 @@ public class BookmarksUtil {
         List<String> resSet;
         Set<String> returnResult = new HashSet<>();
 
-        if (res!=null)
+        if (res != null)
         {
-            for (String[] s: res)
+            for (SubStringResults s : res)
             {//if there is a direct substring match, remove all results that are shorter than the supplied string
-                returnResult.add(s[1]);//adding the actual tag found instead of the string used to find it.
+                returnResult.add(s.getText());//adding the actual tag found instead of the string used to find it.
             }
         }
 
@@ -207,17 +249,17 @@ public class BookmarksUtil {
 
         sortByLength(li, true);
 
-        if (res==null || returnResult.size()<preferedNumberOfResults)
+        if (res == null || returnResult.size() < preferedNumberOfResults)
         {
-            resSet = getMatchesForTextSubstring(tagList,text);
+            resSet = getMatchesForTextSubstring(tagList, text);
 
-            for (String st: resSet)
+            for (String st : resSet)
             {
                 returnResult.add(st);
             }
         }
 
-        for (String s: returnResult)
+        for (String s : returnResult)
         {
             if (!li.contains(s))
             {//don't add any duplicates to the end of the list
@@ -231,26 +273,26 @@ public class BookmarksUtil {
     /**
      * Used in case there are too few matches found by using the entire tag string.
      * <p>
-     *     This method breaks the tag string up and searches for each substring in the list of tag substrings.
+     * This method breaks the tag string up and searches for each substring in the list of tag substrings.
      * </p>
      */
-    private static List<String> getMatchesForTextSubstring(Map<String, Set<String[]>> tagList, String text)
+    private static List<String> getMatchesForTextSubstring(Map<String, Set<SubStringResults>> tagList, String text)
     {
         //TODO modify this method to produce more accurate search results.
         //TODO modify it so that it sorts by found tag first, and then replaces found tags by the real tags.
-        Set<String[]> res;
-        Set<String[]> substrings = getAllSubStrings(text);
+        Set<SubStringResults> res;
+        Set<SubStringResults> substrings = getAllSubStrings(text);
         Set<String> tags = new HashSet<>();
 
-        for (String[] str: substrings)
+        for (SubStringResults str : substrings)
         {//iterate through all substrings found for the supplied text
-            res = tagList.get(str[0]);
+            res = tagList.get(str.getText());
 
-            if (res!=null)
+            if (res != null)
             {
-                for (String[] s: res)
+                for (SubStringResults s : res)
                 {//add tags found
-                    tags.add(s[1]);
+                    tags.add(s.getText());
                 }
             }
         }
@@ -267,6 +309,7 @@ public class BookmarksUtil {
     /**
      * Sorts the supplied list ordering the items closest to the length of the supplied text first, followed by all
      * larger, and then all shorter.
+     *
      * @param li
      * @param text
      */
@@ -281,13 +324,13 @@ public class BookmarksUtil {
 
         int l = text.length();
 
-        for (String s: tmpStr)
+        for (String s : tmpStr)
         {
-            if (s.length()==l)
+            if (s.length() == l)
             {
                 equalList.add(s);
             }
-            else if (s.length()>l)
+            else if (s.length() > l)
             {
                 largerList.add(s);
             }
@@ -313,14 +356,17 @@ public class BookmarksUtil {
                 @Override
                 public int compare(String o1, String o2)
                 {
-                    return o2.length()-o1.length();
+                    return o2.length() - o1.length();
                 }
             });
         }
-        else {
-            Collections.sort(li, new Comparator<String>() {
+        else
+        {
+            Collections.sort(li, new Comparator<String>()
+            {
                 @Override
-                public int compare(String o1, String o2) {
+                public int compare(String o1, String o2)
+                {
                     return o1.length() - o2.length();
                 }
             });
@@ -328,25 +374,45 @@ public class BookmarksUtil {
     }
 
     /**
-     * This method creates a map that contains tag search substrings for faster tag searching.
-     * @param tags  The tags to use to create the tag substrings map.
-     * @return  A map of tag substrings mapped to all the tags that they are contained in.
+     * This method creates a map that contains tag search sub strings for faster tag searching.
+     *
+     * @param tags The tags to use to create the tag sub strings map.
+     * @return A map of tag sub strings mapped to all the tags that they are contained in.
      */
-    public static Map<String, Set<String[]>> makeTagsList(Set<String> tags)
+    public static Map<String, Set<SubStringResults>> makeTagsList(Set<String> tags)
     {
-        Map<String, Set<String[]>> results = new HashMap<>();
-        Set<String[]> allSubstrings = getAllSubStrings(tags);
-        Set<String[]> tmpSet;
+        Map<String, Set<SubStringResults>> results = new HashMap<>();
+        Set<SubStringResults> allSubstrings = getAllSubStrings(tags);
 
-        for (String[] s2: allSubstrings)
+        for (SubStringResults s2 : allSubstrings)
         {//iterate through all substrings.
-            tmpSet = new HashSet<>();
-            results.put(s2[0], tmpSet);
-            for (String[] s: allSubstrings)
-            {//iterate over all tags
-                if (s[0].contains(s2[0]))
-                {//if the tag contains the the substring we are at then add it to the map
-                    tmpSet.add(s);
+            Set<SubStringResults> tmp = results.get(s2.getText());
+
+            //add an entry for this substring result object if needed.
+            if (tmp==null)
+            {//add an entry if one doesn't exist.
+                tmp = new HashSet<>();
+                tmp.add(s2);
+                results.put(s2.getText(), tmp);
+            }
+            else
+            {
+                tmp.add(s2);
+            }
+
+            for (String t: s2.getTags())
+            {//for each substring add or append to and entry.
+                tmp = results.get(t);
+
+                if (tmp==null)
+                {//add an entry if one doesn't exist.
+                    tmp = new HashSet<>();
+                    tmp.add(s2);
+                    results.put(t, tmp);
+                }
+                else
+                {
+                    tmp.add(s2);
                 }
             }
         }
@@ -355,39 +421,38 @@ public class BookmarksUtil {
     }
 
     /**
-     * Accepts a map of tags, and returns a set of all tags, and all substrings of those tags.
-     * @param tags the tags to extract the sub-strings from.
-     * @return A set of all tags, and all sub-strings of those tags.
+     * Accepts a set of tags and creates a set of SubStringResult objects that represent that tag and
+     * all substrings it contains.
+     *
+     * @param tags  Set of tags to create substrings from.
+     * @return  Set<SubStringResult> Each SubStringResult object contains a tag, and all substrings that are
+     * contained within that tag.
      */
-    public static Set<String[]> getAllSubStrings(Set<String> tags)
+    public static Set<SubStringResults> getAllSubStrings(Set<String> tags)
     {
-        Set<String[]> subStrings = new HashSet<>();
-        String[] tmpS;
+        Set<SubStringResults> subStringResults = new HashSet<>();
 
-        for (String s: tags)
+        for (String s : tags)
         {
             int a = 1;
-//            System.out.println("--> "+s);
-            while (a<s.length())
+            SubStringResults ssr = new SubStringResults();
+            ssr.setText(s);
+            while (a < s.length())
             {
-               int pos = 0;
-//                System.out.println("length "+a);
-                while (a+pos<=s.length())
+                int pos = 0;
+                while (a + pos <= s.length())
                 {
-//                    System.out.println("Result "+s.substring(pos,pos+a)+" position "+pos);
-                    tmpS = new String[]{s.substring(pos,pos+a), s};
-                    subStrings.add(tmpS);
-                    pos = pos+1;
+                    ssr.addSubstring(s.substring(pos, pos + a));
+                    subStringResults.add(ssr);
+                    pos = pos + 1;
                 }
-                a = a+1;
+                a = a + 1;
             }
-            tmpS= new String[]{s, s};
-            subStrings.add(tmpS);
         }
-        return subStrings;
+        return subStringResults;
     }
 
-    public static Set<String[]> getAllSubStrings(String text)
+    public static Set<SubStringResults> getAllSubStrings(String text)
     {
         Set<String> set = new HashSet<>();
         set.add(text);
@@ -395,4 +460,6 @@ public class BookmarksUtil {
     }
 
     //TODO Add a tags map creation function?
+
+
 }

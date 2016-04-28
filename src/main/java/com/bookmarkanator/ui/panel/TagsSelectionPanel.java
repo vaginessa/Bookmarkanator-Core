@@ -1,4 +1,8 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui.panel;
+
+import com.bookmarkanator.ui.panel.itempanel.StringPanel;
+import com.bookmarkanator.ui.panel.listpanel.StringsPanel;
+import com.bookmarkanator.ui.panel.listpanel.SelectedTagsPanel;
 
 import java.awt.*;
 import java.util.*;
@@ -7,9 +11,9 @@ import javax.swing.*;
 /**
  * Created by micah on 4/12/16.
  */
-public class TagsSelectionPanel extends ListableItemsPanel {
+public class TagsSelectionPanel extends StringsPanel {
     private Set<String> tags;
-    private ListableItemsPanel bookmarksPanel;
+    private StringsPanel bookmarksPanel;
     private SelectedTagsPanel selectedTagsPanel;
 
     public TagsSelectionPanel() {

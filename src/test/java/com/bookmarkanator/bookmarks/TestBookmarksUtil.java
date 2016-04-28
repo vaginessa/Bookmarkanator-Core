@@ -14,7 +14,7 @@ public class TestBookmarksUtil {
 //        System.out.println("Length "+BookmarksUtil.getAllSubStrings(getTags()).size());
 
 
-        for (String[] sr: BookmarksUtil.getAllSubStrings(getTags()))
+        for (SubStringResults sr: BookmarksUtil.getAllSubStrings(getTags()))
         {
             System.out.println(sr);
         }

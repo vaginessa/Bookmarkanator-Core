@@ -5,7 +5,6 @@ import com.bookmarkanator.bookmarks.Bookmarks;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileReader;
@@ -134,7 +133,7 @@ public class BookmarkParser
                 {
                     throw new Exception("Bookmark uuid attribute missing");
                 }
-                currentBookmark.setTagUUID(UUID.fromString(attr));
+                currentBookmark.setBookmarkUUID(UUID.fromString(attr));
 
                 attr = ParserUtil.getStartElementAttribute(reader, "sharing");
                 if (attr==null)

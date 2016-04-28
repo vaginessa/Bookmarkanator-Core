@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui.panel;
 
 import java.awt.*;
 import javax.swing.*;

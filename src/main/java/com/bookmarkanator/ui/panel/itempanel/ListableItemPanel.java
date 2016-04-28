@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui.panel.itempanel;
 
 import java.awt.*;
 import java.awt.event.*;

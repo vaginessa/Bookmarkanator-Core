@@ -1,10 +1,8 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui.panel;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Date;
 
 /**
  * Created by micah on 4/15/16.
