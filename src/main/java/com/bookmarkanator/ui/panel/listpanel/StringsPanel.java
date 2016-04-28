@@ -15,6 +15,11 @@ import com.bookmarkanator.ui.panel.itempanel.*;
  * This class represents a scrollable, searchable list of JPanels, that have text and a type.
  */
 public class StringsPanel<E> extends JPanel {
+
+    // ============================================================
+    // Fields
+    // ============================================================
+
     private JScrollPane scroll;
     private JPanel pan;
     private JComboBox search;
@@ -27,6 +32,10 @@ public class StringsPanel<E> extends JPanel {
     private Observer observer;//will be added to each panel that is added to this container.
     private String type;
     private StringPanel displayPanel;
+
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     public StringsPanel(Observer observer, String type, StringPanel panelToUse) {
         super();
@@ -177,6 +186,10 @@ public class StringsPanel<E> extends JPanel {
     {
     }
 
+    // ============================================================
+    // Public Methods
+    // ============================================================
+
     public String getType()
     {
         return type;
@@ -190,41 +203,6 @@ public class StringsPanel<E> extends JPanel {
     public JComboBox getSearch()
     {
         return search;
-    }
-
-    private List<E> getSelectedItems() {
-
-        //get suggested tags for the currently selected search item.
-        String selected = search.getSelectedItem().toString();
-        System.out.println("selected method " + selected);
-        search.setPopupVisible(false);
-        search.getEditor().setItem(selected);
-        List<String> l = BookmarksUtil.getSuggestedTags(searchMap,selected, 10);
-
-        //add only the tags that match those search items to the visiblelabels map.
-        visibleLabels.clear();
-
-        for (String s: l)
-        {//adding all visible items that match the search results
-            E tmpE = labels.get(s);
-
-            if (tmpE!=null)
-            {
-                visibleLabels.put(tmpE.toString(), tmpE);
-            }
-        }
-
-        //change the displayed panels to reflect the visible components.
-        refresh();
-
-        //Make list to return.
-        List<E> li = new ArrayList<>();
-
-        for (String e:visibleLabels.keySet())
-        {
-            li.add(visibleLabels.get(e));
-        }
-        return li;
     }
 
     /**
@@ -245,16 +223,6 @@ public class StringsPanel<E> extends JPanel {
 
         //Updating the search map using only the showing items.
         searchMap = BookmarksUtil.makeTagsList(getVisibleLabels().keySet());
-    }
-
-    private void checkRefillSearchMap()
-    {
-        if (dirty)
-        {
-            searchMap = BookmarksUtil.makeTagsList(visibleLabels.keySet());
-            dirty = false;
-            System.out.println("Redoing list!!!!!! ");
-        }
     }
 
     public LinkedHashMap<String, E> getLabels() {
@@ -281,27 +249,6 @@ public class StringsPanel<E> extends JPanel {
     public Observer getObserver() {
         return observer;
     }
-
-//    public void setItemsList(List<E> items)
-//    {
-//        this.items = items;
-//    }
-//
-//    public List<E> getItemsList()
-//    {
-//       return items;
-//    }
-
-//    /**
-//     * This method is used to add strings to the internal list of strings that will be displayed.
-//     * The user should call refresh() after they are done loading strings, and it will add all the necessary panels.
-//     * @param text
-//     */
-//    public void addLabel(String text)
-//    {
-//        getLabels().add(text);
-//        dirty = true;
-//    }
 
     @Override
     public void remove(Component comp)
@@ -356,6 +303,10 @@ public class StringsPanel<E> extends JPanel {
         pan.add(addToMe(comp), constraints, index);
     }
 
+
+    // ============================================================
+    // Private Methods
+    // ============================================================
     private Component addToMe(Component component)
     {
         if (component instanceof StringPanelInterface)
@@ -379,6 +330,51 @@ public class StringsPanel<E> extends JPanel {
             visibleLabels.remove((E)sp.getItem().toString());
             dirty = true;
         }
+    }
+
+    private void checkRefillSearchMap()
+    {
+        if (dirty)
+        {
+            searchMap = BookmarksUtil.makeTagsList(visibleLabels.keySet());
+            dirty = false;
+            System.out.println("Redoing list!!!!!! ");
+        }
+    }
+
+    private List<E> getSelectedItems() {
+
+        //get suggested tags for the currently selected search item.
+        String selected = search.getSelectedItem().toString();
+        System.out.println("selected method " + selected);
+        search.setPopupVisible(false);
+        search.getEditor().setItem(selected);
+        List<String> l = BookmarksUtil.getSuggestedTags(searchMap,selected, 10);
+
+        //add only the tags that match those search items to the visiblelabels map.
+        visibleLabels.clear();
+
+        for (String s: l)
+        {//adding all visible items that match the search results
+            E tmpE = labels.get(s);
+
+            if (tmpE!=null)
+            {
+                visibleLabels.put(tmpE.toString(), tmpE);
+            }
+        }
+
+        //change the displayed panels to reflect the visible components.
+        refresh();
+
+        //Make list to return.
+        List<E> li = new ArrayList<>();
+
+        for (String e:visibleLabels.keySet())
+        {
+            li.add(visibleLabels.get(e));
+        }
+        return li;
     }
 
 }
