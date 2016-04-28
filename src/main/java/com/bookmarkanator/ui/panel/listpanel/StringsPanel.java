@@ -214,8 +214,11 @@ public class StringsPanel<E> extends JPanel {
         pan.removeAll();
 
         for (String b : getVisibleLabels().keySet()) {
-            StringPanel sp = displayPanel.getNew(b, getObserver(), getType());
-            pan.add(sp);
+            E i = getVisibleLabels().get(b);
+            if (i!=null)
+            {
+                StringPanel sp = displayPanel.getNew(i, getObserver(), getType()); pan.add(sp);
+            }
         }
         //TODO maintain an internal list of string to jpanel mappings, and only add new ones that are not already in the list? If so how to handle
         //duplicate elements?

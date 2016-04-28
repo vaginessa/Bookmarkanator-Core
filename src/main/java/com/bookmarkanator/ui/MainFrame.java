@@ -165,14 +165,14 @@ public class MainFrame implements Observer {
 
     private StringsPanel getTestBookmarks()
     {
-        StringsPanel bookmarksPan = new StringsPanel(this, MainFrame.BOOKMARK, new StringPanel());
+        StringsPanel bookmarksPan = new StringsPanel(this, MainFrame.BOOKMARK, new BookmarkPanel<Bookmark>());
 
         Bookmark web = new Bookmark();
         web.setName("yahoo.com");
         DefaultSystemResource dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
         dsr.setName("yahoo.com");
         dsr.setText("http://www.yahoo.com");
-        web.addObserver(this);
+//        web.addObserver(this);
         web.setResource(dsr);
         web.addTag("yahoo");
         web.addTag("internet");
@@ -184,7 +184,7 @@ public class MainFrame implements Observer {
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
         dsr.setName("google.com");
         dsr.setText("http://www.google.com");
-        web1.addObserver(this);
+//        web1.addObserver(this);
         web1.setResource(dsr);
         web1.addTag("web");
         web1.addTag("search");
@@ -196,7 +196,7 @@ public class MainFrame implements Observer {
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
         dsr.setName("msn");
         dsr.setText("http://www.msn.com");
-        web2.addObserver(this);
+//        web2.addObserver(this);
         web2.setResource(dsr);
         web2.addTag("web");
         web2.addTag("msn");
@@ -208,7 +208,7 @@ public class MainFrame implements Observer {
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_WEB_BROWSER);
         dsr.setName("acronymfinder");
         dsr.setText("http://www.acronymfinder.com");
-        web3.addObserver(this);
+//        web3.addObserver(this);
         web3.setResource(dsr);
         web3.addTag("web");
         web3.addTag("acronym");
@@ -219,7 +219,7 @@ public class MainFrame implements Observer {
         terminal.setName("pwd");
         TerminalResource tr = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
         tr.setText("pwd");
-        terminal.addObserver(this);
+//        terminal.addObserver(this);
         terminal.setResource(tr);
         terminal.addTag("print");
         terminal.addTag("directory");
@@ -231,7 +231,7 @@ public class MainFrame implements Observer {
         terminal2.setName("change java");
         tr = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
         tr.setText("sudo update-alternatives --config java");
-        terminal2.addObserver(this);
+//        terminal2.addObserver(this);
         terminal2.setResource(tr);
         terminal2.addTag("java");
         terminal2.addTag("change");
@@ -242,7 +242,7 @@ public class MainFrame implements Observer {
         fileOpen.setName("open home");
         dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
         dsr.setText("/home");
-        fileOpen.addObserver(this);
+//        fileOpen.addObserver(this);
         fileOpen.setResource(dsr);
         fileOpen.addTag("file");
         fileOpen.addTag("open");
@@ -264,7 +264,7 @@ public class MainFrame implements Observer {
             fileOpen.setName("open home "+c);
             dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
             dsr.setText("/home");
-            fileOpen.addObserver(this);
+//            fileOpen.addObserver(this);
             fileOpen.setResource(dsr);
             fileOpen.addTag("file");
             fileOpen.addTag("open");
@@ -302,7 +302,7 @@ public class MainFrame implements Observer {
         if (arg instanceof StringPanelInterface)
         {
             StringPanel sp = (StringPanel) arg;
-            System.out.println("String panel clicked "+sp.getType()+" "+sp.getText());
+            System.out.println("String panel clicked "+sp.getType()+" "+sp.getText()+" "+sp.getItem().getClass().getName());
 
             if (sp.getType().equals(MainFrame.SELECTABLE_TAG))
             {
@@ -320,9 +320,18 @@ public class MainFrame implements Observer {
                 selectedTags.remove(sp);
                 selectedTags.updateUI();
             }
-            else if (sp.getType().equals(MainFrame.BOOKMARK_TYPE))
+            else if (sp.getItem() instanceof Bookmark)
             {
+                try
+                {
+                    Bookmark b = (Bookmark)sp.getItem();
 
+                    b.execute();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             else if (sp.getType().equals(MainFrame.BOOKMARK))
             {

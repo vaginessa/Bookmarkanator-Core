@@ -89,11 +89,12 @@ public class StringPanel<E> extends JPanel implements StringPanelInterface {
 
     @Override
     public StringPanel getNew(StringPanelInterface spi) {
-        return new StringPanel(spi.getText(), spi.getObserver(), spi.getType());
+        return new StringPanel(spi.getItem(), spi.getObserver(), spi.getType());
     }
 
     @Override
-    public StringPanel getNew(String text, Observer observer, String type) {
-        return new StringPanel(text, observer, type);
+    public StringPanel getNew(Object item, Observer observer, String type)
+    {
+        return new StringPanel(item, observer, type);
     }
 }

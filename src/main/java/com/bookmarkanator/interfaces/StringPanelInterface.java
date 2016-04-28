@@ -24,5 +24,5 @@ public interface StringPanelInterface<E>
 
     StringPanelInterface getNew(StringPanelInterface spi);
 
-    StringPanelInterface getNew(String text, Observer observer, String type);
+    StringPanelInterface getNew(E item, Observer observer, String type);
 }
