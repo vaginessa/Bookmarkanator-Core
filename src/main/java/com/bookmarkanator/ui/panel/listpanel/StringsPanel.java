@@ -16,6 +16,9 @@ import com.bookmarkanator.ui.panel.itempanel.*;
  */
 public class StringsPanel<E> extends JPanel {
 
+    //TODO Found a bug in the labels search function. There were two labels: Java, and Java 8. When I searched j, or java, it only came up with Java
+    //as the result, if I searched for 8 it would come up with Java 8
+
     // ============================================================
     // Fields
     // ============================================================

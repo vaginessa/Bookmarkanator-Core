@@ -1,38 +1,10 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.interfaces.*;
 import com.bookmarkanator.resourcetypes.*;
 
 public class BookmarksUtil
 {
-
-    /**
-     * Get all the text of the bookmarks as a set.
-     *
-     * @param bookmarks
-     * @return
-     */
-    public static Map<String, List<ListableItem>> getListableItemsTextStrings(List<ListableItem> bookmarks)
-    {
-        Map<String, List<ListableItem>> res = new HashMap<>();
-        for (ListableItem b : bookmarks)
-        {
-            List<ListableItem> bl = res.get(b.getName());
-            if (bl == null)
-            {
-                bl = new ArrayList<>();
-                bl.add(b);
-                res.put(b.getName(), bl);
-            }
-            else
-            {
-                bl.add(b);
-            }
-        }
-        return res;
-    }
-
     /**
      * Accepts a list of Bookmarks, and tags, and returns a list of Bookmarks that have one or more of the supplied
      * tags in them. Essentially it removes all Bookmarks that don't contain any of the supplied tags.
@@ -55,7 +27,7 @@ public class BookmarksUtil
         return res;
     }
 
-    public static List<Bookmark> getBookmarksWithAllOfTheseTagsOnly(List<Bookmark> bookmarks, Set<String> hasAllTheseTags)
+    public static List<Bookmark> getBookmarksWithAllOfTheseTagsOnly(Set<Bookmark> bookmarks, Set<String> hasAllTheseTags)
     {
         List<Bookmark> res = new ArrayList<>();
 
@@ -71,7 +43,6 @@ public class BookmarksUtil
 
     public static boolean contains(Set<String> setTocheck, Set<String> mustHaveAllThese)
     {
-        boolean hasAll = false;
 
         for (String s : mustHaveAllThese)
         {//iterate over all must have tags.
@@ -115,6 +86,22 @@ public class BookmarksUtil
             for (String s : b.getTags())
             {
                 tags.add(s);
+            }
+        }
+        return tags;
+    }
+
+    public static Set<String> getTags(Map<String, Bookmark> bookmarks)
+    {
+        Set<String> tags = new HashSet<>();
+
+        for (String s: bookmarks.keySet())
+        {
+            Bookmark b = bookmarks.get(s);
+
+            if (b!=null)
+            {
+                tags.addAll(b.getTags());
             }
         }
         return tags;

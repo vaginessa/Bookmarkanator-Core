@@ -32,7 +32,7 @@ public class BookmarkPanel<E> extends StringPanel
 
     private String getBookmarkType(Bookmark bm)
     {
-        return "BM";
+        return bm.getTypeString();
     }
 
     @Override
