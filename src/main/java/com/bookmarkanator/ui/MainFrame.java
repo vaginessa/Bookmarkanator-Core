@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui  ;
+package com.bookmarkanator.ui;
 
 import java.awt.*;
 import java.util.*;
@@ -11,11 +11,12 @@ import com.bookmarkanator.ui.panel.*;
 import com.bookmarkanator.ui.panel.itempanel.*;
 import com.bookmarkanator.ui.panel.listpanel.*;
 
-public class MainFrame implements Observer {
-    public static final String SELECTED_TAG ="Selected Tag";
-    public static final String SELECTABLE_TAG ="Selectable Tag";
-    public static final String BOOKMARK_TYPE ="Bookmark Type";
-    public static final String BOOKMARK ="Bookmark";
+public class MainFrame implements Observer
+{
+    public static final String SELECTED_TAG = "Selected Tag";
+    public static final String SELECTABLE_TAG = "Selectable Tag";
+    public static final String BOOKMARK_TYPE = "Bookmark Type";
+    public static final String BOOKMARK = "Bookmark";
 
     private JFrame frame;
     private GridBagConstraints con;
@@ -28,7 +29,7 @@ public class MainFrame implements Observer {
     public MainFrame()
     {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(800,800));
+        frame.setPreferredSize(new Dimension(800, 800));
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridBagLayout());
@@ -43,10 +44,9 @@ public class MainFrame implements Observer {
         frame.setVisible(true);
     }
 
-
     private void init()
     {
-//        JSplitPane
+        //        JSplitPane
         con = new GridBagConstraints();
         con.fill = GridBagConstraints.BOTH;
         con.weightx = .20;
@@ -55,10 +55,10 @@ public class MainFrame implements Observer {
         con.gridy = 0;
         con.gridwidth = 1;
         con.gridheight = 2;
-        bookmarkTypes = new StringsPanel(this, MainFrame.BOOKMARK_TYPE,new StringPanel());
+        bookmarkTypes = new StringsPanel(this, MainFrame.BOOKMARK_TYPE, new StringPanel());
         bookmarkTypes.getSearch().setVisible(false);
-        bookmarkTypes.setMinimumSize(new Dimension(80,500));
-        bookmarkTypes.setMaximumSize(new Dimension(200,500));
+        bookmarkTypes.setMinimumSize(new Dimension(80, 500));
+        bookmarkTypes.setMaximumSize(new Dimension(200, 500));
 
         frame.add(bookmarkTypes, con);
 
@@ -73,8 +73,8 @@ public class MainFrame implements Observer {
         con.gridy = 1;
         con.gridx = 1;
         tagsSelectionPan = new StringsPanel<String>(this, MainFrame.SELECTABLE_TAG, new StringPanel());
-        tagsSelectionPan.setPreferredSize(new Dimension(500,500));
-        frame.add(tagsSelectionPan,con);
+        tagsSelectionPan.setPreferredSize(new Dimension(500, 500));
+        frame.add(tagsSelectionPan, con);
 
         con.weightx = 1;
         con.gridx = 2;
@@ -82,7 +82,7 @@ public class MainFrame implements Observer {
         con.gridheight = 2;
         bookmarksPan = getTestBookmarks();
         bookmarksPan.setPreferredSize(new Dimension(200, 600));
-        frame.add(bookmarksPan,con);
+        frame.add(bookmarksPan, con);
 
         con.gridx = 0;
         con.gridy = 2;
@@ -90,7 +90,7 @@ public class MainFrame implements Observer {
         con.gridheight = 1;
         con.weighty = .20;
         OptionsPanel options = new OptionsPanel();
-        options.setMinimumSize(new Dimension(-1,80));
+        options.setMinimumSize(new Dimension(-1, 80));
         frame.add(options, con);
 
         addTagsToSelectableTagsPanel(null);
@@ -99,24 +99,24 @@ public class MainFrame implements Observer {
 
     private void addBookmarkTypesToPanel()
     {
-//        List<String> b = bookmarksPan.getLabels();
-//        Set<String> strings = new HashSet<>();
-//        List<ListableItem> b2 = new ArrayList<>();
-//
-//        for (String l: b)
-//        {
-//            Bookmark bk = ((Bookmark)l);
-//            strings.add(bk.getResource().getTypeString());
-//        }
-//
-//        for (String s: strings)
-//        {
-//            BookmarkType st = new BookmarkType(s);
-//            st.addObserver(this);
-//            b2.add(st);
-//        }
-//
-//        bookmarkTypes.setLabels(b2);
+        //        List<String> b = bookmarksPan.getLabels();
+        //        Set<String> strings = new HashSet<>();
+        //        List<ListableItem> b2 = new ArrayList<>();
+        //
+        //        for (String l: b)
+        //        {
+        //            Bookmark bk = ((Bookmark)l);
+        //            strings.add(bk.getResource().getTypeString());
+        //        }
+        //
+        //        for (String s: strings)
+        //        {
+        //            BookmarkType st = new BookmarkType(s);
+        //            st.addObserver(this);
+        //            b2.add(st);
+        //        }
+        //
+        //        bookmarkTypes.setLabels(b2);
     }
 
     private void addTagsToSelectableTagsPanel(List<String> withoutThese)
@@ -125,9 +125,9 @@ public class MainFrame implements Observer {
         Set<String> s = BookmarksUtil.getTags(bookmarksPan.getLabels());
         labels.addAll(s);
 
-        if (withoutThese!=null)
+        if (withoutThese != null)
         {
-            for (String st: withoutThese)
+            for (String st : withoutThese)
             {
                 labels.remove(st);
             }
@@ -183,7 +183,6 @@ public class MainFrame implements Observer {
         web3.addTag("acronym");
         web3.addTag("search");
 
-
         Bookmark terminal = new Bookmark();
         terminal.setName("pwd");
         TerminalResource tr = new TerminalResource(TerminalResource.OPEN_TERMINAL_ONLY);
@@ -214,8 +213,7 @@ public class MainFrame implements Observer {
         fileOpen.addTag("open");
         fileOpen.addTag("sys home");
 
-
-        bookmarks= new ArrayList<>();
+        bookmarks = new ArrayList<>();
         bookmarks.add(web);
         bookmarks.add(web1);
         bookmarks.add(web2);
@@ -224,13 +222,13 @@ public class MainFrame implements Observer {
         bookmarks.add(terminal2);
         bookmarks.add(fileOpen);
 
-        for (int c=0;c<100;c++)
+        for (int c = 0; c < 100; c++)
         {
             fileOpen = new Bookmark();
-            fileOpen.setName("open home "+c);
+            fileOpen.setName("open home " + c);
             dsr = new DefaultSystemResource(DefaultSystemResource.RESOURCE_TYPE_DEFAULT_FILE_BROWSER);
             dsr.setText("/home");
-//            fileOpen.addObserver(this);
+            //            fileOpen.addObserver(this);
             fileOpen.setResource(dsr);
             fileOpen.addTag("file");
             fileOpen.addTag("open");
@@ -254,12 +252,13 @@ public class MainFrame implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable o, Object arg)
+    {
 
         if (arg instanceof StringPanelInterface)
         {
             StringPanel sp = (StringPanel) arg;
-            System.out.println("String panel clicked "+sp.getType()+" "+sp.getText()+" "+sp.getItem().getClass().getName());
+            System.out.println("String panel clicked " + sp.getType() + " " + sp.getText() + " " + sp.getItem().getClass().getName());
 
             if (sp.getType().equals(MainFrame.SELECTABLE_TAG))
             {
@@ -268,7 +267,8 @@ public class MainFrame implements Observer {
 
                 List<Bookmark> li = new ArrayList<>();
                 li.addAll(bookmarksPan.getLabels().values());
-                List<Bookmark> panelBookmarks = BookmarksUtil.getBookmarksWithAllOfTheseTagsOnly(new HashSet<>(li),selectedTags.getLabels().keySet());
+                List<Bookmark> panelBookmarks = BookmarksUtil
+                    .getBookmarksWithAllOfTheseTagsOnly(new HashSet<>(li), selectedTags.getLabels().keySet());
                 bookmarksPan.setLabels(panelBookmarks);
                 bookmarksPan.updateUI();
 
@@ -277,6 +277,9 @@ public class MainFrame implements Observer {
 
                 addTagsToSelectableTagsPanel(sl);
 
+                bookmarksPan.getSearch().getEditor().setItem("");
+                selectedTags.getSearch().getEditor().setItem("");
+                tagsSelectionPan.getSearch().getEditor().setItem("");
 
             }
             else if (sp.getType().equals(MainFrame.SELECTED_TAG))
@@ -284,8 +287,7 @@ public class MainFrame implements Observer {
                 selectedTags.remove(sp);
                 selectedTags.updateUI();
 
-
-                System.out.println("S2 "+selectedTags.getLabels().size());
+                System.out.println("S2 " + selectedTags.getLabels().size());
 
                 List<Bookmark> panelBookmarks;
                 if (selectedTags.getLabels().isEmpty())
@@ -304,12 +306,16 @@ public class MainFrame implements Observer {
                 sl.addAll(selectedTags.getLabels().keySet());
 
                 addTagsToSelectableTagsPanel(sl);
+                bookmarksPan.getSearch().getEditor().setItem("");
+                selectedTags.getSearch().getEditor().setItem("");
+                tagsSelectionPan.getSearch().getEditor().setItem("");
+
             }
             else if (sp.getItem() instanceof Bookmark)
             {
                 try
                 {
-                    Bookmark b = (Bookmark)sp.getItem();
+                    Bookmark b = (Bookmark) sp.getItem();
 
                     b.execute();
                 }
@@ -329,7 +335,7 @@ public class MainFrame implements Observer {
         }
         else
         {
-            System.out.println("Unspecified object action "+arg.getClass().getName());
+            System.out.println("Unspecified object action " + arg.getClass().getName());
         }
     }
 }

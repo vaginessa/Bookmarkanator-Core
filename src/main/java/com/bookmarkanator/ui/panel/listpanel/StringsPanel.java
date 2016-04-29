@@ -17,7 +17,9 @@ import com.bookmarkanator.ui.panel.itempanel.*;
 public class StringsPanel<E> extends JPanel {
 
     //TODO Found a bug in the labels search function. There were two labels: Java, and Java 8. When I searched j, or java, it only came up with Java
-    //as the result, if I searched for 8 it would come up with Java 8
+    //as the result, if I searched for 8 it would come up with Java 8. A minor bug but could cause issues later.
+
+    //TODO Arrange the results put in the scroll pane alphabetically.
 
     // ============================================================
     // Fields
@@ -59,6 +61,7 @@ public class StringsPanel<E> extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 System.out.println("clicked ");
                 getSelectedItems();
+//                observer.update(null, search);
             }
         });
         final String[] st = new String[1];//final container for inputted text
@@ -86,6 +89,7 @@ public class StringsPanel<E> extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Action!");
                 getSelectedItems();
+//                observer.update(null, search);
             }
         });
         search.getEditor().getEditorComponent().addKeyListener(new KeyListener() {
@@ -102,6 +106,10 @@ public class StringsPanel<E> extends JPanel {
 
                 //TODO Get rid of sound when backspace reaches the left side of the text area.
                 //TODO find out why key events are triggering action performed and item state changed events on Linux Mint.
+
+                //TODO Scenario: Add a couple of tags to the tag selection panel, then do a search for one (hit enter), then remove
+                //that tag. The tags that were hidden by the search are still hidden. Pressing backspace will reveal them again. This is a
+                //larger bug.
                 if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER &&
                         e.getKeyCode() != KeyEvent.VK_RIGHT && e.getKeyCode() != KeyEvent.VK_LEFT) {
 
