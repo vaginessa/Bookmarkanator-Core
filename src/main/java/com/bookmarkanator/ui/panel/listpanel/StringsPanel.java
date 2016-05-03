@@ -17,7 +17,9 @@ import com.bookmarkanator.ui.panel.itempanel.*;
 public class StringsPanel<E> extends JPanel {
 
     //TODO Found a bug in the labels search function. There were two labels: Java, and Java 8. When I searched j, or java, it only came up with Java
-    //as the result, if I searched for 8 it would come up with Java 8. A minor bug but could cause issues later.
+    //as the result, if I searched for 8 it would come up with Java 8. A minor bug but could cause issues later. -Update; this bug is caused by the case
+    //of the text. It missed Java 8 because the j was capitalized, but the lowercase j list of results only contains Java not Java 8. Add in a feature of
+    //the search suggestions results that if the results are to short ignore case.
 
     //TODO Arrange the results put in the scroll pane alphabetically.
 

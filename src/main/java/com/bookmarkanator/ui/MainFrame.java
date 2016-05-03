@@ -23,7 +23,7 @@ public class MainFrame implements Observer
     private StringsPanel<Bookmark> bookmarksPan;
     private StringsPanel<String> tagsSelectionPan;
     private StringsPanel<String> selectedTags;
-    private StringsPanel bookmarkTypes;
+    private StringsPanel<String> bookmarkTypes;
     private List<Bookmark> bookmarks;
 
     public MainFrame()
@@ -55,7 +55,7 @@ public class MainFrame implements Observer
         con.gridy = 0;
         con.gridwidth = 1;
         con.gridheight = 2;
-        bookmarkTypes = new StringsPanel(this, MainFrame.BOOKMARK_TYPE, new StringPanel());
+        bookmarkTypes = new StringsPanel<>(this, MainFrame.BOOKMARK_TYPE, new ToggleButtonPanel<String>());
         bookmarkTypes.getSearch().setVisible(false);
         bookmarkTypes.setMinimumSize(new Dimension(80, 500));
         bookmarkTypes.setMaximumSize(new Dimension(200, 500));
@@ -67,7 +67,7 @@ public class MainFrame implements Observer
         con.gridheight = 1;
         con.gridx = 1;
         con.gridy = 0;
-        selectedTags = new StringsPanel(this, MainFrame.SELECTED_TAG, new XButtonPanel());
+        selectedTags = new StringsPanel<>(this, MainFrame.SELECTED_TAG, new XButtonPanel());
         frame.add(selectedTags, con);
 
         con.gridy = 1;
@@ -99,24 +99,20 @@ public class MainFrame implements Observer
 
     private void addBookmarkTypesToPanel()
     {
-        //        List<String> b = bookmarksPan.getLabels();
-        //        Set<String> strings = new HashSet<>();
-        //        List<ListableItem> b2 = new ArrayList<>();
-        //
-        //        for (String l: b)
-        //        {
-        //            Bookmark bk = ((Bookmark)l);
-        //            strings.add(bk.getResource().getTypeString());
-        //        }
-        //
-        //        for (String s: strings)
-        //        {
-        //            BookmarkType st = new BookmarkType(s);
-        //            st.addObserver(this);
-        //            b2.add(st);
-        //        }
-        //
-        //        bookmarkTypes.setLabels(b2);
+        Set<String> types = BookmarksUtil.getBookmarkResourceTypeStrings(bookmarks);
+        List<String> res = new ArrayList<>();
+
+        for (String s: types)
+        {
+            String tmp = s.substring(s.lastIndexOf(".")+1, s.length());
+            if (tmp.equals("TerminalResource"))
+            {
+                tmp = "Term";
+            }
+            res.add(tmp);
+        }
+
+        bookmarkTypes.setLabels(res);
     }
 
     private void addTagsToSelectableTagsPanel(List<String> withoutThese)

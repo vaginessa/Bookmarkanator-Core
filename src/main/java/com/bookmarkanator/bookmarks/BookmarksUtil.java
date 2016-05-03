@@ -5,6 +5,7 @@ import com.bookmarkanator.resourcetypes.*;
 
 public class BookmarksUtil
 {
+
     /**
      * Accepts a list of Bookmarks, and tags, and returns a list of Bookmarks that have one or more of the supplied
      * tags in them. Essentially it removes all Bookmarks that don't contain any of the supplied tags.
@@ -114,7 +115,7 @@ public class BookmarksUtil
         return l;
     }
 
-    public static List<Bookmark> getBookmarksByType(List<Bookmark> bookmarks, List<BasicResource> tagTypesToGet)
+    public static List<Bookmark> getBookmarksByType(List<Bookmark> bookmarks, Set<BasicResource> tagTypesToGet)
     {
         List<Bookmark> res = new ArrayList<>(bookmarks.size());
 
@@ -130,6 +131,33 @@ public class BookmarksUtil
         }
         return res;
     }
+
+    public static Set<String> getBookmarkResourceTypeStrings(List<Bookmark> bookmarks)
+    {
+        Set<String> results = new HashSet<>();
+        for (Bookmark b: bookmarks)
+        {
+            if (b.getResource()!=null)
+            {
+
+                if (b.getResource() instanceof DefaultSystemResource)
+                {
+                    DefaultSystemResource df = (DefaultSystemResource)b.getResource();
+                    results.add(df.getClass().getName()+"."+df.getTypeString());
+                    System.out.println("Class name "+df.getClass().getName()+"."+df.getTypeString());
+                }
+                else
+                {
+                    results.add(b.getResource().getClass().getName());
+                    System.out.println("Class name "+b.getResource().getClass().getName());
+                }
+
+            }
+        }
+
+        return results;
+    }
+
 
     public static void sortByCreatedDate(List<Bookmark> bookmarks, boolean ascending)
     {

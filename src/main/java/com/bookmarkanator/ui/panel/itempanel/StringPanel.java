@@ -25,14 +25,18 @@ public class StringPanel<E> extends JPanel implements StringPanelInterface {
     public StringPanel(E item, Observer observer, String type) {
         this.item = item;
         this.observer = observer;
-        label = new JLabel(item.toString());
         this.type = type;
 
+        prepareUI();
+        prepareListeners();
+    }
+
+    protected void prepareUI()
+    {
+        label = new JLabel(item.toString());
         this.setBorder(BorderFactory.createRaisedBevelBorder());
 
         this.add(label);
-
-        prepareListeners();
     }
 
     @Override
@@ -58,7 +62,7 @@ public class StringPanel<E> extends JPanel implements StringPanelInterface {
 
     @Override
     public String getText() {
-        return label.getText();
+        return item.toString();
     }
 
     @Override
