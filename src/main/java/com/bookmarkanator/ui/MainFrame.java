@@ -23,7 +23,7 @@ public class MainFrame implements Observer
     private StringsPanel<Bookmark> bookmarksPan;
     private StringsPanel<String> tagsSelectionPan;
     private StringsPanel<String> selectedTags;
-    private StringsPanel<String> bookmarkTypes;
+    private StringsPanel<BasicResource> bookmarkTypes;
     private List<Bookmark> bookmarks;
 
     public MainFrame()
@@ -55,7 +55,7 @@ public class MainFrame implements Observer
         con.gridy = 0;
         con.gridwidth = 1;
         con.gridheight = 2;
-        bookmarkTypes = new StringsPanel<>(this, MainFrame.BOOKMARK_TYPE, new ToggleButtonPanel<String>());
+        bookmarkTypes = new StringsPanel<>(this, MainFrame.BOOKMARK_TYPE, new ToggleButtonPanel<BasicResource>());
         bookmarkTypes.getSearch().setVisible(false);
         bookmarkTypes.setMinimumSize(new Dimension(80, 500));
         bookmarkTypes.setMaximumSize(new Dimension(200, 500));
@@ -99,18 +99,8 @@ public class MainFrame implements Observer
 
     private void addBookmarkTypesToPanel()
     {
-        Set<String> types = BookmarksUtil.getBookmarkResourceTypeStrings(bookmarks);
-        List<String> res = new ArrayList<>();
-
-        for (String s: types)
-        {
-            String tmp = s.substring(s.lastIndexOf(".")+1, s.length());
-            if (tmp.equals("TerminalResource"))
-            {
-                tmp = "Term";
-            }
-            res.add(tmp);
-        }
+        Set<BasicResource> types = BookmarksUtil.getUniqueResources(bookmarks);
+        List<BasicResource> res = new ArrayList<>(types);
 
         bookmarkTypes.setLabels(res);
     }
@@ -320,9 +310,38 @@ public class MainFrame implements Observer
                     e.printStackTrace();
                 }
             }
-            else if (sp.getType().equals(MainFrame.BOOKMARK))
+            else if (sp instanceof ToggleButtonPanel)
             {
+                System.out.println("Toggle button clicked ");
+                ArrayList selected = new ArrayList();
 
+                for (Component com: bookmarkTypes.getPan().getComponents())
+                {
+                    if (com instanceof ToggleButtonPanel)
+                    {
+                        ToggleButtonPanel tg = (ToggleButtonPanel)com;
+                        if (!tg.getButton().isSelected())
+                        {
+                            System.out.println(tg.getItem().toString()+" is selected");
+                            selected.add(tg.getItem());
+                        }
+                    }
+                }
+
+                bookmarksPan.setLabels(BookmarksUtil.filterBookmarksByResourceTypeName(bookmarks, selected));
+                bookmarksPan.refresh();
+
+                //adding bookmark tags to tag selection panel
+                List<String> labels = new ArrayList<>();
+                Set<String> s = BookmarksUtil.getTags(bookmarksPan.getLabels());
+                labels.addAll(s);
+                tagsSelectionPan.setLabels(labels);
+
+                selectedTags.setLabels(new ArrayList<>());
+
+                bookmarksPan.getSearch().getEditor().setItem("");
+                selectedTags.getSearch().getEditor().setItem("");
+                tagsSelectionPan.getSearch().getEditor().setItem("");
             }
             else
             {

@@ -199,6 +199,7 @@ public class StringsPanel<E> extends JPanel {
     {
     }
 
+
     // ============================================================
     // Public Methods
     // ============================================================
@@ -239,6 +240,11 @@ public class StringsPanel<E> extends JPanel {
 
         //Updating the search map using only the showing items.
         searchMap = BookmarksUtil.makeTagsList(getVisibleLabels().keySet());
+    }
+
+    public JPanel getPan()
+    {
+        return pan;
     }
 
     public LinkedHashMap<String, E> getLabels() {

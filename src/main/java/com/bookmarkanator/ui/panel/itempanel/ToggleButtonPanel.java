@@ -19,16 +19,9 @@ public class ToggleButtonPanel<E> extends StringPanel
 
         final ToggleButtonPanel thisPan = this;
 
-
-//        button.setPreferredSize(new Dimension(15,15));
-//        button.setMinimumSize(new Dimension(15,15));
-//        button.setMargin(new Insets(0, 0, 0, 0));
-
-
         prepareListeners();
-
-
     }
+
     @Override
     protected void prepareUI()
     {
@@ -52,6 +45,11 @@ public class ToggleButtonPanel<E> extends StringPanel
                 }
             });
         }
+    }
+
+    public JToggleButton getButton()
+    {
+        return button;
     }
 
     public ToggleButtonPanel getNew(Object item, Observer observer, String type) {

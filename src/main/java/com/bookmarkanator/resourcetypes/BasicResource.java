@@ -58,6 +58,12 @@ public class BasicResource implements XMLWritable
         return getText();
     }
 
+    @Override
+    public String toString()
+    {
+        return getTypeString();
+    }
+
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs+"<basic-resource>");

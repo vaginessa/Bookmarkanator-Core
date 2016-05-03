@@ -132,30 +132,43 @@ public class BookmarksUtil
         return res;
     }
 
-    public static Set<String> getBookmarkResourceTypeStrings(List<Bookmark> bookmarks)
+    public static Set<BasicResource> getUniqueResources(List<Bookmark> bookmarks)
     {
-        Set<String> results = new HashSet<>();
+        Set<BasicResource> results = new HashSet<>();
         for (Bookmark b: bookmarks)
         {
             if (b.getResource()!=null)
             {
-
-                if (b.getResource() instanceof DefaultSystemResource)
-                {
-                    DefaultSystemResource df = (DefaultSystemResource)b.getResource();
-                    results.add(df.getClass().getName()+"."+df.getTypeString());
-                    System.out.println("Class name "+df.getClass().getName()+"."+df.getTypeString());
-                }
-                else
-                {
-                    results.add(b.getResource().getClass().getName());
-                    System.out.println("Class name "+b.getResource().getClass().getName());
-                }
-
+                results.add(b.getResource());
             }
         }
 
         return results;
+    }
+
+    public static List<Bookmark> filterBookmarksByResourceTypeName(Collection<Bookmark> bookmarks, Collection<BasicResource> resources)
+    {
+        List<Bookmark> res = new ArrayList<>();
+
+        HashMap<String, BasicResource> resMap = new HashMap<>();
+
+        for (BasicResource br: resources)
+        {
+            resMap.put(br.getTypeString(), br);
+        }
+
+        for (Bookmark b: bookmarks)
+        {
+            if (b.getResource()!=null)
+            {
+                if (resMap.get(b.getResource().getTypeString())!=null)
+                {
+                    res.add(b);
+                }
+            }
+        }
+
+        return res;
     }
 
 
