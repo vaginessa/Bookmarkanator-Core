@@ -10,19 +10,19 @@
 			<name>Applications</name>
 			<text>/Users/lloyd1/applications.txt</text>
 			<pre-command>nano </pre-command>
-			<post-command>null</post-command>
+			<post-command></post-command>
 		</file-editor>
 		<file-browser>
 			<name>Home</name>
 			<text>~</text>
-			<pre-command>null</pre-command>
-			<post-command>null</post-command>
+			<pre-command></pre-command>
+			<post-command></post-command>
 		</file-browser>
 		<web>
 			<name>Yahoo</name>
 			<text>http://www.yahoo.com</text>
-			<pre-command>null</pre-command>
-			<post-command>null</post-command>
+			<pre-command></pre-command>
+			<post-command></post-command>
 		</web>
 		<terminal-resource>
 			<name>OpenOffice</name>
@@ -55,19 +55,19 @@
 			<name>Applications</name>
 			<text>/Users/lloyd1/applications.txt</text>
 			<pre-command>nano </pre-command>
-			<post-command>null</post-command>
+			<post-command></post-command>
 		</file-editor>
 		<file-browser>
 			<name>Home</name>
 			<text>~</text>
-			<pre-command>null</pre-command>
-			<post-command>null</post-command>
+			<pre-command></pre-command>
+			<post-command></post-command>
 		</file-browser>
 		<web>
 			<name>Yahoo</name>
 			<text>http://www.yahoo.com</text>
-			<pre-command>null</pre-command>
-			<post-command>null</post-command>
+			<pre-command></pre-command>
+			<post-command></post-command>
 		</web>
 		<terminal-resource>
 			<name>OpenOffice</name>
