@@ -18,7 +18,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 	public static int SHARING_WITH_OTHERS = 2;//Shares with the list of user or group id's specified. (if there is a tag distribution system in place)
 
     //Bookmark specific fields
-    private UUID bookmarkUUID;
     private String name;//name of the tag
     private String Description;//description of the tag
 
@@ -46,7 +45,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
     public Bookmark()
     {
-        bookmarkUUID = UUID.randomUUID();
         createdDate = new Date();
         lastAccessedDate = new Date();
         numberOfAccesses = 0;
@@ -61,15 +59,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     // Methods
     // ============================================================
 
-    public UUID getBookmarkUUID()
-    {
-        return bookmarkUUID;
-    }
-
-    public void setBookmarkUUID(UUID bookmarkUUID)
-    {
-        this.bookmarkUUID = bookmarkUUID;
-    }
 
     public void setName(String name)
     {
@@ -197,9 +186,8 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs);
-        sb.append("<bookmark uuid=\"");
-        sb.append(getBookmarkUUID());
-        sb.append("\" sharing=\"");
+        sb.append("<bookmark ");
+        sb.append(" sharing=\"");
         sb.append(getSharing());
         sb.append("\" tags=\"");
         tagsToXML(sb);
@@ -302,8 +290,7 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     public int hashCode() {
         return getAddedBookmarks().hashCode()+getName().hashCode()+
                 getTags().hashCode()+getSharing()+getCreatedDate().hashCode()+
-                getLastAccessedDate().hashCode()+(getOwnerID()==null?0:getOwnerID().hashCode())+
-                getBookmarkUUID().hashCode();
+                getLastAccessedDate().hashCode()+(getOwnerID()==null?0:getOwnerID().hashCode());
     }
 
     @Override
@@ -314,7 +301,7 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
             {
                 Bookmark b = (Bookmark)obj;
 
-                return b.getBookmarkUUID().equals(getBookmarkUUID());
+                return b.getName().equals(getName());
             }
         }
         return false;

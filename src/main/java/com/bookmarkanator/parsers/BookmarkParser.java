@@ -128,12 +128,6 @@ public class BookmarkParser
             case bookmarks:
                 state =match(state, Tags.bookmark, currentTag);
                 currentBookmark = new Bookmark();
-                attr = ParserUtil.getStartElementAttribute(reader, "uuid");
-                if (attr==null)
-                {
-                    throw new Exception("Bookmark uuid attribute missing");
-                }
-                currentBookmark.setBookmarkUUID(UUID.fromString(attr));
 
                 attr = ParserUtil.getStartElementAttribute(reader, "sharing");
                 if (attr==null)

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <bookmarks program-version="1.0.0-1">
-	<bookmark uuid="cef21942-d631-4faf-957a-4fe41bc5e812" sharing="1" tags="">
+	<bookmark  sharing="1" tags="">
 		<name>My awesome bookmark!</name>
 		<description>A bookmark about how awesome I am!!!</description>
-		<bookmark-owner>f4d43b51-e52e-44e9-b4e2-eb6aad8b093a</bookmark-owner>
-		<dates created="04-22-2016 16:18:21" last-accessed="04-22-2016 16:18:21" />
+		<bookmark-owner>e698647f-e52a-417f-9a5f-13e4abbd2d63</bookmark-owner>
+		<dates created="05-04-2016 23:20:22" last-accessed="05-04-2016 23:20:22" />
 	</bookmark>
-	<bookmark uuid="334dae10-34ea-4007-af3b-71e1b0d60ed5" sharing="1" tags="123,abc,hello">
+	<bookmark  sharing="1" tags="123,abc,hello">
 		<name>Another bookmark.</name>
 		<description>A bookmark describing how awesome this other bookmark is.</description>
-		<bookmark-owner>ef001ea8-615b-4aa5-b359-f8e29ec5cea0</bookmark-owner>
-		<dates created="04-22-2016 16:18:21" last-accessed="04-22-2016 16:35:01" />
-		<child-bookmark index="9" uuid="683084ad-9bdb-4b1f-a9ee-f3352cdf71ad" />
-		<child-bookmark index="8" uuid="0a943212-2bfd-44a2-b11b-c52e9fa68f88" />
-		<child-bookmark index="13" uuid="e1bf4a28-172e-415e-bffb-6aecefa3364d" />
+		<bookmark-owner>b72e3f92-ac2b-46f7-8a81-8de0ff2d14b5</bookmark-owner>
+		<dates created="05-04-2016 23:20:22" last-accessed="05-04-2016 23:37:02" />
+		<child-bookmark index="13" uuid="42b6fe4b-d189-4893-a23b-e0827b73dcef" />
+		<child-bookmark index="9" uuid="8fb099f7-9888-4d22-9b85-2d89a044ab33" />
+		<child-bookmark index="8" uuid="bb3bea93-48b5-4874-a45a-672b74d284d3" />
 	</bookmark>
 </bookmarks>
