@@ -325,7 +325,7 @@ public class MainFrame implements Observer
                 labels.addAll(s);
                 tagsSelectionPan.setLabels(labels);
 
-                selectedTags.setLabels(new ArrayList<>());
+                selectedTags.setLabels(new ArrayList());
 
                 bookmarksPan.getSearch().getEditor().setItem("");
                 selectedTags.getSearch().getEditor().setItem("");
