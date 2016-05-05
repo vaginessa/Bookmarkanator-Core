@@ -36,6 +36,8 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
     private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
+    //TODO Modify the added bookmarks to not have a UUID, and to represent spaces, and other text between the bookmarks.
+    //should be able to add the text or other attributes of other bookmarks and sort of make a story of the bookmarks.
     private Map<UUID, Integer> addedBookmarks;//A list of the bookmark UUIDs that have been added to this bookmark and their indexes within the list.
 
 
@@ -186,8 +188,9 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs);
-        sb.append("<bookmark ");
-        sb.append(" sharing=\"");
+        sb.append("<bookmark accesses=\"");
+        sb.append(getNumberOfAccesses());
+        sb.append("\" sharing=\"");
         sb.append(getSharing());
         sb.append("\" tags=\"");
         tagsToXML(sb);

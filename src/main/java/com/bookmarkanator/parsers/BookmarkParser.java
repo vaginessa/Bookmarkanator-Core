@@ -128,6 +128,12 @@ public class BookmarkParser
             case bookmarks:
                 state =match(state, Tags.bookmark, currentTag);
                 currentBookmark = new Bookmark();
+                attr = ParserUtil.getStartElementAttribute(reader, "accesses");
+                if (attr==null)
+                {
+                    throw new Exception("Bookmark sharing attribute missing");
+                }
+                currentBookmark.setNumberOfAccesses(Integer.parseInt(attr));
 
                 attr = ParserUtil.getStartElementAttribute(reader, "sharing");
                 if (attr==null)
