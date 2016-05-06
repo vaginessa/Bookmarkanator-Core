@@ -168,13 +168,7 @@ public class BookmarkParser
                     {
                         throw new Exception("Child bookmark index attribute missing");
                     }
-                    int a = Integer.parseInt(attr);
-                    attr = ParserUtil.getStartElementAttribute(reader, "uuid");
-                    if (attr==null)
-                    {
-                        throw new Exception("Child bookmark uuid attribute missing");
-                    }
-                    currentBookmark.addChildBookmark(UUID.fromString(attr), a);
+
                 }
                 else if (state==Tags.dates)
                 {

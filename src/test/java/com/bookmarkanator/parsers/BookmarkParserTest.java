@@ -69,9 +69,6 @@ public class BookmarkParserTest {
         bookmark.addTag("hello");
         bookmark.addTag("abc");
         bookmark.addTag("123");
-        bookmark.addChildBookmark(UUID.randomUUID(), 8);
-        bookmark.addChildBookmark(UUID.randomUUID(), 9);
-        bookmark.addChildBookmark(UUID.randomUUID(), 13);
 
         bookmarks.addBookmark(bookmark);
 
