@@ -204,6 +204,11 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
         sb.append(dateStr);
         sb.append("\" />");
+        if (getResource()!=null) {
+            getResource().toXML(sb, prependTabs+"\t");
+        }
+        sb.append("\n");
+        sb.append(prependTabs);
         sb.append("</bookmark>");
     }
 

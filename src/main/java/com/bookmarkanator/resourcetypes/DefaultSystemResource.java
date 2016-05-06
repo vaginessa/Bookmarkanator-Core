@@ -85,18 +85,21 @@ public class DefaultSystemResource extends TerminalResource {
     }
 
     private void webToXML(StringBuilder sb, String prependTabs) {
+        sb.append("\n");
         sb.append(prependTabs + "<web>");
         writeGuts(sb, prependTabs);
         sb.append(prependTabs + "</web>");
     }
 
     private void fileEditorToXML(StringBuilder sb, String prependTabs) {
+        sb.append("\n");
         sb.append(prependTabs + "<file-editor>");
         writeGuts(sb, prependTabs);
         sb.append(prependTabs + "</file-editor>");
     }
 
     private void fileBrowserToXML(StringBuilder sb, String prependTabs) {
+        sb.append("\n");
         sb.append(prependTabs + "<file-browser>");
         writeGuts(sb, prependTabs);
         sb.append(prependTabs + "</file-browser>");

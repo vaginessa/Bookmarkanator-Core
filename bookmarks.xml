@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<bookmarks program-version="1.0.0-1">
+    <bookmark accesses="0" sharing="1" tags="">
+        <name>My awesome bookmark!</name>
+        <description>A bookmark about how awesome I am!!!</description>
+        <bookmark-owner>7a1af9e7-1b7b-4cc9-8af9-1df2a71871ce</bookmark-owner>
+        <dates created="05-05-2016 21:38:28" last-accessed="05-05-2016 21:38:28" />
+    </bookmark>
+    <bookmark accesses="0" sharing="1" tags="123,abc,hello">
+        <name>Another bookmark.</name>
+        <description>A bookmark describing how awesome this other bookmark is.</description>
+        <bookmark-owner>e536fca2-e0d0-4454-8ad4-f8738351bcf6</bookmark-owner>
+        <dates created="05-05-2016 21:38:28" last-accessed="05-05-2016 21:55:08" />
+    </bookmark>
+</bookmarks>
