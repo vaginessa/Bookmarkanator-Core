@@ -1,11 +1,13 @@
 package com.bookmarkanator.ui;
 
 import java.awt.*;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.interfaces.*;
+import com.bookmarkanator.parsers.BookmarkParser;
 import com.bookmarkanator.resourcetypes.*;
 import com.bookmarkanator.ui.panel.*;
 import com.bookmarkanator.ui.panel.itempanel.*;
@@ -17,6 +19,7 @@ public class MainFrame implements Observer
     public static final String SELECTABLE_TAG = "Selectable Tag";
     public static final String BOOKMARK_TYPE = "Bookmark Type";
     public static final String BOOKMARK = "Bookmark";
+    public String bookmarkFileName;
 
     private JFrame frame;
     private GridBagConstraints con;
@@ -28,24 +31,29 @@ public class MainFrame implements Observer
 
     public MainFrame()
     {
-        frame = new JFrame();
-        frame.setPreferredSize(new Dimension(800, 800));
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new GridBagLayout());
-        JFrame.setDefaultLookAndFeelDecorated(true);
+        try {
+            frame = new JFrame();
+            frame.setPreferredSize(new Dimension(800, 800));
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.getContentPane().setLayout(new GridBagLayout());
+            JFrame.setDefaultLookAndFeelDecorated(true);
 
-        init();
+            bookmarkFileName = "bookmarks.xml";
+            System.out.println((new File("").getCanonicalPath()));
+            init();
 
-        //TODO Replace separate panels with splitpanes.
+            //TODO Replace separate panels with splitpanes.
 
-        frame.getContentPane().doLayout();
-        frame.pack();
-        frame.setVisible(true);
+            frame.getContentPane().doLayout();
+            frame.pack();
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void init()
-    {
+    private void init() throws Exception {
         //        JSplitPane
         con = new GridBagConstraints();
         con.fill = GridBagConstraints.BOTH;
@@ -80,7 +88,8 @@ public class MainFrame implements Observer
         con.gridx = 2;
         con.gridy = 0;
         con.gridheight = 2;
-        bookmarksPan = getTestBookmarks();
+//        bookmarksPan = getTestBookmarks();
+        bookmarksPan = getBookmarks();
         bookmarksPan.setPreferredSize(new Dimension(200, 600));
         frame.add(bookmarksPan, con);
 
@@ -120,6 +129,25 @@ public class MainFrame implements Observer
         }
 
         tagsSelectionPan.setLabels(labels);
+    }
+
+    private Bookmarks loadBookmarks() throws Exception {
+        BookmarkParser p = new BookmarkParser();
+        File file = new File(bookmarkFileName);
+
+        if (!file.exists())
+        {
+            throw new Exception("Bookmark file doesn't exist");
+        }
+
+        return p.parse(file);
+    }
+
+    private StringsPanel getBookmarks() throws Exception {
+        StringsPanel bookmarksPan = new StringsPanel(this, MainFrame.BOOKMARK, new BookmarkPanel<Bookmark>());
+        Bookmarks bkmrk = loadBookmarks();
+        bookmarksPan.setLabels(bkmrk.getBookmarkList());
+        return bookmarksPan;
     }
 
     private StringsPanel getTestBookmarks()

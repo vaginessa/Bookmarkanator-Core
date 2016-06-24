@@ -36,9 +36,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
     private int numberOfAccesses;//how many times has this bookmark been viewed.
 
     private BasicResource resource;//represents the type, and values of the resource this bookmark points to. Such as a web address type, with value 'www.yahoo.com'
-    //TODO Modify the added bookmarks to not have a UUID, and to represent spaces, and other text between the bookmarks.
-    //should be able to add the text or other attributes of other bookmarks and sort of make a story of the bookmarks.
-    private Map<UUID, Integer> childBookmarks;//A list of the bookmark UUIDs that have been added to this bookmark and their indexes within the list.
 
 
     // ============================================================
@@ -54,7 +51,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
         tags = new HashSet<>();
         shareWith = new ArrayList<>();
-        childBookmarks = new HashMap<UUID, Integer>();
     }
 
     // ============================================================
@@ -170,21 +166,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
         this.resource = resource;
     }
 
-    public Map<UUID, Integer> getChildBookmarks()
-    {
-        return childBookmarks;
-    }
-
-    public void setChildBookmarks(Map<UUID, Integer> childBookmarks)
-    {
-        this.childBookmarks = childBookmarks;
-    }
-
-    public void addChildBookmark(UUID bookmarkID, int index)
-    {
-        childBookmarks.put(bookmarkID, index);
-    }
-
     public void toXML(StringBuilder sb, String prependTabs)
     {
         sb.append(prependTabs);
@@ -223,8 +204,10 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
         sb.append(dateStr);
         sb.append("\" />");
+        if (getResource()!=null) {
+            getResource().toXML(sb, prependTabs+"\t");
+        }
         sb.append("\n");
-        childBookmarksToXML(sb, prependTabs);
         sb.append(prependTabs);
         sb.append("</bookmark>");
     }
@@ -242,19 +225,6 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
         }
     }
 
-    private void childBookmarksToXML(StringBuilder sb, String prependTabs)
-    {
-        for (UUID uuid: getChildBookmarks().keySet())
-        {
-            sb.append(prependTabs);
-            sb.append("\t<child-bookmark index=\"");
-            sb.append(getChildBookmarks().get(uuid));
-            sb.append("\" uuid=\"");
-            sb.append(uuid.toString());
-            sb.append("\" />");
-            sb.append("\n");
-        }
-    }
 
     @Override
     public String getName()
@@ -291,8 +261,7 @@ public class Bookmark extends Observable implements XMLWritable, ListableItem{
 
     @Override
     public int hashCode() {
-        return getChildBookmarks().hashCode()+getName().hashCode()+
-                getTags().hashCode()+getSharing()+getCreatedDate().hashCode()+
+                return getTags().hashCode()+getSharing()+getCreatedDate().hashCode()+
                 getLastAccessedDate().hashCode()+(getOwnerID()==null?0:getOwnerID().hashCode());
     }
 

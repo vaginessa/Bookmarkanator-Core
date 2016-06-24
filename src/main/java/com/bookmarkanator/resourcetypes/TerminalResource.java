@@ -185,6 +185,7 @@ public class TerminalResource extends BasicResource
     @Override
     public void toXML(StringBuilder sb, String prependTabs)
     {
+        sb.append("\n");
         sb.append(prependTabs + "<terminal-resource>");
         sb.append("\n");
         sb.append(prependTabs + "\t<name>");
