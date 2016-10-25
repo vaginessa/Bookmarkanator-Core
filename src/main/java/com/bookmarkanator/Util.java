@@ -35,9 +35,36 @@ public class Util {
 
         for (int c = 0;c< theString.length();c++)
         {
-            words.add(theString.substring(0, c));
+            String s = theString.substring(0, c);
+            s = s.trim();
+            if (!s.isEmpty()) {
+                words.add(s);
+            }
         }
 
         return words;
+    }
+
+    public static Set<String> getAllStringRotations(String string)
+    {
+        Set<String> strings = new HashSet<>();
+
+        for (int c=0;c<string.length();c++)
+        {
+            strings.add(rotateString(string, c));
+        }
+
+        return strings;
+    }
+
+    public static String rotateString(String theString, int characters)
+    {
+        int a = characters;
+        while (a>theString.length())
+        {//reduce the number to less than the string length.
+           a = a-theString.length();
+        }
+
+        return theString.substring(a, theString.length())+theString.substring(0, a);
     }
 }

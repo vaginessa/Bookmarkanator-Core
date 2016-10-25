@@ -14,5 +14,14 @@ public class testUtil {
 
         Assert.assertTrue(words.size()==5);
 
+
+        theString = "Hello";
+
+        words = Util.getSubstrings(theString);
+
+        words = Util.getAllStringRotations(theString);
+
+
+        System.out.println();
     }
 }
