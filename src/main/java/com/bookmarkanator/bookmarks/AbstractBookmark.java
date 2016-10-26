@@ -1,6 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import com.bookmarkanator.core.*;
 
 public abstract class AbstractBookmark <T>{
     private String name;
@@ -17,7 +18,7 @@ public abstract class AbstractBookmark <T>{
     /**
      * The action that will happen when this bookmark is called.
      */
-    public abstract T action();
+    public abstract T action(Context context);
 
     public String getName() {
         return name;

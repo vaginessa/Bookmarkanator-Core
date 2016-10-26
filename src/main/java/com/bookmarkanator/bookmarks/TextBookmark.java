@@ -1,5 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
+import com.bookmarkanator.core.*;
+
 public class TextBookmark extends AbstractBookmark <String>{
 
     @Override
@@ -8,7 +10,7 @@ public class TextBookmark extends AbstractBookmark <String>{
     }
 
     @Override
-    public String action() {
+    public String action(Context context) {
         return getText();
     }
 }
