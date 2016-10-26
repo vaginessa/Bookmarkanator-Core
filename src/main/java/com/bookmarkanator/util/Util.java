@@ -1,4 +1,4 @@
-package com.bookmarkanator;
+package com.bookmarkanator.util;
 
 import java.util.*;
 
@@ -45,6 +45,12 @@ public class Util {
         return words;
     }
 
+    /**
+     * This method gets a list of all strings that would be present if the characters were rotated and any that would fall of the end were
+     * placed at the beginning.
+     * @param string  The string to get the substrings from.
+     * @return  A set of rotated strings.
+     */
     public static Set<String> getAllStringRotations(String string)
     {
         Set<String> strings = new HashSet<>();

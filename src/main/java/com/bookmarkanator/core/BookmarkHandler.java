@@ -1,9 +1,11 @@
-package com.bookmarkanator;
+package com.bookmarkanator.core;
 
 import java.util.*;
+import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.util.*;
 
 public class BookmarkHandler {
-    private Map<UUID, Bookmark> bookmarks;
+    private Map<UUID, TextBookmark> bookmarks;
     private TextAssociator tagsMap;
     private TextAssociator wordsMap;
     private TextAssociator partialTagsMap;

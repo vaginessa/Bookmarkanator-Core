@@ -1,4 +1,4 @@
-package com.bookmarkanator;
+package com.bookmarkanator.util;
 
 import java.util.*;
 

@@ -1,6 +1,7 @@
 package com.bookmarkanator;
 
 import java.util.*;
+import com.bookmarkanator.util.*;
 import org.junit.*;
 
 public class testUtil {
