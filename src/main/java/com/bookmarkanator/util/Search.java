@@ -55,6 +55,14 @@ public class Search<T> {
         }
     }
 
+    public void add(T item, Set<String> items)
+    {
+        for (String s: items)
+        {
+            add(item, s);
+        }
+    }
+
     public void remove(T item, String word)
     {
         String newWord = word.toLowerCase();

@@ -8,6 +8,8 @@ public abstract class AbstractBookmark {
     private UUID id;
     private String text;//contents of the bookmark
     private Set<String> tags;
+    private Date creationDate;
+    private Date lastAccessedDate;
 
     /**
      * The type name is the name that will be displayed to the user for this type of bookmark.
@@ -66,5 +68,25 @@ public abstract class AbstractBookmark {
 
     public void setTags(Set<String> tags) {
         this.tags = tags;
+    }
+
+    public Date getCreationDate()
+    {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
+    }
+
+    public Date getLastAccessedDate()
+    {
+        return lastAccessedDate;
+    }
+
+    public void setLastAccessedDate(Date lastAccessedDate)
+    {
+        this.lastAccessedDate = lastAccessedDate;
     }
 }

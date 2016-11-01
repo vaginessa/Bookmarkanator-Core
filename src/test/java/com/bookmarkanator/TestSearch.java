@@ -138,6 +138,13 @@ public class TestSearch {
         search.add(2, c);
         search.add(0, d);
 
+        for (int count=0;count<100;count++)
+        {
+            search.add(count, ((char)(count+65))+"");
+        }
+
+
+
         LinkedHashSet<Integer> results = search.searchAll("am", 10);
         System.out.println();
         results = search.searchAll("I", 10);
