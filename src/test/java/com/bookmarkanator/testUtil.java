@@ -6,6 +6,7 @@ import org.junit.*;
 
 public class testUtil {
 
+    @Ignore
     @Test
     public void testGetWords()
     {

@@ -5,7 +5,7 @@ import com.bookmarkanator.core.*;
 /**
  * The text of this bookmark would represent a web address.
  */
-public class WebBookmark extends AbstractBookmark <Object> {
+public class WebBookmark extends AbstractBookmark{
 
     @Override
     public String getTypeName() {
@@ -13,9 +13,17 @@ public class WebBookmark extends AbstractBookmark <Object> {
     }
 
     @Override
-    public Object action(Context context) {
+    public void action(Context context) throws Exception {
 
-        //open web address with default browser.
+    }
+
+    @Override
+    public String toXML() {
         return null;
+    }
+
+    @Override
+    public void fromXML(String xml) {
+
     }
 }

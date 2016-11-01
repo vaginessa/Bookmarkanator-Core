@@ -3,7 +3,7 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
-public class SequenceBookmark extends AbstractBookmark<List<AbstractBookmark>> {
+public class SequenceBookmark extends AbstractBookmark {
     private Map<UUID, AbstractBookmark> items;
 
     @Override
@@ -12,8 +12,18 @@ public class SequenceBookmark extends AbstractBookmark<List<AbstractBookmark>> {
     }
 
     @Override
-    public List<AbstractBookmark> action(Context context) {
-        return getBookmarks();
+    public void action(Context context) throws Exception {
+
+    }
+
+    @Override
+    public String toXML() {
+        return null;
+    }
+
+    @Override
+    public void fromXML(String xml) {
+
     }
 
     public void addBookmark(AbstractBookmark bookmark)
@@ -30,4 +40,5 @@ public class SequenceBookmark extends AbstractBookmark<List<AbstractBookmark>> {
     {
         return Collections.unmodifiableList(new ArrayList(items.values()));
     }
+
 }

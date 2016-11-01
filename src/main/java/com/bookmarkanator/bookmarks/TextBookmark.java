@@ -2,15 +2,25 @@ package com.bookmarkanator.bookmarks;
 
 import com.bookmarkanator.core.*;
 
-public class TextBookmark extends AbstractBookmark <String>{
+public class TextBookmark extends AbstractBookmark{
 
     @Override
     public String getTypeName() {
-        return "text";
+        return "Text";
     }
 
     @Override
-    public String action(Context context) {
-        return getText();
+    public void action(Context context) throws Exception {
+
+    }
+
+    @Override
+    public String toXML() {
+        return null;
+    }
+
+    @Override
+    public void fromXML(String xml) {
+
     }
 }

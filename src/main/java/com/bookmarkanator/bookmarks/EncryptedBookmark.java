@@ -2,7 +2,7 @@ package com.bookmarkanator.bookmarks;
 
 import com.bookmarkanator.core.*;
 
-public class EncryptedBookmark extends AbstractBookmark <String>{
+public class EncryptedBookmark extends AbstractBookmark{
     private String passwordHash;
     private long valid;//stores how long after entering this password, until the bookmark text is encrypted again.
 
@@ -16,8 +16,18 @@ public class EncryptedBookmark extends AbstractBookmark <String>{
     }
 
     @Override
-    public String action(Context context) {
-        //check if the password has been entered before, and if so return the unencrypted string.
+    public void action(Context context) throws Exception {
+
+    }
+
+    @Override
+    public String toXML() {
         return null;
     }
+
+    @Override
+    public void fromXML(String xml) {
+
+    }
+
 }
