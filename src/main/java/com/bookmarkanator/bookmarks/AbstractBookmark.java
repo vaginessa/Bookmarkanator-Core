@@ -11,6 +11,11 @@ public abstract class AbstractBookmark {
     private Date creationDate;
     private Date lastAccessedDate;
 
+    public AbstractBookmark()
+    {
+        tags = new HashSet<>();
+    }
+
     /**
      * The type name is the name that will be displayed to the user for this type of bookmark.
      * On the back end the fully qualified class name will be used for accessing storage and other
@@ -68,6 +73,16 @@ public abstract class AbstractBookmark {
 
     public void setTags(Set<String> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(String tag)
+    {
+        this.tags.add(tag);
+    }
+
+    public void removeTag(String tag)
+    {
+        this.tags.remove(tag);
     }
 
     public Date getCreationDate()

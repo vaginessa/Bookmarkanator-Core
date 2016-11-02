@@ -192,35 +192,55 @@ public class Search<T> {
     public LinkedHashSet<T> searchFullTextOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        items.addAll(theFullText.getIDs(string.toLowerCase()));
+        Set<T> res = theFullText.getIDs(string.toLowerCase());
+        if (res!=null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 
     public LinkedHashSet<T> searchWordsInTextOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        items.addAll(wordsInTheText.getIDs(string.toLowerCase()));
+        Set<T> res = wordsInTheText.getIDs(string.toLowerCase());
+        if (res!=null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 
     public LinkedHashSet<T> searchRotatedWordsOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        items.addAll(wordsInTheTextRotated.getIDs(string.toLowerCase()));
+        Set<T> res = wordsInTheTextRotated.getIDs(string.toLowerCase());
+        if (res!=null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 
     public LinkedHashSet<T> searchSubstringsOfRotatedWordsOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        items.addAll(substringsOfRotatedWords.getIDs(string.toLowerCase()));
+        Set<T> res = substringsOfRotatedWords.getIDs(string.toLowerCase());
+        if (res!=null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 
     public LinkedHashSet<T> searchSubStringsOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        items.addAll(subStrings.getIDs(string.toLowerCase()));
+        Set<T> res = subStrings.getIDs(string.toLowerCase());
+        if (res!=null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 

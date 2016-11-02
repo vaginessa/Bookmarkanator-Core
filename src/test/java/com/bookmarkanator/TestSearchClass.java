@@ -4,7 +4,8 @@ import java.util.*;
 import com.bookmarkanator.util.*;
 import org.junit.*;
 
-public class TestSearch {
+public class TestSearchClass
+{
 
     @Ignore
     @Test
