@@ -149,7 +149,7 @@ public class Context {
     }
 
     // ============================================================
-    // Searching and sorting Methods
+    // Searching Methods
     // ============================================================
 
     public List<AbstractBookmark> searchAll(String text)
@@ -259,23 +259,89 @@ public class Context {
 
     public List<AbstractBookmark> searchBookmarkNames(String text)
     {
-    return null;
+        return getBookmarks(bookmarkNames.searchAll(text, getNumSearchResults()));
     }
 
-    public List<AbstractBookmark> searchTags(String text)
+    /**
+     * This method searches the bookmark tags for any tags containing the text.
+     * @param text  The text to do a general search for
+     * @return  A list of bookmarks that contain the text in their tags.
+     */
+    public List<AbstractBookmark> searchTagsLoosly(String text)
     {
-        return null;
+        return getBookmarks(bookmarkTags.searchAll(text, getNumSearchResults()));
     }
+
+    /**
+     * Find all bookmarks that have one of the supplied tags matching exactly one of the bookmark tags.
+     * @param tags  The tags to match at least one of.
+     * @return  A list of Bookmarks that contain at least one of the supplied tags.
+     */
+    public List<AbstractBookmark> searchTagsExact(Set<String> tags)
+    {
+        return getBookmarks(searchAllTagsExact(tags));
+    }
+
+    private Set<UUID> searchAllTagsExact(Set<String> tags)
+    {
+        Set<UUID> uuids =new HashSet<>();
+
+        for (String s: tags)
+        {
+            Set<UUID> u = bookmarkTags.searchFullTextOnly(s);
+            if (u!=null)
+            {
+                uuids.addAll(u);
+            }
+        }
+
+        return uuids;
+    }
+
+    /**
+     * Locates all bookmarks that have the whole set of supplied tags.
+     * @param tags  The list of tags to use to find bookmarks.
+     * @return  A list of bookmarks that contain all the supplied tags.
+     */
+    public List<AbstractBookmark> searchTagsFullMatch(Set<String> tags)
+        throws Exception
+    {
+        Set<UUID> uuids = searchAllTagsExact(tags);
+        Set<UUID> results = new HashSet<>();
+
+        for (UUID uuid: uuids)
+        {
+           AbstractBookmark abs = bookmarks.get(uuid);
+
+            if (abs==null)
+            {
+                throw new Exception("A bookmark was found in a tag search but is not in the list of bookmarks.");
+            }
+
+            if (abs.getTags()!=null && !abs.getTags().isEmpty() && abs.getTags().containsAll(tags))
+            {
+                results.add(uuid);
+            }
+        }
+
+        return getBookmarks(results);
+    }
+
 
     public List<AbstractBookmark> searchBookmarkTypes(String text)
     {
-        return null;
+        return getBookmarks(bookmarkTypeNames.searchAll(text, getNumSearchResults()));
     }
 
     public List<AbstractBookmark> searchBookmarkText(String text)
     {
-        return null;
+        return getBookmarks(bookmarkText.searchAll(text, getNumSearchResults()));
     }
+
+    // ============================================================
+    // Sorting and Filtering Methods
+    // ============================================================
+
 
     public List<AbstractBookmark> filterByTags(List<AbstractBookmark> bookmarkList, Set<String> tags)
     {
