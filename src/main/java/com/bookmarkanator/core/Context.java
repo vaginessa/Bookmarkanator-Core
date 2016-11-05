@@ -10,6 +10,9 @@ import com.bookmarkanator.util.*;
  */
 public class Context {
     private Map<UUID, AbstractBookmark> bookmarks;
+    //Note: the two maps below are for checking if a bookmark being deleted or edited has other bookmarks that depend on it.
+    private Map<UUID, Set<UUID>> bkDependsOnMap;//<bookmark id, set<bk id's that this bk depends on>>
+    private Map<UUID, Set<UUID>> whatDependsOnBKMap;//<bookmark id, set<bk id's that depend on this bk>>
     private Search<UUID> bookmarkNames;
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
     private Search<UUID> bookmarkText;//The text the bookmark contains.
@@ -25,28 +28,101 @@ public class Context {
         bookmarkTypeNames = new Search<>();
         bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
+        contextObject = new HashMap<>();
+        bkDependsOnMap = new HashMap<>();
+        whatDependsOnBKMap = new HashMap<>();
         numSearchResults = 20;
-    }
-
-    public int getNumSearchResults()
-    {
-        return numSearchResults;
-    }
-
-    public void setNumSearchResults(int numSearchResults)
-    {
-        this.numSearchResults = numSearchResults;
     }
 
     // ============================================================
     // Bookmark Methods
     // ============================================================
 
+    /**
+     * Gets a set of bookmark Id's of bookmarks that depend on this bookmark in some way. Basically asking the question what do I depend on?
+     * *Note: Individual bookmarks are responsible for setting their dependents.
+     * @param bookmarkId  The bookmark to check for dependents.
+     * @return  A set of dependent bookmark Id's
+     */
+    public Set<UUID> getDependents(UUID bookmarkId)
+    {
+        return bkDependsOnMap.get(bookmarkId);
+    }
 
+    /**
+     * Gets a set of bookmark Id's that this bookmark depends on. Basically asking the question what depends on me?
+     * *Note: Individual bookmarks are responsible for setting thei dependents. When dependents are set this depends on list is automatically updated.
+     * @param bookmarkId
+     * @return
+     */
+    public Set<UUID> getDependsOn(UUID bookmarkId)
+    {
+        return whatDependsOnBKMap.get(bookmarkId);
+    }
+
+    /**
+     * Indicates one bookmark (theBookmark) depends on another bookmark (dependingBookmark)
+     * @param theBookmark  The bookmark that will depend on another bookmark
+     * @param dependingBookmark  The bookmark that is being depended upon.
+     * @return  The number of bookmarks 'theBookmark' depends upon.
+     */
+    public int addDependency(UUID theBookmark, UUID dependingBookmark)
+    {
+        Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
+
+        if (dependsOnSet==null)
+        {
+            dependsOnSet = new HashSet<>();
+        }
+
+        dependsOnSet.add(dependingBookmark);//adding a bookmark Id that this bookmark depends on.
+
+        Set<UUID> dependsOnMeSet = whatDependsOnBKMap.get(dependingBookmark);
+
+        if (dependsOnMeSet==null)
+        {
+            dependsOnMeSet = new HashSet<>();
+        }
+
+        dependsOnMeSet.add(theBookmark);//adding this bookmark to the list of bookmarks that the depnd on the depending bookmark.
+
+        return dependsOnSet.size();
+    }
+
+    /**
+     * Removes the indicator that one bookmark (theBookmark) depends on another bookmark (dependingBookmark)
+     * @param theBookmark  The bookmark that will stop depending on 'dependingBookmark'
+     * @param dependingBookmark  The bookmark that will no longer link to 'theBookmark'
+     * @return  The number of bookmarks that 'theBookmark' currently depends on.
+     */
+    public int removeDependency(UUID theBookmark, UUID dependingBookmark)
+    {
+        Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
+
+        if (dependsOnSet!=null)
+        {
+            dependsOnSet.remove(dependingBookmark);//'theBookmark' no longer depends on 'dependingBookmark'
+        }
+
+        Set<UUID> dependsOnMeSet = whatDependsOnBKMap.get(dependingBookmark);
+
+        if (dependsOnMeSet!=null)
+        {
+            dependsOnMeSet.remove(theBookmark);//'theBookmark' is no longer listed as something that is depending on 'dependingBookmark'
+        }
+
+        return dependsOnSet==null?0: dependsOnSet.size();
+    }
+
+    /**
+     * Gets all bookmark UUID's
+     * @return  A set of bookmark Id's
+     */
     public Set<UUID> getBookmarkIDs()
     {
         return Collections.unmodifiableSet(bookmarks.keySet());
     }
+
 
     public Set<AbstractBookmark> getBookmarks()
     {
@@ -59,11 +135,22 @@ public class Context {
         return Collections.unmodifiableSet(bks);
     }
 
+    /**
+     * Gets a single bookmark.
+     * @param uuid  The Id of the bookmark
+     * @return  A bookmark with this id or null.
+     */
     public AbstractBookmark getBookmark(UUID uuid)
     {
         return bookmarks.get(uuid);
     }
 
+    /**
+     * Gets a set of bookmarks that match the supplied bookmark Id's
+     * @param bookmarkIds  A set of bookmark Id's
+     * @return  A list of bookmarks (Note: returning a list in case a linkedhashset is used that preserves insertion order. In this case it will return a
+     * list with the supplied order preserved).
+     */
     public List<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds)
     {
         List<AbstractBookmark> bks = new ArrayList<>();
@@ -81,6 +168,11 @@ public class Context {
         return bks;
     }
 
+    /**
+     * Add the list of bookmarks to this list of bookmarks.
+     * @param bookmarks  The list to add.
+     * @throws Exception if a bookmark Id is null, or it already exists.
+     */
     public void addAll(List<AbstractBookmark> bookmarks)
         throws Exception
     {
@@ -90,6 +182,11 @@ public class Context {
         }
     }
 
+    /**
+     * Adds a bookmark to the list of bookmarks.
+     * @param bookmark  The bookmark to add.
+     * @throws Exception if a bookmark Id is null, or it already exists.
+     */
     public void addBookmark(AbstractBookmark bookmark) throws Exception {
 
         if (bookmark.getId()==null)
@@ -112,6 +209,11 @@ public class Context {
         bookmarks.put(bookmark.getId(), bookmark);
     }
 
+    /**
+     * Remove a bookmark. This removes the bookmark from the list of bookmarks and all searching methods.
+     * @param bookmarkID  The Id of the bookmark to remove.
+     * @return The removed bookmark.
+     */
     public AbstractBookmark removeBookmark(UUID bookmarkID)
     {
      AbstractBookmark abs = getBookmark(bookmarkID);
@@ -130,6 +232,11 @@ public class Context {
         return abs;
     }
 
+    /**
+     * Updates a bookmark.
+     * @param bookmark  The bookmark to edit/update
+     * @throws Exception if the bookmark Id is null, or the bookmark cannot be found.
+     */
     public void updateBookmark(AbstractBookmark bookmark)
         throws Exception
     {
@@ -152,6 +259,28 @@ public class Context {
     // Searching Methods
     // ============================================================
 
+    /**
+     * @return The number of search results for the search functions to try and return.
+     */
+    public int getNumSearchResults()
+    {
+        return numSearchResults;
+    }
+
+    /**
+     * Set the number of search results for the search functions to try and return.
+     * @param numSearchResults  the number of search results to return if available.
+     */
+    public void setNumSearchResults(int numSearchResults)
+    {
+        this.numSearchResults = numSearchResults;
+    }
+
+    /**
+     * This is a general search function that will search all aspects of a bookmark (name, tag names, text, and derivatinos of all those as well)
+     * @param text  The text to search for.
+     * @return  The list of results (in order of importance) that the search matched.
+     */
     public List<AbstractBookmark> searchAll(String text)
     {
         LinkedHashSet<UUID> uuids = new LinkedHashSet<>();//Use a LinkedHashSet to eliminate duplicates in the list, but preserve result order.
@@ -257,14 +386,19 @@ public class Context {
         return res;
     }
 
+    /**
+     * Search the names of bookmarks (and all there derivations)
+     * @param text  The text to search for.
+     * @return  The results of the search.
+     */
     public List<AbstractBookmark> searchBookmarkNames(String text)
     {
         return getBookmarks(bookmarkNames.searchAll(text, getNumSearchResults()));
     }
 
     /**
-     * This method searches the bookmark tags for any tags containing the text.
-     * @param text  The text to do a general search for
+     * This method searches the bookmark tags for any tags containing the text (or a derivation of the text).
+     * @param text  The text to do a general tag search for
      * @return  A list of bookmarks that contain the text in their tags.
      */
     public List<AbstractBookmark> searchTagsLoosly(String text)
@@ -282,6 +416,12 @@ public class Context {
         return getBookmarks(searchAllTagsExact(tags));
     }
 
+    /**
+     * This method locates the Id's of any bookmarks that have tags that match any of the supplied tags. If a bookmark as at least one of the
+     * supplied tags it will be added to the results.
+     * @param tags  The tags to search for.
+     * @return  The set of bookmark Id's where the tags were found.
+     */
     private Set<UUID> searchAllTagsExact(Set<String> tags)
     {
         Set<UUID> uuids =new HashSet<>();
@@ -299,7 +439,8 @@ public class Context {
     }
 
     /**
-     * Locates all bookmarks that have the whole set of supplied tags.
+     * Locates all bookmarks that have the whole set of supplied tags. If a bookmark doesnt' have all the tags sent in it will not make it in the list
+     * of search results.
      * @param tags  The list of tags to use to find bookmarks.
      * @return  A list of bookmarks that contain all the supplied tags.
      */
@@ -327,12 +468,21 @@ public class Context {
         return getBookmarks(results);
     }
 
-
+    /**
+     * Searches the bookmark type names for any names that loosely the searched for text.
+     * @param text  The text to search for.
+     * @return  A list of boomarks that have the supplied text (or a portion of it) in their type names.
+     */
     public List<AbstractBookmark> searchBookmarkTypes(String text)
     {
         return getBookmarks(bookmarkTypeNames.searchAll(text, getNumSearchResults()));
     }
 
+    /**
+     * Loosely searches all the text of the bookmarks to locate any bookmark that contains the supplied text.
+     * @param text  The text to search for.
+     * @return  A list of bookmarks that contain the supplied text.
+     */
     public List<AbstractBookmark> searchBookmarkText(String text)
     {
         return getBookmarks(bookmarkText.searchAll(text, getNumSearchResults()));
