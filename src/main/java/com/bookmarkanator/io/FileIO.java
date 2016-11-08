@@ -2,37 +2,39 @@ package com.bookmarkanator.io;
 
 import com.bookmarkanator.core.*;
 
-public class DatabaseIO implements BKIOInterface {
+public class FileIO implements BKIOInterface {
 
     @Override
     public void init()
         throws Exception
     {
-        //connects to the database
+        //load the settings file and bookmarks files.
     }
 
     @Override
     public void init(String mode)
         throws Exception
     {
-        //connects to the database
+        //load the settings file and bookmarks files.
     }
 
     @Override
     public void save()
     {
-        //writes any unsaved data to the database (might no be necessary if the database context object does this by default)
+        //save to the settings and bookmarks files.
     }
 
     @Override
     public void close()
     {
-        //closes the database connection
+        //close all file sources and stuff like that.
     }
 
     @Override
     public ContextInterface getContext()
     {
-        return null;
+        FileContext context = new FileContext();
+        context.setBKIOInterface(this);
+        return context;
     }
 }

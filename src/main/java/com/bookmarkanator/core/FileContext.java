@@ -2,13 +2,14 @@ package com.bookmarkanator.core;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 
 /**
  * The Context is a bookmark specific context. It allows searching and sorting of bookmarks. It allows reading and writing of data for the bookmarks.
- * and it also allows the bookmark methods to be called that will prepare the data they will use.
+ * and it also allows the bookmark methods to be called that will prepare the data they will use. All reading and writing is done in xml by default.
  */
-public class Context
+public class FileContext implements ContextInterface
 {
     private Map<UUID, AbstractBookmark> bookmarks;
     //Note: the two maps below are for checking if a bookmark being deleted or edited has other bookmarks that depend on it.
@@ -19,11 +20,12 @@ public class Context
     private Search<UUID> bookmarkText;//The text the bookmark contains.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;
+    private BKIOInterface bkioInterface;
 
     //Bookmarks can store data here and communicate with other bookmarks. They can read/write their own data, but only read the data of other bookmark types.
     private Map<String, Map<String, Object>> contextObject;//<Class name of bookmark, Map<Bookmark data key, bookmark data object>>
 
-    public Context()
+    public FileContext()
     {
         bookmarks = new HashMap<>();
         bookmarkNames = new Search<>();
@@ -36,9 +38,23 @@ public class Context
         numSearchResults = 20;
     }
 
+
+
     // ============================================================
     // Bookmark Methods
     // ============================================================
+
+    @Override
+    public void setBKIOInterface(BKIOInterface bkioInterface)
+    {
+        this.bkioInterface = bkioInterface;
+    }
+
+    @Override
+    public BKIOInterface getBKIOInterface()
+    {
+        return this.bkioInterface;
+    }
 
     /**
      * Gets a set of bookmark Id's of bookmarks that depend on this bookmark in some way. Basically asking the question what do I depend on?
@@ -47,6 +63,7 @@ public class Context
      * @param bookmarkId The bookmark to check for dependents.
      * @return A set of dependent bookmark Id's
      */
+    @Override
     public Set<UUID> getDependents(UUID bookmarkId)
     {
         return bkDependsOnMap.get(bookmarkId);
@@ -59,6 +76,7 @@ public class Context
      * @param bookmarkId
      * @return
      */
+    @Override
     public Set<UUID> getDependsOn(UUID bookmarkId)
     {
         return whatDependsOnBKMap.get(bookmarkId);
@@ -71,6 +89,7 @@ public class Context
      * @param dependingBookmark The bookmark that is being depended upon.
      * @return The number of bookmarks 'theBookmark' depends upon.
      */
+    @Override
     public int addDependency(UUID theBookmark, UUID dependingBookmark)
     {
         Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
@@ -101,6 +120,7 @@ public class Context
      * @param dependingBookmark The bookmark that will no longer link to 'theBookmark'
      * @return The number of bookmarks that 'theBookmark' currently depends on.
      */
+    @Override
     public int removeDependency(UUID theBookmark, UUID dependingBookmark)
     {
         Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
@@ -125,11 +145,13 @@ public class Context
      *
      * @return A set of bookmark Id's
      */
+    @Override
     public Set<UUID> getBookmarkIDs()
     {
         return Collections.unmodifiableSet(bookmarks.keySet());
     }
 
+    @Override
     public Set<AbstractBookmark> getBookmarks()
     {
         Set<AbstractBookmark> bks = new HashSet<>();
@@ -147,6 +169,7 @@ public class Context
      * @param uuid The Id of the bookmark
      * @return A bookmark with this id or null.
      */
+    @Override
     public AbstractBookmark getBookmark(UUID uuid)
     {
         return bookmarks.get(uuid);
@@ -159,6 +182,7 @@ public class Context
      * @return A list of bookmarks (Note: returning a list in case a linkedhashset is used that preserves insertion order. In this case it will return a
      * list with the supplied order preserved).
      */
+    @Override
     public List<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds)
     {
         List<AbstractBookmark> bks = new ArrayList<>();
@@ -182,6 +206,7 @@ public class Context
      * @param bookmarks The list to add.
      * @throws Exception if a bookmark Id is null, or it already exists.
      */
+    @Override
     public void addAll(List<AbstractBookmark> bookmarks)
         throws Exception
     {
@@ -197,6 +222,7 @@ public class Context
      * @param bookmark The bookmark to add.
      * @throws Exception if a bookmark Id is null, or it already exists.
      */
+    @Override
     public void addBookmark(AbstractBookmark bookmark)
         throws Exception
     {
@@ -228,6 +254,7 @@ public class Context
      * @param bookmarkID The Id of the bookmark to remove.
      * @return The removed bookmark.
      */
+    @Override
     public AbstractBookmark removeBookmark(UUID bookmarkID)
     {
         AbstractBookmark abs = getBookmark(bookmarkID);
@@ -252,6 +279,7 @@ public class Context
      * @param bookmark The bookmark to edit/update
      * @throws Exception if the bookmark Id is null, or the bookmark cannot be found.
      */
+    @Override
     public void updateBookmark(AbstractBookmark bookmark)
         throws Exception
     {
@@ -277,6 +305,7 @@ public class Context
     /**
      * @return The number of search results for the search functions to try and return.
      */
+    @Override
     public int getNumSearchResults()
     {
         return numSearchResults;
@@ -287,6 +316,7 @@ public class Context
      *
      * @param numSearchResults the number of search results to return if available.
      */
+    @Override
     public void setNumSearchResults(int numSearchResults)
     {
         this.numSearchResults = numSearchResults;
@@ -298,6 +328,7 @@ public class Context
      * @param text The text to search for.
      * @return The list of results (in order of importance) that the search matched.
      */
+    @Override
     public List<AbstractBookmark> searchAll(String text)
     {
         LinkedHashSet<UUID> uuids = new LinkedHashSet<>();//Use a LinkedHashSet to eliminate duplicates in the list, but preserve result order.
@@ -409,6 +440,7 @@ public class Context
      * @param text The text to search for.
      * @return The results of the search.
      */
+    @Override
     public List<AbstractBookmark> searchBookmarkNames(String text)
     {
         return getBookmarks(bookmarkNames.searchAll(text, getNumSearchResults()));
@@ -420,6 +452,7 @@ public class Context
      * @param text The text to do a general tag search for
      * @return A list of bookmarks that contain the text in their tags.
      */
+    @Override
     public List<AbstractBookmark> searchTagsLoosly(String text)
     {
         return getBookmarks(bookmarkTags.searchAll(text, getNumSearchResults()));
@@ -431,6 +464,7 @@ public class Context
      * @param tags The tags to match at least one of.
      * @return A list of Bookmarks that contain at least one of the supplied tags.
      */
+    @Override
     public List<AbstractBookmark> searchTagsExact(Set<String> tags)
     {
         return getBookmarks(searchAllTagsExact(tags));
@@ -466,6 +500,7 @@ public class Context
      * @param tags The list of tags to use to find bookmarks.
      * @return A list of bookmarks that contain all the supplied tags.
      */
+    @Override
     public List<AbstractBookmark> searchTagsFullMatch(Set<String> tags)
         throws Exception
     {
@@ -496,6 +531,7 @@ public class Context
      * @param text The text to search for.
      * @return A list of boomarks that have the supplied text (or a portion of it) in their type names.
      */
+    @Override
     public List<AbstractBookmark> searchBookmarkTypes(String text)
     {
         return getBookmarks(bookmarkTypeNames.searchAll(text, getNumSearchResults()));
@@ -507,6 +543,7 @@ public class Context
      * @param text The text to search for.
      * @return A list of bookmarks that contain the supplied text.
      */
+    @Override
     public List<AbstractBookmark> searchBookmarkText(String text)
     {
         return getBookmarks(bookmarkText.searchAll(text, getNumSearchResults()));
@@ -516,6 +553,7 @@ public class Context
     // Sorting and Filtering Methods
     // ============================================================
 
+    @Override
     public List<AbstractBookmark> filterHasAnyTag(List<AbstractBookmark> bookmarkList, Set<String> tags)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -534,6 +572,7 @@ public class Context
         return results;
     }
 
+    @Override
     public List<AbstractBookmark> filterHasAllTags(List<AbstractBookmark> bookmarkList, Set<String> tags)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -548,6 +587,7 @@ public class Context
         return results;
     }
 
+    @Override
     public List<AbstractBookmark> filterByBookmarkType(List<AbstractBookmark> bookmarkList, Set<String> bookmarkTypeNames)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -575,6 +615,7 @@ public class Context
      * @param includeIfBefore Include the bookmark if the date is before this date only.
      * @return A list of date range fildtered bookmarks.
      */
+    @Override
     public List<AbstractBookmark> filterDate(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -597,6 +638,7 @@ public class Context
      * @param exclusions
      * @return
      */
+    @Override
     public List<AbstractBookmark> excludeBookmarksWithNamesContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -624,6 +666,7 @@ public class Context
      * @param exclusions
      * @return
      */
+    @Override
     public List<AbstractBookmark> excludeBookmarksContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();
@@ -651,6 +694,7 @@ public class Context
      * @param exclusions
      * @return
      */
+    @Override
     public List<AbstractBookmark> excludeBookmarkTagsContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();

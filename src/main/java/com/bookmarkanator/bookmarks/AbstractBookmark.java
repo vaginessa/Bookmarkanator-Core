@@ -27,7 +27,7 @@ public abstract class AbstractBookmark {
     /**
      * The action that will happen when this bookmark is called.
      */
-    public abstract void action(Context context) throws Exception;
+    public abstract void action(FileContext context) throws Exception;
 
     /**
      * Write this bookmark to the xml string that will represent it.

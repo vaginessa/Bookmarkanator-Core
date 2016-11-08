@@ -11,7 +11,7 @@ public class TestBookmark
     public void testBookmarkSearch()
         throws Exception
     {
-        Context context = new Context();
+        FileContext context = new FileContext();
 
         context.addAll(getBookmarks());
 

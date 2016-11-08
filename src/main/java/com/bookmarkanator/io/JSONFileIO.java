@@ -2,34 +2,38 @@ package com.bookmarkanator.io;
 
 import com.bookmarkanator.core.*;
 
-public class DatabaseIO implements BKIOInterface {
-
+public class JSONFileIO implements BKIOInterface
+{
     @Override
     public void init()
         throws Exception
     {
-        //connects to the database
+
     }
 
     @Override
     public void init(String mode)
         throws Exception
     {
-        //connects to the database
+
     }
 
     @Override
     public void save()
     {
-        //writes any unsaved data to the database (might no be necessary if the database context object does this by default)
+
     }
 
     @Override
     public void close()
     {
-        //closes the database connection
+
     }
 
+    /**
+     * Returns a regular FileContext object but when the context object is to be saved or loaded all the default xml is converted into json.
+     * @return
+     */
     @Override
     public ContextInterface getContext()
     {

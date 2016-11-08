@@ -13,7 +13,7 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
-    public void action(Context context) throws Exception {
+    public void action(FileContext context) throws Exception {
 
     }
 
