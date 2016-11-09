@@ -31,7 +31,7 @@
         <bookmark>
             <name>Test Group</name>
             <id>2</id>
-            <text></text>
+            <text>jnjnjn</text>
             <tags>
                 <tag>group</tag>
                 <tag>yahoo</tag>
@@ -40,10 +40,45 @@
             <creationDate>2002-05-30T09:00:00</creationDate>
             <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
             <content>
+                <!--The content area is for the specific bookmark type to write it's data to.-->
+
+                <!--When a bookmark's .toXML() method is called this is where that data will be-->
+                <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
+                <!--this area.-->
                 <item index="1" bkId="1"/>
                 <text>=</text>
                 <item index="3" bkId="2"/>
                 <text>text at end of group</text>
+            </content>
+        </bookmark>
+    </block>
+    <block type="groupA">
+        <bookmark>
+            <name>Test Group A</name>
+            <id>2</id>
+            <text>jnjnjn</text>
+            <tags>
+                <tag>group</tag>
+                <tag>yahoo</tag>
+                <tag>text</tag>
+            </tags>
+            <creationDate>2002-05-30T09:00:00</creationDate>
+            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <content>
+                <!--The content area is for the specific bookmark type to write it's data to.-->
+
+                <!--When a bookmark's .toXML() method is called this is where that data will be-->
+                <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
+                <!--this area.-->
+                <item index="1" bkId="1"/>
+                <text>=</text>
+                <item index="3" bkId="2"/>
+                <text>text at end of group</text>
+                <a>
+                    <b>
+                        <c>text here</c>
+                    </b>
+                </a>
             </content>
         </bookmark>
     </block>
