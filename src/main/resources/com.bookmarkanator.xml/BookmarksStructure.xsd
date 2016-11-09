@@ -1,0 +1,49 @@
+<?xml version = "1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.w3schools.com"
+           xmlns="http://www.w3schools.com">
+
+    <xs:element name='bookmarks'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name='block' type='block' minOccurs='0'
+                            maxOccurs='unbounded'/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="block">
+        <xs:sequence>
+            <xs:element name="bookmark" type="bookmarkType" minOccurs='0'
+                        maxOccurs='unbounded'/>
+        </xs:sequence>
+        <xs:attribute name='type' type='xs:string'/>
+    </xs:complexType>
+    <xs:complexType name="bookmarkType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="tags" type="tags" minOccurs='1'
+                        maxOccurs='1'/>
+            <xs:element name="creationDate" type="xs:dateTime"/>
+            <xs:element name="lastAccessedDate" type="xs:dateTime"/>
+            <xs:element name="content" type="content" minOccurs='0'
+                        maxOccurs='1'/>
+        </xs:sequence>
+        <xs:attribute name='type' type='xs:string'/>
+    </xs:complexType>
+    <xs:complexType name="tags">
+        <xs:sequence>
+            <xs:element name="tag" type="xs:string" minOccurs='0'
+                        maxOccurs='unbounded'/>
+        </xs:sequence>
+        <xs:attribute name='type' type='xs:string'/>
+    </xs:complexType>
+        <xs:complexType name="content">
+            <xs:sequence>
+                <xs:any processContents="skip" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>

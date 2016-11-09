@@ -31,7 +31,7 @@ public class JSONFileIO implements BKIOInterface
     }
 
     /**
-     * Returns a regular FileContext object but when the context object is to be saved or loaded all the default xml is converted into json.
+     * Returns a regular FileContext object but when the context object is to be saved or loaded all the default com.bookmarkanator.xml is converted into json.
      * @return
      */
     @Override

@@ -7,7 +7,7 @@ import com.bookmarkanator.util.*;
 
 /**
  * The Context is a bookmark specific context. It allows searching and sorting of bookmarks. It allows reading and writing of data for the bookmarks.
- * and it also allows the bookmark methods to be called that will prepare the data they will use. All reading and writing is done in xml by default.
+ * and it also allows the bookmark methods to be called that will prepare the data they will use. All reading and writing is done in com.bookmarkanator.xml by default.
  */
 public class FileContext implements ContextInterface
 {

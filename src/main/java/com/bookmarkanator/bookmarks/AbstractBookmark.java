@@ -30,15 +30,15 @@ public abstract class AbstractBookmark {
     public abstract void action(FileContext context) throws Exception;
 
     /**
-     * Write this bookmark to the xml string that will represent it.
-     * @return  The settings this bookmark wants to preserve written to a String in xml format.
+     * Write this bookmark to the com.bookmarkanator.xml string that will represent it.
+     * @return  The settings this bookmark wants to preserve written to a String in com.bookmarkanator.xml format.
      *
-     * Note: This xml will be placed inside a larger xml structure, and only represents a single bookmark.
+     * Note: This com.bookmarkanator.xml will be placed inside a larger com.bookmarkanator.xml structure, and only represents a single bookmark.
      */
     public abstract String toXML();
 
     /**
-     * Populate the settings of this bookmark with a string containing xml for that purpose.
+     * Populate the settings of this bookmark with a string containing com.bookmarkanator.xml for that purpose.
      * @param xml  The string to parse and use to configure the settings of this specific type of bookmark.
      */
     public abstract void fromXML(String xml);
