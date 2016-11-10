@@ -11,20 +11,25 @@ public interface BKIOInterface {
 
     /**
      * Set up the data source with a specific context
-     * @param mode  The context or mode of the data source
+     * @param config  The context or config of the data source
      * @throws Exception
      */
-    void init(String mode)throws Exception;
+    void init(String config)throws Exception;
 
     /**
      * Perform a save of all bookmarks.
      */
-    void save();
+    void save()throws Exception;
+
+    /**
+     * Perform a save of all bookmarks.
+     */
+    void save(String config)throws Exception;
 
     /**
      * Does any closing of connections, or writing to files etc...
      */
-    void close();
+    void close()throws Exception;
 
     /**
      * Returns a context specific to this data source. The default "Context" Object would be returned from the FileIO implementation of this interface
@@ -32,5 +37,5 @@ public interface BKIOInterface {
      * the context is operated on.
      * @return  A IO specific type of context.
      */
-    ContextInterface getContext();
+    ContextInterface getContext()throws Exception;
 }

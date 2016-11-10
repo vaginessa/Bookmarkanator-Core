@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <bookmarks>
-    <block type="text">
+    <block class="com.bookmarkanator.bookmarks.TextBookmark">
         <bookmark>
         <name>Test Text Bookmark</name>
         <id>1</id>
@@ -14,7 +14,7 @@
         <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
         </bookmark>
     </block>
-    <block type="web">
+    <block class="com.bookmarkanator.bookmarks.WebBookmark">
         <bookmark>
             <name>Yahoo</name>
             <id>2</id>
@@ -27,7 +27,7 @@
             <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
         </bookmark>
     </block>
-    <block type="group">
+    <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
         <bookmark>
             <name>Test Group</name>
             <id>2</id>
@@ -52,7 +52,7 @@
             </content>
         </bookmark>
     </block>
-    <block type="groupA">
+    <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
         <bookmark>
             <name>Test Group A</name>
             <id>2</id>

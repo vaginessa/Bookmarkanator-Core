@@ -12,7 +12,7 @@ public class JSONFileIO implements BKIOInterface
     }
 
     @Override
-    public void init(String mode)
+    public void init(String config)
         throws Exception
     {
 
@@ -20,6 +20,13 @@ public class JSONFileIO implements BKIOInterface
 
     @Override
     public void save()
+    {
+
+    }
+
+    @Override
+    public void save(String config)
+        throws Exception
     {
 
     }

@@ -16,7 +16,7 @@
             <xs:element name="bookmark" type="bookmarkType" minOccurs='0'
                         maxOccurs='unbounded'/>
         </xs:sequence>
-        <xs:attribute name='type' type='xs:string'/>
+        <xs:attribute name='class' type='xs:string'/>
     </xs:complexType>
     <xs:complexType name="bookmarkType">
         <xs:sequence>
@@ -30,14 +30,12 @@
             <xs:element name="content" type="content" minOccurs='0'
                         maxOccurs='1'/>
         </xs:sequence>
-        <xs:attribute name='type' type='xs:string'/>
     </xs:complexType>
     <xs:complexType name="tags">
         <xs:sequence>
             <xs:element name="tag" type="xs:string" minOccurs='0'
                         maxOccurs='unbounded'/>
         </xs:sequence>
-        <xs:attribute name='type' type='xs:string'/>
     </xs:complexType>
         <xs:complexType name="content">
             <xs:sequence>

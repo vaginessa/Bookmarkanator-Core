@@ -12,7 +12,7 @@ public class DatabaseIO implements BKIOInterface {
     }
 
     @Override
-    public void init(String mode)
+    public void init(String config)
         throws Exception
     {
         //connects to the database
@@ -22,6 +22,13 @@ public class DatabaseIO implements BKIOInterface {
     public void save()
     {
         //writes any unsaved data to the database (might no be necessary if the database context object does this by default)
+    }
+
+    @Override
+    public void save(String config)
+        throws Exception
+    {
+
     }
 
     @Override
