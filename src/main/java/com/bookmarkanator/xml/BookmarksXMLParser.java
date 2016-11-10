@@ -1,6 +1,7 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
@@ -71,6 +72,10 @@ public class BookmarksXMLParser
                         System.out.println("com.bookmarkanator.bookmarks.SequenceBookmark");
                         abs = new SequenceBookmark();
                         break;
+                    case "com.bookmarkanator.bookmarks.EncryptedBookmark":
+                        System.out.println("com.bookmarkanator.bookmarks.EncryptedBookmark");
+                        abs = new SequenceBookmark();
+                        break;
                     default:
                         abs = new TextBookmark();
                 }
@@ -112,6 +117,7 @@ public class BookmarksXMLParser
             {
                 case BookmarksXMLParser.NAME_TAG:
                     System.out.println(n.getTextContent());
+                    abstractBookmark.setName(n.getTextContent());
                     break;
                 case BookmarksXMLParser.ID_TAG:
                     System.out.println(n.getTextContent());
@@ -119,14 +125,18 @@ public class BookmarksXMLParser
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
                     System.out.println(n.getTextContent());
+                    abstractBookmark.setText(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
+                    abstractBookmark.setTags(getTags(n));
                     break;
                 case BookmarksXMLParser.CREATION_DATE_TAG:
                     System.out.println(n.getTextContent());
+                    abstractBookmark.setCreationDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.LAST_ACCESSED_DATE_TAG:
                     System.out.println(n.getTextContent());
+                    abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
                     break;
@@ -140,10 +150,17 @@ public class BookmarksXMLParser
         //load all the basic bookmark information
     }
 
+    private Date getDate(String dateString)
+        throws Exception
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        return formatter.parse(dateString);
+    }
+
     private Set<String> getTags(Node node)
     {
-
-        return null;
+        Set<String> results = new HashSet<>();
+        return results;
     }
 
     private String getContent(Node node)

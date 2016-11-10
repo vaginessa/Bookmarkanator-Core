@@ -10,8 +10,8 @@
                 <tag>Tag1</tag>
                 <tag>Tag2</tag>
             </tags>
-            <creationDate>2002-05-30T09:00:00</creationDate>
-            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
+            <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
         </bookmark>
     </block>
     <block class="com.bookmarkanator.bookmarks.WebBookmark">
@@ -23,8 +23,8 @@
                 <tag>web</tag>
                 <tag>yahoo</tag>
             </tags>
-            <creationDate>2002-05-30T09:00:00</creationDate>
-            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
+            <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
         </bookmark>
     </block>
     <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
@@ -37,8 +37,8 @@
                 <tag>yahoo</tag>
                 <tag>text</tag>
             </tags>
-            <creationDate>2002-05-30T09:00:00</creationDate>
-            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
+            <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
             <content>
                 <!--The content area is for the specific bookmark type to write it's data to.-->
 
@@ -60,8 +60,8 @@
                 <tag>yahoo</tag>
                 <tag>text</tag>
             </tags>
-            <creationDate>2002-05-30T09:00:00</creationDate>
-            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
+            <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
             <content>
                 <!--The content area is for the specific bookmark type to write it's data to.-->
 
