@@ -14,6 +14,11 @@ public abstract class AbstractBookmark {
     public AbstractBookmark()
     {
         tags = new HashSet<>();
+        id = UUID.randomUUID();
+        name = "";
+        text = "";
+        creationDate = new Date();
+        lastAccessedDate = new Date();
     }
 
     /**
@@ -28,6 +33,12 @@ public abstract class AbstractBookmark {
      * The action that will happen when this bookmark is called.
      */
     public abstract void action(FileContext context) throws Exception;
+
+    /**
+     * Gets a new instance of this type of bookmark;
+     * @return
+     */
+    public abstract AbstractBookmark getNew();
 
     /**
      * Write this bookmark to the com.bookmarkanator.xml string that will represent it.

@@ -18,6 +18,12 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
+    public AbstractBookmark getNew()
+    {
+        return new WebBookmark();
+    }
+
+    @Override
     public String toXML() {
         return null;
     }

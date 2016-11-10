@@ -21,6 +21,12 @@ public class EncryptedBookmark extends AbstractBookmark{
     }
 
     @Override
+    public AbstractBookmark getNew()
+    {
+        return new EncryptedBookmark();
+    }
+
+    @Override
     public String toXML() {
         return null;
     }

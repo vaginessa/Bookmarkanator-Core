@@ -1,7 +1,9 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import java.util.*;
 import javax.xml.parsers.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
 
@@ -44,31 +46,109 @@ public class BookmarksXMLParser
         Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
         if (!docNodeRoot.getNodeName().equals(BookmarksXMLParser.BOOKMARKS_TAG))
         {
-            throw new Exception("Unexpected element encountered as root node \""+docNodeRoot.getNodeName()+"\"");
+            throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
         }
 
         NodeList nl = docNodeRoot.getChildNodes();
 
-        for (int c = 0; c < nl.getLength(); c++) {
+        for (int c = 0; c < nl.getLength(); c++)
+        {
             Node n = nl.item(c);
-            System.out.println(n.getNodeName());
-            switch (n.getNodeName()) {
-                case BookmarksXMLParser.BLOCK_TAG:
-                    System.out.println("block tag encountered ");
-                    Node className = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
+            AbstractBookmark abs = null;
 
-                    switch(className.getTextContent())
-                    {
-                        case "com.bookmarkanator.bookmarks.TextBookmark":
-                            System.out.println("com.bookmarkanator.bookmarks.TextBookmark");
-                            break;
-                        case "com.bookmarkanator.bookmarks.WebBookmark":
-                            System.out.println("com.bookmarkanator.bookmarks.WebBookmark");
-                            break;
-                    }
-                    break;
+            if (n.getNodeName().equals(BookmarksXMLParser.BLOCK_TAG))
+            {
+                Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
+
+                switch (classNameNode.getTextContent())
+                {//select bookmark type
+                    case "com.bookmarkanator.bookmarks.WebBookmark":
+                        System.out.println("com.bookmarkanator.bookmarks.WebBookmark");
+                        abs = new WebBookmark();
+
+                        break;
+                    case "com.bookmarkanator.bookmarks.SequenceBookmark":
+                        System.out.println("com.bookmarkanator.bookmarks.SequenceBookmark");
+                        abs = new SequenceBookmark();
+                        break;
+                    default:
+                        abs = new TextBookmark();
+                }
+
+                //add all bookmarks of this type
+                parseBookmark(n, abs);
             }
         }
     }
 
+    private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
+        throws Exception
+    {
+        NodeList nl = node.getChildNodes();
+        AbstractBookmark abs;
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            if (!n.getNodeName().startsWith("#"))
+            {
+                abs = abstractBookmark.getNew();
+                parseBookmarkDetails(n, abs);
+                contextInterface.addBookmark(abs);
+            }
+        }
+    }
+
+    private void parseBookmarkDetails(Node node, AbstractBookmark abstractBookmark)
+        throws Exception
+    {
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+
+            switch (n.getNodeName())
+            {
+                case BookmarksXMLParser.NAME_TAG:
+                    System.out.println(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.ID_TAG:
+                    System.out.println(n.getTextContent());
+                    abstractBookmark.setId(UUID.fromString(n.getTextContent()));
+                    break;
+                case BookmarksXMLParser.TEXT_TAG:
+                    System.out.println(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.TAGS_TAG:
+                    break;
+                case BookmarksXMLParser.CREATION_DATE_TAG:
+                    System.out.println(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.LAST_ACCESSED_DATE_TAG:
+                    System.out.println(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.CONTENT_TAG:
+                    break;
+                default:
+                    if (!n.getNodeName().startsWith("#"))
+                    {
+                        throw new Exception("Unexpected element encountered \"" + n.getNodeName() + "\"");
+                    }
+            }
+        }
+        //load all the basic bookmark information
+    }
+
+    private Set<String> getTags(Node node)
+    {
+
+        return null;
+    }
+
+    private String getContent(Node node)
+    {
+        //TODO implement getting content xml as a string
+        return null;
+    }
 }

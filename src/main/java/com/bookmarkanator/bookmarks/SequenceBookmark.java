@@ -17,6 +17,12 @@ public class SequenceBookmark extends AbstractBookmark {
     }
 
     @Override
+    public AbstractBookmark getNew()
+    {
+        return new SequenceBookmark();
+    }
+
+    @Override
     public String toXML() {
         return null;
     }

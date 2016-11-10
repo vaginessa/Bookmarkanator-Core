@@ -3,21 +3,21 @@
 <bookmarks>
     <block class="com.bookmarkanator.bookmarks.TextBookmark">
         <bookmark>
-        <name>Test Text Bookmark</name>
-        <id>1</id>
-        <text>This is a text bookmark</text>
-        <tags>
-        <tag>Tag1</tag>
-        <tag>Tag2</tag>
-        </tags>
-        <creationDate>2002-05-30T09:00:00</creationDate>
-        <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
+            <name>Test Text Bookmark</name>
+            <id>3112B182-5DB9-43FD-97BE-6A2D4071B7FD</id>
+            <text>This is a text bookmark</text>
+            <tags>
+                <tag>Tag1</tag>
+                <tag>Tag2</tag>
+            </tags>
+            <creationDate>2002-05-30T09:00:00</creationDate>
+            <lastAccessedDate>2002-05-30T09:00:00</lastAccessedDate>
         </bookmark>
     </block>
     <block class="com.bookmarkanator.bookmarks.WebBookmark">
         <bookmark>
             <name>Yahoo</name>
-            <id>2</id>
+            <id>94219EF5-6C6E-4A55-8DA7-5107ED80D0A9</id>
             <text>www.yahoo.com</text>
             <tags>
                 <tag>web</tag>
@@ -30,7 +30,7 @@
     <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
         <bookmark>
             <name>Test Group</name>
-            <id>2</id>
+            <id>3AD60CF5-6257-404D-96CF-89CF99E26E85</id>
             <text>jnjnjn</text>
             <tags>
                 <tag>group</tag>
@@ -51,11 +51,9 @@
                 <text>text at end of group</text>
             </content>
         </bookmark>
-    </block>
-    <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
         <bookmark>
             <name>Test Group A</name>
-            <id>2</id>
+            <id>42035469-ACE9-470B-A476-C0304701CCE3</id>
             <text>jnjnjn</text>
             <tags>
                 <tag>group</tag>

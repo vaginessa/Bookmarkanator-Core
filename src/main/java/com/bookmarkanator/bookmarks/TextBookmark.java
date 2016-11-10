@@ -15,6 +15,12 @@ public class TextBookmark extends AbstractBookmark{
     }
 
     @Override
+    public AbstractBookmark getNew()
+    {
+        return new TextBookmark();
+    }
+
+    @Override
     public String toXML() {
         return null;
     }
