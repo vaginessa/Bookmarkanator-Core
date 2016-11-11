@@ -40,15 +40,16 @@
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
             <content>
-                <!--The content area is for the specific bookmark type to write it's data to.-->
+                <myRootTag><!--The content area is for the specific bookmark type to write it's data to.-->
 
-                <!--When a bookmark's .toXML() method is called this is where that data will be-->
-                <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
-                <!--this area.-->
-                <item index="1" bkId="1"/>
-                <text>=</text>
-                <item index="3" bkId="2"/>
-                <text>text at end of group</text>
+                    <!--When a bookmark's .toXML() method is called this is where that data will be-->
+                    <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
+                    <!--this area.-->
+                    <item index="1" bkId="1"/>
+                    <text>=</text>
+                    <item index="3" bkId="2"/>
+                    <text>text at end of group</text>
+                </myRootTag>
             </content>
         </bookmark>
         <bookmark>
@@ -63,20 +64,13 @@
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
             <content>
-                <!--The content area is for the specific bookmark type to write it's data to.-->
-
-                <!--When a bookmark's .toXML() method is called this is where that data will be-->
-                <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
-                <!--this area.-->
-                <item index="1" bkId="1"/>
-                <text>=</text>
-                <item index="3" bkId="2"/>
-                <text>text at end of group</text>
-                <a>
-                    <b>
-                        <c>text here</c>
-                    </b>
-                </a>
+                    <!--When a bookmark's .toXML() method is called this is where that data will be-->
+                    <!--placed, and fromXML(String xmlIn) would populate the specific bookmark type from-->
+                    <!--this area.-->
+                    <item index="1" bkId="1"/>
+                    <text>=</text>
+                    <item index="3" bkId="2"/>
+                    <text>text at end of group</text>
             </content>
         </bookmark>
     </block>

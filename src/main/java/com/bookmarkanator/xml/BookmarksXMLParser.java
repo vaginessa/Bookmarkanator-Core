@@ -7,6 +7,7 @@ import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
+import org.w3c.dom.ls.*;
 
 public class BookmarksXMLParser
 {
@@ -29,6 +30,7 @@ public class BookmarksXMLParser
     //Variables
     private ContextInterface contextInterface;
     private InputStream inputStream;
+    private Document document;
 
     public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
     {
@@ -42,7 +44,7 @@ public class BookmarksXMLParser
 
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
-        Document document = builder.parse(inputStream);
+        document = builder.parse(inputStream);
 
         Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
         if (!docNodeRoot.getNodeName().equals(BookmarksXMLParser.BOOKMARKS_TAG))
@@ -139,6 +141,8 @@ public class BookmarksXMLParser
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
+                    System.out.println(getContent(n));
+                    abstractBookmark.fromXML(getContent(n));
                     break;
                 default:
                     if (!n.getNodeName().startsWith("#"))
@@ -160,12 +164,45 @@ public class BookmarksXMLParser
     private Set<String> getTags(Node node)
     {
         Set<String> results = new HashSet<>();
+
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            if (n.getNodeName().equals(BookmarksXMLParser.TAG_TAG))
+            {
+                results.add(n.getTextContent());
+            }
+        }
         return results;
     }
 
     private String getContent(Node node)
     {
-        //TODO implement getting content xml as a string
-        return null;
+        DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();
+        LSSerializer ser = ls.createLSSerializer();
+        StringBuilder sb = new StringBuilder();
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            sb.append(ser.writeToString(n));
+        }
+
+        return sanitizeXMLString(sb.toString());
     }
+
+    /**
+     * This method removes the annoying <?xml version="1.0" encoding="UTF-16"?> that the LSSerializer places on it's
+     * string verison of the xml.
+     * @param xmlString  A string containing xml version ... strings.
+     * @return  A string without xml version ... strings in it.
+     */
+    private String sanitizeXMLString(String xmlString)
+    {
+        return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
+    }
+
 }
