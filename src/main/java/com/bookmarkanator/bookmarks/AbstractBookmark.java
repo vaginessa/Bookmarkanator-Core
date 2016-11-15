@@ -11,7 +11,7 @@ public abstract class AbstractBookmark {
     private Date creationDate;
     private Date lastAccessedDate;
 
-    public AbstractBookmark()
+    private AbstractBookmark()
     {
         tags = new HashSet<>();
         id = UUID.randomUUID();
@@ -22,12 +22,24 @@ public abstract class AbstractBookmark {
     }
 
     /**
+     * This constructor is used to allow custom behaviour or pre-processing to occure relative to the bookmark context object, or for instance
+     * to throw an error if more than one bookmark is created, or other such custom behaviours.
+     * @param contextInterface  The Bookmark context object for the custom bookmark to use.
+     */
+    public AbstractBookmark(ContextInterface contextInterface)
+    {//Do nothing for the abstract bookmark.
+        this();
+    }
+
+    /**
      * The type name is the name that will be displayed to the user for this type of bookmark.
      * On the back end the fully qualified class name will be used for accessing storage and other
      * operations.
      * @return  Text of the name of the type of this bookmark.
      */
     public abstract String getTypeName();
+
+    public abstract List<String> getTypeLocation();
 
     /**
      * The action that will happen when this bookmark is called.

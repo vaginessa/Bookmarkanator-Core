@@ -3,32 +3,51 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
-public class SequenceBookmark extends AbstractBookmark {
+public class SequenceBookmark extends AbstractBookmark
+{
     private Map<UUID, AbstractBookmark> items;
 
+    public SequenceBookmark(ContextInterface contextInterface)
+    {
+        super(contextInterface);
+    }
+
     @Override
-    public String getTypeName() {
+    public String getTypeName()
+    {
         return "sequence";
     }
 
     @Override
-    public void action(FileContext context) throws Exception {
+    public List<String> getTypeLocation()
+    {
+        List<String> list = new ArrayList<>();
+        list.add("Group");
+        return list;
+    }
+
+    @Override
+    public void action(FileContext context)
+        throws Exception
+    {
 
     }
 
     @Override
     public AbstractBookmark getNew()
     {
-        return new SequenceBookmark();
+        return new SequenceBookmark(null);
     }
 
     @Override
-    public String toXML() {
+    public String toXML()
+    {
         return null;
     }
 
     @Override
-    public void fromXML(String xml) {
+    public void fromXML(String xml)
+    {
 
     }
 

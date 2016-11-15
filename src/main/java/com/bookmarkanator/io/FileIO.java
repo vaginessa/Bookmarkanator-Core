@@ -6,15 +6,16 @@ import com.bookmarkanator.xml.*;
 
 public class FileIO implements BKIOInterface {
 
+    public static final String defaultBookmarksFileName = "bookmarks.xml";
+    public static final String defaultBookmarksDirectory = "Bookmark-anator";
     private FileContext context;
     @Override
     public void init()
         throws Exception
     {
-        String usersHome = System.getProperty("user.home");
-        FileInputStream fin = new FileInputStream(new File(usersHome));
+        FileInputStream fin = new FileInputStream(getDefaultFile());
         validate(fin);
-        fin = new FileInputStream(new File(usersHome));
+        fin = new FileInputStream(getDefaultFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
 
         load(fin);
         fin.close();
@@ -35,8 +36,7 @@ public class FileIO implements BKIOInterface {
     @Override
     public void save()throws Exception
     {
-        String usersHome = System.getProperty("user.home");
-        FileOutputStream fout = new FileOutputStream(new File(usersHome));
+        FileOutputStream fout = new FileOutputStream(getDefaultFile());
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
         fout.flush();
@@ -82,5 +82,28 @@ public class FileIO implements BKIOInterface {
         FileContext context = new FileContext();
         context.setBKIOInterface(this);
         return context;
+    }
+
+    private File getDefaultFile()
+        throws IOException
+    {
+        String usersHome = System.getProperty("user.home");
+        String directory = usersHome+File.separatorChar+FileIO.defaultBookmarksDirectory;
+        String path = directory+File.separatorChar+FileIO.defaultBookmarksFileName;
+
+        File file = new File(path);
+
+        if (!file.exists())
+        {
+            if (file.getParentFile().mkdir())
+            {
+                file.createNewFile();
+            }
+            else
+            {
+                throw new IOException("Failed to create directory " + file.getParent());
+            }
+        }
+        return file;
     }
 }

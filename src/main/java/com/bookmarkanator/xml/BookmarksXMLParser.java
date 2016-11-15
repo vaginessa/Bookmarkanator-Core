@@ -67,19 +67,19 @@ public class BookmarksXMLParser
                 {//select bookmark type
                     case "com.bookmarkanator.bookmarks.WebBookmark":
                         System.out.println("com.bookmarkanator.bookmarks.WebBookmark");
-                        abs = new WebBookmark();
+                        abs = new WebBookmark(null);
 
                         break;
                     case "com.bookmarkanator.bookmarks.SequenceBookmark":
                         System.out.println("com.bookmarkanator.bookmarks.SequenceBookmark");
-                        abs = new SequenceBookmark();
+                        abs = new SequenceBookmark(null);
                         break;
                     case "com.bookmarkanator.bookmarks.EncryptedBookmark":
                         System.out.println("com.bookmarkanator.bookmarks.EncryptedBookmark");
-                        abs = new SequenceBookmark();
+                        abs = new SequenceBookmark(null);
                         break;
                     default:
-                        abs = new TextBookmark();
+                        abs = new TextBookmark(null);
                 }
 
                 //add all bookmarks of this type

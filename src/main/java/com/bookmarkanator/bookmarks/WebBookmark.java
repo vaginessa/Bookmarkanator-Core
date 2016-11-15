@@ -1,11 +1,23 @@
 package com.bookmarkanator.bookmarks;
 
+import java.util.*;
 import com.bookmarkanator.core.*;
 
 /**
  * The text of this bookmark would represent a web address.
  */
 public class WebBookmark extends AbstractBookmark{
+
+    /**
+     * This constructor is used to allow custom behaviour or pre-processing to occure relative to the bookmark context object, or for instance
+     * to throw an error if more than one bookmark is created, or other such custom behaviours.
+     *
+     * @param contextInterface The Bookmark context object for the custom bookmark to use.
+     */
+    public WebBookmark(ContextInterface contextInterface)
+    {
+        super(contextInterface);
+    }
 
     @Override
     public String getTypeName() {
@@ -18,9 +30,17 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
+    public List<String> getTypeLocation()
+    {
+        List<String> list = new ArrayList<>();
+        list.add("Web");
+        return list;
+    }
+
+    @Override
     public AbstractBookmark getNew()
     {
-        return new WebBookmark();
+        return new WebBookmark(null);
     }
 
     @Override
