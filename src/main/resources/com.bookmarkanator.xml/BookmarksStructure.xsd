@@ -27,7 +27,7 @@
                         maxOccurs='1'/>
             <xs:element name="creationDate" type="xs:string"/>
             <xs:element name="lastAccessedDate" type="xs:string"/>
-            <xs:element name="content" type="content" minOccurs='0'
+            <xs:element name="content" type="xs:string" minOccurs='0'
                         maxOccurs='1'/>
         </xs:sequence>
     </xs:complexType>
@@ -37,9 +37,4 @@
                         maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
-        <xs:complexType name="content">
-            <xs:sequence>
-                <xs:any processContents="skip" minOccurs="0" maxOccurs='unbounded'/>
-            </xs:sequence>
-        </xs:complexType>
 </xs:schema>

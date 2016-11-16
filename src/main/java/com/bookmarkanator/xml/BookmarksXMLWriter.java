@@ -70,6 +70,10 @@ public class BookmarksXMLWriter
         {
             element.appendChild(blocks.get(s));
         }
+//
+//        Element bob = document.createElement("hhh");
+//        bob.setTextContent("<h>h element!</h>");
+//        element.appendChild(bob);
     }
 
     private void appendBookmarkElement(Element parentElement, Document document, AbstractBookmark bookmark)
