@@ -5,11 +5,12 @@ import com.bookmarkanator.core.*;
 
 public class SequenceBookmark extends AbstractBookmark
 {
-    private Map<UUID, AbstractBookmark> items;
+    private List<UUID> items;
 
     public SequenceBookmark(ContextInterface contextInterface)
     {
         super(contextInterface);
+        items = new ArrayList<>();
     }
 
     @Override
@@ -42,18 +43,40 @@ public class SequenceBookmark extends AbstractBookmark
     @Override
     public String getSettings()
     {
-        return "<bk-sequence>This item in a list!</bk-sequence>";
+        StringBuilder sb = new StringBuilder();
+
+        for (int c=0;c<items.size();c++)
+        {
+            UUID bk = items.get(c);
+            sb.append(bk.toString());
+
+            if (c!=items.size()-1)
+            {//don't add comma at last item.
+                sb.append(",");
+            }
+        }
+
+        return sb.toString();
     }
 
     @Override
-    public void setSettings(String xml)
+    public void setSettings(String settings)
     {
+        String[] strings = settings.split(",");
 
+        for (String s: strings)
+        {
+            s = s.trim();
+            if (!s.isEmpty())
+            {
+                items.add(UUID.fromString(s));
+            }
+        }
     }
 
-    public void addBookmark(AbstractBookmark bookmark)
+    public void addBookmark(UUID bookmark)
     {
-        items.put(bookmark.getId(), bookmark);
+        items.add(bookmark);
     }
 
     public void removeBookmark(UUID bookmarkID)
@@ -61,9 +84,9 @@ public class SequenceBookmark extends AbstractBookmark
         items.remove(bookmarkID);
     }
 
-    public List<AbstractBookmark> getBookmarks()
+    public List<UUID> getBookmarks()
     {
-        return Collections.unmodifiableList(new ArrayList(items.values()));
+        return Collections.unmodifiableList(items);
     }
 
 }
