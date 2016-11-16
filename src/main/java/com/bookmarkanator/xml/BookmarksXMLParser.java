@@ -27,6 +27,9 @@ public class BookmarksXMLParser
     //Attributes
     public static final String CLASS_ATTRIBUTE = "class";
 
+    //Date format
+    public static final String DATE_FORMAT_STRING = "EEE, d MMM yyyy HH:mm:ss Z";
+
     //Variables
     private ContextInterface contextInterface;
     private InputStream inputStream;
@@ -157,7 +160,7 @@ public class BookmarksXMLParser
     private Date getDate(String dateString)
         throws Exception
     {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
         return formatter.parse(dateString);
     }
 

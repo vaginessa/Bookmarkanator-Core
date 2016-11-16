@@ -1,6 +1,7 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -58,17 +59,68 @@ public class BookmarksXMLWriter
             if (e==null)
             {
                 e = document.createElement(BookmarksXMLParser.BLOCK_TAG);
+                e.setAttribute(BookmarksXMLParser.CLASS_ATTRIBUTE, bookmark.getClass().getCanonicalName());
                 blocks.put(bookmark.getClass().getCanonicalName(), e);
             }
 
-            createBookmarkElement(e, document, bookmark);
+            appendBookmarkElement(e, document, bookmark);
+        }
+
+        for (String s: blocks.keySet())
+        {
+            element.appendChild(blocks.get(s));
         }
     }
 
-    private void createBookmarkElement(Element parentElement, Document document, AbstractBookmark bookmark)
+    private void appendBookmarkElement(Element parentElement, Document document, AbstractBookmark bookmark)
     {
         Element bookmarkNode = document.createElement(BookmarksXMLParser.BOOKMARK_TAG);
-//        Element
 
+        Element bookmarkName = document.createElement(BookmarksXMLParser.NAME_TAG);
+        bookmarkName.setTextContent(bookmark.getName());
+        bookmarkNode.appendChild(bookmarkName);
+
+        Element bookmarkId = document.createElement(BookmarksXMLParser.ID_TAG);
+        bookmarkId.setTextContent(bookmark.getId().toString());
+        bookmarkNode.appendChild(bookmarkId);
+
+        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
+        bookmarkText.setTextContent(bookmark.getText());
+        bookmarkNode.appendChild(bookmarkText);
+
+        Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);
+        bookmarkCreationDate.setTextContent(getDateString(bookmark.getCreationDate()));
+        bookmarkNode.appendChild(bookmarkCreationDate);
+
+        Element bookmarkLastAccessedDate = document.createElement(BookmarksXMLParser.LAST_ACCESSED_DATE_TAG);
+        bookmarkLastAccessedDate.setTextContent(getDateString(bookmark.getLastAccessedDate()));
+        bookmarkNode.appendChild(bookmarkLastAccessedDate);
+
+        Element bookmarTags = document.createElement(BookmarksXMLParser.TAGS_TAG);
+
+        appendBookmarkTagsElements(bookmarTags, document, bookmark);
+        bookmarkNode.appendChild(bookmarTags);
+
+        Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
+        //TODO Either change the content tag to have a string of the info for each individual bookmark,
+        //or get it to write whatever the bookmark has in it (will probably need to change the form of that method in abstract bookmark).
+
+        parentElement.appendChild(bookmarkNode);
+    }
+
+    private void appendBookmarkTagsElements(Element bookmarkTagsElement, Document document, AbstractBookmark bookmark)
+    {
+        for (String tag: bookmark.getTags())
+        {
+            Element tagElement = document.createElement(BookmarksXMLParser.TAG_TAG);
+            tagElement.setTextContent(tag);
+            bookmarkTagsElement.appendChild(tagElement);
+        }
+    }
+
+    private String getDateString(Date date)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
+        return formatter.format(date);
     }
 }

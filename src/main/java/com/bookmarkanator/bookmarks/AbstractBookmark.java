@@ -22,8 +22,8 @@ public abstract class AbstractBookmark {
     }
 
     /**
-     * This constructor is used to allow custom behaviour or pre-processing to occure relative to the bookmark context object, or for instance
-     * to throw an error if more than one bookmark is created, or other such custom behaviours.
+     * Bookmarks are required to have a constructor that accepts a ContextINterface because it allows extending classes the opportunity to implement
+     * custom behaviour upon being initialized.
      * @param contextInterface  The Bookmark context object for the custom bookmark to use.
      */
     public AbstractBookmark(ContextInterface contextInterface)
@@ -39,6 +39,10 @@ public abstract class AbstractBookmark {
      */
     public abstract String getTypeName();
 
+    /**
+     * The type location is used to organize bookmarks by their own defined categories.
+     * @return  Returns a list of categories. The path will be this list in order, and at the end it the bookmark type string (UI's could do thin in any way of course).
+     */
     public abstract List<String> getTypeLocation();
 
     /**
@@ -48,7 +52,7 @@ public abstract class AbstractBookmark {
 
     /**
      * Gets a new instance of this type of bookmark;
-     * @return
+     * @return  A new instance of this class of bookmark.
      */
     public abstract AbstractBookmark getNew();
 
