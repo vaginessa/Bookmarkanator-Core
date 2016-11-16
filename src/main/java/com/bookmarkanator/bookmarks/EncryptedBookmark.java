@@ -47,12 +47,12 @@ public class EncryptedBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String toXML() {
+    public String getSettings() {
         return null;
     }
 
     @Override
-    public void fromXML(String xml) {
+    public void setSettings(String xml) {
 
     }
 

@@ -145,7 +145,7 @@ public class BookmarksXMLParser
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
                     System.out.println(getContent(n));
-                    abstractBookmark.fromXML(getContent(n));
+                    abstractBookmark.setSettings(getContent(n));
                     break;
                 default:
                     if (!n.getNodeName().startsWith("#"))

@@ -3,7 +3,7 @@
 <bookmarks>
     <block class="com.bookmarkanator.bookmarks.TextBookmark">
         <bookmark>
-            <name>&lt;h&gt;h element!&lt;/h&gt;</name>
+            <name>Test Text Bookmark</name>
             <id>3112B182-5DB9-43FD-97BE-6A2D4071B7FD</id>
             <text>This is a text bookmark</text>
             <tags>
@@ -39,7 +39,7 @@
             </tags>
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
-            <content>"ehllo"</content>
+            <content>&lt;h&gt;h element!&lt;/h&gt;</content>
         </bookmark>
         <bookmark>
             <name>Test Group A</name>

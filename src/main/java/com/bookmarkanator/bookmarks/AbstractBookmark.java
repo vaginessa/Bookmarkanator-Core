@@ -62,13 +62,13 @@ public abstract class AbstractBookmark {
      *
      * Note: This com.bookmarkanator.xml will be placed inside a larger com.bookmarkanator.xml structure, and only represents a single bookmark.
      */
-    public abstract String toXML();
+    public abstract String getSettings();
 
     /**
      * Populate the settings of this bookmark with a string containing com.bookmarkanator.xml for that purpose.
      * @param xml  The string to parse and use to configure the settings of this specific type of bookmark.
      */
-    public abstract void fromXML(String xml);
+    public abstract void setSettings(String xml);
 
     public String getName() {
         return name;

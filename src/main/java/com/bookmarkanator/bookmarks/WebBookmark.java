@@ -9,7 +9,7 @@ import com.bookmarkanator.core.*;
 public class WebBookmark extends AbstractBookmark{
 
     /**
-     * This constructor is used to allow custom behaviour or pre-processing to occure relative to the bookmark context object, or for instance
+     * This constructor is used to allow custom behaviour or pre-processing to occur relative to the bookmark context object, or for instance
      * to throw an error if more than one bookmark is created, or other such custom behaviours.
      *
      * @param contextInterface The Bookmark context object for the custom bookmark to use.
@@ -44,12 +44,12 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String toXML() {
+    public String getSettings() {
         return null;
     }
 
     @Override
-    public void fromXML(String xml) {
+    public void setSettings(String xml) {
 
     }
 }

@@ -40,13 +40,13 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public String toXML()
+    public String getSettings()
     {
-        return null;
+        return "<bk-sequence>This item in a list!</bk-sequence>";
     }
 
     @Override
-    public void fromXML(String xml)
+    public void setSettings(String xml)
     {
 
     }

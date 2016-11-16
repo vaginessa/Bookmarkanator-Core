@@ -105,9 +105,13 @@ public class BookmarksXMLWriter
         appendBookmarkTagsElements(bookmarTags, document, bookmark);
         bookmarkNode.appendChild(bookmarTags);
 
-        Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
-        //TODO Either change the content tag to have a string of the info for each individual bookmark,
-        //or get it to write whatever the bookmark has in it (will probably need to change the form of that method in abstract bookmark).
+        String settings = bookmark.getSettings();
+        if (settings!=null)
+        {
+            Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
+            contentTag.setTextContent(bookmark.getSettings());
+            bookmarkNode.appendChild(contentTag);
+        }
 
         parentElement.appendChild(bookmarkNode);
     }
