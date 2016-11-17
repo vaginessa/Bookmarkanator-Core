@@ -69,16 +69,13 @@ public class BookmarksXMLParser
                 switch (classNameNode.getTextContent())
                 {//select bookmark type
                     case "com.bookmarkanator.bookmarks.WebBookmark":
-                        System.out.println("com.bookmarkanator.bookmarks.WebBookmark");
                         abs = new WebBookmark(null);
 
                         break;
                     case "com.bookmarkanator.bookmarks.SequenceBookmark":
-                        System.out.println("com.bookmarkanator.bookmarks.SequenceBookmark");
                         abs = new SequenceBookmark(null);
                         break;
                     case "com.bookmarkanator.bookmarks.EncryptedBookmark":
-                        System.out.println("com.bookmarkanator.bookmarks.EncryptedBookmark");
                         abs = new SequenceBookmark(null);
                         break;
                     default:
@@ -121,30 +118,24 @@ public class BookmarksXMLParser
             switch (n.getNodeName())
             {
                 case BookmarksXMLParser.NAME_TAG:
-                    System.out.println(n.getTextContent());
                     abstractBookmark.setName(n.getTextContent());
                     break;
                 case BookmarksXMLParser.ID_TAG:
-                    System.out.println(n.getTextContent());
                     abstractBookmark.setId(UUID.fromString(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
-                    System.out.println(n.getTextContent());
                     abstractBookmark.setText(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
                     abstractBookmark.setTags(getTags(n));
                     break;
                 case BookmarksXMLParser.CREATION_DATE_TAG:
-                    System.out.println(n.getTextContent());
                     abstractBookmark.setCreationDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.LAST_ACCESSED_DATE_TAG:
-                    System.out.println(n.getTextContent());
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
-                    System.out.println(getContent(n));
                     abstractBookmark.setSettings(getContent(n));
                     break;
                 default:

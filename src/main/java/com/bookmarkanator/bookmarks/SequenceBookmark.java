@@ -6,11 +6,13 @@ import com.bookmarkanator.core.*;
 public class SequenceBookmark extends AbstractBookmark
 {
     private List<UUID> items;
+    private List<UUID> errorItems;
 
     public SequenceBookmark(ContextInterface contextInterface)
     {
         super(contextInterface);
         items = new ArrayList<>();
+        errorItems = new ArrayList<>();
     }
 
     @Override
@@ -31,7 +33,27 @@ public class SequenceBookmark extends AbstractBookmark
     public void action(FileContext context)
         throws Exception
     {
+        boolean error = false;
+        StringBuilder sb = new StringBuilder();
+        for (UUID uuid: items)
+        {
+            AbstractBookmark abs = context.getBookmark(uuid);
+            if (abs==null)
+            {
+                errorItems.add(uuid);
+                error = true;
+            }
+            else
+            {
+                abs.action(context);
+                sb.append(abs.getText());
+            }
+        }
 
+        if (error)
+        {
+            throw new Exception("One or more referenced bookmarks couldn't be found. Please check error bookmarks list for bookmark Id's.");
+        }
     }
 
     @Override
@@ -72,6 +94,16 @@ public class SequenceBookmark extends AbstractBookmark
                 items.add(UUID.fromString(s));
             }
         }
+    }
+
+    public List<UUID> getErrorItems()
+    {
+        return Collections.unmodifiableList(errorItems);
+    }
+
+    public void resetErrors()
+    {
+        errorItems.clear();
     }
 
     public void addBookmark(UUID bookmark)
