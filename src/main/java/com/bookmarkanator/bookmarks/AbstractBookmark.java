@@ -3,7 +3,7 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
-public abstract class AbstractBookmark {
+public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     private String name;//The user visible name
     private UUID id;
     private String text;//contents of the bookmark
@@ -131,4 +131,6 @@ public abstract class AbstractBookmark {
     {
         this.lastAccessedDate = lastAccessedDate;
     }
+
+
 }

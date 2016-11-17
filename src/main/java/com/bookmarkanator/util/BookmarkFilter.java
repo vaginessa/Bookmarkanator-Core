@@ -19,16 +19,28 @@ public class BookmarkFilter
         return this;
     }
 
-    public List<AbstractBookmark> getBookmarkList()
+    public List<AbstractBookmark> results()
     {
         return bookmarkList;
+    }
+
+    public BookmarkFilter sortAscending()
+    {
+        Collections.sort(bookmarkList);
+        return this;
+    }
+
+    public BookmarkFilter sortDescending()
+    {
+        Collections.reverse(bookmarkList);
+        return this;
     }
 
     public BookmarkFilter keepWithAnyTag(Set<String> tags)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             for (String tag : tags)
             {
@@ -48,7 +60,7 @@ public class BookmarkFilter
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             if (bk.getTags().containsAll(tags))
             {
@@ -64,7 +76,7 @@ public class BookmarkFilter
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             for (String s : bookmarkTypeNames)
             {
@@ -94,7 +106,7 @@ public class BookmarkFilter
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             if (bk.getCreationDate().compareTo(includeIfAfter) > -1 && bk.getCreationDate().compareTo(includeIfBefore) < 0)
             {
@@ -117,7 +129,7 @@ public class BookmarkFilter
         List<AbstractBookmark> results = new ArrayList<>();
 
         continueA:
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             for (String s : exclusions)
             {
@@ -144,7 +156,7 @@ public class BookmarkFilter
         List<AbstractBookmark> results = new ArrayList<>();
 
         continueA:
-        for (AbstractBookmark bk :this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             for (String s : exclusions)
             {
@@ -171,11 +183,11 @@ public class BookmarkFilter
         List<AbstractBookmark> results = new ArrayList<>();
 
         continueA:
-        for (AbstractBookmark bk : this.getBookmarkList())
+        for (AbstractBookmark bk : this.results())
         {
             for (String s : exclusions)
             {
-                for (String st: bk.getTags())
+                for (String st : bk.getTags())
                 {
                     if (st.contains(s))
                     {

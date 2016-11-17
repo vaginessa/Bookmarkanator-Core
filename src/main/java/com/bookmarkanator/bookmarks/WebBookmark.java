@@ -55,4 +55,10 @@ public class WebBookmark extends AbstractBookmark{
     public void setSettings(String xml) {
 
     }
+    @Override
+    public int compareTo(AbstractBookmark o)
+    {
+        //TODO IMPLEMENT
+        return 0;
+    }
 }

@@ -56,4 +56,10 @@ public class EncryptedBookmark extends AbstractBookmark{
 
     }
 
+    @Override
+    public int compareTo(AbstractBookmark o)
+    {
+        //TODO IMPLEMENT
+        return 0;
+    }
 }
