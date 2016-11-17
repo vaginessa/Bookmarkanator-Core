@@ -1,6 +1,9 @@
 package com.bookmarkanator.bookmarks;
 
+import java.awt.*;
+import java.net.*;
 import java.util.*;
+import java.util.List;
 import com.bookmarkanator.core.*;
 
 /**
@@ -25,8 +28,8 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
-    public void action(FileContext context) throws Exception {
-
+    public void action(ContextInterface context) throws Exception {
+        Desktop.getDesktop().browse(new URI(this.getText()));
     }
 
     @Override

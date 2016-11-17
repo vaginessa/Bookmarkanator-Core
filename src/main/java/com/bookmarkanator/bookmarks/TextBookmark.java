@@ -3,7 +3,8 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
-public class TextBookmark extends AbstractBookmark{
+public class TextBookmark extends AbstractBookmark
+{
 
     /**
      * This constructor is used to allow custom behaviour or pre-processing to occur relative to the bookmark context object, or for instance
@@ -17,13 +18,16 @@ public class TextBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String getTypeName() {
+    public String getTypeName()
+    {
         return "Text";
     }
 
     @Override
-    public void action(FileContext context) throws Exception {
-
+    public void action(ContextInterface context)
+        throws Exception
+    {
+        //do nothing
     }
 
     @Override
@@ -41,12 +45,14 @@ public class TextBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String getSettings() {
+    public String getSettings()
+    {
         return null;
     }
 
     @Override
-    public void setSettings(String xml) {
+    public void setSettings(String xml)
+    {
 
     }
 }

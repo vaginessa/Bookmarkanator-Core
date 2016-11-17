@@ -30,7 +30,7 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action(FileContext context)
+    public void action(ContextInterface context)
         throws Exception
     {
         boolean error = false;
@@ -41,6 +41,7 @@ public class SequenceBookmark extends AbstractBookmark
             if (abs==null)
             {
                 errorItems.add(uuid);
+                sb.append("[Error finding id \""+uuid+"\"]");
                 error = true;
             }
             else
@@ -49,6 +50,8 @@ public class SequenceBookmark extends AbstractBookmark
                 sb.append(abs.getText());
             }
         }
+
+        this.setText(sb.toString());
 
         if (error)
         {

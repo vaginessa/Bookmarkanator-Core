@@ -4,18 +4,21 @@ import java.io.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
 
-public class FileIO implements BKIOInterface {
+public class FileIO implements BKIOInterface
+{
 
     public static final String defaultBookmarksFileName = "bookmarks.xml";
     public static final String defaultBookmarksDirectory = "Bookmark-anator";
     private FileContext context;
+
     @Override
     public void init()
         throws Exception
     {
         FileInputStream fin = new FileInputStream(getDefaultFile());
         validate(fin);
-        fin = new FileInputStream(getDefaultFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
+        fin = new FileInputStream(
+            getDefaultFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
 
         load(fin);
         fin.close();
@@ -34,7 +37,8 @@ public class FileIO implements BKIOInterface {
     }
 
     @Override
-    public void save()throws Exception
+    public void save()
+        throws Exception
     {
         FileOutputStream fout = new FileOutputStream(getDefaultFile());
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
@@ -79,8 +83,12 @@ public class FileIO implements BKIOInterface {
     @Override
     public ContextInterface getContext()
     {
-        FileContext context = new FileContext();
-        context.setBKIOInterface(this);
+        if (this.context == null)
+        {
+            this.context = new FileContext();
+            this.context.setBKIOInterface(this);
+        }
+
         return context;
     }
 
@@ -88,8 +96,8 @@ public class FileIO implements BKIOInterface {
         throws IOException
     {
         String usersHome = System.getProperty("user.home");
-        String directory = usersHome+File.separatorChar+FileIO.defaultBookmarksDirectory;
-        String path = directory+File.separatorChar+FileIO.defaultBookmarksFileName;
+        String directory = usersHome + File.separatorChar + FileIO.defaultBookmarksDirectory;
+        String path = directory + File.separatorChar + FileIO.defaultBookmarksFileName;
 
         File file = new File(path);
 

@@ -59,17 +59,4 @@ public interface ContextInterface
 
     List<AbstractBookmark> searchBookmarkText(String text);
 
-    List<AbstractBookmark> filterHasAnyTag(List<AbstractBookmark> bookmarkList, Set<String> tags);
-
-    List<AbstractBookmark> filterHasAllTags(List<AbstractBookmark> bookmarkList, Set<String> tags);
-
-    List<AbstractBookmark> filterByBookmarkType(List<AbstractBookmark> bookmarkList, Set<String> bookmarkTypeNames);
-
-    List<AbstractBookmark> filterDate(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore);
-
-    List<AbstractBookmark> excludeBookmarksWithNamesContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions);
-
-    List<AbstractBookmark> excludeBookmarksContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions);
-
-    List<AbstractBookmark> excludeBookmarkTagsContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions);
 }

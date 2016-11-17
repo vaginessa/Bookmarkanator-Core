@@ -18,10 +18,24 @@
         <bookmark>
             <name>Yahoo</name>
             <id>94219EF5-6C6E-4A55-8DA7-5107ED80D0A9</id>
-            <text>www.yahoo.com</text>
+            <text>http://www.yahoo.com</text>
             <tags>
                 <tag>web</tag>
                 <tag>yahoo</tag>
+            </tags>
+            <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
+            <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
+        </bookmark>
+        <bookmark>
+            <name>failed-to-mail-or-browse-ioexception</name>
+            <id>06F27238-BC6F-4077-BC64-7975689A8364</id>
+            <text>http://stackoverflow.com/questions/24658709/failed-to-mail-or-browse-ioexception</text>
+            <tags>
+                <tag>java</tag>
+                <tag>error</tag>
+                <tag>-10814</tag>
+                <tag>uri</tag>
+                <tag>desktop</tag>
             </tags>
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
@@ -52,7 +66,6 @@
             </tags>
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
-            <content></content>
         </bookmark>
     </block>
 </bookmarks>

@@ -48,7 +48,7 @@ public abstract class AbstractBookmark {
     /**
      * The action that will happen when this bookmark is called.
      */
-    public abstract void action(FileContext context) throws Exception;
+    public abstract void action(ContextInterface context) throws Exception;
 
     /**
      * Gets a new instance of this type of bookmark;
