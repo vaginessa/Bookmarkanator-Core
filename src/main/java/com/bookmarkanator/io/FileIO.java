@@ -1,27 +1,32 @@
 package com.bookmarkanator.io;
 
 import java.io.*;
+import java.util.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
+import org.apache.commons.io.*;
 
 public class FileIO implements BKIOInterface
 {
-
+    //Note: Default file locations are called from the users home directory.
     public static final String defaultBookmarksFileName = "bookmarks.xml";
     public static final String defaultBookmarksDirectory = "Bookmark-anator";
+    public static final String defaultBookmarkAddonsDirectory = "Bookmark-anator"+File.separatorChar+"addons";
     private FileContext context;
 
     @Override
     public void init()
         throws Exception
     {
-        FileInputStream fin = new FileInputStream(getDefaultFile());
-        validate(fin);
+        FileInputStream fin = new FileInputStream(getDefaultBookmarksFile());
+        validateXML(fin);
         fin = new FileInputStream(
-            getDefaultFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
+            getDefaultBookmarksFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
 
-        load(fin);
+        loadStandardBookmarks(fin);
         fin.close();
+
+//        loadModules(getDefaultBookmarksFile());
     }
 
     @Override
@@ -29,18 +34,20 @@ public class FileIO implements BKIOInterface
         throws Exception
     {
         FileInputStream fin = new FileInputStream(new File(config));
-        validate(fin);
+        validateXML(fin);
         fin = new FileInputStream(new File(config));
 
-        load(fin);
+        loadStandardBookmarks(fin);
         fin.close();
+
+//        loadModules(config);
     }
 
     @Override
     public void save()
         throws Exception
     {
-        FileOutputStream fout = new FileOutputStream(getDefaultFile());
+        FileOutputStream fout = new FileOutputStream(getDefaultBookmarksFile());
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
         fout.flush();
@@ -61,10 +68,10 @@ public class FileIO implements BKIOInterface
     @Override
     public void close()
     {
-        //close all file sources and stuff like that.
+        //close any open file sources.
     }
 
-    private void load(InputStream inputStream)
+    private void loadStandardBookmarks(InputStream inputStream)
         throws Exception
     {
         context = new FileContext();
@@ -73,7 +80,7 @@ public class FileIO implements BKIOInterface
         parser.parse();
     }
 
-    private void validate(InputStream inputStream)
+    private void validateXML(InputStream inputStream)
         throws Exception
     {
         InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/BookmarksStructure.xsd");
@@ -92,7 +99,7 @@ public class FileIO implements BKIOInterface
         return context;
     }
 
-    private File getDefaultFile()
+    private File getDefaultBookmarksFile()
         throws IOException
     {
         String usersHome = System.getProperty("user.home");
@@ -114,4 +121,40 @@ public class FileIO implements BKIOInterface
         }
         return file;
     }
+
+//    public void loadModules(String basePath)
+//    {
+//        //TODO: Load all jars in the basePath directory.
+//        //TODO: Load all bookmarks from those jars.
+//    }
+
+    //Copied from:
+    //http://stackoverflow.com/questions/19776063/java-list-files-recursively-in-subdirectories-with-apache-commons-io-2-4
+    public Collection listFiles(String directoryBase)
+
+    {
+        final String[] SUFFIX = {"jar"};  // use the suffix to filter
+        File rootDir = new File(directoryBase);
+        Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
+        return files;
+    }
+
+
+
+//    public static void addPath(String s) throws Exception {
+//        File f = new File(s);
+//        URL url = new URL(f.toURI().toString());
+//        ClassLoader loader = URLClassLoader.newInstance(
+//            new URL[] { url },
+//            getClass().getClassLoader()
+//        );
+//        Class<?> clazz = Class.forName("mypackage.MyClass", true, loader);
+//        Class<? extends Runnable> runClass = clazz.asSubclass(Runnable.class);
+//        // Avoid Class.newInstance, for it is evil.
+//        Constructor<? extends Runnable> ctor = runClass.getConstructor();
+//        Runnable doRun = ctor.newInstance();
+//        doRun.run();
+//    }
+
+
 }

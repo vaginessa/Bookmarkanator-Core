@@ -22,7 +22,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     }
 
     /**
-     * Bookmarks are required to have a constructor that accepts a ContextINterface because it allows extending classes the opportunity to implement
+     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
      * custom behaviour upon being initialized.
      * @param contextInterface  The Bookmark context object for the custom bookmark to use.
      */

@@ -151,45 +151,4 @@ public class DatabaseContext implements ContextInterface
         return null;
     }
 
-    @Override
-    public List<AbstractBookmark> filterHasAnyTag(List<AbstractBookmark> bookmarkList, Set<String> tags)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> filterHasAllTags(List<AbstractBookmark> bookmarkList, Set<String> tags)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> filterByBookmarkType(List<AbstractBookmark> bookmarkList, Set<String> bookmarkTypeNames)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> filterDate(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> excludeBookmarksWithNamesContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> excludeBookmarksContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
-    {
-        return null;
-    }
-
-    @Override
-    public List<AbstractBookmark> excludeBookmarkTagsContainingText(List<AbstractBookmark> bookmarkList, Set<String> exclusions)
-    {
-        return null;
-    }
 }

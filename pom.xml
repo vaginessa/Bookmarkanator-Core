@@ -6,9 +6,20 @@
   <artifactId>bookmarkanator</artifactId>
   <version>0.1.0-2</version>
   <packaging>jar</packaging>
-
   <name>bookmarkanator</name>
-  <url>http://maven.apache.org</url>
+  <url></url>
+
+  <developers>
+    <developer>
+      <id>flightx31</id>
+      <name>Micah Lloyd</name>
+      <email>flightx31@gmail.com</email>
+      <organization>Micah Lloyd</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
