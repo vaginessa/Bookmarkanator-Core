@@ -5,6 +5,8 @@ import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
@@ -18,16 +20,6 @@ public class Main extends Application
         throws Exception
     {
         Dimension bestWindowSize = getBestWindowSize();
-        //        primaryStage.setTitle("Hello World!");
-        //        Button btn = new Button();
-        //        btn.setText("Say 'Hello World'");
-        //        btn.setOnAction(new EventHandler<ActionEvent>() {
-        //
-        //            @Override
-        //            public void handle(ActionEvent event) {
-        //                System.out.println("Hello World!");
-        //            }
-        //        });
 
         uiController = new UIController();
         GridPane gridPane = new GridPane();
@@ -46,22 +38,23 @@ public class Main extends Application
         vBox.getChildren().add(gridPane);
         VBox.setVgrow(gridPane, Priority.ALWAYS);
 
+        MenuPanel menuPanel = new MenuPanel();
+        menuPanel.setPrefHeight(bestWindowSize.getHeight()*.15);
+        gridPane.add(menuPanel, 0, 0, 5, 1);
+
         TypesPanel typesPanel = new TypesPanel();
-        gridPane.add(typesPanel, 0, 0, 1, 4);
+        gridPane.add(typesPanel, 0, 1, 1, 4);
         typesPanel.setPrefWidth(bestWindowSize.getWidth()*.15);
 
         SelectedPanel selectedPanel = new SelectedPanel();
-        gridPane.add(selectedPanel, 1, 0, 2, 2);
+        gridPane.add(selectedPanel, 1, 1, 2, 2);
 
         AvailablePanel availablePanel = new AvailablePanel();
-        gridPane.add(availablePanel, 1, 2, 2, 2);
+        gridPane.add(availablePanel, 1, 3, 2, 2);
 
         BookmarksPanel bookmarksPanel = new BookmarksPanel();
-        gridPane.add(bookmarksPanel, 3, 0, 2, 4);
-
-        MenuPanel menuPanel = new MenuPanel();
-        menuPanel.setPrefHeight(bestWindowSize.getHeight()*.15);
-        gridPane.add(menuPanel, 0, 4, 5, 1);
+//        bookmarksPanel.setPrefWidth(bestWindowSize.getWidth()*.5);
+        gridPane.add(bookmarksPanel, 3, 1, 2, 4);
 
         setRowConstraints(gridPane);
         setColConstraints(gridPane);
@@ -83,23 +76,108 @@ public class Main extends Application
     private MenuBar getMenuBar()
     {
         MenuBar menuBar = new MenuBar();
-        // --- Menu File
-        Menu menuFile = new Menu("File");
 
-        // --- Menu Edit
-        Menu menuEdit = new Menu("Edit");
-
-        // --- Menu View
-        Menu menuView = new Menu("View");
-
-        menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
+        menuBar.getMenus().addAll(getFileMenu(), getEditMenu(), getViewMenu(), getHelpMenu());
         return menuBar;
     }
+    private Menu getFileMenu()
+    {
+        Menu menuFile = new Menu("File");
+
+        MenuItem menuItem = new MenuItem("New Bookmark");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Import Bookmarks");
+        menuItem.setDisable(true);
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Export Bookmarks");
+        menuItem.setDisable(true);
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Exit");
+        menuFile.getItems().addAll(menuItem);
+
+        return menuFile;
+    }
+
+    private Menu getEditMenu()
+    {
+        Menu menuFile = new Menu("Edit");
+
+        MenuItem menuItem = new MenuItem("Undo");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Redo");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Tag Editor");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Settings");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Enter Edit Mode");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Exit Edit Mode");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Search");
+        menuFile.getItems().addAll(menuItem);
+
+        return menuFile;
+    }
+
+    private Menu getViewMenu()
+    {
+        Menu menuFile = new Menu("View");
+
+        MenuItem menuItem = new MenuItem("Quick Panel Settings");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Hide Search Panel");
+        menuFile.getItems().addAll(menuItem);
+
+        return menuFile;
+    }
+
+    private Menu getHelpMenu()
+    {
+        Menu menuFile = new Menu("Help");
+
+        MenuItem menuItem = new MenuItem("About");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Wizard");
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Documentation");
+        menuFile.getItems().addAll(menuItem);
+
+        return menuFile;
+    }
+
 
     private void setRowConstraints(GridPane gridPane)
     {
         RowConstraints row1 = new RowConstraints();
-        row1.setVgrow(Priority.ALWAYS);
+        row1.setVgrow(Priority.NEVER);
 
         RowConstraints row2 = new RowConstraints();
         row2.setVgrow(Priority.ALWAYS);
@@ -111,7 +189,7 @@ public class Main extends Application
         row4.setVgrow(Priority.ALWAYS);
 
         RowConstraints row5 = new RowConstraints();
-        row5.setVgrow(Priority.NEVER);
+        row5.setVgrow(Priority.ALWAYS);
         gridPane.getRowConstraints().addAll(row1, row2, row3, row4, row5);
     }
 
@@ -149,4 +227,5 @@ public class Main extends Application
         Dimension d = new Dimension((int) (width * .5), (int) (height * .5));
         return d;
     }
+
 }
