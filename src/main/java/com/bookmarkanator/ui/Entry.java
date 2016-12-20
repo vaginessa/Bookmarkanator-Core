@@ -11,7 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 
-public class Main extends Application
+public class Entry extends Application
 {
     private UIController uiController;
 
