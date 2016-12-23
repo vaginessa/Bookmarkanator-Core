@@ -5,7 +5,7 @@ import com.bookmarkanator.core.*;
 public class UIController
 {
     private ContextInterface context;
-    private MenuPanel menuPanel;
+    private SearchPanel menuPanel;
     private TypesPanel typesPanel;
     private SelectedPanel selectedPanel;
     private AvailablePanel availablePanel;
@@ -27,12 +27,12 @@ public class UIController
         this.context = context;
     }
 
-    public MenuPanel getMenuPanel()
+    public SearchPanel getMenuPanel()
     {
         return menuPanel;
     }
 
-    public void setMenuPanel(MenuPanel menuPanel)
+    public void setMenuPanel(SearchPanel menuPanel)
     {
         this.menuPanel = menuPanel;
     }

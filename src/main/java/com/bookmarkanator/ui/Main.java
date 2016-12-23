@@ -11,7 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 
-public class Entry extends Application
+public class Main extends Application
 {
     private UIController uiController;
 
@@ -38,7 +38,7 @@ public class Entry extends Application
         vBox.getChildren().add(gridPane);
         VBox.setVgrow(gridPane, Priority.ALWAYS);
 
-        MenuPanel menuPanel = new MenuPanel();
+        SearchPanel menuPanel = new SearchPanel();
         menuPanel.setPrefHeight(bestWindowSize.getHeight()*.15);
         gridPane.add(menuPanel, 0, 0, 5, 1);
 
@@ -120,15 +120,6 @@ public class Entry extends Application
         menuItem = new SeparatorMenuItem();
         menuFile.getItems().addAll(menuItem);
 
-        menuItem = new MenuItem("Tag Editor");
-        menuFile.getItems().addAll(menuItem);
-
-        menuItem = new MenuItem("Settings");
-        menuFile.getItems().addAll(menuItem);
-
-        menuItem = new SeparatorMenuItem();
-        menuFile.getItems().addAll(menuItem);
-
         menuItem = new MenuItem("Enter Edit Mode");
         menuFile.getItems().addAll(menuItem);
 
@@ -138,8 +129,16 @@ public class Entry extends Application
         menuItem = new SeparatorMenuItem();
         menuFile.getItems().addAll(menuItem);
 
-        menuItem = new MenuItem("Search");
+        menuItem = new MenuItem("Tag Editor");
         menuFile.getItems().addAll(menuItem);
+
+        menuItem = new SeparatorMenuItem();
+        menuFile.getItems().addAll(menuItem);
+
+        menuItem = new MenuItem("Settings");
+        menuFile.getItems().addAll(menuItem);
+//        menuItem = new MenuItem("Search");
+//        menuFile.getItems().addAll(menuItem);
 
         return menuFile;
     }
@@ -151,8 +150,8 @@ public class Entry extends Application
         MenuItem menuItem = new MenuItem("Quick Panel Settings");
         menuFile.getItems().addAll(menuItem);
 
-        menuItem = new MenuItem("Hide Search Panel");
-        menuFile.getItems().addAll(menuItem);
+//        menuItem = new MenuItem("Hide Search Panel");
+//        menuFile.getItems().addAll(menuItem);
 
         return menuFile;
     }
@@ -164,10 +163,10 @@ public class Entry extends Application
         MenuItem menuItem = new MenuItem("About");
         menuFile.getItems().addAll(menuItem);
 
-        menuItem = new MenuItem("Wizard");
+        menuItem = new MenuItem("Tutorial");
         menuFile.getItems().addAll(menuItem);
 
-        menuItem = new MenuItem("Documentation");
+        menuItem = new MenuItem("Technical Documentation");
         menuFile.getItems().addAll(menuItem);
 
         return menuFile;
