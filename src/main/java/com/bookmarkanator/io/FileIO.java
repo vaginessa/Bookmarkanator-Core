@@ -119,6 +119,9 @@ public class FileIO implements BKIOInterface
                 throw new IOException("Failed to create directory " + file.getParent());
             }
         }
+
+        //TODO handle empty bookmarks file.
+
         return file;
     }
 

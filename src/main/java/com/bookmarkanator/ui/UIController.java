@@ -4,17 +4,27 @@ import com.bookmarkanator.core.*;
 
 public class UIController
 {
+    private static UIController uiController;
     private ContextInterface context;
     private SearchPanel menuPanel;
     private TypesPanel typesPanel;
     private SelectedPanel selectedPanel;
-    private AvailablePanel availablePanel;
+//    private AvailablePanel availablePanel;
     private BookmarksPanel bookmarksPanel;
     private DocView docView;
 
     public UIController()
     {
 
+    }
+
+    public static UIController use()
+    {
+        if (uiController==null)
+        {
+            uiController = new UIController();
+        }
+        return uiController;
     }
 
     public ContextInterface getContext()
@@ -57,15 +67,15 @@ public class UIController
         this.selectedPanel = selectedPanel;
     }
 
-    public AvailablePanel getAvailablePanel()
-    {
-        return availablePanel;
-    }
-
-    public void setAvailablePanel(AvailablePanel availablePanel)
-    {
-        this.availablePanel = availablePanel;
-    }
+//    public AvailablePanel getAvailablePanel()
+//    {
+//        return availablePanel;
+//    }
+//
+//    public void setAvailablePanel(AvailablePanel availablePanel)
+//    {
+//        this.availablePanel = availablePanel;
+//    }
 
     public BookmarksPanel getBookmarksPanel()
     {

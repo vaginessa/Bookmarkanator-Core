@@ -9,6 +9,10 @@ import com.bookmarkanator.io.*;
  */
 public interface ContextInterface
 {
+    Map<String, List<String>> getSettings();
+
+    void setSettings(Map<String, List<String>> settings);
+
     void setBKIOInterface(BKIOInterface bkioInterface);
 
     BKIOInterface getBKIOInterface();

@@ -70,13 +70,12 @@ public class BookmarksXMLParser
                 {//select bookmark type
                     case "com.bookmarkanator.bookmarks.WebBookmark":
                         abs = new WebBookmark(null);
-
                         break;
                     case "com.bookmarkanator.bookmarks.SequenceBookmark":
                         abs = new SequenceBookmark(null);
                         break;
                     case "com.bookmarkanator.bookmarks.EncryptedBookmark":
-                        abs = new SequenceBookmark(null);
+                        abs = new EncryptedBookmark(null);
                         break;
                     default:
                         abs = new TextBookmark(null);

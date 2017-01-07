@@ -1,6 +1,8 @@
 package com.bookmarkanator.ui;
 
 import java.awt.*;
+import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.Menu;
@@ -14,14 +16,21 @@ import javafx.stage.*;
 public class Main extends Application
 {
     private UIController uiController;
+    private ContextInterface context;
+    private FileIO fileIO;
 
     @Override
     public void start(Stage primaryStage)
         throws Exception
     {
         Dimension bestWindowSize = getBestWindowSize();
+        
+        fileIO = new FileIO();
+        fileIO.init();
+        context = fileIO.getContext();
 
         uiController = new UIController();
+
         GridPane gridPane = new GridPane();
         gridPane.setStyle("-fx-background-color: steelblue");
         gridPane.setGridLinesVisible(true);
@@ -49,8 +58,7 @@ public class Main extends Application
         SelectedPanel selectedPanel = new SelectedPanel();
         gridPane.add(selectedPanel, 1, 1, 2, 2);
 
-        AvailablePanel availablePanel = new AvailablePanel();
-        gridPane.add(availablePanel, 1, 3, 2, 2);
+        gridPane.add(AvailablePanel.use(), 1, 3, 2, 2);
 
         BookmarksPanel bookmarksPanel = new BookmarksPanel();
 //        bookmarksPanel.setPrefWidth(bestWindowSize.getWidth()*.5);
@@ -62,7 +70,7 @@ public class Main extends Application
         uiController.setMenuPanel(menuPanel);
         uiController.setTypesPanel(typesPanel);
         uiController.setSelectedPanel(selectedPanel);
-        uiController.setAvailablePanel(availablePanel);
+//        uiController.setAvailablePanel(AvailablePanel.use());
         uiController.setBookmarksPanel(bookmarksPanel);
 
         primaryStage.setScene(scene);
@@ -130,6 +138,7 @@ public class Main extends Application
         menuFile.getItems().addAll(menuItem);
 
         menuItem = new MenuItem("Tag Editor");
+        menuItem.setDisable(true);
         menuFile.getItems().addAll(menuItem);
 
         menuItem = new SeparatorMenuItem();

@@ -11,6 +11,7 @@ import com.bookmarkanator.util.*;
  */
 public class FileContext implements ContextInterface
 {
+    private Map<String, List<String>> settings;
     private Map<UUID, AbstractBookmark> bookmarks;
     //Note: the two maps below are for checking if a bookmark being deleted or edited has other bookmarks that depend on it.
     private Map<UUID, Set<UUID>> bkDependsOnMap;//<bookmark id, set<bk id's that this bk depends on>>
@@ -43,6 +44,18 @@ public class FileContext implements ContextInterface
     // ============================================================
     // Bookmark Methods
     // ============================================================
+
+    @Override
+    public Map<String, List<String>> getSettings()
+    {
+        return this.settings;
+    }
+
+    @Override
+    public void setSettings(Map<String, List<String>> settings)
+    {
+        this.settings = settings;
+    }
 
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)

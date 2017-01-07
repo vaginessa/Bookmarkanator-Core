@@ -10,6 +10,18 @@ import com.bookmarkanator.io.*;
 public class DatabaseContext implements ContextInterface
 {
     @Override
+    public Map<String, List<String>> getSettings()
+    {
+        return null;
+    }
+
+    @Override
+    public void setSettings(Map<String, List<String>> settings)
+    {
+
+    }
+
+    @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)
     {
         //generally this should be set by the DatabaseIO class when it creates this context.

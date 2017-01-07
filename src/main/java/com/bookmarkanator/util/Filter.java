@@ -3,16 +3,26 @@ package com.bookmarkanator.util;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 
-public class BookmarkFilter
+public class Filter
 {
     private List<AbstractBookmark> bookmarkList;
+    private boolean ignoreCase;
+    private static Filter filter;
 
-    public BookmarkFilter()
+    private Filter()
     {
         bookmarkList = new ArrayList<>();
+        ignoreCase = true;
     }
 
-    public BookmarkFilter setBookmarks(List<AbstractBookmark> bookmarks)
+    private Filter bookmarksList(List<AbstractBookmark> bookmarks)
+    {
+        this.bookmarkList.clear();
+        this.bookmarkList.addAll(bookmarks);
+        return this;
+    }
+
+    private Filter bookmarksSet(Set<AbstractBookmark> bookmarks)
     {
         this.bookmarkList.clear();
         this.bookmarkList.addAll(bookmarks);
@@ -24,19 +34,19 @@ public class BookmarkFilter
         return bookmarkList;
     }
 
-    public BookmarkFilter sortAscending()
+    public Filter sortAscending()
     {
         Collections.sort(bookmarkList);
         return this;
     }
 
-    public BookmarkFilter sortDescending()
+    public Filter sortDescending()
     {
         Collections.reverse(bookmarkList);
         return this;
     }
 
-    public BookmarkFilter keepWithAnyTag(Set<String> tags)
+    public Filter keepWithAnyTag(Set<String> tags)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -56,7 +66,7 @@ public class BookmarkFilter
         return this;
     }
 
-    public BookmarkFilter keepWithAllTags(Set<String> tags)
+    public Filter keepWithAllTags(Set<String> tags)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -72,7 +82,7 @@ public class BookmarkFilter
         return this;
     }
 
-    public BookmarkFilter keepBookmarkTypes(Set<String> bookmarkTypeNames)
+    public Filter keepBookmarkTypes(Set<String> bookmarkTypeNames)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -102,7 +112,7 @@ public class BookmarkFilter
      * @return A list of date range fildtered bookmarks.
      */
 
-    public BookmarkFilter keepWithinDateRange(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore)
+    public Filter keepWithinDateRange(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -124,7 +134,7 @@ public class BookmarkFilter
      * @param exclusions
      * @return
      */
-    public BookmarkFilter excludeNamesWithText(Set<String> exclusions)
+    public Filter excludeNamesWithText(List<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -151,7 +161,7 @@ public class BookmarkFilter
      * @param exclusions
      * @return
      */
-    public BookmarkFilter excludeTextWithText(Set<String> exclusions)
+    public Filter excludeTextWithText(Set<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -178,7 +188,7 @@ public class BookmarkFilter
      * @param exclusions
      * @return
      */
-    public BookmarkFilter excludeWithTagsWithText(Set<String> exclusions)
+    public Filter excludeWithTagsWithText(Set<String> exclusions)
     {
         List<AbstractBookmark> results = new ArrayList<>();
 
@@ -201,4 +211,29 @@ public class BookmarkFilter
         this.bookmarkList = results;
         return this;
     }
+
+    /**
+     * Static initializer/getter block
+     * @param bookmarks  The bookmarks to assign to the current filter class.
+     * @return  The most recently created Filter object or a newly created one.
+     */
+    public static Filter use(Collection<AbstractBookmark> bookmarks)
+    {
+        if (Filter.filter==null)
+        {
+            Filter.filter = new Filter();
+        }
+
+        if (bookmarks instanceof List)
+        {
+            Filter.filter.bookmarksList((List)bookmarks);
+        }
+        else if (bookmarks instanceof Set)
+        {
+            Filter.filter.bookmarksSet((Set)bookmarks);
+        }
+
+        return Filter.filter;
+    }
+
 }

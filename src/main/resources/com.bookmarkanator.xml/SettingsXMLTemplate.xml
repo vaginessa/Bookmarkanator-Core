@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings>
+    <setting>
+        <key>settings-directory</key>
+        <value>/home/bookmarkanator/modules</value>
+    </setting>
+    <setting>
+        <key>modules-directory</key>
+        <value>/home/bookmarkanator/modules</value>
+    </setting>
+    <setting>
+        <key>Another setting key</key>
+        <value>Another setting value</value>
+    </setting>
+</settings>
+
