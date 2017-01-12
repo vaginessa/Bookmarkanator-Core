@@ -5,7 +5,7 @@ import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
 

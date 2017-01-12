@@ -4,7 +4,7 @@ import java.awt.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 
 /**
  * The text of this bookmark would represent a web address.

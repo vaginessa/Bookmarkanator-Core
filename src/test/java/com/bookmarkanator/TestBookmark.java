@@ -2,7 +2,7 @@ package com.bookmarkanator;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 import org.junit.*;
 
 public class TestBookmark

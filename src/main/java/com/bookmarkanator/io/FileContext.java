@@ -1,17 +1,16 @@
-package com.bookmarkanator.core;
+package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 
 /**
- * The Context is a bookmark specific context. It allows searching and sorting of bookmarks. It allows reading and writing of data for the bookmarks.
- * and it also allows the bookmark methods to be called that will prepare the data they will use. All reading and writing is done in com.bookmarkanator.xml by default.
+ * This class represents the main interface for interacting with bookmarks that are loaded/saved to/from the file system.
+ * When loading/laving the bookmarks will be written/read in xml format. Each bookmark has a section of text within the xml
+ * that it can save to (in any format), but is also responsible for parsing when the bookmark is loaded.
  */
 public class FileContext implements ContextInterface
 {
-    private Map<String, List<String>> settings;
     private Map<UUID, AbstractBookmark> bookmarks;
     //Note: the two maps below are for checking if a bookmark being deleted or edited has other bookmarks that depend on it.
     private Map<UUID, Set<UUID>> bkDependsOnMap;//<bookmark id, set<bk id's that this bk depends on>>
@@ -20,9 +19,8 @@ public class FileContext implements ContextInterface
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
     private Search<UUID> bookmarkText;//The text the bookmark contains.
     private Search<UUID> bookmarkTags;
-    private int numSearchResults;
+    private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
-
     //Bookmarks can store data here and communicate with other bookmarks. They can read/write their own data, but only read the data of other bookmark types.
     private Map<String, Map<String, Object>> contextObject;//<Class name of bookmark, Map<Bookmark data key, bookmark data object>>
 
@@ -44,18 +42,6 @@ public class FileContext implements ContextInterface
     // ============================================================
     // Bookmark Methods
     // ============================================================
-
-    @Override
-    public Map<String, List<String>> getSettings()
-    {
-        return this.settings;
-    }
-
-    @Override
-    public void setSettings(Map<String, List<String>> settings)
-    {
-        this.settings = settings;
-    }
 
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)

@@ -1,7 +1,6 @@
 package com.bookmarkanator.ui;
 
 import java.awt.*;
-import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import javafx.application.*;
 import javafx.scene.*;

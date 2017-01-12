@@ -8,7 +8,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 
 public class BookmarksXMLWriter

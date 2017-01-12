@@ -1,6 +1,8 @@
 package com.bookmarkanator.util;
 
+import java.io.*;
 import java.util.*;
+import org.apache.commons.io.*;
 
 public class Util {
 
@@ -72,5 +74,16 @@ public class Util {
         }
 
         return theString.substring(a, theString.length())+theString.substring(0, a);
+    }
+
+    //Copied from:
+    //http://stackoverflow.com/questions/19776063/java-list-files-recursively-in-subdirectories-with-apache-commons-io-2-4
+    public static Collection listFiles(String directoryBase)
+
+    {
+        final String[] SUFFIX = {"jar"};  // use the suffix to filter
+        File rootDir = new File(directoryBase);
+        Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
+        return files;
     }
 }

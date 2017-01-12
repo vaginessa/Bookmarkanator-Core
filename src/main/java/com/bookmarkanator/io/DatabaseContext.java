@@ -1,4 +1,4 @@
-package com.bookmarkanator.core;
+package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
@@ -9,18 +9,6 @@ import com.bookmarkanator.io.*;
  */
 public class DatabaseContext implements ContextInterface
 {
-    @Override
-    public Map<String, List<String>> getSettings()
-    {
-        return null;
-    }
-
-    @Override
-    public void setSettings(Map<String, List<String>> settings)
-    {
-
-    }
-
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)
     {

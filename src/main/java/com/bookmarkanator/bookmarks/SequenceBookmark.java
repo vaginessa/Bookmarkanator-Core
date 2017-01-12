@@ -1,7 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 
 /**
  * A SequenceBookmark is a bookmark that contains a sequence of references to other bookmarks. It is merely an ordered container for other bookmarks.

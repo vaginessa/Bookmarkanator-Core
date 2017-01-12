@@ -1,17 +1,13 @@
 package com.bookmarkanator.io;
 
 import java.io.*;
-import java.util.*;
-import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
-import org.apache.commons.io.*;
 
 public class FileIO implements BKIOInterface
 {
     //Note: Default file locations are called from the users home directory.
     public static final String defaultBookmarksFileName = "bookmarks.xml";
     public static final String defaultBookmarksDirectory = "Bookmark-anator";
-    public static final String defaultBookmarkAddonsDirectory = "Bookmark-anator"+File.separatorChar+"addons";
     private FileContext context;
 
     @Override
@@ -39,8 +35,6 @@ public class FileIO implements BKIOInterface
 
         loadStandardBookmarks(fin);
         fin.close();
-
-//        loadModules(config);
     }
 
     @Override
@@ -124,40 +118,4 @@ public class FileIO implements BKIOInterface
 
         return file;
     }
-
-//    public void loadModules(String basePath)
-//    {
-//        //TODO: Load all jars in the basePath directory.
-//        //TODO: Load all bookmarks from those jars.
-//    }
-
-    //Copied from:
-    //http://stackoverflow.com/questions/19776063/java-list-files-recursively-in-subdirectories-with-apache-commons-io-2-4
-    public Collection listFiles(String directoryBase)
-
-    {
-        final String[] SUFFIX = {"jar"};  // use the suffix to filter
-        File rootDir = new File(directoryBase);
-        Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
-        return files;
-    }
-
-
-
-//    public static void addPath(String s) throws Exception {
-//        File f = new File(s);
-//        URL url = new URL(f.toURI().toString());
-//        ClassLoader loader = URLClassLoader.newInstance(
-//            new URL[] { url },
-//            getClass().getClassLoader()
-//        );
-//        Class<?> clazz = Class.forName("mypackage.MyClass", true, loader);
-//        Class<? extends Runnable> runClass = clazz.asSubclass(Runnable.class);
-//        // Avoid Class.newInstance, for it is evil.
-//        Constructor<? extends Runnable> ctor = runClass.getConstructor();
-//        Runnable doRun = ctor.newInstance();
-//        doRun.run();
-//    }
-
-
 }

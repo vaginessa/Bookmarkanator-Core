@@ -1,7 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     private String name;//The user visible name
@@ -41,7 +41,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
 
     /**
      * The type location is used to organize bookmarks by their own defined categories.
-     * @return  Returns a list of categories. The path will be this list in order, and at the end it the bookmark type string (UI's could do thin in any way of course).
+     * @return  Returns a list of categories. The path will be this list in order, and at the end it the bookmark type string (UI's could do this in any way of course).
      */
     public abstract List<String> getTypeLocation();
 

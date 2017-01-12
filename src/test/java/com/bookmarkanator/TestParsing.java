@@ -2,7 +2,6 @@ package com.bookmarkanator;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 import com.bookmarkanator.xml.*;

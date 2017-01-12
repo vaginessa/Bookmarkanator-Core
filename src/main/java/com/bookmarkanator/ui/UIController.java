@@ -1,6 +1,6 @@
 package com.bookmarkanator.ui;
 
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 
 public class UIController
 {

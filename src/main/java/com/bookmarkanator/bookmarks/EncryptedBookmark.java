@@ -1,7 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.io.*;
 
 public class EncryptedBookmark extends AbstractBookmark{
     private String passwordHash;

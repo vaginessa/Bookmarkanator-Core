@@ -2,6 +2,7 @@ package com.bookmarkanator;
 
 import java.util.*;
 import com.bookmarkanator.io.*;
+import com.bookmarkanator.util.*;
 import org.junit.*;
 
 public class TestLoadingModules
@@ -14,7 +15,7 @@ public class TestLoadingModules
 
 //        io.init();
 
-        Collection col = io.listFiles("/Users/lloyd1/Desktop");
+        Collection col = Util.listFiles("/Users/lloyd1/Desktop");
         System.out.println();
     }
 }

@@ -1,7 +1,5 @@
 package com.bookmarkanator.io;
 
-import com.bookmarkanator.core.*;
-
 public interface BKIOInterface {
     /**
      * Set up the data source
