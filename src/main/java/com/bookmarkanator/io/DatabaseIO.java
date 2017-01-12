@@ -2,12 +2,7 @@ package com.bookmarkanator.io;
 
 public class DatabaseIO implements BKIOInterface {
 
-    @Override
-    public void init()
-        throws Exception
-    {
-        //connects to the database
-    }
+
 
     @Override
     public void init(String config)

@@ -19,17 +19,17 @@
         <xs:attribute name='class' type='xs:string'/>
     </xs:complexType>
     <xs:complexType name="bookmarkType">
-        <xs:sequence>
+        <xs:all>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="id" type="xs:string"/>
             <xs:element name="text" type="xs:string"/>
-            <xs:element name="tags" type="tags" minOccurs='1'
+            <xs:element name="tags" type="tags" minOccurs='0'
                         maxOccurs='1'/>
             <xs:element name="creationDate" type="xs:string"/>
             <xs:element name="lastAccessedDate" type="xs:string"/>
             <xs:element name="content" type="xs:string" minOccurs='0'
                         maxOccurs='1'/>
-        </xs:sequence>
+        </xs:all>
     </xs:complexType>
     <xs:complexType name="tags">
         <xs:sequence>

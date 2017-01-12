@@ -7,24 +7,25 @@ public class FileIO implements BKIOInterface
 {
     //Note: Default file locations are called from the users home directory.
     //TODO Move the default bookmark settings to the settings gotten from the settings file.
-    public static final String defaultBookmarksFileName = "bookmarks.xml";
-    public static final String defaultBookmarksDirectory = "Bookmark-anator";
+//    public static final String defaultBookmarksFileName = "bookmarks.xml";
+//    public static final String defaultBookmarksDirectory = "Bookmark-anator";
     private FileContext context;
+    private String bookmarksFileLocation;
 
-    @Override
-    public void init()
-        throws Exception
-    {
-        FileInputStream fin = new FileInputStream(getDefaultBookmarksFile());
-        validateXML(fin);
-        fin = new FileInputStream(
-            getDefaultBookmarksFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
-
-        loadStandardBookmarks(fin);
-        fin.close();
-
-//        loadModules(getDefaultBookmarksFile());
-    }
+//    @Override
+//    public void init()
+//        throws Exception
+//    {
+//        FileInputStream fin = new FileInputStream(getDefaultBookmarksFile());
+//        validateXML(fin);
+//        fin = new FileInputStream(
+//            getDefaultBookmarksFile());//need to open the file stream again because for some reason the validator closes the stream when it validates the xml.
+//
+//        loadStandardBookmarks(fin);
+//        fin.close();
+//
+////        loadModules(getDefaultBookmarksFile());
+//    }
 
     @Override
     public void init(String config)
@@ -36,13 +37,14 @@ public class FileIO implements BKIOInterface
 
         loadStandardBookmarks(fin);
         fin.close();
+        bookmarksFileLocation = config;
     }
 
     @Override
     public void save()
         throws Exception
     {
-        FileOutputStream fout = new FileOutputStream(getDefaultBookmarksFile());
+        FileOutputStream fout = new FileOutputStream(bookmarksFileLocation);
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
         fout.flush();
@@ -94,29 +96,29 @@ public class FileIO implements BKIOInterface
         return context;
     }
 
-    private File getDefaultBookmarksFile()
-        throws IOException
-    {
-        String usersHome = System.getProperty("user.home");
-        String directory = usersHome + File.separatorChar + FileIO.defaultBookmarksDirectory;
-        String path = directory + File.separatorChar + FileIO.defaultBookmarksFileName;
-
-        File file = new File(path);
-
-        if (!file.exists())
-        {
-            if (file.getParentFile().mkdir())
-            {
-                file.createNewFile();
-            }
-            else
-            {
-                throw new IOException("Failed to create directory " + file.getParent());
-            }
-        }
-
-        //TODO handle empty bookmarks file.
-
-        return file;
-    }
+//    private File getDefaultBookmarksFile()
+//        throws IOException
+//    {
+//        String usersHome = System.getProperty("user.home");
+//        String directory = usersHome + File.separatorChar + FileIO.defaultBookmarksDirectory;
+//        String path = directory + File.separatorChar + FileIO.defaultBookmarksFileName;
+//
+//        File file = new File(path);
+//
+//        if (!file.exists())
+//        {
+//            if (file.getParentFile().mkdir())
+//            {
+//                file.createNewFile();
+//            }
+//            else
+//            {
+//                throw new IOException("Failed to create directory " + file.getParent());
+//            }
+//        }
+//
+//        //TODO handle empty bookmarks file.
+//
+//        return file;
+//    }
 }

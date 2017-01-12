@@ -1,11 +1,11 @@
 package com.bookmarkanator.io;
 
 public interface BKIOInterface {
-    /**
-     * Set up the data source
-     * @throws Exception
-     */
-    void init() throws Exception;
+//    /**
+//     * Set up the data source
+//     * @throws Exception
+//     */
+//    void init() throws Exception;
 
     /**
      * Set up the data source with a specific context

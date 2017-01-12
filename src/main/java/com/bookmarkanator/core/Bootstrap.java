@@ -2,6 +2,7 @@ package com.bookmarkanator.core;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarkanator.io.*;
 import com.bookmarkanator.xml.*;
 
 public class Bootstrap
@@ -14,7 +15,11 @@ public class Bootstrap
     //Settings fields
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
     private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
-    private static final String BOOKMARKS_FILE_LOCATION_KEY = "bookmarks-file-location";
+    private static final String BOOKMARK_IO_CONFIG_KEY = "bookmark-io-config";
+    private static final String BOOKMARK_IO_CLASS_KEY = "bookmark-io-class";
+    private static final String MODULE_LOADER_CLASS_KEY = "module-loader-class";
+    private static final String BOOKMARKS_PARSER_CLASS_KEY = "bookmarks-parser-class";
+    private static final String BOOKMARKS_WRITER_CLASS_KEY = "bookmarks-writer-class";
     private static final String ENCRYPTED_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.EncryptedBookmark";
     private static final String TEXT_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.TextBookmark";
     private static final String WEB_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.WebBookmark";
@@ -31,6 +36,7 @@ public class Bootstrap
     public Bootstrap()
         throws Exception
     {
+        ClassLoader classLoader = this.getClass().getClassLoader();
         hasClosed = false;
         defaultSettings = getDefaultSettings();
         loadedSettings = loadSettings();
@@ -43,10 +49,17 @@ public class Bootstrap
             {
                 md.addDirectory(new File(s));
             }
-            ClassLoader classLoader = md.addJarsToClassloader(this.getClass().getClassLoader());
+            classLoader = md.addJarsToClassloader(this.getClass().getClassLoader());
 
             //TODO use classloader to search for interfaces to load.
         }
+
+        List<String> bkioClasses = loadedSettings.get(BOOKMARK_IO_CLASS_KEY);
+        Class clazz = classLoader.loadClass(bkioClasses.get(0));
+        Class sub = clazz.asSubclass(BKIOInterface.class);
+        BKIOInterface bkio = (BKIOInterface) sub.newInstance();
+        bkio.init(loadedSettings.get(BOOKMARK_IO_CONFIG_KEY).get(0));
+        System.out.println();
 
     }
 
@@ -85,7 +98,11 @@ public class Bootstrap
 
         list = new ArrayList<>();
         list.add(getDefaultBookmarksDirLocation());
-        res.put(BOOKMARKS_FILE_LOCATION_KEY, list);
+        res.put(BOOKMARK_IO_CONFIG_KEY, list);
+
+        list = new ArrayList<>();
+        list.add("com.bookmarkanator.io.FileIO");//default bookmark io class.
+        res.put(BOOKMARK_IO_CLASS_KEY, list);
 
         return res;
     }

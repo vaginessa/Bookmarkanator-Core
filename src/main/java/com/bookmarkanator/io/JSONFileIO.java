@@ -2,12 +2,7 @@ package com.bookmarkanator.io;
 
 public class JSONFileIO implements BKIOInterface
 {
-    @Override
-    public void init()
-        throws Exception
-    {
-        //TODO: Implement.
-    }
+
 
     @Override
     public void init(String config)

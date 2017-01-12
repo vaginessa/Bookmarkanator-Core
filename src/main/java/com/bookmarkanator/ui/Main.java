@@ -25,7 +25,7 @@ public class Main extends Application
         Dimension bestWindowSize = getBestWindowSize();
         
         fileIO = new FileIO();
-        fileIO.init();
+        fileIO.init("");
         context = fileIO.getContext();
 
         uiController = new UIController();
