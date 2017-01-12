@@ -6,6 +6,7 @@ import com.bookmarkanator.xml.*;
 public class FileIO implements BKIOInterface
 {
     //Note: Default file locations are called from the users home directory.
+    //TODO Move the default bookmark settings to the settings gotten from the settings file.
     public static final String defaultBookmarksFileName = "bookmarks.xml";
     public static final String defaultBookmarksDirectory = "Bookmark-anator";
     private FileContext context;

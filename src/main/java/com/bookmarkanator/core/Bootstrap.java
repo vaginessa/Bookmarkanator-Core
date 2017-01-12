@@ -12,7 +12,9 @@ public class Bootstrap
     private static final String SETTINGS_XSD = "/com.bookmarkanator.xml/SettingsStructure.xsd";
 
     //Settings fields
-    private static final String MODULE_LOCATIONS = "module-locations";
+    private static final String MODULE_LOCATIONS_KEY = "module-locations";
+    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
+    private static final String BOOKMARKS_FILE_LOCATION_KEY = "bookmarks-file-location";
     private static final String ENCRYPTED_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.EncryptedBookmark";
     private static final String TEXT_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.TextBookmark";
     private static final String WEB_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.WebBookmark";
@@ -23,14 +25,17 @@ public class Bootstrap
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
 
     private Map<String, List<String>> loadedSettings;
+    private Map<String, List<String>> defaultSettings;
+    private boolean hasClosed;
 
     public Bootstrap()
         throws Exception
     {
-        File settingsFile = getSettingsFile();
-        loadedSettings = loadSettings(settingsFile);
+        hasClosed = false;
+        defaultSettings = getDefaultSettings();
+        loadedSettings = loadSettings();
 
-        List<String> jarLocations = loadedSettings.get(Bootstrap.MODULE_LOCATIONS);
+        List<String> jarLocations = loadedSettings.get(Bootstrap.MODULE_LOCATIONS_KEY);
         if (jarLocations != null && !jarLocations.isEmpty())
         {
             ModuleLoader md = ModuleLoader.use();
@@ -52,7 +57,7 @@ public class Bootstrap
         List<String> list = new ArrayList<>();
 
         list.add(getDefaultBaseDirectory());
-        res.put(MODULE_LOCATIONS, list);
+        res.put(MODULE_LOCATIONS_KEY, list);
 
         list = new ArrayList<>();
         list.add(ENCRYPTED_BOOKMARK_CLASS);
@@ -78,6 +83,10 @@ public class Bootstrap
         list.add(WEB_BOOKMARK_CLASS);
         res.put(WEB_BOOKMARK_CLASS, list);
 
+        list = new ArrayList<>();
+        list.add(getDefaultBookmarksDirLocation());
+        res.put(BOOKMARKS_FILE_LOCATION_KEY, list);
+
         return res;
     }
 
@@ -88,16 +97,39 @@ public class Bootstrap
 
     //Load bookmarks from location specified in the loadedSettings
 
-    private Map<String, List<String>> loadSettings(File settingsFile)
+    private Map<String, List<String>> loadSettings()
         throws Exception
     {
+        File settingsFile = getSettingsFile();
         FileInputStream fin = new FileInputStream(settingsFile);
         validateXML(fin);
+        fin.close();
+
+        //TODO handle validation error on empty file.
+
         fin = new FileInputStream(settingsFile);
 
         SettingsXMLParser parser = new SettingsXMLParser(fin);
+        Map<String, List<String>> res = parser.parse();
+        fin.close();
 
-        return parser.parse();
+        boolean needsSaving = false;
+
+        for (String s: defaultSettings.keySet())
+        {//ensure default settings are in place if other settings are missing.
+            List<String> l = res.get(s);
+            if (l==null)
+            {
+                res.put(s, defaultSettings.get(s));
+                needsSaving = true;
+            }
+        }
+        if (needsSaving)
+        {
+            saveSettingsFile(res, settingsFile);//save changes
+        }
+
+        return res;
     }
 
     private File getSettingsFile()
@@ -113,19 +145,15 @@ public class Bootstrap
                 file.getParentFile().mkdir();
             }
 
-            if (file.createNewFile())
-            {//Create new settings file and write the settings into it.
-//                file.createNewFile();
-                FileOutputStream fout = new FileOutputStream(file);
-                SettingsXMLWriter writer = new SettingsXMLWriter(getDefaultSettings(), fout);
-                writer.write();
-                fout.flush();
-                fout.close();
-            }
-            else
+            if (!file.createNewFile())
             {
-                throw new IOException("Failed to create directory " + file.getParent());
+                throw new IOException("Failed to create file " + file.getCanonicalPath());
             }
+        }
+
+        if (file.length()==0)
+        {
+            saveSettingsFile(defaultSettings, file);
         }
 
         //TODO handle empty bookmarks file.
@@ -146,9 +174,39 @@ public class Bootstrap
         return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
 
+    private String getDefaultBookmarksDirLocation()
+    {
+        String directory = getDefaultBaseDirectory();
+        return directory + File.separatorChar + Bootstrap.DEFAULT_BOOKMARKS_FILE_NAME;
+    }
+
     private String getDefaultBaseDirectory()
     {
         String usersHome = System.getProperty("user.home");
         return usersHome + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY;
+    }
+
+    public void saveSettingsFile(Map<String, List<String>> settings, File directory)
+        throws Exception
+    {
+        hasClosed = true;
+
+        FileOutputStream fout = new FileOutputStream(directory);
+        SettingsXMLWriter writer = new SettingsXMLWriter(settings, fout);
+        writer.write();
+        fout.flush();
+        fout.close();
+        //write settings to file, and close file
+    }
+
+    @Override
+    protected void finalize()
+        throws Throwable
+    {
+        super.finalize();
+        if (!hasClosed)
+        {
+            saveSettingsFile(loadedSettings, new File(getDefaultSettingsDirectory()));
+        }
     }
 }
