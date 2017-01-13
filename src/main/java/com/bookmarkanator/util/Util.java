@@ -86,4 +86,13 @@ public class Util {
         Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
         return files;
     }
+
+    public static <E> E getItem(List<E> items, int index)
+    {
+        if (items.size()<=index)
+        {
+            return null;
+        }
+        else return items.get(index);
+    }
 }

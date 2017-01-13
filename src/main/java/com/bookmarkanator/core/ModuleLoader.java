@@ -11,29 +11,29 @@ public class ModuleLoader
 
     public ModuleLoader()
     {
-        jarDirectories = new HashSet<>();
+        this.jarDirectories = new HashSet<>();
     }
 
     public ModuleLoader addDirectory(File jarDirectory)
     {
-        jarDirectories.add(jarDirectory);
+        this.jarDirectories.add(jarDirectory);
         return this;
     }
 
     public ClassLoader addJarsToClassloader(ClassLoader classLoader)
         throws Exception
     {
-        URL[] urls = new URL[jarDirectories.size()];
+        URL[] urls = new URL[this.jarDirectories.size()];
         int c = 0;
 
-        for (File file: jarDirectories)
+        for (File file: this.jarDirectories)
         {
             URL myJarFile = new URL("jar", "", "file:" +file.getCanonicalPath());
             urls[c] = myJarFile;
             c = c+1;
         }
 
-        jarDirectories.clear();
+        this.jarDirectories.clear();
         return new URLClassLoader(urls, classLoader);
     }
 

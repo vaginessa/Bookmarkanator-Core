@@ -3,6 +3,7 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.util.*;
 import com.bookmarkanator.io.*;
+import com.bookmarkanator.util.*;
 import com.bookmarkanator.xml.*;
 
 public class Bootstrap
@@ -32,11 +33,14 @@ public class Bootstrap
     private Map<String, List<String>> loadedSettings;
     private Map<String, List<String>> defaultSettings;
     private boolean hasClosed;
+    private ClassLoader classLoader;
 
     public Bootstrap()
         throws Exception
     {
-        ClassLoader classLoader = this.getClass().getClassLoader();
+
+        //TODO setup logging framework.
+        this.classLoader = this.getClass().getClassLoader();
         hasClosed = false;
         defaultSettings = getDefaultSettings();
         loadedSettings = loadSettings();
@@ -49,20 +53,60 @@ public class Bootstrap
             {
                 md.addDirectory(new File(s));
             }
-            classLoader = md.addJarsToClassloader(this.getClass().getClassLoader());
+            this.classLoader = md.addJarsToClassloader(this.getClass().getClassLoader());
 
-            //TODO use classloader to search for interfaces to load.
+            //TODO use classloader to search for interfaces to load?
         }
+        BKIOInterface bkioInterface = getBKIOInterface();
 
-        List<String> bkioClasses = loadedSettings.get(BOOKMARK_IO_CLASS_KEY);
-        Class clazz = classLoader.loadClass(bkioClasses.get(0));
-        Class sub = clazz.asSubclass(BKIOInterface.class);
-        BKIOInterface bkio = (BKIOInterface) sub.newInstance();
-        bkio.init(loadedSettings.get(BOOKMARK_IO_CONFIG_KEY).get(0));
         System.out.println();
 
     }
 
+    /**
+     * Loads the BKIOInterface class that is specified in the settings file, or the default setting added to the settings file.
+     * @return  A BKIOInterface class that was loaded.
+     * @throws Exception
+     */
+    private BKIOInterface getBKIOInterface()
+        throws Exception
+    {
+        List<String> bkioClasses = this.loadedSettings.get(BOOKMARK_IO_CLASS_KEY);
+        List<String> bkioConfigs = this.loadedSettings.get(BOOKMARK_IO_CONFIG_KEY);
+
+        assert bkioClasses != null;
+        assert bkioConfigs != null;
+
+        for (int c = 0; c < bkioClasses.size(); c++)
+        {//Iterate through the class settings for BKIOInterface classes, and match (by index) the config for that class.
+            try
+            {
+                String className = bkioClasses.get(c);
+                String config = Util.getItem(bkioConfigs, c);
+
+                Class clazz = this.classLoader.loadClass(className);
+                Class sub = clazz.asSubclass(BKIOInterface.class);
+                BKIOInterface bkio = (BKIOInterface) sub.newInstance();
+
+                bkio.init(config);
+                System.out.println("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
+                return bkio;
+            }
+            catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
+            {//Print the error and move on to try loading the next class.
+                e.printStackTrace();
+            }
+        }
+
+        throw new Exception("No valid BKIOInterface classes could be loaded.");
+    }
+
+    /**
+     * Returns a map with default settings, in case there is no settings file (or an empty one), and also for comparing setting by setting to use
+     * the default setting if the setting is not specified in the settings file.
+     * @return  A map of settings in the form of <Setting key, List<individual multiple settings>>
+     * @throws FileNotFoundException  If the default base directory cannot be accessed.
+     */
     private Map<String, List<String>> getDefaultSettings()
         throws FileNotFoundException
     {
@@ -107,13 +151,11 @@ public class Bootstrap
         return res;
     }
 
-    //Load loadedSettings from loadedSettings file at default location.
-    //if no file use default loadedSettings
-
-    //Load modules from location specified in the loadedSettings
-
-    //Load bookmarks from location specified in the loadedSettings
-
+    /**
+     * Finds the settings file that is in the users home directory, and loads the settings from it, or if empty adds the settings. If not existant it creates it.
+     * @return  A map of settings in the form of <Setting key, List<individual multiple settings>>
+     * @throws FileNotFoundException  If the default base directory cannot be accessed.
+     */
     private Map<String, List<String>> loadSettings()
         throws Exception
     {
@@ -132,10 +174,10 @@ public class Bootstrap
 
         boolean needsSaving = false;
 
-        for (String s: defaultSettings.keySet())
+        for (String s : defaultSettings.keySet())
         {//ensure default settings are in place if other settings are missing.
             List<String> l = res.get(s);
-            if (l==null)
+            if (l == null)
             {
                 res.put(s, defaultSettings.get(s));
                 needsSaving = true;
@@ -168,7 +210,7 @@ public class Bootstrap
             }
         }
 
-        if (file.length()==0)
+        if (file.length() == 0)
         {
             saveSettingsFile(defaultSettings, file);
         }
