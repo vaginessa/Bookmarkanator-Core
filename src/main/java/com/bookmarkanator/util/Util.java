@@ -78,10 +78,10 @@ public class Util {
 
     //Copied from:
     //http://stackoverflow.com/questions/19776063/java-list-files-recursively-in-subdirectories-with-apache-commons-io-2-4
-    public static Collection listFiles(String directoryBase)
+    public static Collection<File> listFiles(String directoryBase, String suffix)
 
     {
-        final String[] SUFFIX = {"jar"};  // use the suffix to filter
+        final String[] SUFFIX = {suffix};  // use the suffix to filter
         File rootDir = new File(directoryBase);
         Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
         return files;

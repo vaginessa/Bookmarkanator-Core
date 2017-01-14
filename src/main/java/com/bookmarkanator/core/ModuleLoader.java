@@ -3,6 +3,8 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.zip.*;
+import com.bookmarkanator.util.*;
 
 public class ModuleLoader
 {
@@ -20,21 +22,36 @@ public class ModuleLoader
         return this;
     }
 
-    public ClassLoader addJarsToClassloader(ClassLoader classLoader)
+    public ClassLoader addJarsToClassloader(ClassLoader parentClassloader)
         throws Exception
     {
-        URL[] urls = new URL[this.jarDirectories.size()];
-        int c = 0;
+        List<URL> urls = new ArrayList<>();
 
         for (File file: this.jarDirectories)
         {
-            URL myJarFile = new URL("jar", "", "file:" +file.getCanonicalPath());
-            urls[c] = myJarFile;
-            c = c+1;
+            Collection<File> jars = Util.listFiles(file.getCanonicalPath(), "jar");
+
+            for (File jarFile: jars)
+            {
+                URL myJarFile = jarFile.toURI().toURL();
+
+                System.out.println("\n\nLoading jar classes for jar "+jarFile.getName());
+                ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
+                for (ZipEntry entry = zip.getNextEntry(); entry!=null; entry = zip.getNextEntry())
+                {
+                    System.out.println(entry.getName());
+                }
+                System.out.println("End loading jar classes.");
+
+                System.out.println("Loading jar \""+myJarFile.toString()+"\"");
+                urls.add(myJarFile);
+            }
         }
 
         this.jarDirectories.clear();
-        return new URLClassLoader(urls, classLoader);
+        URL[] urlsArray = urls.toArray(new URL[urls.size()]);
+        ClassLoader classLoader = new URLClassLoader(urlsArray, parentClassloader);
+        return classLoader;
     }
 
     public static ModuleLoader use()

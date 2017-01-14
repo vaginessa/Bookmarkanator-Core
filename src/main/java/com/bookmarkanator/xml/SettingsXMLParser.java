@@ -3,6 +3,7 @@ package com.bookmarkanator.xml;
 import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;
+import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLParser
@@ -16,15 +17,15 @@ public class SettingsXMLParser
     //Variables
     private InputStream inputStream;
     private Document document;
-    private Map<String, List<String>> settings;
+    private GlobalSettings settings;
 
     public SettingsXMLParser(InputStream xmlIn)
     {
         this.inputStream = xmlIn;//Note the calling program must close the stream.
-        settings = new HashMap<>();
+        this.settings = new GlobalSettings();
     }
 
-    public Map<String, List<String>> parse()
+    public GlobalSettings parse()
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -78,6 +79,6 @@ public class SettingsXMLParser
            throw new Exception("Settings key value must not be empty.");
        }
 
-        settings.put(key, results);
+        settings.putSettings(key, results);
     }
 }

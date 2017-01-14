@@ -6,14 +6,15 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
+import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLWriter
 {
     private OutputStream out;
-    private Map<String, List<String>> settings;
+    private GlobalSettings settings;
 
-    public SettingsXMLWriter(Map<String, List<String>> settings, OutputStream out)
+    public SettingsXMLWriter(GlobalSettings settings, OutputStream out)
     {
         this.settings = settings;
         this.out = out;
@@ -29,7 +30,7 @@ public class SettingsXMLWriter
 
         for (String s: settings.keySet())
         {
-            List<String> l = settings.get(s);
+            List<String> l = settings.getSettings(s);
             if (l!=null && !l.isEmpty())
             {//Only add a setting tag if it has values.
                 appendSettings(doc, rootElement, s, l);

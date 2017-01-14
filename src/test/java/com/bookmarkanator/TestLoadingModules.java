@@ -15,7 +15,7 @@ public class TestLoadingModules
 
 //        io.init();
 
-        Collection col = Util.listFiles("/Users/lloyd1/Desktop");
+        Collection col = Util.listFiles("/Users/lloyd1/Desktop", "jar");
         System.out.println();
     }
 }

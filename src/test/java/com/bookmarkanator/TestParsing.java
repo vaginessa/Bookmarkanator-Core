@@ -2,6 +2,7 @@ package com.bookmarkanator;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 import com.bookmarkanator.xml.*;
@@ -41,7 +42,7 @@ public class TestParsing
         fin = new FileInputStream(new File(config));
 
         SettingsXMLParser parser = new SettingsXMLParser(fin);
-        Map<String, List<String>> settings = parser.parse();
+        GlobalSettings settings = parser.parse();
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         SettingsXMLWriter writer = new SettingsXMLWriter(settings,bout );

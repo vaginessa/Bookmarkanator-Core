@@ -5,6 +5,7 @@ import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
@@ -35,19 +36,25 @@ public class BookmarksXMLParser
     private InputStream inputStream;
     private Document document;
 
-    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
+    //Global settings
+    private GlobalSettings globalSettings;
+    private ClassLoader classLoader;
+
+    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, GlobalSettings globalSettings, ClassLoader classLoader)
     {
         this.contextInterface = contextInterface;
         this.inputStream = xmlIn;//The calling program must close the stream.
+        this.globalSettings = globalSettings;
+        this.classLoader = classLoader;
     }
 
     public void parse()
         throws Exception
     {
-
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         document = builder.parse(inputStream);
+        Map<String, Class> loadedClasses = new HashMap<>();
 
         Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
         if (!docNodeRoot.getNodeName().equals(BookmarksXMLParser.BOOKMARKS_TAG))
@@ -60,31 +67,56 @@ public class BookmarksXMLParser
         for (int c = 0; c < nl.getLength(); c++)
         {
             Node n = nl.item(c);
-            AbstractBookmark abs = null;
 
             if (n.getNodeName().equals(BookmarksXMLParser.BLOCK_TAG))
             {
-                Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
+                try
+                {
+                    Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
+                    String className = classNameNode.getTextContent();
+                    if (globalSettings!=null)
+                    {
+                        String replacementClassName = globalSettings.getSetting(className);
 
-                switch (classNameNode.getTextContent())
-                {//select bookmark type
-                    case "com.bookmarkanator.bookmarks.WebBookmark":
-                        abs = new WebBookmark(null);
-                        break;
-                    case "com.bookmarkanator.bookmarks.SequenceBookmark":
-                        abs = new SequenceBookmark(null);
-                        break;
-                    case "com.bookmarkanator.bookmarks.EncryptedBookmark":
-                        abs = new EncryptedBookmark(null);
-                        break;
-                    default:
-                        abs = new TextBookmark(null);
+                        if (replacementClassName != null && !className.equals(replacementClassName))
+                        {//Override class name specified in bookmark file with one specified in the settings file.
+                            System.out.println("Overriding bookmark class name \""+className+"\" with this class name \""+replacementClassName+"\" from the settings file.");
+                            className = replacementClassName;
+                        }
+                    }
+
+                    Class clazz = loadedClasses.get(classNameNode.getTextContent());
+
+                    if (clazz == null)
+                    {
+                        clazz = loadBookmarkClass(className);
+                        loadedClasses.put(className, clazz);
+                    }
+
+                    AbstractBookmark abs = instantiateClass(clazz);
+
+                    //add all bookmarks of this type
+                    parseBookmark(n, abs);
                 }
-
-                //add all bookmarks of this type
-                parseBookmark(n, abs);
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    private Class loadBookmarkClass(String className) throws Exception
+    {
+        Class clazz = this.classLoader.loadClass(className);
+        Class sub = clazz.asSubclass(AbstractBookmark.class);
+        System.out.println("Loaded bookmark class: \"" + className + "\".");
+        return sub;
+    }
+
+    private AbstractBookmark instantiateClass(Class clazz) throws Exception
+    {
+        return (AbstractBookmark) clazz.getConstructor(ContextInterface.class).newInstance(this.contextInterface);
     }
 
     private void parseBookmark(Node node, AbstractBookmark abstractBookmark)

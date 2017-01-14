@@ -1,18 +1,23 @@
 package com.bookmarkanator.io;
 
+import com.bookmarkanator.core.*;
+
 public interface BKIOInterface {
-//    /**
-//     * Set up the data source
-//     * @throws Exception
-//     */
-//    void init() throws Exception;
 
     /**
-     * Set up the data source with a specific context
-     * @param config  The context or config of the data source
+     * Set up the data source with a specific configuration string.
+     * @param config  A configuration string.
      * @throws Exception
      */
     void init(String config)throws Exception;
+
+    /**
+     * Set up the data source with a specific configuration string, and the global config object.
+     * @param config  A configuration setting.
+     * @param globalSettings  The settings that were loaded from the settings file.
+     * @throws Exception
+     */
+    void init(String config, GlobalSettings globalSettings, ClassLoader classLoader)throws Exception;
 
     /**
      * Perform a save of all bookmarks.
