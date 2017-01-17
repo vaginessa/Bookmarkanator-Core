@@ -10,6 +10,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     private Set<String> tags;
     private Date creationDate;
     private Date lastAccessedDate;
+    private ContextInterface contextInterface;
 
     private AbstractBookmark()
     {
@@ -29,6 +30,23 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     public AbstractBookmark(ContextInterface contextInterface)
     {//Do nothing for the abstract bookmark.
         this();
+        this.contextInterface = contextInterface;
+    }
+
+    /**
+     * @return  The context interface that this bookmark belongs to (The context where this bookmark was added).
+     */
+    public ContextInterface getContextInterface()
+    {
+        return contextInterface;
+    }
+
+    /**
+     * @param contextInterface  The context interface that this bookmark belongs to (The context where this bookmark was added).
+     */
+    public void setContextInterface(ContextInterface contextInterface)
+    {
+        this.contextInterface = contextInterface;
     }
 
     /**
@@ -48,7 +66,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>{
     /**
      * The action that will happen when this bookmark is called.
      */
-    public abstract void action(ContextInterface context) throws Exception;
+    public abstract void action() throws Exception;
 
     /**
      * Gets a new instance of this type of bookmark;

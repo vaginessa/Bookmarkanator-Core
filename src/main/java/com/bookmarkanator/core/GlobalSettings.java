@@ -1,9 +1,11 @@
 package com.bookmarkanator.core;
 
 import java.util.*;
+import java.util.logging.*;
 
 public class GlobalSettings
 {
+    private static final Logger logger = Logger.getLogger(GlobalSettings.class.getName());
     private Map<String, Object> globalSettings;
 
     public GlobalSettings()
@@ -13,11 +15,13 @@ public class GlobalSettings
 
     public Object putSettings(String key,List<String> list)
     {
+        logger.finest("Putting settings: key \""+key+"");
         return this.globalSettings.put(key, list);
     }
 
     public Object putSetting(String key, String value)
     {
+        logger.finest("Putting setting: key \""+key+"");
         return this.globalSettings.put(key, value);
     }
 

@@ -33,14 +33,14 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action(ContextInterface context)
+    public void action()
         throws Exception
     {
         boolean error = false;
         StringBuilder sb = new StringBuilder();
         for (UUID uuid: items)
         {
-            AbstractBookmark abs = context.getBookmark(uuid);
+            AbstractBookmark abs = getContextInterface().getBookmark(uuid);
             if (abs==null)
             {
                 errorItems.add(uuid);
@@ -49,7 +49,7 @@ public class SequenceBookmark extends AbstractBookmark
             }
             else
             {
-                abs.action(context);
+                abs.action();
                 sb.append(abs.getText());
             }
         }

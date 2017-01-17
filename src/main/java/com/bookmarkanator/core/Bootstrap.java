@@ -2,12 +2,14 @@ package com.bookmarkanator.core;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 import com.bookmarkanator.xml.*;
 
 public class Bootstrap
 {
+    private static final Logger logger = Logger.getLogger(Bootstrap.class.getName());
     //Default fields
     private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
     private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmark-anator";
@@ -29,7 +31,6 @@ public class Bootstrap
     private static final String TERMINAL_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.TerminalBookmark";
     //To override a built in bookmark set the following <original bookmark classname, overriding bookmark class name>
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
-    //TODO Implement the above behaviour with overriding the default bookmarks with other ones.
 
     private GlobalSettings loadedSettings;
     private GlobalSettings defaultSettings;
@@ -40,6 +41,7 @@ public class Bootstrap
     public Bootstrap()
         throws Exception
     {
+        logger.finest("Logging finest");
 
         //TODO setup logging framework.
         this.classLoader = this.getClass().getClassLoader();
@@ -49,7 +51,7 @@ public class Bootstrap
 
         addModulesToClasspath();
 
-        this.bkioInterface = getBKIOInterface();
+        this.bkioInterface = loadBKIOInterface();
     }
 
     private void addModulesToClasspath() throws Exception
@@ -67,15 +69,20 @@ public class Bootstrap
                 if (f.exists() || f.canRead())
                 {
                     md.addDirectory(f);
-                    System.out.println("Adding directory \""+f.getCanonicalPath()+"\" to class loader paths.");
+                    logger.config("Adding directory \""+f.getCanonicalPath()+"\" to class loader paths.");
                 }
                 else
                 {
-                    System.out.println("Attempted to add \""+s+"\" to the classloader but this file either doesn't exist or cannot be accessed.");
+                    logger.config("Attempted to add \""+s+"\" to the classloader but this file either doesn't exist or cannot be accessed.");
                 }
             }
             this.classLoader = md.addJarsToClassloader(this.getClass().getClassLoader());
         }
+    }
+
+    public BKIOInterface getBkioInterface()
+    {
+        return bkioInterface;
     }
 
     /**
@@ -83,7 +90,7 @@ public class Bootstrap
      * @return  A BKIOInterface class that was loaded.
      * @throws Exception
      */
-    private BKIOInterface getBKIOInterface()
+    private BKIOInterface loadBKIOInterface()
         throws Exception
     {
         List<String> bkioClasses = this.loadedSettings.getSettings(BOOKMARK_IO_CLASS_KEY);
@@ -103,10 +110,10 @@ public class Bootstrap
 
                 Class sub = clazz.asSubclass(BKIOInterface.class);
                 BKIOInterface bkio = (BKIOInterface) sub.newInstance();
-                System.out.println("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
-                System.out.println("Calling init()...");
+                logger.config("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
+                logger.config("Calling init()...");
                 bkio.init(config, loadedSettings, this.classLoader);
-                System.out.println("Done.");
+                logger.config("Done.");
                 return bkio;
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)

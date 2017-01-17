@@ -29,7 +29,7 @@ public class ReminderBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action(ContextInterface context)
+    public void action()
         throws Exception
     {
 

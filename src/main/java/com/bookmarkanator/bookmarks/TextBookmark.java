@@ -24,7 +24,7 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action(ContextInterface context)
+    public void action()
         throws Exception
     {
         //do nothing

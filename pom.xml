@@ -69,5 +69,10 @@
       <artifactId>commons-io</artifactId>
       <version>2.5</version>
     </dependency>
+      <dependency>
+          <groupId>com.googlecode.lanterna</groupId>
+          <artifactId>lanterna</artifactId>
+          <version>3.0.0-beta3</version>
+      </dependency>
   </dependencies>
 </project>

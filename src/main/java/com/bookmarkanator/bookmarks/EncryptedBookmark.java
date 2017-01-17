@@ -28,7 +28,7 @@ public class EncryptedBookmark extends AbstractBookmark{
     }
 
     @Override
-    public void action(ContextInterface context) throws Exception {
+    public void action() throws Exception {
 
     }
 

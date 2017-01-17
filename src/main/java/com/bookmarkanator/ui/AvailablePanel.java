@@ -3,7 +3,7 @@ package com.bookmarkanator.ui;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class AvailablePanel extends Pane implements UIInterface
+public class AvailablePanel extends Pane implements UIControllerInterface
 {
     private static AvailablePanel availablePanel;
 

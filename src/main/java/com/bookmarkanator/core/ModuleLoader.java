@@ -3,7 +3,6 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.zip.*;
 import com.bookmarkanator.util.*;
 
 public class ModuleLoader
@@ -35,13 +34,13 @@ public class ModuleLoader
             {
                 URL myJarFile = jarFile.toURI().toURL();
 
-                System.out.println("\n\nLoading jar classes for jar "+jarFile.getName());
-                ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
-                for (ZipEntry entry = zip.getNextEntry(); entry!=null; entry = zip.getNextEntry())
-                {
-                    System.out.println(entry.getName());
-                }
-                System.out.println("End loading jar classes.");
+//                System.out.println("\n\nLoading jar classes for jar "+jarFile.getName());
+//                ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
+//                for (ZipEntry entry = zip.getNextEntry(); entry!=null; entry = zip.getNextEntry())
+//                {
+//                    System.out.println(entry.getName());
+//                }
+//                System.out.println("End loading jar classes.");
 
                 System.out.println("Loading jar \""+myJarFile.toString()+"\"");
                 urls.add(myJarFile);

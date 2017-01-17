@@ -28,7 +28,7 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
-    public void action(ContextInterface context) throws Exception {
+    public void action() throws Exception {
         Desktop.getDesktop().browse(new URI(this.getText()));
     }
 

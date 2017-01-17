@@ -22,7 +22,7 @@ public class FileContext implements ContextInterface
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
     //Bookmarks can store data here and communicate with other bookmarks. They can read/write their own data, but only read the data of other bookmark types.
-    private Map<String, Map<String, Object>> contextObject;//<Class name of bookmark, Map<Bookmark data key, bookmark data object>>
+    private Map<String, Map<String, Object>> communicationMap;//<Class name of bookmark, Map<Bookmark data key, bookmark data object>>
 
     public FileContext()
     {
@@ -31,7 +31,7 @@ public class FileContext implements ContextInterface
         bookmarkTypeNames = new Search<>();
         bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
-        contextObject = new HashMap<>();
+        communicationMap = new HashMap<>();
         bkDependsOnMap = new HashMap<>();
         whatDependsOnBKMap = new HashMap<>();
         numSearchResults = 20;
@@ -55,26 +55,14 @@ public class FileContext implements ContextInterface
         return this.bkioInterface;
     }
 
-    /**
-     * Gets a set of bookmark Id's of bookmarks that depend on this bookmark in some way. Basically asking the question what do I depend on?
-     * *Note: Individual bookmarks are responsible for setting their dependents.
-     *
-     * @param bookmarkId The bookmark to check for dependents.
-     * @return A set of dependent bookmark Id's
-     */
+
     @Override
     public Set<UUID> getDependents(UUID bookmarkId)
     {
         return bkDependsOnMap.get(bookmarkId);
     }
 
-    /**
-     * Gets a set of bookmark Id's that this bookmark depends on. Basically asking the question what depends on me?
-     * *Note: Individual bookmarks are responsible for setting thei dependents. When dependents are set this depends on list is automatically updated.
-     *
-     * @param bookmarkId
-     * @return
-     */
+
     @Override
     public Set<UUID> getDependsOn(UUID bookmarkId)
     {
@@ -194,6 +182,9 @@ public class FileContext implements ContextInterface
             {
                 bks.add(ab);
             }
+            else {
+                System.out.println("Warning bookmark "+uuid+" cannot be found.");
+            }
         }
 
         return bks;
@@ -254,7 +245,7 @@ public class FileContext implements ContextInterface
      * @return The removed bookmark.
      */
     @Override
-    public AbstractBookmark removeBookmark(UUID bookmarkID)
+    public AbstractBookmark delete(UUID bookmarkID)
     {
         AbstractBookmark abs = getBookmark(bookmarkID);
 
@@ -270,6 +261,19 @@ public class FileContext implements ContextInterface
         }
 
         return abs;
+    }
+
+    @Override
+    public List<AbstractBookmark> deleteAll(Set<UUID> bookmarks)
+    {
+        List<AbstractBookmark> bks = getBookmarks(bookmarks);
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        for (AbstractBookmark bookmark: bks)
+        {
+            bks.add(delete(bookmark.getId()));
+        }
+        return res;
     }
 
     /**
@@ -292,7 +296,7 @@ public class FileContext implements ContextInterface
             throw new Exception("Item \"" + bookmark.getId().toString() + "\" not found.");
         }
 
-        removeBookmark(bookmark.getId());
+        delete(bookmark.getId());
 
         addBookmark(bookmark);
     }
@@ -546,6 +550,135 @@ public class FileContext implements ContextInterface
     public List<AbstractBookmark> searchBookmarkText(String text)
     {
         return getBookmarks(bookmarkText.searchAll(text, getNumSearchResults()));
+    }
+
+    @Override
+    public String bookmarksReport(boolean includeTags, int limit)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("***Bookmarks Report***");
+        sb.append("\n\n");
+
+        if (includeTags)
+        {
+            sb.append(bookmarksToStringWTags(getBookmarks(), limit));
+        }
+        else
+        {
+            sb.append(bookmarksToString(getBookmarks(), limit));
+        }
+        return sb.toString();
+    }
+
+    private String bookmarksToString(Set<AbstractBookmark> bookmarks, int limit)
+    {
+        StringBuilder sb = new StringBuilder();
+        int c = 0;
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            if (limit >-1 && c>=limit)
+            {
+                break;
+            }
+            sb.append("Bookmark: ");
+            sb.append(bookmark.getName());
+
+            c = c+1;
+        }
+        return sb.toString();
+    }
+
+    private String bookmarksToStringWTags(Set<AbstractBookmark> bookmarks, int limit)
+    {
+        StringBuilder sb = new StringBuilder();
+        int c = 0;
+
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            if (limit >-1 && c>=limit)
+            {
+                break;
+            }
+            sb.append("Bookmark: \t");
+            sb.append(bookmark.getName());
+            sb.append("\n");
+            sb.append(tagsToString(bookmark.getTags(), 10));
+
+            c = c+1;
+        }
+        return sb.toString();
+    }
+
+    private String tagsToString(Set<String> tags, int colWidth)
+    {
+        StringBuilder sb = new StringBuilder();
+        int c=1;
+        sb.append("Tags: \t\t");
+
+        for (String tag: tags)
+        {
+            sb.append(tag);
+            sb.append("\t");
+
+            if (colWidth>0 && c>=colWidth)
+            {
+                sb.append("\n\t\t\t");
+                c=0;
+            }
+            c = c + 1;
+        }
+
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    @Override
+    public void renameTag(String newTag, String oldTag)
+    {
+        assert newTag != null && !newTag.isEmpty();
+        assert oldTag != null && !oldTag.isEmpty();
+
+        Set<String> theTag = new HashSet<>();
+        theTag.add(oldTag);
+        Set<UUID> tags = searchAllTagsExact(theTag);
+
+        for (UUID uuid: tags)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            bookmark.getTags().remove(oldTag);
+            bookmark.addTag(newTag);
+        }
+    }
+
+    @Override
+    public void mergeTags(String resultingTag, Set<String> tagsToMerge)
+    {
+        assert resultingTag != null && !resultingTag.isEmpty();
+        assert tagsToMerge != null;
+
+        Set<UUID> tags = searchAllTagsExact(tagsToMerge);
+
+        for (UUID uuid: tags)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            bookmark.getTags().removeAll(tagsToMerge);
+            bookmark.addTag(resultingTag);
+        }
+    }
+
+    @Override
+    public void deleteTags(Set<String> tagsToDelete)
+    {
+        assert tagsToDelete != null;
+
+        Set<UUID> tags = searchAllTagsExact(tagsToDelete);
+
+        for (UUID uuid: tags)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            bookmark.getTags().removeAll(tagsToDelete);
+        }
     }
 
 }
