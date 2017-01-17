@@ -1438,7 +1438,7 @@ group=28</panel_attributes>
       <w>80</w>
       <h>20</h>
     </coordinates>
-    <panel_attributes>Quick Panel Settings</panel_attributes>
+    <panel_attributes>Switch To Quick Panel</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -4384,28 +4384,6 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2625</x>
-      <y>1125</y>
-      <w>475</w>
-      <h>350</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>3095</x>
-      <y>1290</y>
-      <w>300</w>
-      <h>15</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
-    <additional_attributes>580.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
       <x>4935</x>
       <y>1260</y>
       <w>475</w>
@@ -5357,100 +5335,6 @@ group=59</panel_attributes>
     <panel_attributes>Open Main Window up, and hide quick panel.
 lt=-&gt;&gt;</panel_attributes>
     <additional_attributes>2450.0;10.0;10.0;680.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2660</x>
-      <y>1235</y>
-      <w>410</w>
-      <h>220</h>
-    </coordinates>
-    <panel_attributes>Normal Panel Mode Settings
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2685</x>
-      <y>1180</y>
-      <w>370</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>Normal Panel Mode
-halign=left</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>3040</x>
-      <y>1180</y>
-      <w>15</w>
-      <h>25</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2660</x>
-      <y>1155</y>
-      <w>410</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>Orientation
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>3030</x>
-      <y>1175</y>
-      <w>15</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2715</x>
-      <y>1275</y>
-      <w>110</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>Orientation = left
-valign=center</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2715</x>
-      <y>1300</y>
-      <w>110</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>Color = Gray
-valign=center</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>2715</x>
-      <y>1325</y>
-      <w>110</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>Sizing = auto
-valign=center</panel_attributes>
-    <additional_attributes/>
   </element>
   <element>
     <id>UMLGeneric</id>

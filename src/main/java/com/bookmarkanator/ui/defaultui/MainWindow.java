@@ -34,14 +34,6 @@ public class MainWindow
         panel.setLayoutManager(new GridLayout(1));
 
         panel.addComponent(menuPanel.getPanel());
-        panel.addComponent(new Panel().addComponent(new Button("newPan")));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
-        panel.addComponent(new Button("Placeholder"));
 
         BasicWindow window = new BasicWindow();
         window.setComponent(panel);

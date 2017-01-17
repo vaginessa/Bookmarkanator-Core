@@ -1,6 +1,5 @@
 package com.bookmarkanator.ui.defaultui;
 
-import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
 
@@ -9,11 +8,6 @@ public class MenuPanel
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
 
-    //File menu items
-    private Panel filePanel;
-    private ActionListBox filePanelMenuItems;
-    private Button tmp;
-    private boolean showingFileMenuItems;
 
     public MenuPanel(MultiWindowTextGUI gui)
     {
@@ -25,16 +19,10 @@ public class MenuPanel
         mainPanel = new Panel();
         mainPanel.setLayoutManager(new GridLayout(4));
 
-        filePanel = getFileMenu();
-
-        mainPanel.addComponent(filePanel);
-
-        Button edit = new Button("Edit");
-        mainPanel.addComponent(edit);
-        Button view = new Button("View");
-        mainPanel.addComponent(view);
-        Button help = new Button("Help");
-        mainPanel.addComponent(help);
+        mainPanel.addComponent(getFileMenu());
+        mainPanel.addComponent(getEditMenu());
+        mainPanel.addComponent(getViewMenu());
+        mainPanel.addComponent(getHelpMenu());
 
         return mainPanel;
     }
@@ -42,47 +30,40 @@ public class MenuPanel
     private Panel getFileMenu()
     {
         Panel panel = new Panel(new GridLayout(1));
-        showingFileMenuItems = true;
 
 
         Button file = new Button("File", new Runnable() {
             @Override
             public void run() {
-                System.out.println("Action asdkfja;lksdfj;laksdjf ");
-//                if (showingFileMenuItems)
-//                {
-//                    filePanel.addComponent(filePanelMenuItems);
-////                    filePanel.addComponent(tmp);
-//                    showingFileMenuItems = false;
-//                }
-//                else
-//                {
-//                    filePanel.removeComponent(filePanelMenuItems);
-////                    filePanel.removeComponent(tmp);
-//                    showingFileMenuItems = true;
-//                }
                 new ActionListDialogBuilder()
-                    .setTitle("Action List Dialog")
-                    .setDescription("Choose an item")
-                    .addAction("First Item", new Runnable() {
+                    .setTitle("File Menu")
+                    .addAction("New", new Runnable() {
                         @Override
                         public void run() {
                             // Do 1st thing...
-                            System.out.println("First item");
+                            System.out.println("new");
                         }
                     })
-                    .addAction("Second Item", new Runnable() {
+                    .addAction("Import", new Runnable() {
                         @Override
                         public void run() {
                             // Do 2nd thing...
-                            System.out.println("Second item");
+                            System.out.println("import");
                         }
                     })
-                    .addAction("Third Item", new Runnable() {
+                    .addAction("Export", new Runnable() {
                         @Override
                         public void run() {
                             // Do 3rd thing...
-                            System.out.println("Third item");
+                            System.out.println("export");
+                        }
+                    })
+                    .addAction("Exit", new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do 3rd thing...
+                            System.out.println("exit");
+                            System.exit(0);
                         }
                     })
                     .build()
@@ -91,12 +72,113 @@ public class MenuPanel
 
         panel.addComponent(file);
 
-        filePanelMenuItems = new ActionListBox(new TerminalSize(1,2));
-        filePanelMenuItems.addItem("hhh", null);
-        filePanelMenuItems.addItem("iii",null);
-        tmp = new Button("Tmp button");
+        return panel;
+    }
+
+    private Panel getEditMenu()
+    {
+        Panel panel = new Panel(new GridLayout(1));
+
+
+        Button file = new Button("Edit", new Runnable() {
+            @Override
+            public void run() {
+                new ActionListDialogBuilder()
+                    .setTitle("Edit Menu")
+                    .addAction("Undo", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Redo", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Enter Edit Mode", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Leave Edit Mode", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Tag Editor", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Settings", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .build()
+                    .showDialog(gui);
+            }});
+
+        panel.addComponent(file);
 
         return panel;
     }
 
+    private Panel getViewMenu()
+    {
+        Panel panel = new Panel(new GridLayout(1));
+
+
+        Button file = new Button("View", new Runnable() {
+            @Override
+            public void run() {
+                new ActionListDialogBuilder()
+                    .setTitle("View Menu")
+                    .addAction("Switch To Quick Panel", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .build()
+                    .showDialog(gui);
+            }});
+
+        panel.addComponent(file);
+
+        return panel;
+    }
+
+    private Panel getHelpMenu()
+    {
+        Panel panel = new Panel(new GridLayout(1));
+
+
+        Button file = new Button("Help", new Runnable() {
+            @Override
+            public void run() {
+                new ActionListDialogBuilder()
+                    .setTitle("Help Menu")
+                    .addAction("About", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Tutorial", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .addAction("Documentation", new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    })
+                    .build()
+                    .showDialog(gui);
+            }});
+
+        panel.addComponent(file);
+
+        return panel;
+    }
 }
