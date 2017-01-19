@@ -1,50 +1,52 @@
 package com.bookmarkanator.ui.defaultui;
 
+import java.util.*;
 import com.bookmarkanator.ui.defaultui.interfaces.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
 
-public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterface
+public class BookmarksPanel extends BasicUIItem implements BookmarksListInterface
 {
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
     private ActionListBox actionListBox;
+    private List<BookmarkUIInterface> bookmarkUIInterfaces;
 
-    public SelectedTagsPanel(MultiWindowTextGUI gui)
+    public BookmarksPanel(MultiWindowTextGUI gui)
     {
         this.gui = gui;
 
         TerminalSize size = new TerminalSize(30, 10);
         actionListBox = new ActionListBox(size);
-        actionListBox.addItem("Item 1", new Runnable()
+        actionListBox.addItem("Bookmark 1", new Runnable()
         {
             @Override
             public void run()
             {
-                removeMe("Item 1");
+                removeMe("Bookmark 1");
             }
         });
-        actionListBox.addItem("Item 2", new Runnable()
+        actionListBox.addItem("Bookmark 2", new Runnable()
         {
             @Override
             public void run()
             {
-                removeMe("Item 2");
+                removeMe("Bookmark 2");
             }
         });
-        actionListBox.addItem("Item 3", new Runnable()
+        actionListBox.addItem("Bookmark 3", new Runnable()
         {
             @Override
             public void run()
             {
-                removeMe("Item 3");
+                removeMe("Bookmark 3");
             }
         });
     }
 
     private synchronized void removeMe(String itemName)
     {
-        System.out.println("Removing "+itemName);
+        System.out.println(itemName+" Action");
     }
 
     public Panel getPanel()
@@ -54,5 +56,17 @@ public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterf
         mainPanel.addComponent(actionListBox);
 
         return mainPanel;
+    }
+
+    @Override
+    public void setBookmarksList(List<BookmarkUIInterface> bookmarks)
+    {
+        this.bookmarkUIInterfaces = bookmarks;
+    }
+
+    @Override
+    public List<BookmarkUIInterface> getBookmarksList()
+    {
+        return this.bookmarkUIInterfaces;
     }
 }

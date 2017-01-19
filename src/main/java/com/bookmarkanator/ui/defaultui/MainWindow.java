@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.defaultui;
 
+import java.util.*;
 import com.bookmarkanator.core.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
@@ -8,7 +9,7 @@ import com.googlecode.lanterna.terminal.*;
 
 public class MainWindow
 {
-    private Bootstrap bootstrap;
+    private GUIController guiController;
 
     public MainWindow()
         throws Exception
@@ -19,32 +20,56 @@ public class MainWindow
     public void init()
         throws Exception
     {
-//        bootstrap = new Bootstrap();
+        Bootstrap bootstrap = new Bootstrap();
+        guiController = new GUIController();
+        guiController.setBootstrap(bootstrap);
 
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
+
         Screen screen = new TerminalScreen(terminal);
         screen.startScreen();
         final MultiWindowTextGUI gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
 
-
-        MenuPanel menuPanel = new MenuPanel(gui);
-
-        Panel panel = new Panel();
-        panel.setPreferredSize(new TerminalSize(60,10));
+        Panel panel = new Panel(new LinearLayout(Direction.VERTICAL));
         panel.setLayoutManager(new GridLayout(1));
 
-        panel.addComponent(menuPanel.getPanel());
+        //File Menu Panel
+        MenuPanel menuPanel = new MenuPanel(gui);
+        menuPanel.setGUIController(this.guiController);
+        panel.addComponent(menuPanel.getPanel().withBorder(Borders.singleLine()));
+
+        //Search Panel
+        SearchPanel searchPanel = new SearchPanel(gui);
+        panel.addComponent(searchPanel.getPanel().withBorder(Borders.singleLine()));
+
+
+        Panel tempPan = new Panel(new LinearLayout(Direction.HORIZONTAL));
+        //Types Panel
+        BKTypesPanel types = new BKTypesPanel(gui);
+        tempPan.addComponent(types.getPanel().withBorder(Borders.singleLine()));
+
+        Panel tagsPan = new Panel(new LinearLayout(Direction.VERTICAL));
+
+        //Selected tags panel
+        SelectedTagsPanel selectedTagsPanel = new SelectedTagsPanel(gui);
+        tagsPan.addComponent(selectedTagsPanel.getPanel().withBorder(Borders.singleLine()));
+
+        //Available tags panel
+        AvailableTagsPanel availableTagsPanel = new AvailableTagsPanel(gui);
+        tagsPan.addComponent(availableTagsPanel.getPanel().withBorder(Borders.singleLine()));
+
+        tempPan.addComponent(tagsPan);
+
+        //Bookmarks panel
+        BookmarksPanel bookmarksPanel = new BookmarksPanel(gui);
+        tempPan.addComponent(bookmarksPanel.getPanel().withBorder(Borders.singleLine()));
+
+        panel.addComponent(tempPan);
 
         BasicWindow window = new BasicWindow();
-        window.setComponent(panel);
-
-
+        window.setComponent(panel.withBorder(Borders.singleLine()));
+        window.setHints(Arrays.asList(Window.Hint.FIT_TERMINAL_WINDOW,Window.Hint.FULL_SCREEN, Window.Hint.NO_DECORATIONS));
         gui.addWindowAndWait(window);
     }
 
-    private Panel getContentPanel()
-    {
-        Panel panel = new Panel();
-        return panel;
-    }
 }

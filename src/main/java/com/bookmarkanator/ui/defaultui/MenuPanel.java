@@ -1,13 +1,13 @@
 package com.bookmarkanator.ui.defaultui;
 
+import com.bookmarkanator.ui.defaultui.interfaces.*;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
 
-public class MenuPanel
+public class MenuPanel extends BasicUIItem implements MenuInterface
 {
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
-
 
     public MenuPanel(MultiWindowTextGUI gui)
     {
@@ -17,7 +17,7 @@ public class MenuPanel
     public Panel getPanel()
     {
         mainPanel = new Panel();
-        mainPanel.setLayoutManager(new GridLayout(4));
+        mainPanel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
 
         mainPanel.addComponent(getFileMenu());
         mainPanel.addComponent(getEditMenu());
@@ -181,4 +181,6 @@ public class MenuPanel
 
         return panel;
     }
+
+
 }
