@@ -15,6 +15,24 @@ public class BasicUIItem implements GUIItemInterface
     @Override
     public GUIControllerInterface getGUIController()
     {
-        return guiController;
+        return this.guiController;
+    }
+
+    @Override
+    public void enterEditMode()
+    {
+
+    }
+
+    @Override
+    public void exitEditMode()
+    {
+
+    }
+
+    @Override
+    public boolean isEditMode()
+    {
+        return false;
     }
 }

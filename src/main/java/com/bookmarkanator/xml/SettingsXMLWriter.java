@@ -12,9 +12,9 @@ import org.w3c.dom.*;
 public class SettingsXMLWriter
 {
     private OutputStream out;
-    private GlobalSettings settings;
+    private Settings<String, String> settings;
 
-    public SettingsXMLWriter(GlobalSettings settings, OutputStream out)
+    public SettingsXMLWriter(Settings settings, OutputStream out)
     {
         this.settings = settings;
         this.out = out;

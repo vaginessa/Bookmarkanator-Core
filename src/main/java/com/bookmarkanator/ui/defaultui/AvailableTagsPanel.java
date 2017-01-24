@@ -8,6 +8,11 @@ public class AvailableTagsPanel extends BasicUIItem implements AvailableTagsInte
 {
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
+
+    public AvailableTagsPanel()
+    {
+    }
+
     private ActionListBox actionListBox;
 
     public AvailableTagsPanel(MultiWindowTextGUI gui)

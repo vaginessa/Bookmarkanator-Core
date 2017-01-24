@@ -15,13 +15,44 @@ public class ModuleLoader
         this.jarDirectories = new HashSet<>();
     }
 
-    public ModuleLoader addDirectory(File jarDirectory)
+    public ClassLoader addModulesToClasspath(List<String> jarLocations, ClassLoader classLoader) throws Exception
+    {
+        if (jarLocations != null && !jarLocations.isEmpty())
+        {
+            for (String s : jarLocations)
+            {
+                File f = new File(s);
+
+                if (f.exists() || f.canRead())
+                {
+                    this.addDirectory(f);
+                    System.out.println("Adding directory \""+f.getCanonicalPath()+"\" to class loader paths.");
+                }
+                else
+                {
+                    System.out.println("Attempted to add \""+s+"\" to the classloader but this file either doesn't exist or cannot be accessed.");
+                }
+            }
+        }
+        return this.addJarsToClassloader(classLoader);
+    }
+
+    public <T> T loadClass(String className, Class<T> toCast, ClassLoader classLoader)
+        throws Exception
+    {
+        Class clazz = classLoader.loadClass(className);
+        Class<T> sub = clazz.asSubclass(toCast);
+
+        return sub.newInstance();
+    }
+
+    private ModuleLoader addDirectory(File jarDirectory)
     {
         this.jarDirectories.add(jarDirectory);
         return this;
     }
 
-    public ClassLoader addJarsToClassloader(ClassLoader parentClassloader)
+    private ClassLoader addJarsToClassloader(ClassLoader parentClassloader)
         throws Exception
     {
         List<URL> urls = new ArrayList<>();

@@ -37,10 +37,10 @@ public class BookmarksXMLParser
     private Document document;
 
     //Global settings
-    private GlobalSettings globalSettings;
+    private Settings<String, String> globalSettings;
     private ClassLoader classLoader;
 
-    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, GlobalSettings globalSettings, ClassLoader classLoader)
+    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, Settings globalSettings, ClassLoader classLoader)
     {
         this.contextInterface = contextInterface;
         this.inputStream = xmlIn;//The calling program must close the stream.

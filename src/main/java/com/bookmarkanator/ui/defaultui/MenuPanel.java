@@ -9,6 +9,10 @@ public class MenuPanel extends BasicUIItem implements MenuInterface
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
 
+    public MenuPanel()
+    {
+    }
+
     public MenuPanel(MultiWindowTextGUI gui)
     {
         this.gui = gui;

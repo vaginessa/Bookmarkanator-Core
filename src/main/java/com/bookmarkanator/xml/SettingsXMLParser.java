@@ -17,15 +17,15 @@ public class SettingsXMLParser
     //Variables
     private InputStream inputStream;
     private Document document;
-    private GlobalSettings settings;
+    private Settings settings;
 
     public SettingsXMLParser(InputStream xmlIn)
     {
         this.inputStream = xmlIn;//Note the calling program must close the stream.
-        this.settings = new GlobalSettings();
+        this.settings = new Settings();
     }
 
-    public GlobalSettings parse()
+    public Settings parse()
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();

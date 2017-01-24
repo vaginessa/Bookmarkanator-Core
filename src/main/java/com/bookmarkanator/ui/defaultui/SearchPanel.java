@@ -14,6 +14,10 @@ public class SearchPanel extends BasicUIItem implements SearchInterface
     private Panel editModePanel;
     private boolean isEditMode;
 
+    public SearchPanel()
+    {
+    }
+
     public SearchPanel(MultiWindowTextGUI gui)
     {
         this.gui = gui;

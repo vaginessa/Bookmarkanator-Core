@@ -1,5 +1,7 @@
 package com.bookmarkanator.ui.defaultui;
 
-public class SequenceBKWindow
+import com.bookmarkanator.ui.defaultui.bookmarks.*;
+
+public class SequenceBKWindow extends SequenceBookmarkUI
 {
 }

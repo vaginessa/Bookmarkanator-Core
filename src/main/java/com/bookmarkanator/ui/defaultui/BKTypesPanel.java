@@ -9,6 +9,10 @@ public class BKTypesPanel extends BasicUIItem implements BKTypesInterface
     private MultiWindowTextGUI gui;
     private CheckBoxList<String> checkBoxList;
 
+    public BKTypesPanel()
+    {
+    }
+
     public BKTypesPanel(MultiWindowTextGUI gui)
     {
         this.gui = gui;

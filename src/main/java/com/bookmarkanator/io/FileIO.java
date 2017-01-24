@@ -8,7 +8,7 @@ public class FileIO implements BKIOInterface
 {
     private FileContext context;
     private String bookmarksFileLocation;
-    private GlobalSettings globalSettings;
+    private Settings globalSettings;
     private ClassLoader classLoader;
 
     @Override
@@ -25,7 +25,7 @@ public class FileIO implements BKIOInterface
     }
 
     @Override
-    public void init(String config, GlobalSettings globalSettings, ClassLoader classLoader)
+    public void init(String config, Settings globalSettings, ClassLoader classLoader)
         throws Exception
     {
         this.globalSettings = globalSettings;

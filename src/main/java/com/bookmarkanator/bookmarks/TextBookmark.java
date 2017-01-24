@@ -28,6 +28,7 @@ public class TextBookmark extends AbstractBookmark
         throws Exception
     {
         //do nothing
+        System.out.println(this.getText());
     }
 
     @Override

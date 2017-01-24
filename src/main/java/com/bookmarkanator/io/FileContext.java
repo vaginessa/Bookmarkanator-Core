@@ -681,4 +681,12 @@ public class FileContext implements ContextInterface
         }
     }
 
+    @Override
+    public void bkAction(AbstractBookmark abstractBookmark)
+        throws Exception
+    {
+        //TODO notify listeners, and verify they allow action.
+        abstractBookmark.action();
+    }
+
 }

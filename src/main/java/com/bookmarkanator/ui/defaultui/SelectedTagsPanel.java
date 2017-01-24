@@ -10,6 +10,10 @@ public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterf
     private MultiWindowTextGUI gui;
     private ActionListBox actionListBox;
 
+    public SelectedTagsPanel()
+    {
+    }
+
     public SelectedTagsPanel(MultiWindowTextGUI gui)
     {
         this.gui = gui;

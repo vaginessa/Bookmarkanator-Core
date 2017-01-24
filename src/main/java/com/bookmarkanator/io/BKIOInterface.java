@@ -17,7 +17,7 @@ public interface BKIOInterface {
      * @param globalSettings  The settings that were loaded from the settings file.
      * @throws Exception
      */
-    void init(String config, GlobalSettings globalSettings, ClassLoader classLoader)throws Exception;
+    void init(String config, Settings globalSettings, ClassLoader classLoader)throws Exception;
 
     /**
      * Perform a save of all bookmarks.

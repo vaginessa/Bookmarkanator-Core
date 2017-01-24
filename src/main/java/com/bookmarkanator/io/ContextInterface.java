@@ -104,5 +104,10 @@ public interface ContextInterface
      */
     void deleteTags(Set<String> tagsToDelete);
 
-
+    /**
+     * Running the bookmark action command through this interface so it can propigate the action, and notify listeners.
+     * @param abstractBookmark  The abstractBookmark to call the action on.
+     */
+    void bkAction(AbstractBookmark abstractBookmark)
+        throws Exception;
 }

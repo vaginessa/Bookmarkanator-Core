@@ -42,7 +42,7 @@ public class TestParsing
         fin = new FileInputStream(new File(config));
 
         SettingsXMLParser parser = new SettingsXMLParser(fin);
-        GlobalSettings settings = parser.parse();
+        Settings settings = parser.parse();
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         SettingsXMLWriter writer = new SettingsXMLWriter(settings,bout );
