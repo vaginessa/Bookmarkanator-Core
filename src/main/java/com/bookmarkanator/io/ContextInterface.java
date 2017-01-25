@@ -36,6 +36,7 @@ public interface ContextInterface
 
     int removeDependency(UUID theBookmark, UUID dependingBookmark);
 
+
     Set<UUID> getBookmarkIDs();
 
     Set<AbstractBookmark> getBookmarks();
@@ -110,4 +111,7 @@ public interface ContextInterface
      */
     void bkAction(AbstractBookmark abstractBookmark)
         throws Exception;
+
+    Set<String> getTags(Set<AbstractBookmark> bookmarks);
+    Set<String> getTypes(Set<AbstractBookmark> bookmarks);
 }

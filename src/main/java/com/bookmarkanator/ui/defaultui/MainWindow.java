@@ -50,8 +50,7 @@ public class MainWindow
         throws Exception
     {
         Bootstrap bootstrap = new Bootstrap();
-        guiController = new GUIController();
-        guiController.setBootstrap(bootstrap);
+        guiController = new GUIController(bootstrap);
 
         Settings settings = bootstrap.getSettings();
         if (settings.diffInto(getDefaultSettings()))
@@ -76,6 +75,7 @@ public class MainWindow
 
         //Search Panel
         SearchPanel searchPanel = new SearchPanel(gui);
+        searchPanel.setGUIController(guiController);
         panel.addComponent(searchPanel.getPanel().withBorder(Borders.singleLine()));
         guiController.setSearchUI(searchPanel);
 
@@ -83,6 +83,7 @@ public class MainWindow
 
         //Types Panel
         BKTypesPanel types = new BKTypesPanel(gui);
+        types.setGUIController(guiController);
         tempPan.addComponent(types.getPanel().withBorder(Borders.singleLine()));
         guiController.setTypesUI(types);
 
@@ -90,13 +91,19 @@ public class MainWindow
 
         //Selected tags panel
         SelectedTagsPanel selectedTagsPanel = new SelectedTagsPanel(gui);
+        selectedTagsPanel.setGUIController(guiController);
         tagsPan.addComponent(selectedTagsPanel.getPanel().withBorder(Borders.singleLine()));
         guiController.setSelectedTagsUI(selectedTagsPanel);
 
         //Available tags panel
         AvailableTagsPanel availableTagsPanel = new AvailableTagsPanel(gui);
+        availableTagsPanel.setGUIController(guiController);
         tagsPan.addComponent(availableTagsPanel.getPanel().withBorder(Borders.singleLine()));
         guiController.setAvailableTagsUI(availableTagsPanel);
+
+        QuickPanelWindow quickPanelWindow = new QuickPanelWindow();
+        quickPanelWindow.setGUIController(this.guiController);
+        this.guiController.setQuickPanelUI(quickPanelWindow);
 
         tempPan.addComponent(tagsPan);
 

@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.defaultui;
 
+import java.util.*;
 import com.bookmarkanator.ui.defaultui.interfaces.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
@@ -8,9 +9,11 @@ public class AvailableTagsPanel extends BasicUIItem implements AvailableTagsInte
 {
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
+    private Set<String> availableTags;
 
     public AvailableTagsPanel()
     {
+        availableTags = new HashSet<>();
     }
 
     private ActionListBox actionListBox;
@@ -21,30 +24,6 @@ public class AvailableTagsPanel extends BasicUIItem implements AvailableTagsInte
 
         TerminalSize size = new TerminalSize(30, 10);
         actionListBox = new ActionListBox(size);
-        actionListBox.addItem("Item 1", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 1");
-            }
-        });
-        actionListBox.addItem("Item 2", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 2");
-            }
-        });
-        actionListBox.addItem("Item 3", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 3");
-            }
-        });
     }
 
     private synchronized void removeMe(String itemName)
@@ -59,5 +38,42 @@ public class AvailableTagsPanel extends BasicUIItem implements AvailableTagsInte
         mainPanel.addComponent(actionListBox);
 
         return mainPanel;
+    }
+
+    private void fillTags()
+    {
+        actionListBox.clearItems();
+
+        for (final String tag: this.availableTags)
+        {
+            actionListBox.addItem(tag, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        getGUIController().addSelectedTag(tag);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setAvailableTags(Set<String> availableTags)
+    {
+        this.availableTags = availableTags;
+        fillTags();
+    }
+
+    @Override
+    public Set getAvailableTags()
+    {
+        return this.availableTags;
     }
 }

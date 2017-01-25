@@ -5,7 +5,7 @@ import com.bookmarkanator.bookmarks.*;
 
 public interface BookmarksListInterface extends GUIItemInterface
 {
-    void setVisibleBookmarks(List<AbstractBookmark> bookmarks)
+    void setVisibleBookmarks(Set<AbstractBookmark> bookmarks)
         throws Exception;
-    List<AbstractBookmark> getVisibleBookmarks();
+    Set<AbstractBookmark> getVisibleBookmarks();
 }

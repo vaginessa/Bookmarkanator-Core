@@ -6,8 +6,7 @@ import com.bookmarkanator.core.*;
 
 public interface GUIControllerInterface
 {
-    //Core
-    void setBootstrap(Bootstrap bootstrap);
+
     Bootstrap getBootstrap();
 
     Settings getSettings();
@@ -16,34 +15,58 @@ public interface GUIControllerInterface
 
     /**
      * Gets a list of visible bookmarks with all the search terms selected. It takes into account the search term, show types fields, and selected tags.
-     * @return  A list of visible bookmarks.
+     *
+     * @return A list of visible bookmarks.
      * @throws Exception
      */
-    List<AbstractBookmark> getVisibleBookmarks()
-        throws Exception;
+    Set<AbstractBookmark> getVisibleBookmarks();
 
     /**
      * Should be called after the interfaces are set so that the controller can set an initial state of the UI.
+     *
      * @throws Exception
      */
     void initUI()
         throws Exception;
 
-    //Search
-    void setSearchTerm(String searchTerm);
-    void setSearchInclusions(String key, boolean value);
+    void updateUI()
+        throws Exception;
 
-    boolean getSearchInclusion(String key);
+    //Search
+    void setSearchTerm(String searchTerm)
+        throws Exception;
+
+    ;
+
+    void setSearchInclusions(String key, boolean value)
+        throws Exception;
+
+    ;
+
+    boolean getSearchInclusion(String key)
+        throws Exception;
+
     String getSearchTerm();
 
     //Tags
-    void setSelectedTags(List<String> tags);
+    void setSelectedTags(Set<String> tags)
+        throws Exception;
+
+    void addSelectedTag(String tag)
+        throws Exception;
+
+    void removeSelectedTag(String tag)throws Exception;
 
     Set<String> getSelectedTags();
+
     Set<String> getAvailableTags();
 
     //Types
-    void setShowType(String type, boolean show);
+    void setShowType(String type, boolean show)
+        throws Exception;
+
+    ;
+
     Set<String> getTypes();
 
     // ============================================================
@@ -51,19 +74,31 @@ public interface GUIControllerInterface
     // ============================================================
 
     void setTypesUI(BKTypesInterface types);
+
     void setSelectedTagsUI(SelectedTagsInterface selectedTagsUI);
+
     void setAvailableTagsUI(AvailableTagsInterface availableTagsUI);
+
     void setBookmarksListUI(BookmarksListInterface bookmarksListUI);
+
     void setSearchUI(SearchInterface searchUI);
+
     void setMenuUi(MenuInterface menuUI);
+
     void setQuickPanelUI(QuickPanelInterface quickPanelUI);
 
     BKTypesInterface getTypesUI();
+
     SelectedTagsInterface getSelectedTagsUI();
+
     AvailableTagsInterface getAvailableTagsUI();
+
     BookmarksListInterface getBookmarksListUI();
+
     SearchInterface getSearchUI();
+
     MenuInterface getMenuUi();
+
     QuickPanelInterface getQuickPanelUI();
 
 }

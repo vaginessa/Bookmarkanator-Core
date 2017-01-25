@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.defaultui;
 
+import java.util.*;
 import com.bookmarkanator.ui.defaultui.interfaces.*;
 import com.googlecode.lanterna.gui2.*;
 
@@ -40,5 +41,17 @@ public class BKTypesPanel extends BasicUIItem implements BKTypesInterface
         mainPanel.addComponent(checkBoxList);
 
         return mainPanel;
+    }
+
+    @Override
+    public void setTypes(Set<String> bookmarkTypes)
+    {
+
+    }
+
+    @Override
+    public Set<String> getTypes()
+    {
+        return null;
     }
 }

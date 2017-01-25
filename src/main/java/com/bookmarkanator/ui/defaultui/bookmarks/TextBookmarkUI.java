@@ -8,17 +8,17 @@ public class TextBookmarkUI extends AbstractUIBookmark
     @Override
     public Object getTypeView()
     {
-        return null;
+        return this.getBookmark().getTypeName();
     }
 
     @Override
     public Object getBookmarkListItemView()
     {
-        return null;
+        return this.getBookmark().getName();
     }
 
     @Override
-    public Object getBookmarkWindow(AbstractBookmark abstractBookmark, boolean viewOnly)
+    public Object getBookmarkView(AbstractBookmark abstractBookmark, boolean viewOnly)
     {
         return null;
     }

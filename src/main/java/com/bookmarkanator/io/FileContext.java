@@ -689,4 +689,30 @@ public class FileContext implements ContextInterface
         abstractBookmark.action();
     }
 
+    @Override
+    public Set<String> getTags(Set<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abstractBookmark: bookmarks)
+        {
+            res.addAll(abstractBookmark.getTags());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<String> getTypes(Set<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abstractBookmark: bookmarks)
+        {
+            res.add(abstractBookmark.getTypeName());
+        }
+
+        return res;
+    }
+
 }

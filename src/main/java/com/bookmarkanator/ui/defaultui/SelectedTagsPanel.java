@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.defaultui;
 
+import java.util.*;
 import com.bookmarkanator.ui.defaultui.interfaces.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
@@ -9,9 +10,11 @@ public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterf
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
     private ActionListBox actionListBox;
+    private Set<String> selectedTags;
 
     public SelectedTagsPanel()
     {
+        selectedTags = new HashSet<>();
     }
 
     public SelectedTagsPanel(MultiWindowTextGUI gui)
@@ -20,30 +23,6 @@ public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterf
 
         TerminalSize size = new TerminalSize(30, 10);
         actionListBox = new ActionListBox(size);
-        actionListBox.addItem("Item 1", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 1");
-            }
-        });
-        actionListBox.addItem("Item 2", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 2");
-            }
-        });
-        actionListBox.addItem("Item 3", new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                removeMe("Item 3");
-            }
-        });
     }
 
     private synchronized void removeMe(String itemName)
@@ -58,5 +37,42 @@ public class SelectedTagsPanel extends BasicUIItem implements SelectedTagsInterf
         mainPanel.addComponent(actionListBox);
 
         return mainPanel;
+    }
+
+    private void fillTags()
+    {
+        actionListBox.clearItems();
+
+        for (final String tag: this.selectedTags)
+        {
+            actionListBox.addItem(tag, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        getGUIController().removeSelectedTag(tag);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setSelectedTags(Set<String> selectedTags)
+    {
+        this.selectedTags = selectedTags;
+        fillTags();
+    }
+
+    @Override
+    public Set<String> getSelectedTags()
+    {
+        return this.selectedTags;
     }
 }

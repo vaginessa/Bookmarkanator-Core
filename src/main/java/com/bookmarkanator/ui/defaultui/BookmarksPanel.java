@@ -14,13 +14,13 @@ public class BookmarksPanel extends BasicUIItem implements BookmarksListInterfac
     private MultiWindowTextGUI gui;
     private ActionListBox actionListBox;
     private List<AbstractUIBookmark> bookmarkUIInterfaces;
-    public List<AbstractBookmark> bookmarks;
+    public Set<AbstractBookmark> bookmarks;
 
     public BookmarksPanel()
     {
         TerminalSize size = new TerminalSize(30, 10);
         actionListBox = new ActionListBox(size);
-        bookmarks = new ArrayList<>();
+        bookmarks = new HashSet<>();
     }
 
 //    public BookmarksPanel(MultiWindowTextGUI gui)
@@ -79,14 +79,14 @@ public class BookmarksPanel extends BasicUIItem implements BookmarksListInterfac
         {
             String classToLoadKey = MainWindow.UI_PREFIX_VALUE+""+MainWindow.UI_CLASS_PREFIX_VALUE+""+bk.getClass().getCanonicalName();
             String className = (String)this.getGUIController().getSettings().getSetting(classToLoadKey);
-            final AbstractUIBookmark bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
+            final AbstractUIBookmark<String,String, String> bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
 
             assert bkui !=null;
 
             bkui.setAbstractBookmark(bk);
 
 
-            this.actionListBox.addItem(bk.getName(), new Runnable()
+            this.actionListBox.addItem(bkui.getBookmarkListItemView(), new Runnable()
             {
                 @Override
                 public void run()
@@ -106,7 +106,7 @@ public class BookmarksPanel extends BasicUIItem implements BookmarksListInterfac
     }
 
     @Override
-    public void setVisibleBookmarks(List<AbstractBookmark> bookmarks)
+    public void setVisibleBookmarks(Set<AbstractBookmark> bookmarks)
         throws Exception
     {
         this.bookmarks = bookmarks;
@@ -114,7 +114,7 @@ public class BookmarksPanel extends BasicUIItem implements BookmarksListInterfac
     }
 
     @Override
-    public List<AbstractBookmark> getVisibleBookmarks()
+    public Set<AbstractBookmark> getVisibleBookmarks()
     {
         return this.bookmarks;
     }
