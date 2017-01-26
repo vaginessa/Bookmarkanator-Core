@@ -1,21 +1,19 @@
-package com.bookmarkanator.ui.defaultui;
+package com.bookmarkanator.ui.fxui;
 
 import com.bookmarkanator.ui.interfaces.*;
 
-public class BasicUIItem implements GUIItemInterface
+public class QuickPanelUI implements QuickPanelInterface
 {
-    private GUIControllerInterface guiController;
-
     @Override
     public void setGUIController(GUIControllerInterface guiController)
     {
-        this.guiController = guiController;
+
     }
 
     @Override
     public GUIControllerInterface getGUIController()
     {
-        return this.guiController;
+        return null;
     }
 
     @Override

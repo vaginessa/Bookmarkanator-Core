@@ -1,6 +1,6 @@
 package com.bookmarkanator.ui.defaultui;
 
-import com.bookmarkanator.ui.defaultui.interfaces.*;
+import com.bookmarkanator.ui.interfaces.*;
 
 public class QuickPanelWindow implements QuickPanelInterface
 {

@@ -1,21 +1,28 @@
-package com.bookmarkanator.ui.defaultui;
+package com.bookmarkanator.ui.fxui;
 
 import com.bookmarkanator.ui.interfaces.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
-public class BasicUIItem implements GUIItemInterface
+public class SearchUI extends Pane implements SearchInterface
 {
-    private GUIControllerInterface guiController;
+    public SearchUI()
+    {
+        Label label = new Label("Search Panel");
+        this.getChildren().add(label);
+        this.setStyle("-fx-background-color: crimson");
+    }
 
     @Override
     public void setGUIController(GUIControllerInterface guiController)
     {
-        this.guiController = guiController;
+
     }
 
     @Override
     public GUIControllerInterface getGUIController()
     {
-        return this.guiController;
+        return null;
     }
 
     @Override

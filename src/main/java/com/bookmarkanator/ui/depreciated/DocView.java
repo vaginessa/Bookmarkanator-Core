@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui;
+package com.bookmarkanator.ui.depreciated;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;

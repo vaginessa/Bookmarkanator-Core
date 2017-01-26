@@ -1,4 +1,4 @@
-package com.bookmarkanator.ui.defaultui.interfaces;
+package com.bookmarkanator.ui.interfaces;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;

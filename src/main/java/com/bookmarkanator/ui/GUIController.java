@@ -1,10 +1,10 @@
-package com.bookmarkanator.ui.defaultui;
+package com.bookmarkanator.ui;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
-import com.bookmarkanator.ui.defaultui.interfaces.*;
+import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
 
 public class GUIController implements GUIControllerInterface
@@ -197,42 +197,49 @@ public class GUIController implements GUIControllerInterface
     public void setTypesUI(BKTypesInterface types)
     {
         this.bkTypesInterface = types;
+        types.setGUIController(this);
     }
 
     @Override
     public void setSelectedTagsUI(SelectedTagsInterface selectedTagsUI)
     {
         this.selectedTagsInterface = selectedTagsUI;
+        selectedTagsUI.setGUIController(this);
     }
 
     @Override
     public void setAvailableTagsUI(AvailableTagsInterface availableTagsUI)
     {
         this.availableTagsInterface = availableTagsUI;
+        availableTagsUI.setGUIController(this);
     }
 
     @Override
     public void setBookmarksListUI(BookmarksListInterface bookmarksListUI)
     {
         this.bookmarksInterface = bookmarksListUI;
+        bookmarksListUI.setGUIController(this);
     }
 
     @Override
     public void setSearchUI(SearchInterface searchUI)
     {
         this.searchInterface = searchUI;
+        searchUI.setGUIController(this);
     }
 
     @Override
     public void setMenuUi(MenuInterface menuUI)
     {
         this.menuInterface = menuUI;
+        menuUI.setGUIController(this);
     }
 
     @Override
     public void setQuickPanelUI(QuickPanelInterface quickPanelUI)
     {
         this.quickPanelInterface = quickPanelUI;
+        quickPanelUI.setGUIController(this);
     }
 
     @Override

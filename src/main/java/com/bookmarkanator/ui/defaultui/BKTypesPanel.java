@@ -1,7 +1,7 @@
 package com.bookmarkanator.ui.defaultui;
 
 import java.util.*;
-import com.bookmarkanator.ui.defaultui.interfaces.*;
+import com.bookmarkanator.ui.interfaces.*;
 import com.googlecode.lanterna.gui2.*;
 
 public class BKTypesPanel extends BasicUIItem implements BKTypesInterface
