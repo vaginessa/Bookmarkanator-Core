@@ -81,12 +81,12 @@ public class MainWindow
         guiController.setSearchUI(searchPanel);
 
         Panel tempPan = new Panel(new LinearLayout(Direction.HORIZONTAL));
-
-        //Types Panel
-        BKTypesPanel types = new BKTypesPanel(gui);
-        types.setGUIController(guiController);
-        tempPan.addComponent(types.getPanel().withBorder(Borders.singleLine()));
-        guiController.setTypesUI(types);
+//
+//        //Types Panel
+//        BKTypesPanel types = new BKTypesPanel(gui);
+//        types.setGUIController(guiController);
+//        tempPan.addComponent(types.getPanel().withBorder(Borders.singleLine()));
+//        guiController.setTypesUI(types);
 
         Panel tagsPan = new Panel(new LinearLayout(Direction.VERTICAL));
 

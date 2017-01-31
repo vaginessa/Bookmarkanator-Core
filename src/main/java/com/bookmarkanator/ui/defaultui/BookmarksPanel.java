@@ -79,7 +79,7 @@ public class BookmarksPanel extends BasicUIItem implements BookmarksListInterfac
         {
             String classToLoadKey = MainWindow.UI_PREFIX_VALUE+""+MainWindow.UI_CLASS_PREFIX_VALUE+""+bk.getClass().getCanonicalName();
             String className = (String)this.getGUIController().getSettings().getSetting(classToLoadKey);
-            final AbstractUIBookmark<String,String, String> bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
+            final AbstractUIBookmark<String,String, String, String> bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
 
             assert bkui !=null;
 

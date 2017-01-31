@@ -23,8 +23,9 @@ public class GUIController implements GUIControllerInterface
     private Set<AbstractBookmark> visibleBookmarks;
     private Set<String> availableTags;
     private Set<String> selectedTags;
-    private Set<String> typeNames;
-    private Map<String, Boolean> showTypes;
+    private Set<String> allTypes;
+    private Set<String> visibleTypes;
+    private Set<String> showOnlyTheseTypes;
 
     //Search related variables
     private String searchTerm;
@@ -42,13 +43,18 @@ public class GUIController implements GUIControllerInterface
         throws Exception
     {
         assert bootstrap != null;
+        ContextInterface context = bootstrap.getBkioInterface().getContext();
         this.bootstrap = bootstrap;
 
         this.visibleBookmarks = new HashSet<>();
-        this.visibleBookmarks.addAll(bootstrap.getBkioInterface().getContext().getBookmarks());
+        this.visibleBookmarks.addAll(context.getBookmarks());
         this.availableTags = new HashSet<>();
         this.selectedTags = new HashSet<>();
-        this.typeNames = new HashSet<>();
+
+        this.allTypes = context.getTypes(context.getBookmarks());
+        this.visibleTypes = new HashSet<>();
+        this.showOnlyTheseTypes = new HashSet<>();
+        this.showOnlyTheseTypes.addAll(this.allTypes);
     }
 
     @Override
@@ -64,9 +70,10 @@ public class GUIController implements GUIControllerInterface
         assert quickPanelInterface != null;
 
         this.updateBookmarksData();
+        this.showOnlyTheseTypes.addAll(this.getAllTypes());
         this.getBookmarksListUI().setVisibleBookmarks(this.getVisibleBookmarks());
         this.getAvailableTagsUI().setAvailableTags(this.getAvailableTags());
-        this.getTypesUI().setTypes(this.getTypes());
+        this.getTypesUI().setTypes(this.getVisibleTypes(), this.getShowOnlyTheseTypes());
     }
 
     @Override
@@ -177,8 +184,35 @@ public class GUIController implements GUIControllerInterface
     public void setShowType(String type, boolean show)
         throws Exception
     {
-        this.showTypes.put(type, show);
+        if (show)
+        {
+            this.showOnlyTheseTypes.add(type);
+        }
+        else
+        {
+            this.showOnlyTheseTypes.remove(type);
+        }
         this.updateUI();
+    }
+
+    @Override
+    public boolean toggleShowType(String type)
+        throws Exception
+    {
+        boolean res;
+        if (this.showOnlyTheseTypes.contains(type))
+        {
+            this.showOnlyTheseTypes.remove(type);
+            res = false;
+        }
+        else
+        {
+            this.showOnlyTheseTypes.add(type);
+            res = true;
+        }
+
+        this.updateUI();
+        return res;
     }
 
     @Override
@@ -188,9 +222,21 @@ public class GUIController implements GUIControllerInterface
     }
 
     @Override
-    public Set<String> getTypes()
+    public Set<String> getVisibleTypes()
     {
-        return this.typeNames;
+        return this.visibleTypes;
+    }
+
+    @Override
+    public Set<String> getShowOnlyTheseTypes()
+    {
+        return this.showOnlyTheseTypes;
+    }
+
+    @Override
+    public Set<String> getAllTypes()
+    {
+        return this.allTypes;
     }
 
     @Override
@@ -331,7 +377,7 @@ public class GUIController implements GUIControllerInterface
 
         this.bookmarksInterface.setVisibleBookmarks(this.getVisibleBookmarks());
         this.availableTagsInterface.setAvailableTags(this.getAvailableTags());
-        this.bkTypesInterface.setTypes(this.getTypes());
+        this.bkTypesInterface.setTypes(this.getAllTypes(), this.getShowOnlyTheseTypes());
         this.selectedTagsInterface.setSelectedTags(this.getSelectedTags());
     }
 
@@ -339,6 +385,8 @@ public class GUIController implements GUIControllerInterface
         throws Exception
     {
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
+        this.allTypes = context.getTypes(context.getBookmarks());
+
         if (getSearchTerm() != null && !getSearchTerm().isEmpty())
         {//The user is searching. Update lists from that context.
             this.visibleBookmarks = search();
@@ -346,18 +394,27 @@ public class GUIController implements GUIControllerInterface
         else
         {
             this.visibleBookmarks.clear();
+            Set<AbstractBookmark> tmpBKs = new HashSet<>();
+            tmpBKs.addAll(getVisibleBookmarkTypes(context.getBookmarks()));
+
             if (!this.selectedTags.isEmpty())
             {
-                this.visibleBookmarks.addAll(Filter.use(context.getBookmarks()).keepWithAllTags(this.getSelectedTags()).results());
-//                this.visibleBookmarks.addAll(context.searchTagsExact(this.getSelectedTags()));
+                this.visibleBookmarks.addAll(Filter.use(tmpBKs).keepWithAllTags(this.getSelectedTags()).results());
             }
             else
             {
-                this.visibleBookmarks.addAll(context.getBookmarks());
+                this.visibleBookmarks.addAll(tmpBKs);
             }
             this.availableTags = context.getTags(this.visibleBookmarks);
             this.availableTags.removeAll(this.selectedTags);
-            this.typeNames = context.getTypes(this.visibleBookmarks);
+            this.visibleTypes = context.getTypes(this.visibleBookmarks);
         }
     }
+
+    private List<AbstractBookmark> getVisibleBookmarkTypes(Set<AbstractBookmark> bookmarks)
+        throws Exception
+    {
+       return Filter.use(bookmarks).keepBookmarkTypes(this.showOnlyTheseTypes).results();
+    }
+
 }

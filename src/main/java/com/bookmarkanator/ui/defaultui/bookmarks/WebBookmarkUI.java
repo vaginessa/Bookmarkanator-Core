@@ -22,4 +22,20 @@ public class WebBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public Object action()
+        throws Exception
+    {
+        this.getBookmark().action();
+        return null;
+    }
+
+    @Override
+    public Object action(Object config)
+        throws Exception
+    {
+        this.action();
+        return null;
+    }
 }

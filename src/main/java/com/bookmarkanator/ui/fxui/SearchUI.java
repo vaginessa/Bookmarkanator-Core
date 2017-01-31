@@ -6,6 +6,9 @@ import javafx.scene.layout.*;
 
 public class SearchUI extends Pane implements SearchInterface
 {
+    private GUIControllerInterface guiController;
+    private boolean editMode = false;
+
     public SearchUI()
     {
         Label label = new Label("Search Panel");
@@ -16,30 +19,30 @@ public class SearchUI extends Pane implements SearchInterface
     @Override
     public void setGUIController(GUIControllerInterface guiController)
     {
-
+        this.guiController = guiController;
     }
 
     @Override
     public GUIControllerInterface getGUIController()
     {
-        return null;
+        return this.guiController;
     }
 
     @Override
     public void enterEditMode()
     {
-
+        this.editMode = true;
     }
 
     @Override
     public void exitEditMode()
     {
-
+        this.editMode = false;
     }
 
     @Override
     public boolean isEditMode()
     {
-        return false;
+        return this.editMode;
     }
 }

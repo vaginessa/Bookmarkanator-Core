@@ -6,10 +6,11 @@ import org.junit.*;
 
 public class testUtil {
 
-    @Ignore
+//    @Ignore
     @Test
     public void testGetWords()
     {
+
         String theString = "Hello I am here, \n again...";
 
         Set<String> words = Util.getWords(theString);
@@ -25,5 +26,7 @@ public class testUtil {
 
 
         System.out.println();
+
+
     }
 }

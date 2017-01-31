@@ -2,7 +2,7 @@ package com.bookmarkanator.ui.defaultui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public abstract class AbstractUIBookmark<T, L, B>
+public abstract class AbstractUIBookmark<T, L, B, V>
 {
     private AbstractBookmark abstractBookmark;
 
@@ -21,4 +21,10 @@ public abstract class AbstractUIBookmark<T, L, B>
     public abstract L getBookmarkListItemView();
 
     public abstract B getBookmarkView(AbstractBookmark abstractBookmark, boolean viewOnly);
+
+    public abstract V action()
+        throws Exception;
+
+    public abstract V action(Object config)
+        throws Exception;
 }

@@ -65,10 +65,14 @@ public interface GUIControllerInterface
     void setShowType(String type, boolean show)
         throws Exception;
 
-    ;
+    boolean toggleShowType(String type)
+        throws Exception;
 
-    Set<String> getTypes();
+    Set<String> getVisibleTypes();
 
+    Set<String> getShowOnlyTheseTypes();
+
+    Set<String> getAllTypes();
     // ============================================================
     // Interface Getter and Setter Methods
     // ============================================================

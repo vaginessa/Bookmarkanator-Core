@@ -22,4 +22,16 @@ public class SequenceBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public Object action()
+    {
+        return null;
+    }
+
+    @Override
+    public Object action(Object config)
+    {
+        return null;
+    }
 }

@@ -2,19 +2,18 @@ package com.bookmarkanator.ui.defaultui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public class TerminalBookmarkUI extends AbstractUIBookmark
+public class BashHistoryBookmarkUI extends AbstractUIBookmark
 {
-
     @Override
     public Object getTypeView()
     {
-        return this.getBookmark().getTypeName();
+        return null;
     }
 
     @Override
     public Object getBookmarkListItemView()
     {
-        return this.getBookmark().getName();
+        return null;
     }
 
     @Override

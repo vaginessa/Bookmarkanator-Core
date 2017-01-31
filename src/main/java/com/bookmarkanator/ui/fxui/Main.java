@@ -1,9 +1,11 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.awt.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.*;
+import com.bookmarkanator.ui.defaultui.bookmarks.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
@@ -12,6 +14,10 @@ import javafx.stage.*;
 
 public class Main extends Application
 {
+    public static final String UI_PREFIX_VALUE = Main.class.getCanonicalName();
+    public static final String UI_CLASS_VALUE = "class";
+    public static final String UI_STRING_SEPARATOR = "-";
+
     private GUIController guiController;
     private ContextInterface context;
 
@@ -21,6 +27,9 @@ public class Main extends Application
     {
         Dimension bestWindowSize = getBestWindowSize();
         Bootstrap bootstrap = new Bootstrap();
+        bootstrap.getSettings().diffInto(this.getDefaultSettings());
+        bootstrap.saveSettingsFile();
+
         guiController = new GUIController(bootstrap);
 
         GridPane gridPane = new GridPane();
@@ -74,7 +83,9 @@ public class Main extends Application
         primaryStage.setMinHeight(bestWindowSize.getHeight());
         primaryStage.setMinWidth(bestWindowSize.getWidth());
 
+        guiController.initUI();
         primaryStage.show();
+
     }
 
     private void setRowConstraints(GridPane gridPane)
@@ -129,6 +140,26 @@ public class Main extends Application
 
         Dimension d = new Dimension((int) (width * .5), (int) (height * .5));
         return d;
+    }
+
+    private Settings<String, String> getDefaultSettings()
+    {
+        Settings<String, String> settings = new Settings<>();
+        settings.putSetting(Main.getUIClassString()+ BashHistoryBookmark.class.getCanonicalName(), BashHistoryBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+EncryptedBookmark.class.getCanonicalName(), EncryptedBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+FileBookmark.class.getCanonicalName(), FileBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+ReminderBookmark.class.getCanonicalName(), ReminderBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+SequenceBookmark.class.getCanonicalName(), SequenceBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+TerminalBookmark.class.getCanonicalName(), TerminalBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+TextBookmark.class.getCanonicalName(), TextBookmarkUI.class.getCanonicalName());
+        settings.putSetting(Main.getUIClassString()+WebBookmark.class.getCanonicalName(), WebBookmarkUI.class.getCanonicalName());
+
+        return settings;
+    }
+
+    public static String getUIClassString()
+    {
+        return Main.UI_PREFIX_VALUE+Main.UI_STRING_SEPARATOR+Main.UI_CLASS_VALUE+Main.UI_STRING_SEPARATOR;
     }
 
 }

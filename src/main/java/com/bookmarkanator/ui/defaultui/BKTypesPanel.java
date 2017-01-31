@@ -1,10 +1,8 @@
 package com.bookmarkanator.ui.defaultui;
 
-import java.util.*;
-import com.bookmarkanator.ui.interfaces.*;
 import com.googlecode.lanterna.gui2.*;
 
-public class BKTypesPanel extends BasicUIItem implements BKTypesInterface
+public class BKTypesPanel extends BasicUIItem
 {
     private Panel mainPanel;
     private MultiWindowTextGUI gui;
@@ -43,15 +41,4 @@ public class BKTypesPanel extends BasicUIItem implements BKTypesInterface
         return mainPanel;
     }
 
-    @Override
-    public void setTypes(Set<String> bookmarkTypes)
-    {
-
-    }
-
-    @Override
-    public Set<String> getTypes()
-    {
-        return null;
-    }
 }
