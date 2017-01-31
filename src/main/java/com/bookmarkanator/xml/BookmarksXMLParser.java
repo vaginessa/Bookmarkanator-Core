@@ -133,6 +133,7 @@ public class BookmarksXMLParser
                 abs = abstractBookmark.getNew();
                 parseBookmarkDetails(n, abs);
                 contextInterface.addBookmark(abs);
+                abs.setContextInterface(this.contextInterface);
             }
         }
     }

@@ -47,7 +47,7 @@ public class TypesUI extends ScrollPane implements BKTypesInterface
                 }
             });
 
-            if (!visibleTypes.contains(string))
+            if (visibleTypes.contains(string))
             {
                 toggleButton.setSelected(true);
             }

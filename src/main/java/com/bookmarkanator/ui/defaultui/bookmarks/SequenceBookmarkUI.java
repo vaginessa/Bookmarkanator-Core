@@ -25,8 +25,10 @@ public class SequenceBookmarkUI extends AbstractUIBookmark
 
     @Override
     public Object action()
+        throws Exception
     {
-        return null;
+        this.getBookmark().action();
+        return this.getBookmark().getText();
     }
 
     @Override
