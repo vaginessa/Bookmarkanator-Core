@@ -196,6 +196,19 @@ public class GUIController implements GUIControllerInterface
     }
 
     @Override
+    public void showTypes(Set<String> types)
+        throws Exception
+    {
+        this.showOnlyTheseTypes.clear();
+
+        if (types!=null)
+        {
+            this.showOnlyTheseTypes.addAll(types);
+        }
+        this.updateUI();
+    }
+
+    @Override
     public boolean toggleShowType(String type)
         throws Exception
     {

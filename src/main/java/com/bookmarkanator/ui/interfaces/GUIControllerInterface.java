@@ -65,6 +65,9 @@ public interface GUIControllerInterface
     void setShowType(String type, boolean show)
         throws Exception;
 
+    void showTypes(Set<String> types)
+        throws Exception;
+
     boolean toggleShowType(String type)
         throws Exception;
 

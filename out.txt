@@ -1,0 +1,322 @@
+
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/AboutWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/AboutWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/AvailableTagsPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/AvailableTagsPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/BKTypesPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/BKTypesPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/BasicUIItem.java b/src/main/java/com/bookmarkanator/ui/defaultui/BasicUIItem.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/BookmarkListItem.java b/src/main/java/com/bookmarkanator/ui/defaultui/BookmarkListItem.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/BookmarksPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/BookmarksPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/DocWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/DocWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/EncryptedBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/EncryptedBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/ExportWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/ExportWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/ImportWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/ImportWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/MainWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/MainWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/MenuPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/MenuPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/QuickPanelWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/QuickPanelWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/ReminderBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/ReminderBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/SearchPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/SearchPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/SelectedTagsPanel.java b/src/main/java/com/bookmarkanator/ui/defaultui/SelectedTagsPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/SequenceBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/SequenceBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/SettingsWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/SettingsWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/TagEditorWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/TagEditorWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/TerminalBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/TerminalBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/TextBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/TextBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/TutorialWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/TutorialWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/WebBKWindow.java b/src/main/java/com/bookmarkanator/ui/defaultui/WebBKWindow.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/AbstractUIBookmark.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/AbstractUIBookmark.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/BashHistoryBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/BashHistoryBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/EncryptedBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/EncryptedBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/FileBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/FileBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/ReminderBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/ReminderBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/SequenceBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/SequenceBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/TerminalBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/TerminalBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/TextBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/TextBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/WebBookmarkUI.java b/src/main/java/com/bookmarkanator/ui/defaultui/bookmarks/WebBookmarkUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/AvailablePanel.java b/src/main/java/com/bookmarkanator/ui/depreciated/AvailablePanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/BookmarksPanel.java b/src/main/java/com/bookmarkanator/ui/depreciated/BookmarksPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/DocView.java b/src/main/java/com/bookmarkanator/ui/depreciated/DocView.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/SearchInterface.java b/src/main/java/com/bookmarkanator/ui/depreciated/SearchInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/SearchPanel.java b/src/main/java/com/bookmarkanator/ui/depreciated/SearchPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/SelectedPanel.java b/src/main/java/com/bookmarkanator/ui/depreciated/SelectedPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/TypesPanel.java b/src/main/java/com/bookmarkanator/ui/depreciated/TypesPanel.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/UIAction.java b/src/main/java/com/bookmarkanator/ui/depreciated/UIAction.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/UIControllerInterface.java b/src/main/java/com/bookmarkanator/ui/depreciated/UIControllerInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/depreciated/UIInterface.java b/src/main/java/com/bookmarkanator/ui/depreciated/UIInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/AvailableTagsUI.java b/src/main/java/com/bookmarkanator/ui/fxui/AvailableTagsUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/BookmarksListUI.java b/src/main/java/com/bookmarkanator/ui/fxui/BookmarksListUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/Main.java b/src/main/java/com/bookmarkanator/ui/fxui/Main.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/MenuUI.java b/src/main/java/com/bookmarkanator/ui/fxui/MenuUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/QuickPanelUI.java b/src/main/java/com/bookmarkanator/ui/fxui/QuickPanelUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/SearchUI.java b/src/main/java/com/bookmarkanator/ui/fxui/SearchUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/SelectedTagsUI.java b/src/main/java/com/bookmarkanator/ui/fxui/SelectedTagsUI.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/fxui/TypesUI.java b/src/main/java/com/bookmarkanator/ui/fxui/TypesUI.java
+old mode 100644
+new mode 100755
+index d45b508..a1ebbbb
+--- a/src/main/java/com/bookmarkanator/ui/fxui/TypesUI.java
++++ b/src/main/java/com/bookmarkanator/ui/fxui/TypesUI.java
+@@ -13,11 +13,58 @@ public class TypesUI extends ScrollPane implements BKTypesInterface
+     private VBox vBox;
+     private Set<String> types;
+     private Set<String> visibleTypes;
++    private HBox hBox;
++
++    //TODO Add type icons that match bookmark type icons
++    //TODO Change type button theme/colors so that its easier to tell when they are selected.
+ 
+     public TypesUI()
+     {
+         this.vBox = new VBox();
+         vBox.setSpacing(5);
++
++        hBox = new HBox();
++        HBox.setHgrow(hBox, Priority.ALWAYS);
++        hBox.setSpacing(10);
++        hBox.setStyle("-fx-background-color: lightgrey");
++        Button all = new Button("All");
++        all.setOnAction(new EventHandler<ActionEvent>() {
++
++            @Override
++            public void handle(ActionEvent event) {
++                try
++                {
++                    System.out.println("action all ");
++                    guiController.showTypes(types);
++                }
++                catch (Exception e)
++                {
++                    throw new RuntimeException(e);
++                }
++            }
++        });
++
++        Button none = new Button("None");
++
++        none.setOnAction(new EventHandler<ActionEvent>() {
++
++        @Override
++        public void handle(ActionEvent event) {
++            try
++            {
++                System.out.println("action none ");
++                guiController.showTypes(null);
++            }
++            catch (Exception e)
++            {
++                throw new RuntimeException(e);
++            }
++        }
++    });
++
++        hBox.getChildren().addAll(all, none);
++        vBox.getChildren().add(hBox);
++
+         this.setContent(vBox);
+     }
+ 
+@@ -25,6 +72,8 @@ public class TypesUI extends ScrollPane implements BKTypesInterface
+     public void setTypes(Set<String> types, Set<String> showTypes)
+     {
+         this.vBox.getChildren().clear();
++        this.vBox.getChildren().add(hBox);
++
+         this.types = types;
+         this.visibleTypes = showTypes;
+ 
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/AvailableTagsInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/AvailableTagsInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/BKTypesInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/BKTypesInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/BookmarksListInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/BookmarksListInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/GUIControllerInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/GUIControllerInterface.java
+old mode 100644
+new mode 100755
+index 6fa3693..25d610f
+--- a/src/main/java/com/bookmarkanator/ui/interfaces/GUIControllerInterface.java
++++ b/src/main/java/com/bookmarkanator/ui/interfaces/GUIControllerInterface.java
+@@ -65,6 +65,9 @@ public interface GUIControllerInterface
+     void setShowType(String type, boolean show)
+         throws Exception;
+ 
++    void showTypes(Set<String> types)
++        throws Exception;
++
+     boolean toggleShowType(String type)
+         throws Exception;
+ 
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/GUIItemInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/GUIItemInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/MenuInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/MenuInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/QuickPanelInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/QuickPanelInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/SearchInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/SearchInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/ui/interfaces/SelectedTagsInterface.java b/src/main/java/com/bookmarkanator/ui/interfaces/SelectedTagsInterface.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/util/Filter.java b/src/main/java/com/bookmarkanator/util/Filter.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/util/Search.java b/src/main/java/com/bookmarkanator/util/Search.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/util/TextAssociator.java b/src/main/java/com/bookmarkanator/util/TextAssociator.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/util/Util.java b/src/main/java/com/bookmarkanator/util/Util.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/xml/BookmarksXMLParser.java b/src/main/java/com/bookmarkanator/xml/BookmarksXMLParser.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/xml/BookmarksXMLWriter.java b/src/main/java/com/bookmarkanator/xml/BookmarksXMLWriter.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/xml/SettingsXMLParser.java b/src/main/java/com/bookmarkanator/xml/SettingsXMLParser.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/xml/SettingsXMLWriter.java b/src/main/java/com/bookmarkanator/xml/SettingsXMLWriter.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/java/com/bookmarkanator/xml/XMLValidator.java b/src/main/java/com/bookmarkanator/xml/XMLValidator.java
+old mode 100644
+new mode 100755
+diff --git a/src/main/resources/com.bookmarkanator.xml/BookmarksStructure.xsd b/src/main/resources/com.bookmarkanator.xml/BookmarksStructure.xsd
+old mode 100644
+new mode 100755
+diff --git a/src/main/resources/com.bookmarkanator.xml/BookmarksXMLTemplate.xml b/src/main/resources/com.bookmarkanator.xml/BookmarksXMLTemplate.xml
+old mode 100644
+new mode 100755
+diff --git a/src/main/resources/com.bookmarkanator.xml/SettingsStructure.xsd b/src/main/resources/com.bookmarkanator.xml/SettingsStructure.xsd
+old mode 100644
+new mode 100755
+diff --git a/src/main/resources/com.bookmarkanator.xml/SettingsXMLTemplate.xml b/src/main/resources/com.bookmarkanator.xml/SettingsXMLTemplate.xml
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestBookmark.java b/src/test/java/com/bookmarkanator/TestBookmark.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestLoadingModules.java b/src/test/java/com/bookmarkanator/TestLoadingModules.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestMainProgram.java b/src/test/java/com/bookmarkanator/TestMainProgram.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestParsing.java b/src/test/java/com/bookmarkanator/TestParsing.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestSearchClass.java b/src/test/java/com/bookmarkanator/TestSearchClass.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/TestXMLValidator.java b/src/test/java/com/bookmarkanator/TestXMLValidator.java
+old mode 100644
+new mode 100755
+diff --git a/src/test/java/com/bookmarkanator/testUtil.java b/src/test/java/com/bookmarkanator/testUtil.java
+old mode 100644
+new mode 100755
