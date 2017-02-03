@@ -29,15 +29,16 @@ public class GUIController implements GUIControllerInterface
 
     //Search related variables
     private String searchTerm;
-    private boolean includeTypes;
-    private boolean includeTags;
-    private boolean includeBookmarks;
-    private boolean includeBookmarkText;
+    private Map<String, Boolean> searchInclusions;
+//    private boolean includeTypes;
+//    private boolean includeTags;
+//    private boolean includeBookmarks;
+//    private boolean includeBookmarkText;
 
-    public static final String SEARCH_TYPES_KEY = "types";
-    public static final String SEARCH_TAGS_KEY = "tags";
-    public static final String SEARCH_BOOKMARKS_KEY = "bookmarks";
-    public static final String SEARCH_BOOKMARKS_TEXT_KEY = "bookmarks-text";
+    public static final String SEARCH_TYPES_KEY = "BOOKMARK-TYPES-SEARCH";
+    public static final String SEARCH_TAGS_KEY = "BOOKMARK-TAGS-SEARCH";
+    public static final String SEARCH_BOOKMARK_TEXT_KEY = "BOOKMARK-TEXT-SEARCH";
+    public static final String SEARCH_BOOKMARK_NAMES_KEY = "BOOKMARK-NAME-SEARCH";
 
     public GUIController(Bootstrap bootstrap)
         throws Exception
@@ -55,6 +56,11 @@ public class GUIController implements GUIControllerInterface
         this.visibleTypes = new HashSet<>();
         this.showOnlyTheseTypes = new HashSet<>();
         this.showOnlyTheseTypes.addAll(this.allTypes);
+        this.searchInclusions = new HashMap<>();
+        searchInclusions.put(GUIController.SEARCH_TYPES_KEY, true);
+        searchInclusions.put(GUIController.SEARCH_BOOKMARK_TEXT_KEY, true);
+        searchInclusions.put(GUIController.SEARCH_BOOKMARK_NAMES_KEY, true);
+        searchInclusions.put(GUIController.SEARCH_TAGS_KEY, true);
     }
 
     @Override
@@ -143,48 +149,26 @@ public class GUIController implements GUIControllerInterface
     public void setSearchInclusions(String key, boolean value)
         throws Exception
     {
-        boolean update = false;
-        switch (key)
-        {
-            case GUIController.SEARCH_BOOKMARKS_TEXT_KEY:
-                this.includeBookmarkText = value;
-                update = true;
-                break;
-            case GUIController.SEARCH_BOOKMARKS_KEY:
-                this.includeBookmarks = value;
-                update = true;
-                break;
-            case GUIController.SEARCH_TAGS_KEY:
-                this.includeTags = value;
-                update = true;
-                break;
-            case GUIController.SEARCH_TYPES_KEY:
-                this.includeTypes = value;
-                update = true;
-                break;
-        }
-        if (update)
-        {
-            this.updateUI();
-        }
+       if (this.searchInclusions.get(key)!=null)
+       {
+           this.searchInclusions.put(key, value);
+           this.updateUI();
+       }
     }
 
     @Override
     public boolean getSearchInclusion(String key)
         throws Exception
     {
-        switch (key)
+        Boolean b = this.searchInclusions.get(key);
+        if (b!=null)
         {
-            case GUIController.SEARCH_BOOKMARKS_TEXT_KEY:
-                return this.includeBookmarkText;
-            case GUIController.SEARCH_BOOKMARKS_KEY:
-                return this.includeBookmarks;
-            case GUIController.SEARCH_TAGS_KEY:
-                return this.includeTags;
-            case GUIController.SEARCH_TYPES_KEY:
-                return this.includeTypes;
+            return b;
         }
-        throw new Exception("Search inclusion key \"" + key + "\" is not a valid search inclusion key.");
+        else
+        {
+            throw new Exception("Search inclusion key \"" + key + "\" is not a valid search inclusion key.");
+        }
     }
 
     @Override
@@ -361,26 +345,31 @@ public class GUIController implements GUIControllerInterface
     {
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
 
+        boolean includeTags = this.searchInclusions.get(GUIController.SEARCH_TAGS_KEY);
+        boolean includeTypes = this.searchInclusions.get(GUIController.SEARCH_TYPES_KEY);
+        boolean includeBookmarkText = this.searchInclusions.get(GUIController.SEARCH_BOOKMARK_TEXT_KEY);
+        boolean includeBookmarks = this.searchInclusions.get(GUIController.SEARCH_BOOKMARK_NAMES_KEY);
+
         Set<AbstractBookmark> res = new HashSet<>();
-        if (this.includeTags && this.includeTypes && this.includeBookmarkText && this.includeBookmarks)
+        if (includeTags && includeTypes && includeBookmarkText && includeBookmarks)
         {
             res.addAll(context.searchAll(this.getSearchTerm()));
         }
         else
         {
-            if (this.includeTags)
+            if (includeTags)
             {
                 res.addAll(context.searchTagsLoosly(this.getSearchTerm()));
             }
-            if (this.includeTypes)
+            if (includeTypes)
             {
                 res.addAll(context.searchBookmarkTypes(this.getSearchTerm()));
             }
-            if (this.includeBookmarks)
+            if (includeBookmarks)
             {
                 res.addAll(context.searchBookmarkNames(this.getSearchTerm()));
             }
-            if (this.includeBookmarkText)
+            if (includeBookmarkText)
             {
                 res.addAll(context.searchBookmarkText(this.getSearchTerm()));
             }
@@ -425,10 +414,11 @@ public class GUIController implements GUIControllerInterface
             {
                 this.visibleBookmarks.addAll(tmpBKs);
             }
-            this.availableTags = context.getTags(this.visibleBookmarks);
-            this.availableTags.removeAll(this.selectedTags);
             this.visibleTypes = context.getTypes(this.visibleBookmarks);
         }
+
+        this.availableTags = context.getTags(this.visibleBookmarks);
+        this.availableTags.removeAll(this.selectedTags);
     }
 
     private List<AbstractBookmark> getVisibleBookmarkTypes(Set<AbstractBookmark> bookmarks)

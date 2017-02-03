@@ -38,7 +38,7 @@ public class Util {
         for (int c = 0;c< theString.length();c++)
         {
             String s = theString.substring(0, c);
-            s = s.trim();
+//            s = s.trim();
             if (!s.isEmpty()) {
                 words.add(s);
             }

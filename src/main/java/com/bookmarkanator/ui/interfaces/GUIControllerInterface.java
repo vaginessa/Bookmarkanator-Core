@@ -36,12 +36,8 @@ public interface GUIControllerInterface
     void setSearchTerm(String searchTerm)
         throws Exception;
 
-    ;
-
     void setSearchInclusions(String key, boolean value)
         throws Exception;
-
-    ;
 
     boolean getSearchInclusion(String key)
         throws Exception;
@@ -55,7 +51,8 @@ public interface GUIControllerInterface
     void addSelectedTag(String tag)
         throws Exception;
 
-    void removeSelectedTag(String tag)throws Exception;
+    void removeSelectedTag(String tag)
+        throws Exception;
 
     Set<String> getSelectedTags();
 

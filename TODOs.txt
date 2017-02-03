@@ -1,1 +1,5 @@
 TODO Add Logging to the whole project.
+TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same.
+TODO Go through the search class and replace all search rotated words or rotated substrings and replace with full
+text rotated and full text rotated substrings.
+TODO Should we highlight/add/remove bookmark types shown when doing a text search? Maybe just when searching for bookmark types?

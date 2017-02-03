@@ -45,7 +45,7 @@ public class Main extends Application
         guiController.setMenuUi(menuUI);
 
         MenuBar menuBar = menuUI.getMenuBar();
-        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+//        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         vBox.getChildren().addAll(menuBar);
 
         vBox.getChildren().add(gridPane);
@@ -74,7 +74,7 @@ public class Main extends Application
         BookmarksListUI bookmarksListUI = new BookmarksListUI();
         guiController.setBookmarksListUI(bookmarksListUI);
 
-        bookmarksListUI.setPrefWidth(bestWindowSize.getWidth()*.5);
+//        bookmarksListUI.setPrefWidth(bestWindowSize.getWidth()*.5);
         gridPane.add(bookmarksListUI, 3, 1, 2, 4);
 
         setRowConstraints(gridPane);

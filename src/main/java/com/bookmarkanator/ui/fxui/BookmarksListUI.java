@@ -63,6 +63,7 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
         });
 
         this.setStyle("-fx-background-color: cyan");
+        this.setFitToWidth(true);
     }
 
     @Override
