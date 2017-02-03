@@ -6,27 +6,41 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class TypesUI extends ScrollPane implements BKTypesInterface
+public class TypesUI extends VBox implements BKTypesInterface
 {
     private GUIControllerInterface guiController;
     private boolean editMode = false;
     private VBox vBox;
     private Set<String> types;
     private Set<String> visibleTypes;
-    private HBox hBox;
+    private String backgroundColor = "paleturquoise";
 
     //TODO Add type icons that match bookmark type icons
     //TODO Change type button theme/colors so that its easier to tell when they are selected.
 
     public TypesUI()
     {
-        this.vBox = new VBox();
-        vBox.setSpacing(5);
+        this.setSpacing(5);
+        this.setStyle("-fx-background-color:"+backgroundColor);
 
-        hBox = new HBox();
+        this.vBox = new VBox();
+        this.vBox.setSpacing(5);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setStyle("-fx-background:"+backgroundColor);
+
+        scrollPane.setContent(vBox);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        this.getChildren().addAll(getSelectUnselect(), scrollPane);
+    }
+
+    private Pane getSelectUnselect()
+    {
+        HBox hBox = new HBox();
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setSpacing(10);
-        hBox.setStyle("-fx-background-color: lightgrey");
+        hBox.setStyle("-fx-background-color:"+backgroundColor);
         Button all = new Button("All");
         all.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -34,7 +48,6 @@ public class TypesUI extends ScrollPane implements BKTypesInterface
             public void handle(ActionEvent event) {
                 try
                 {
-                    System.out.println("action all ");
                     guiController.showTypes(types);
                 }
                 catch (Exception e)
@@ -48,32 +61,28 @@ public class TypesUI extends ScrollPane implements BKTypesInterface
 
         none.setOnAction(new EventHandler<ActionEvent>() {
 
-        @Override
-        public void handle(ActionEvent event) {
-            try
-            {
-                System.out.println("action none ");
-                guiController.showTypes(null);
+            @Override
+            public void handle(ActionEvent event) {
+                try
+                {
+                    guiController.showTypes(null);
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-    });
+        });
 
         hBox.getChildren().addAll(all, none);
-        vBox.getChildren().add(hBox);
 
-        this.setContent(vBox);
+        return hBox;
     }
 
     @Override
     public void setTypes(Set<String> types, Set<String> showTypes)
     {
         this.vBox.getChildren().clear();
-        this.vBox.getChildren().add(hBox);
-
         this.types = types;
         this.visibleTypes = showTypes;
 

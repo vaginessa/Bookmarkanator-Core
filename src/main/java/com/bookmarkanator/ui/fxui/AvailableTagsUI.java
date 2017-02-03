@@ -7,22 +7,29 @@ import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
-public class AvailableTagsUI extends FlowPane implements AvailableTagsInterface
+public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterface
 {
     private GUIControllerInterface guiController;
     private boolean editMode = false;
+    private FlowPane flowPane;
+    private String colorString =  "#8fbc8f";
 
     public AvailableTagsUI()
     {
-        this.setStyle("-fx-background-color: #8fbc8f");
-        this.setVgap(5);
-        this.setHgap(5);
+        this.flowPane = new FlowPane();
+        flowPane.setStyle("-fx-background-color:"+colorString);
+        flowPane.setVgap(5);
+        flowPane.setHgap(5);
+
+        this.setStyle("-fx-background:"+colorString);
+        this.setFitToWidth(true);
+        this.setContent(flowPane);
     }
 
     @Override
     public void setAvailableTags(Set<String> availableTags)
     {
-        this.getChildren().clear();
+        this.flowPane.getChildren().clear();
         for (final String string: availableTags)
         {
             Pane pane = new Pane();
@@ -46,7 +53,7 @@ public class AvailableTagsUI extends FlowPane implements AvailableTagsInterface
             pane.setStyle("-fx-background-color: #8fbc61");
             pane.getChildren().add(label);
 
-            this.getChildren().add(pane);
+            this.flowPane.getChildren().add(pane);
         }
     }
 

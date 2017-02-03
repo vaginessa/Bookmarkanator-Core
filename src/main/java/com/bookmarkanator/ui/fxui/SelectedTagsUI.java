@@ -3,26 +3,69 @@ package com.bookmarkanator.ui.fxui;
 import java.util.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
+import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
-public class SelectedTagsUI extends FlowPane implements SelectedTagsInterface
+public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
 {
     private GUIControllerInterface guiController;
     private boolean editMode = false;
+    private FlowPane flowPane;
+    private VBox vBox;
+    private String colorString =  "#3fccff";
 
     public SelectedTagsUI()
     {
-        this.setStyle("-fx-background-color: #3fccff");
-        this.setVgap(5);
-        this.setHgap(5);
+        this.vBox = new VBox();
+        vBox.setStyle("-fx-background-color:"+colorString);
+
+        this.flowPane = new FlowPane();
+        flowPane.setStyle("-fx-background-color:"+colorString);
+        flowPane.setVgap(5);
+        flowPane.setHgap(5);
+
+        this.setStyle("-fx-background:"+colorString);
+        this.setFitToWidth(true);
+
+        vBox.getChildren().add(getOptionsPane());
+        vBox.getChildren().add(flowPane);
+
+        this.setContent(vBox);
+    }
+
+    private Pane getOptionsPane()
+    {
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.TOP_RIGHT);
+        Button button = new Button("Clear");
+        button.setStyle("-fx-background-radius:15");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                try
+                {
+                    guiController.setSelectedTags(null);
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+
+        hBox.getChildren().add(button);
+
+        return hBox;
     }
 
     @Override
     public void setSelectedTags(Set<String> selectedTags)
     {
-        this.getChildren().clear();
+        this.flowPane.getChildren().clear();
         for (final String string: selectedTags)
         {
             Pane pane = new Pane();
@@ -46,7 +89,7 @@ public class SelectedTagsUI extends FlowPane implements SelectedTagsInterface
             pane.setStyle("-fx-background-color: #8fbc61");
             pane.getChildren().add(label);
 
-            this.getChildren().add(pane);
+            this.flowPane.getChildren().add(pane);
         }
     }
 

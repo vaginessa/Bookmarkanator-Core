@@ -92,7 +92,14 @@ public class GUIController implements GUIControllerInterface
     public void setSelectedTags(Set<String> tags)
         throws Exception
     {
-        this.selectedTags = tags;
+        if (tags==null)
+        {
+            this.selectedTags.clear();
+        }
+        else
+        {
+            this.selectedTags = tags;
+        }
         this.updateUI();
     }
 

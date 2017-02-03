@@ -42,15 +42,17 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
                 //TODO Handle right clicks, and other kinds of clicks.
                 try
                 {
-                    AbstractUIBookmark abs = (AbstractUIBookmark) bookmarkListView.getSelectionModel().getSelectedItem();
-
-                    if (isEditMode())
+                    AbstractUIBookmark abs = bookmarkListView.getSelectionModel().getSelectedItem();
+                    if (abs!=null)
                     {
-                        abs.getBookmarkView(abs.getBookmark(), false);
-                    }
-                    else
-                    {
-                        abs.action();
+                        if (isEditMode())
+                        {
+                            abs.getBookmarkView(abs.getBookmark(), false);
+                        }
+                        else
+                        {
+                            abs.action();
+                        }
                     }
                 }
                 catch (Exception e)

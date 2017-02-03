@@ -47,7 +47,7 @@ public class Main extends Application
         MenuBar menuBar = menuUI.getMenuBar();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         vBox.getChildren().addAll(menuBar);
-//
+
         vBox.getChildren().add(gridPane);
         VBox.setVgrow(gridPane, Priority.ALWAYS);
 
@@ -59,6 +59,7 @@ public class Main extends Application
         TypesUI typesUI = new TypesUI();
         guiController.setTypesUI(typesUI);
         gridPane.add(typesUI, 0, 1, 1, 4);
+        VBox.setVgrow(typesUI, Priority.ALWAYS);
         typesUI.setPrefWidth(bestWindowSize.getWidth()*.15);
 
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI();
