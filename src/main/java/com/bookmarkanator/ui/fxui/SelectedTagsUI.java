@@ -1,7 +1,9 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
+import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
+import javafx.collections.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -38,11 +40,11 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     private Pane getOptionsPane()
     {
         HBox hBox = new HBox();
+        hBox.setStyle("-fx-background-color:lightgray");
         hBox.setAlignment(Pos.TOP_RIGHT);
         Button button = new Button("Clear");
         button.setStyle("-fx-background-radius:15");
         button.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
                 try
@@ -56,7 +58,16 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
             }
         });
 
+        ObservableList<String> options = FXCollections.observableArrayList();
+        options.add(GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        options.add(GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS);
+        options.add(GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS);
 
+        final ComboBox<String> comboBox = new ComboBox<>(options);
+        comboBox.setStyle("-fx-background-radius:15");
+        comboBox.getSelectionModel().select(GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+
+        hBox.getChildren().add(comboBox);
         hBox.getChildren().add(button);
 
         return hBox;

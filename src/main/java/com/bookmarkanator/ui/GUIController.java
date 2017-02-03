@@ -30,15 +30,16 @@ public class GUIController implements GUIControllerInterface
     //Search related variables
     private String searchTerm;
     private Map<String, Boolean> searchInclusions;
-//    private boolean includeTypes;
-//    private boolean includeTags;
-//    private boolean includeBookmarks;
-//    private boolean includeBookmarkText;
 
+    //Search constants
     public static final String SEARCH_TYPES_KEY = "BOOKMARK-TYPES-SEARCH";
     public static final String SEARCH_TAGS_KEY = "BOOKMARK-TAGS-SEARCH";
     public static final String SEARCH_BOOKMARK_TEXT_KEY = "BOOKMARK-TEXT-SEARCH";
     public static final String SEARCH_BOOKMARK_NAMES_KEY = "BOOKMARK-NAME-SEARCH";
+    //Other constants
+    public static final String INCLUDE_BOOKMARKS_WITH_ALL_TAGS = "ALL TAGS";
+    public static final String INCLUDE_BOOKMARKS_WITH_ANY_TAGS = "ANY TAG";
+    public static final String INCLUDE_BOOKMARKS_WITHOUT_TAGS = "WITHOUT TAGS";
 
     public GUIController(Bootstrap bootstrap)
         throws Exception
@@ -223,6 +224,12 @@ public class GUIController implements GUIControllerInterface
     public Set<String> getAvailableTags()
     {
         return this.availableTags;
+    }
+
+    @Override
+    public void setTagMode(String mode)
+    {
+        MLog.warn("not implemented yet");
     }
 
     @Override
