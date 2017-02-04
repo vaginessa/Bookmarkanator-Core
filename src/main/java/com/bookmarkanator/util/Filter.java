@@ -31,7 +31,7 @@ public class Filter
 
     public List<AbstractBookmark> results()
     {
-        return bookmarkList;
+        return new ArrayList<>(bookmarkList);
     }
 
     public Filter sortAscending()
@@ -213,24 +213,83 @@ public class Filter
     }
 
     /**
+     * Excludes bookmarks that have any of the specified exclusion strings that match tags in bookmarks.
+     *
+     * @param exclusions
+     * @return
+     */
+    public Filter excludeWithTags(Set<String> exclusions)
+    {
+        List<AbstractBookmark> results = new ArrayList<>();
+
+        continueA:
+        for (AbstractBookmark abs : this.bookmarkList)
+        {
+            Set<String> tags = abs.getTags();
+            for (String s : exclusions)
+            {
+                if (tags.contains(s))
+                {
+                    continue continueA;
+                }
+            }
+            results.add(abs);
+        }
+
+        this.bookmarkList = results;
+        return this;
+    }
+
+    public Filter includeIfIn(Set<AbstractBookmark> include)
+    {
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        for (AbstractBookmark abs: this.bookmarkList)
+        {
+            if (include.contains(abs))
+            {
+                res.add(abs);
+            }
+        }
+        this.bookmarkList = res;
+        return this;
+    }
+
+    public Filter includeIfIn(List<AbstractBookmark> include)
+    {
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        for (AbstractBookmark abs: this.bookmarkList)
+        {
+            if (include.contains(abs))
+            {
+                res.add(abs);
+            }
+        }
+        this.bookmarkList = res;
+        return this;
+    }
+
+    /**
      * Static initializer/getter block
-     * @param bookmarks  The bookmarks to assign to the current filter class.
-     * @return  The most recently created Filter object or a newly created one.
+     *
+     * @param bookmarks The bookmarks to assign to the current filter class.
+     * @return The most recently created Filter object or a newly created one.
      */
     public static Filter use(Collection<AbstractBookmark> bookmarks)
     {
-        if (Filter.filter==null)
+        if (Filter.filter == null)
         {
             Filter.filter = new Filter();
         }
 
         if (bookmarks instanceof List)
         {
-            Filter.filter.bookmarksList((List)bookmarks);
+            Filter.filter.bookmarksList((List) bookmarks);
         }
         else if (bookmarks instanceof Set)
         {
-            Filter.filter.bookmarksSet((Set)bookmarks);
+            Filter.filter.bookmarksSet((Set) bookmarks);
         }
 
         return Filter.filter;

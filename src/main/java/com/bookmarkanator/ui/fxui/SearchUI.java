@@ -146,7 +146,6 @@ public class SearchUI extends HBox implements SearchInterface
         });
 
         final CheckBox sBookmarkTypeNames = new CheckBox("Bookmark Type Names");
-        sBookmarkTypeNames.setSelected(true);
         sBookmarkTypeNames.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override

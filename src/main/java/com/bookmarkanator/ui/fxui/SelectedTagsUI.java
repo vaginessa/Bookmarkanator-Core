@@ -66,6 +66,16 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setStyle("-fx-background-radius:15");
         comboBox.getSelectionModel().select(GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) -> {
+            try
+            {
+                guiController.setTagMode(newValue);
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        });
 
         hBox.getChildren().add(comboBox);
         hBox.getChildren().add(button);

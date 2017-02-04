@@ -31,6 +31,9 @@ public class GUIController implements GUIControllerInterface
     private String searchTerm;
     private Map<String, Boolean> searchInclusions;
 
+    //Selected Tag Related
+    private String selectedTagsOperation = INCLUDE_BOOKMARKS_WITH_ALL_TAGS;
+
     //Search constants
     public static final String SEARCH_TYPES_KEY = "BOOKMARK-TYPES-SEARCH";
     public static final String SEARCH_TAGS_KEY = "BOOKMARK-TAGS-SEARCH";
@@ -58,7 +61,7 @@ public class GUIController implements GUIControllerInterface
         this.showOnlyTheseTypes = new HashSet<>();
         this.showOnlyTheseTypes.addAll(this.allTypes);
         this.searchInclusions = new HashMap<>();
-        searchInclusions.put(GUIController.SEARCH_TYPES_KEY, true);
+        searchInclusions.put(GUIController.SEARCH_TYPES_KEY, false);
         searchInclusions.put(GUIController.SEARCH_BOOKMARK_TEXT_KEY, true);
         searchInclusions.put(GUIController.SEARCH_BOOKMARK_NAMES_KEY, true);
         searchInclusions.put(GUIController.SEARCH_TAGS_KEY, true);
@@ -99,7 +102,7 @@ public class GUIController implements GUIControllerInterface
     public void setSelectedTags(Set<String> tags)
         throws Exception
     {
-        if (tags==null)
+        if (tags == null)
         {
             this.selectedTags.clear();
         }
@@ -150,11 +153,11 @@ public class GUIController implements GUIControllerInterface
     public void setSearchInclusions(String key, boolean value)
         throws Exception
     {
-       if (this.searchInclusions.get(key)!=null)
-       {
-           this.searchInclusions.put(key, value);
-           this.updateUI();
-       }
+        if (this.searchInclusions.get(key) != null)
+        {
+            this.searchInclusions.put(key, value);
+            this.updateUI();
+        }
     }
 
     @Override
@@ -162,7 +165,7 @@ public class GUIController implements GUIControllerInterface
         throws Exception
     {
         Boolean b = this.searchInclusions.get(key);
-        if (b!=null)
+        if (b != null)
         {
             return b;
         }
@@ -193,7 +196,7 @@ public class GUIController implements GUIControllerInterface
     {
         this.showOnlyTheseTypes.clear();
 
-        if (types!=null)
+        if (types != null)
         {
             this.showOnlyTheseTypes.addAll(types);
         }
@@ -228,8 +231,25 @@ public class GUIController implements GUIControllerInterface
 
     @Override
     public void setTagMode(String mode)
+        throws Exception
     {
-        MLog.warn("not implemented yet");
+        switch (mode)
+        {
+            case GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+            case GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+            case GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+                this.selectedTagsOperation = mode;
+                break;
+            default:
+                throw new Exception("Selected Tag Mode \"" + mode + "\" not supported");
+        }
+        this.updateUI();
+    }
+
+    @Override
+    public String getTagMode()
+    {
+        return this.selectedTagsOperation;
     }
 
     @Override
@@ -347,9 +367,14 @@ public class GUIController implements GUIControllerInterface
         return this.visibleBookmarks;
     }
 
-    private Set<AbstractBookmark> search()
+    private Set<AbstractBookmark> search(List<AbstractBookmark> bookmarks)
         throws Exception
     {
+        if (this.getSearchTerm()==null || this.getSearchTerm().isEmpty())
+        {
+            return new HashSet<>(bookmarks);
+        }
+
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
 
         boolean includeTags = this.searchInclusions.get(GUIController.SEARCH_TAGS_KEY);
@@ -382,7 +407,7 @@ public class GUIController implements GUIControllerInterface
             }
         }
 
-        return res;
+        return new HashSet<>(Filter.use(res).includeIfIn(bookmarks).results());
     }
 
     @Override
@@ -403,27 +428,12 @@ public class GUIController implements GUIControllerInterface
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
         this.allTypes = context.getTypes(context.getBookmarks());
 
-        if (getSearchTerm() != null && !getSearchTerm().isEmpty())
-        {//The user is searching. Update lists from that context.
-            this.visibleBookmarks = search();
-        }
-        else
-        {
-            this.visibleBookmarks.clear();
-            Set<AbstractBookmark> tmpBKs = new HashSet<>();
-            tmpBKs.addAll(getVisibleBookmarkTypes(context.getBookmarks()));
+        this.visibleBookmarks.clear();
 
-            if (!this.selectedTags.isEmpty())
-            {
-                this.visibleBookmarks.addAll(Filter.use(tmpBKs).keepWithAllTags(this.getSelectedTags()).results());
-            }
-            else
-            {
-                this.visibleBookmarks.addAll(tmpBKs);
-            }
-            this.visibleTypes = context.getTypes(this.visibleBookmarks);
-        }
-
+        List<AbstractBookmark> tmpBKs = new ArrayList<>();
+        tmpBKs.addAll(applySelectedTags(getVisibleBookmarkTypes(context.getBookmarks())));
+        this.visibleBookmarks = search(tmpBKs);
+        this.visibleTypes = context.getTypes(this.visibleBookmarks);
         this.availableTags = context.getTags(this.visibleBookmarks);
         this.availableTags.removeAll(this.selectedTags);
     }
@@ -431,7 +441,34 @@ public class GUIController implements GUIControllerInterface
     private List<AbstractBookmark> getVisibleBookmarkTypes(Set<AbstractBookmark> bookmarks)
         throws Exception
     {
-       return Filter.use(bookmarks).keepBookmarkTypes(this.showOnlyTheseTypes).results();
+        return Filter.use(bookmarks).keepBookmarkTypes(this.showOnlyTheseTypes).results();
+    }
+
+    private Set<AbstractBookmark> applySelectedTags(List<AbstractBookmark> bookmarks)
+    {
+        Set<String> selectedTags = this.getSelectedTags();
+
+        if (selectedTags.isEmpty())
+        {
+            return new HashSet<>(bookmarks);
+        }
+
+        List<AbstractBookmark> tmp = new ArrayList<>();
+
+        switch (this.selectedTagsOperation)
+        {
+            case GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+                tmp =  Filter.use(bookmarks).keepWithAllTags(this.getSelectedTags()).results();
+                break;
+            case GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+                tmp =  Filter.use(bookmarks).keepWithAnyTag(this.getSelectedTags()).results();
+                break;
+            case GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+                tmp =  Filter.use(bookmarks).excludeWithTags(this.getSelectedTags()).results();
+                break;
+        }
+
+        return new HashSet<>(tmp);
     }
 
 }

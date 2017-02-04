@@ -58,7 +58,10 @@ public interface GUIControllerInterface
 
     Set<String> getAvailableTags();
 
-    void setTagMode(String mode);
+    void setTagMode(String mode)
+        throws Exception;
+
+    String getTagMode();
 
     //Types
     void setShowType(String type, boolean show)

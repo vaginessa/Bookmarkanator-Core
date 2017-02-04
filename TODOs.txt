@@ -4,3 +4,11 @@ TODO Go through the search class and replace all search rotated words or rotated
 text rotated and full text rotated substrings.
 TODO Should we highlight/add/remove bookmark types shown when doing a text search? Maybe just when searching for bookmark types?
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
+TODO Handle when a search is done, and then a tag is selected. Currently it doesn't correctly sort the results. It should only be searching tags that are visible with the search string.
+TODO Add a way to show only bookmarks by date range.
+TODO Remove all the conversions between lists and sets when using the search functions or the Filter class. Have the filter class return
+a linked hash set so it can be a set and be sorted as well?
+
+Pony Items:
+
+-ADD number on the types buttons that shows how many of each type there are.
