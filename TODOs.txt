@@ -8,7 +8,9 @@ TODO Handle when a search is done, and then a tag is selected. Currently it does
 TODO Add a way to show only bookmarks by date range.
 TODO Remove all the conversions between lists and sets when using the search functions or the Filter class. Have the filter class return
 a linked hash set so it can be a set and be sorted as well?
+TODO When saving bookmark files, be able to set a maximum file size limit, and have filecontext be able to split the files into
+separate smaller files as the bookmarks get larger. It would have to also load all these bookmarks file pieces as well.
 
-Pony Items:
+Wish List Items:
 
 -ADD number on the types buttons that shows how many of each type there are.

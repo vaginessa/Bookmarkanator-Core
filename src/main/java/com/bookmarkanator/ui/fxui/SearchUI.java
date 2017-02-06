@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.fxui;
 
+import java.util.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.beans.value.*;
@@ -17,6 +18,7 @@ public class SearchUI extends HBox implements SearchInterface
     private HBox searchBox;
     private Pane searchOptions;
     private Button newButton, quickPanelButton;
+    private HBox editModeTogglePane;
     private HBox editModePane;
 
     public SearchUI()
@@ -54,7 +56,6 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
-
         final Button button = new Button("->");
 
         button.setOnAction(new EventHandler<ActionEvent>()
@@ -72,7 +73,7 @@ public class SearchUI extends HBox implements SearchInterface
                     }
                     else
                     {
-                        searchBox.getChildren().removeAll(searchOptions, button,editModePane, newButton);
+                        searchBox.getChildren().removeAll(searchOptions, button, editModePane, newButton);
                         searchBox.getChildren().addAll(button, newButton, quickPanelButton, editModePane);
                         button.setText("->");
                     }
@@ -86,6 +87,38 @@ public class SearchUI extends HBox implements SearchInterface
 
         this.newButton = new Button("+");
         newButton.setStyle("-fx-background-radius:15");
+
+        newButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                try
+                {
+                    final String [] arrayData = {"First", "Second", "Third", "Fourth"};
+                    List<String> dialogData;
+
+                    dialogData = Arrays.asList(arrayData);
+
+                    Dialog dialog = new ChoiceDialog(dialogData.get(0), dialogData);
+                    dialog.setTitle("This is a title");
+                    dialog.setHeaderText("Select your choice");
+
+                    Optional<String> result = dialog.showAndWait();
+                    String selected = "cancelled.";
+
+                    if (result.isPresent()) {
+                        selected = result.get();
+                    }
+                    System.out.println(result);
+
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         this.quickPanelButton = new Button("Quick Panel");
         quickPanelButton.setStyle("-fx-background-radius:15");
@@ -104,11 +137,16 @@ public class SearchUI extends HBox implements SearchInterface
     private HBox getTogglePane()
     {
         this.editModePane = new HBox();
+        editModePane.setAlignment(Pos.CENTER);
+        editModePane.setSpacing(5);
 
-        editModePane.setPrefWidth(60);
-        editModePane.setStyle("-fx-background-color:blue;-fx-background-radius:15");
-        editModePane.setAlignment(Pos.CENTER_LEFT);
+        this.editModeTogglePane = new HBox();
 
+        editModeTogglePane.setPrefWidth(60);
+        editModeTogglePane.setStyle("-fx-background-color:blue;-fx-background-radius:15");
+        editModeTogglePane.setAlignment(Pos.CENTER_LEFT);
+
+        Label label = new Label("Edit Mode");
 
         Button button = new Button("Off");
         button.setStyle("-fx-background-radius:15");
@@ -121,17 +159,16 @@ public class SearchUI extends HBox implements SearchInterface
                 {
                     if (editMode)
                     {
-                        editModePane.setAlignment(Pos.CENTER_LEFT);
+                        editModeTogglePane.setAlignment(Pos.CENTER_LEFT);
                         button.setText("Off");
                         editMode = false;
                     }
                     else
                     {
-                        editModePane.setAlignment(Pos.CENTER_RIGHT);
+                        editModeTogglePane.setAlignment(Pos.CENTER_RIGHT);
                         button.setText("On");
                         editMode = true;
                     }
-
 
                 }
                 catch (Exception e)
@@ -141,7 +178,8 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
-        editModePane.getChildren().add(button);
+        editModeTogglePane.getChildren().add(button);
+        editModePane.getChildren().addAll(label, editModeTogglePane);
         return editModePane;
     }
 
