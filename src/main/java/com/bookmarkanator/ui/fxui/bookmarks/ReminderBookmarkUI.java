@@ -1,8 +1,8 @@
-package com.bookmarkanator.ui.defaultui.bookmarks;
+package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public class FileBookmarkUI extends AbstractUIBookmark
+public class ReminderBookmarkUI extends AbstractUIBookmark
 {
 
     @Override

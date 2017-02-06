@@ -1,19 +1,20 @@
-package com.bookmarkanator.ui.defaultui.bookmarks;
+package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public class BashHistoryBookmarkUI extends AbstractUIBookmark
+public class FileBookmarkUI extends AbstractUIBookmark
 {
+
     @Override
     public Object getTypeView()
     {
-        return null;
+        return this.getBookmark().getTypeName();
     }
 
     @Override
     public Object getBookmarkListItemView()
     {
-        return null;
+        return this.getBookmark().getName();
     }
 
     @Override

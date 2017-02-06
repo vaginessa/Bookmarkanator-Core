@@ -1,8 +1,8 @@
-package com.bookmarkanator.ui.defaultui.bookmarks;
+package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public class WebBookmarkUI extends AbstractUIBookmark
+public class TextBookmarkUI extends AbstractUIBookmark
 {
 
     @Override
@@ -28,14 +28,13 @@ public class WebBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         this.getBookmark().action();
-        return null;
+
+        return this.getBookmark().getText();
     }
 
     @Override
     public Object action(Object config)
-        throws Exception
     {
-        this.action();
         return null;
     }
 }

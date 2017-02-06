@@ -1,8 +1,8 @@
-package com.bookmarkanator.ui.defaultui.bookmarks;
+package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
 
-public class SequenceBookmarkUI extends AbstractUIBookmark
+public class WebBookmarkUI extends AbstractUIBookmark
 {
 
     @Override
@@ -28,12 +28,14 @@ public class SequenceBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         this.getBookmark().action();
-        return this.getBookmark().getText();
+        return null;
     }
 
     @Override
     public Object action(Object config)
+        throws Exception
     {
+        this.action();
         return null;
     }
 }

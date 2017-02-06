@@ -5,7 +5,7 @@ import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.*;
-import com.bookmarkanator.ui.defaultui.bookmarks.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;

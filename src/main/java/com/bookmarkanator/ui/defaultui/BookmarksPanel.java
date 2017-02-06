@@ -3,7 +3,7 @@ package com.bookmarkanator.ui.defaultui;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.ui.defaultui.bookmarks.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.gui2.*;
