@@ -12,10 +12,12 @@ public class SearchUI extends HBox implements SearchInterface
 {
     private GUIControllerInterface guiController;
     private boolean editMode = false;
+    private String colorString = "#3fccdb";
     private TextField textField;
     private HBox searchBox;
     private Pane searchOptions;
-    private String colorString = "#3fccdb";
+    private Button newButton, quickPanelButton;
+    private HBox editModePane;
 
     public SearchUI()
     {
@@ -29,6 +31,8 @@ public class SearchUI extends HBox implements SearchInterface
         this.searchOptions = getSearchOptions();
 
         this.searchBox = new HBox();
+        searchBox.setSpacing(5);
+
         searchBox.setStyle("-fx-background-color:" + colorString);
         searchBox.setAlignment(Pos.CENTER_LEFT);
 
@@ -62,14 +66,14 @@ public class SearchUI extends HBox implements SearchInterface
                 {
                     if (button.getText().equals("->"))
                     {
-                        searchBox.getChildren().remove(button);
-                        searchBox.getChildren().add(searchOptions);
-                        searchBox.getChildren().add(button);
+                        searchBox.getChildren().removeAll(button, newButton, quickPanelButton, editModePane);
+                        searchBox.getChildren().addAll(searchOptions, button, newButton, editModePane);
                         button.setText("<-");
                     }
                     else
                     {
-                        searchBox.getChildren().remove(searchOptions);
+                        searchBox.getChildren().removeAll(searchOptions, button,editModePane, newButton);
+                        searchBox.getChildren().addAll(button, newButton, quickPanelButton, editModePane);
                         button.setText("->");
                     }
                 }
@@ -80,10 +84,65 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
+        this.newButton = new Button("+");
+        newButton.setStyle("-fx-background-radius:15");
+
+        this.quickPanelButton = new Button("Quick Panel");
+        quickPanelButton.setStyle("-fx-background-radius:15");
+
         searchBox.getChildren().add(textField);
         searchBox.getChildren().addAll(button);
+        searchBox.getChildren().add(newButton);
+        searchBox.getChildren().add(quickPanelButton);
+        searchBox.getChildren().add(getTogglePane());
 
+        HBox.setHgrow(searchBox, Priority.ALWAYS);
+        searchBox.setFillHeight(false);
         return searchBox;
+    }
+
+    private HBox getTogglePane()
+    {
+        this.editModePane = new HBox();
+
+        editModePane.setPrefWidth(60);
+        editModePane.setStyle("-fx-background-color:blue;-fx-background-radius:15");
+        editModePane.setAlignment(Pos.CENTER_LEFT);
+
+
+        Button button = new Button("Off");
+        button.setStyle("-fx-background-radius:15");
+        button.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                try
+                {
+                    if (editMode)
+                    {
+                        editModePane.setAlignment(Pos.CENTER_LEFT);
+                        button.setText("Off");
+                        editMode = false;
+                    }
+                    else
+                    {
+                        editModePane.setAlignment(Pos.CENTER_RIGHT);
+                        button.setText("On");
+                        editMode = true;
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        editModePane.getChildren().add(button);
+        return editModePane;
     }
 
     private Pane getSearchOptions()
