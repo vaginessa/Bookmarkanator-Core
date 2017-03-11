@@ -152,42 +152,42 @@ public class Main extends Application
         Settings settings = new Settings();
 
         SettingItem item = new SettingItem(Main.getUIClassString()+ BashHistoryBookmark.class.getCanonicalName());
-        item.setSetting(BashHistoryBookmarkUI.class.getCanonicalName());
+        item.setValue(BashHistoryBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+EncryptedBookmark.class.getCanonicalName());
-        item.setSetting(EncryptedBookmarkUI.class.getCanonicalName());
+        item.setValue(EncryptedBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+FileBookmark.class.getCanonicalName());
-        item.setSetting(FileBookmarkUI.class.getCanonicalName());
+        item.setValue(FileBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+ReminderBookmark.class.getCanonicalName());
-        item.setSetting(ReminderBookmarkUI.class.getCanonicalName());
+        item.setValue(ReminderBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+SequenceBookmark.class.getCanonicalName());
-        item.setSetting(SequenceBookmarkUI.class.getCanonicalName());
+        item.setValue(SequenceBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+TerminalBookmark.class.getCanonicalName());
-        item.setSetting(TerminalBookmarkUI.class.getCanonicalName());
+        item.setValue(TerminalBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+TextBookmark.class.getCanonicalName());
-        item.setSetting(TextBookmarkUI.class.getCanonicalName());
+        item.setValue(TextBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString()+WebBookmark.class.getCanonicalName());
-        item.setSetting(WebBookmarkUI.class.getCanonicalName());
+        item.setValue(WebBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 

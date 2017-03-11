@@ -22,11 +22,13 @@ public class SettingsXMLParser
     private InputStream inputStream;
     private Document document;
     private Settings settings;
+    private ClassLoader classLoader;
 
-    public SettingsXMLParser(InputStream xmlIn)
+    public SettingsXMLParser(InputStream xmlIn, ClassLoader classLoader)
     {
         this.inputStream = xmlIn;//Note the calling program must close the stream.
         this.settings = new Settings();
+        this.classLoader = classLoader;
     }
 
     public Settings parse()
@@ -96,7 +98,26 @@ public class SettingsXMLParser
         String keyText = key.getTextContent();
         Objects.requireNonNull(keyText);
 
-        SettingItem settingItem = new SettingItem(keyText);
+        String className;
+
+        Node theClass = node.getAttributes().getNamedItem(SettingsXMLParser.CLASS_ATTRIBUTE);
+        if (theClass == null)
+        {
+            className = SettingItem.class.getCanonicalName();
+        }
+        else
+        {
+            className = theClass.getTextContent();
+            if (className == null)
+            {
+                className = SettingItem.class.getCanonicalName();
+            }
+        }
+
+        Class clazz = loadSettingClass(className);
+        Objects.requireNonNull(clazz);
+
+        SettingItem settingItem = instantiateClass(clazz, keyText);
 
         NodeList nl = node.getChildNodes();
 
@@ -111,10 +132,24 @@ public class SettingsXMLParser
 
             if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
             {
-                settingItem.setSetting(n.getTextContent());
+                settingItem.setValue(n.getTextContent());
             }
         }
         return settingItem;
     }
 
+    private Class loadSettingClass(String className)
+        throws Exception
+    {
+        Class clazz = this.classLoader.loadClass(className);
+        Class sub = clazz.asSubclass(SettingItem.class);
+        System.out.println("Loaded Setting item class: \"" + className + "\".");
+        return sub;
+    }
+
+    private SettingItem instantiateClass(Class clazz, String key)
+        throws Exception
+    {
+        return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
+    }
 }

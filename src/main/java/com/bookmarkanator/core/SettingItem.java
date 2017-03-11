@@ -4,9 +4,9 @@ import java.util.*;
 
 public class SettingItem
 {
-    private String key;
-    private String type;
-    private String value;
+    protected String key;
+    protected String type;
+    protected String value;
 
     public SettingItem(String key)
     {
@@ -20,13 +20,13 @@ public class SettingItem
         this.key = key;
     }
 
-    public void setSetting(String settingString)
+    public void setValue(String settingString)
         throws Exception
     {
         this.value = settingString;
     }
 
-    public String getSetting()
+    public String getValue()
     {
         return this.value;
     }

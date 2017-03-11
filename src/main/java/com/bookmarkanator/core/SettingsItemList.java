@@ -13,13 +13,18 @@ public class SettingsItemList extends SettingItem
     }
 
     public void addItem(String item)
+        throws Exception
     {
         items.add(item);
+        value = getValue();
     }
 
     public boolean remove(String item)
+        throws Exception
     {
-        return items.remove(item);
+        boolean res = items.remove(item);
+        value = getValue();
+        return res;
     }
 
     public List<String> getItems()
@@ -28,7 +33,7 @@ public class SettingsItemList extends SettingItem
     }
 
     @Override
-    public void setSetting(String settingString)
+    public void setValue(String settingString)
         throws Exception
     {
         Objects.requireNonNull(settingString, "Setting string must be not null.");
@@ -38,11 +43,11 @@ public class SettingsItemList extends SettingItem
         {
             this.addItem(URLDecoder.decode(s, "UTF-8"));
         }
-        super.setSetting(settingString);
+        super.setValue(settingString);
     }
 
     @Override
-    public String getSetting()
+    public String getValue()
     {
         StringBuilder sb = new StringBuilder(items.size());
 

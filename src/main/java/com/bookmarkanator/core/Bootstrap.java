@@ -137,32 +137,32 @@ public class Bootstrap
         res.putSetting(list);
 
         SettingItem item = new SettingItem(ENCRYPTED_BOOKMARK_CLASS);
-        item.setSetting(ENCRYPTED_BOOKMARK_CLASS);
+        item.setValue(ENCRYPTED_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
         item = new SettingItem(REMINDER_BOOKMARK_CLASS);
-        item.setSetting(REMINDER_BOOKMARK_CLASS);
+        item.setValue(REMINDER_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
         item = new SettingItem(SEQUENCE_BOOKMARK_CLASS);
-        item.setSetting(SEQUENCE_BOOKMARK_CLASS);
+        item.setValue(SEQUENCE_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
         item = new SettingItem(TERMINAL_BOOKMARK_CLASS);
-        item.setSetting(TERMINAL_BOOKMARK_CLASS);
+        item.setValue(TERMINAL_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
         item = new SettingItem(TEXT_BOOKMARK_CLASS);
-        item.setSetting(TEXT_BOOKMARK_CLASS);
+        item.setValue(TEXT_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
         item = new SettingItem(WEB_BOOKMARK_CLASS);
-        item.setSetting(WEB_BOOKMARK_CLASS);
+        item.setValue(WEB_BOOKMARK_CLASS);
         item.setType("bootstrap");
         res.putSetting(item);
 
@@ -194,7 +194,7 @@ public class Bootstrap
 
         fin = new FileInputStream(settingsFile);
 
-        Settings res = Settings.parseSettings(fin);
+        Settings res = Settings.parseSettings(fin, this.classLoader);
         fin.close();
 
         boolean needsSaving = res.importSettings(defaultSettings);

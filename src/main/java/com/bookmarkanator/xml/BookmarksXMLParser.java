@@ -76,7 +76,7 @@ public class BookmarksXMLParser
                     String className = classNameNode.getTextContent();
                     if (globalSettings!=null)
                     {
-                        String replacementClassName = globalSettings.getSetting(className).getSetting();
+                        String replacementClassName = globalSettings.getSetting(className).getValue();
 
                         if (replacementClassName != null && !className.equals(replacementClassName))
                         {//Override class name specified in bookmark file with one specified in the settings file.

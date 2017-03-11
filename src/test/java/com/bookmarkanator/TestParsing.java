@@ -41,7 +41,7 @@ public class TestParsing
         validateXML(fin);
         fin = new FileInputStream(new File(config));
 
-        SettingsXMLParser parser = new SettingsXMLParser(fin);
+        SettingsXMLParser parser = new SettingsXMLParser(fin, this.getClass().getClassLoader());
         Settings settings = parser.parse();
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();

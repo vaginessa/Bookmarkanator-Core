@@ -54,16 +54,21 @@ public class SettingsXMLWriter
     {
         Element settings = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
         settings.setAttribute(SettingsXMLParser.TYPE_ATTRIBUTE,type );
-
+if (type.equals("bootstrap"))
+{
+    System.out.println();
+}
+        else
+{
+    System.out.println();
+}
         for (SettingItem item: items)
         {
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
             setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, item.getKey());
             setting.setAttribute(SettingsXMLParser.CLASS_ATTRIBUTE, item.getClass().getCanonicalName());
+            setting.setTextContent(item.getValue());
 
-//            Element valueTag = doc.createElement(SettingsXMLParser.VALUE_TAG);
-            setting.setTextContent(item.getSetting());
-//            setting.appendChild(valueTag);
             settings.appendChild(setting);
         }
 

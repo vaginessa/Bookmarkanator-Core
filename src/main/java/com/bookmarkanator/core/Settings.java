@@ -121,10 +121,10 @@ public class Settings
         XMLValidator.validate(inputStream, xsd);
     }
 
-    public static Settings parseSettings(InputStream in)
+    public static Settings parseSettings(InputStream in, ClassLoader classLoader)
         throws Exception
     {
-        SettingsXMLParser parser = new SettingsXMLParser(in);
+        SettingsXMLParser parser = new SettingsXMLParser(in, classLoader);
         return parser.parse();
     }
 
