@@ -8,17 +8,6 @@ public class SettingItem
     private String type;
     private String value;
 
-    public void setSetting(String settingString)
-        throws Exception
-    {
-        this.value = settingString;
-    }
-
-    public String getSetting()
-    {
-        return this.value;
-    }
-
     public SettingItem(String key)
     {
         Objects.requireNonNull(key, "Key must not be null.");
@@ -29,6 +18,17 @@ public class SettingItem
         }
 
         this.key = key;
+    }
+
+    public void setSetting(String settingString)
+        throws Exception
+    {
+        this.value = settingString;
+    }
+
+    public String getSetting()
+    {
+        return this.value;
     }
 
     public String getKey()

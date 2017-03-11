@@ -59,10 +59,11 @@ public class SettingsXMLWriter
         {
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
             setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, item.getKey());
+            setting.setAttribute(SettingsXMLParser.CLASS_ATTRIBUTE, item.getClass().getCanonicalName());
 
-            Element valueTag = doc.createElement(SettingsXMLParser.VALUE_TAG);
-            valueTag.setTextContent(item.getSetting());
-            setting.appendChild(valueTag);
+//            Element valueTag = doc.createElement(SettingsXMLParser.VALUE_TAG);
+            setting.setTextContent(item.getSetting());
+//            setting.appendChild(valueTag);
             settings.appendChild(setting);
         }
 

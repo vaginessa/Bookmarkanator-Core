@@ -20,10 +20,11 @@
     </xs:complexType>
 
     <xs:complexType name="setting">
-        <xs:sequence>
-            <xs:element name="value" type="xs:string" minOccurs='1'
-                        maxOccurs='unbounded'/>
-        </xs:sequence>
-        <xs:attribute name='key' type='xs:string'/>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name='key' type='xs:string'/>
+                <xs:attribute name='class' type='xs:string'/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 </xs:schema>

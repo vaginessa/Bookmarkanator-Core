@@ -16,6 +16,7 @@ public class SettingsXMLParser
 
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String KEY_ATTRIBUTE = "key";
+    public static final String CLASS_ATTRIBUTE = "class";
 
     //Variables
     private InputStream inputStream;
