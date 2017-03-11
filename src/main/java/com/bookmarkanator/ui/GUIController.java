@@ -4,6 +4,7 @@ import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
 
@@ -17,6 +18,7 @@ public class GUIController implements GUIControllerInterface
     private SearchInterface searchInterface;
     private MenuInterface menuInterface;
     private QuickPanelInterface quickPanelInterface;
+    private NewBookmarkSelectionInterface newBookmarkSelectionInterface;
 
     private Bootstrap bootstrap;
 
@@ -56,7 +58,7 @@ public class GUIController implements GUIControllerInterface
         this.availableTags = new HashSet<>();
         this.selectedTags = new HashSet<>();
 
-        this.allTypes = context.getTypes(context.getBookmarks());
+        this.allTypes = context.getTypesLoaded(context.getBookmarks());
         this.visibleTypes = new HashSet<>();
         this.showOnlyTheseTypes = new HashSet<>();
         this.showOnlyTheseTypes.addAll(this.allTypes);
@@ -81,6 +83,7 @@ public class GUIController implements GUIControllerInterface
 
         this.updateBookmarksData();
         this.showOnlyTheseTypes.addAll(this.getAllTypes());
+//        this.newBookmarkSelectionInterface.setTypes();
         this.getBookmarksListUI().setVisibleBookmarks(this.getVisibleBookmarks());
         this.getAvailableTagsUI().setAvailableTags(this.getAvailableTags());
         this.getTypesUI().setTypes(this.getVisibleTypes(), this.getShowOnlyTheseTypes());
@@ -270,6 +273,23 @@ public class GUIController implements GUIControllerInterface
         return this.allTypes;
     }
 
+    public Set<AbstractUIBookmark> getAllTypesUIs()
+    {
+//        Set<String>
+//        //Get one new bookmark per type
+//        //Get one new bookmark UI per bookmark
+//        //Return those.
+//        for ()
+        return null;
+    }
+
+    @Override
+    public void newBookmark(String type)
+        throws Exception
+    {
+        newBookmarkSelectionInterface.getSelectedBookmarkType().newBookmarkView();
+    }
+
     @Override
     public void setTypesUI(BKTypes types)
     {
@@ -320,6 +340,12 @@ public class GUIController implements GUIControllerInterface
     }
 
     @Override
+    public void setNewBookmarkSelectorUI(NewBookmarkSelectionInterface newBookmarkSelectorUI)
+    {
+        this.newBookmarkSelectionInterface = newBookmarkSelectorUI;
+    }
+
+    @Override
     public BKTypes getTypesUI()
     {
         return this.bkTypesInterface;
@@ -359,6 +385,12 @@ public class GUIController implements GUIControllerInterface
     public QuickPanelInterface getQuickPanelUI()
     {
         return this.quickPanelInterface;
+    }
+
+    @Override
+    public NewBookmarkSelectionInterface getNewBookmarkSelectorUI()
+    {
+        return newBookmarkSelectionInterface;
     }
 
     @Override
@@ -426,14 +458,14 @@ public class GUIController implements GUIControllerInterface
         throws Exception
     {
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
-        this.allTypes = context.getTypes(context.getBookmarks());
+        this.allTypes = context.getTypesLoaded(context.getBookmarks());
 
         this.visibleBookmarks.clear();
 
         List<AbstractBookmark> tmpBKs = new ArrayList<>();
         tmpBKs.addAll(applySelectedTags(getVisibleBookmarkTypes(context.getBookmarks())));
         this.visibleBookmarks = search(tmpBKs);
-        this.visibleTypes = context.getTypes(this.visibleBookmarks);
+        this.visibleTypes = context.getTypesLoaded(this.visibleBookmarks);
         this.availableTags = context.getTags(this.visibleBookmarks);
         this.availableTags.removeAll(this.selectedTags);
     }

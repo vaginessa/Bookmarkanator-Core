@@ -114,5 +114,5 @@ public interface ContextInterface
         throws Exception;
 
     Set<String> getTags(Set<AbstractBookmark> bookmarks);
-    Set<String> getTypes(Set<AbstractBookmark> bookmarks);
+    Set<String> getTypesLoaded(Set<AbstractBookmark> bookmarks);
 }

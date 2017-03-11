@@ -3,6 +3,7 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 
@@ -16,7 +17,8 @@ public class Bootstrap
     private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
 
     //Settings fields related to overriding the default classes.
-    //TODO Find a better way to do default settings.
+    //TODO Go through all keys and types for settings values and improve them to be more obious. Also possibly make a new type of settings object.
+    //TODO Explicitly set settings for overriding class names.
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
     private static final String BOOKMARK_IO_CONFIG_KEY = "bookmark-io-config";
     private static final String BOOKMARK_IO_CLASS_KEY = "bookmark-io-class";
@@ -34,14 +36,13 @@ public class Bootstrap
     //Note: To override a built in bookmark set the following: <original bookmark classname, overriding bookmark class name>
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
 
-    //TODO add generics in the settings classes.
-
     private Settings loadedSettings;
     private Settings defaultSettings;
     private boolean hasClosed;
     private ClassLoader classLoader;
     private BKIOInterface bkioInterface;
     private ModuleLoader moduleLoader;
+    private Set<Class<? extends AbstractBookmark>> bookmarkClassesFound;
 
     public Bootstrap()
         throws Exception
@@ -56,6 +57,7 @@ public class Bootstrap
 
         moduleLoader = new ModuleLoader();
         this.classLoader = moduleLoader.addModulesToClasspath(((SettingsItemList)loadedSettings.getSetting(Bootstrap.MODULE_LOCATIONS_KEY)).getItems(), this.getClass().getClassLoader());
+        this.bookmarkClassesFound = moduleLoader.getBookmarkClassesFound();
 
         this.bkioInterface = loadBKIOInterface();
     }
@@ -68,6 +70,11 @@ public class Bootstrap
     public BKIOInterface getBkioInterface()
     {
         return bkioInterface;
+    }
+
+    public Set<Class<? extends AbstractBookmark>> getBookmarkClassesFound()
+    {
+        return bookmarkClassesFound;
     }
 
     /**

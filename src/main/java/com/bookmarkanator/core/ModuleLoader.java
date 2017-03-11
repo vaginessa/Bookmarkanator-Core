@@ -3,16 +3,21 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.util.*;
+import org.reflections.*;
+import org.reflections.util.*;
 
 public class ModuleLoader
 {
     private static ModuleLoader moduleLoader;
     private Set<File> jarDirectories;
+    private Set<Class<? extends AbstractBookmark>> bookmarkClassesFound;
 
     public ModuleLoader()
     {
         this.jarDirectories = new HashSet<>();
+        bookmarkClassesFound = new HashSet<>();
     }
 
     public ClassLoader addModulesToClasspath(List<String> jarLocations, ClassLoader classLoader) throws Exception
@@ -35,6 +40,11 @@ public class ModuleLoader
             }
         }
         return this.addJarsToClassloader(classLoader);
+    }
+
+    public Set<Class<? extends AbstractBookmark>> getBookmarkClassesFound()
+    {
+        return bookmarkClassesFound;
     }
 
     public <T> T loadClass(String className, Class<T> toCast, ClassLoader classLoader)
@@ -81,6 +91,10 @@ public class ModuleLoader
         this.jarDirectories.clear();
         URL[] urlsArray = urls.toArray(new URL[urls.size()]);
         ClassLoader classLoader = new URLClassLoader(urlsArray, parentClassloader);
+
+        Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(classLoader));
+        bookmarkClassesFound.addAll(reflections.getSubTypesOf(AbstractBookmark.class));
+
         return classLoader;
     }
 

@@ -71,6 +71,12 @@ public class SettingsXMLParser
         for (int c = 0; c < nl.getLength(); c++)
         {
             Node n = nl.item(c);
+
+            if (n.getNodeName().startsWith("#"))
+            {
+                continue;
+            }
+
             SettingItem item = getSetting(n);
             if (item == null)
             {
@@ -96,6 +102,12 @@ public class SettingsXMLParser
         for (int c = 0; c < nl.getLength(); c++)
         {
             Node n = nl.item(c);
+
+            if (n.getNodeName().startsWith("#"))
+            {
+                continue;
+            }
+
             if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
             {
                 settingItem.setSetting(n.getTextContent());

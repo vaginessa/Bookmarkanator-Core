@@ -8,7 +8,6 @@ public interface GUIControllerInterface
 {
 
     Bootstrap getBootstrap();
-
     Settings getSettings();
 
     //Bookmarks
@@ -78,6 +77,10 @@ public interface GUIControllerInterface
     Set<String> getShowOnlyTheseTypes();
 
     Set<String> getAllTypes();
+
+    void newBookmark(String type)
+        throws Exception;
+
     // ============================================================
     // Interface Getter and Setter Methods
     // ============================================================
@@ -96,6 +99,8 @@ public interface GUIControllerInterface
 
     void setQuickPanelUI(QuickPanelInterface quickPanelUI);
 
+    void setNewBookmarkSelectorUI(NewBookmarkSelectionInterface newBookmarkSelectorUI);
+
     BKTypes getTypesUI();
 
     SelectedTagsInterface getSelectedTagsUI();
@@ -110,4 +115,5 @@ public interface GUIControllerInterface
 
     QuickPanelInterface getQuickPanelUI();
 
+    NewBookmarkSelectionInterface getNewBookmarkSelectorUI();
 }

@@ -74,6 +74,12 @@
             <artifactId>lanterna</artifactId>
             <version>3.0.0-beta3</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
+        </dependency>
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jfxtras/jfxtras-controls &ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>org.jfxtras</groupId>-->

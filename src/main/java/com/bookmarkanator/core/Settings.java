@@ -94,6 +94,7 @@ public class Settings
      */
     public boolean importSettings(Settings settings)
     {
+        //TODO Fix importing of settings to use the settings types and not necessarily replace settings, but merge them.
         boolean hasChanged = false;
         Map<String, SettingItem> tmpMap = settings.getSettingsMap();
 

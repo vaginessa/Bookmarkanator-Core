@@ -1,6 +1,5 @@
 package com.bookmarkanator.ui.fxui;
 
-import java.util.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.beans.value.*;
@@ -95,23 +94,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    final String [] arrayData = {"First", "Second", "Third", "Fourth"};
-                    List<String> dialogData;
-
-                    dialogData = Arrays.asList(arrayData);
-
-                    Dialog dialog = new ChoiceDialog(dialogData.get(0), dialogData);
-                    dialog.setTitle("This is a title");
-                    dialog.setHeaderText("Select your choice");
-
-                    Optional<String> result = dialog.showAndWait();
-                    String selected = "cancelled.";
-
-                    if (result.isPresent()) {
-                        selected = result.get();
-                    }
-                    System.out.println(result);
-
+                    getGUIController().getNewBookmarkSelectorUI().show();
                 }
                 catch (Exception e)
                 {
