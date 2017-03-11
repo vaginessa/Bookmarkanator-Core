@@ -82,7 +82,7 @@ public interface GUIControllerInterface
     // Interface Getter and Setter Methods
     // ============================================================
 
-    void setTypesUI(BKTypesInterface types);
+    void setTypesUI(BKTypes types);
 
     void setSelectedTagsUI(SelectedTagsInterface selectedTagsUI);
 
@@ -96,7 +96,7 @@ public interface GUIControllerInterface
 
     void setQuickPanelUI(QuickPanelInterface quickPanelUI);
 
-    BKTypesInterface getTypesUI();
+    BKTypes getTypesUI();
 
     SelectedTagsInterface getSelectedTagsUI();
 

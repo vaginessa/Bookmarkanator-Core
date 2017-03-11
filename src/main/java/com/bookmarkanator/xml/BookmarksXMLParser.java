@@ -37,7 +37,7 @@ public class BookmarksXMLParser
     private Document document;
 
     //Global settings
-    private Settings<String, String> globalSettings;
+    private Settings globalSettings;
     private ClassLoader classLoader;
 
     public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, Settings globalSettings, ClassLoader classLoader)
@@ -76,7 +76,7 @@ public class BookmarksXMLParser
                     String className = classNameNode.getTextContent();
                     if (globalSettings!=null)
                     {
-                        String replacementClassName = globalSettings.getSetting(className);
+                        String replacementClassName = globalSettings.getSetting(className).getSetting();
 
                         if (replacementClassName != null && !className.equals(replacementClassName))
                         {//Override class name specified in bookmark file with one specified in the settings file.
@@ -204,6 +204,13 @@ public class BookmarksXMLParser
         return results;
     }
 
+    /**
+     * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml.
+     * It can be in any format because this method ignores everything between the two content tags, and simply returns the
+     * raw data.
+     * @param node  The content node to parse bookmark settings from.
+     * @return  A string containing the settings specific to this bookmark.
+     */
     private String getContent(Node node)
     {
         DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();

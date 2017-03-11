@@ -63,6 +63,13 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
+    public void destroy()
+        throws Exception
+    {
+
+    }
+
+    @Override
     public AbstractBookmark getNew()
     {
         return new SequenceBookmark(null);

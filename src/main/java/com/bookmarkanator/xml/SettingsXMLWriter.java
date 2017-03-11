@@ -12,7 +12,7 @@ import org.w3c.dom.*;
 public class SettingsXMLWriter
 {
     private OutputStream out;
-    private Settings<String, String> settings;
+    private Settings settings;
 
     public SettingsXMLWriter(Settings settings, OutputStream out)
     {
@@ -26,14 +26,15 @@ public class SettingsXMLWriter
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        Element rootElement = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
+        Element rootElement = doc.createElement(SettingsXMLParser.ROOT_TAG);
+        Map<String, Set<SettingItem>> typesMap = this.settings.getSettingsTypesMap();
 
-        for (String s: settings.keySet())
+        for (String s: typesMap.keySet())
         {
-            List<String> l = settings.getSettings(s);
-            if (l!=null && !l.isEmpty())
+            Set<SettingItem> items = typesMap.get(s);
+            if (items!=null)
             {//Only add a setting tag if it has values.
-                appendSettings(doc, rootElement, s, l);
+                appendSettings(doc, rootElement,s, items);
             }
         }
 
@@ -48,20 +49,23 @@ public class SettingsXMLWriter
         transformer.transform(source, result);
     }
 
-    public void appendSettings(Document doc, Element settingsElement,String key, List<String> values)
+    public void appendSettings(Document doc, Element rootElement,String type, Set<SettingItem> items)
+        throws Exception
     {
-        Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
-        Element keyElement= doc.createElement(SettingsXMLParser.KEY_TAG);
-        keyElement.setTextContent(key);
-        setting.appendChild(keyElement);
+        Element settings = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
+        settings.setAttribute(SettingsXMLParser.TYPE_ATTRIBUTE,type );
 
-        for (String value: values)
+        for (SettingItem item: items)
         {
+            Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
+            setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, item.getKey());
+
             Element valueTag = doc.createElement(SettingsXMLParser.VALUE_TAG);
-            valueTag.setTextContent(value);
+            valueTag.setTextContent(item.getSetting());
             setting.appendChild(valueTag);
+            settings.appendChild(setting);
         }
 
-        settingsElement.appendChild(setting);
+        rootElement.appendChild(settings);
     }
 }

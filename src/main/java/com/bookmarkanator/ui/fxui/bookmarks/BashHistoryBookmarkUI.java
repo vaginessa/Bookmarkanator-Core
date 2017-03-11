@@ -1,35 +1,41 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
+import javafx.scene.image.*;
 
 public class BashHistoryBookmarkUI extends AbstractUIBookmark
 {
+
     @Override
-    public Object getTypeView()
+    public Image getTypeIcon()
     {
         return null;
     }
 
     @Override
-    public Object getBookmarkListItemView()
+    public void show()
+        throws Exception
+    {
+        this.getBookmark().action();
+    }
+
+    @Override
+    public AbstractBookmark edit()
+        throws Exception
     {
         return null;
     }
 
     @Override
-    public Object getBookmarkView(AbstractBookmark abstractBookmark, boolean viewOnly)
+    public void delete()
+        throws Exception
     {
-        return null;
+
     }
 
     @Override
-    public Object action()
-    {
-        return null;
-    }
-
-    @Override
-    public Object action(Object config)
+    public AbstractBookmark newBookmarkView()
+        throws Exception
     {
         return null;
     }

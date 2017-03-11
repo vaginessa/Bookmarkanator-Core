@@ -33,6 +33,13 @@ public class WebBookmark extends AbstractBookmark{
     }
 
     @Override
+    public void destroy()
+        throws Exception
+    {
+
+    }
+
+    @Override
     public List<String> getTypeLocation()
     {
         List<String> list = new ArrayList<>();

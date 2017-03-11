@@ -10,7 +10,7 @@ import com.bookmarkanator.util.*;
 public class GUIController implements GUIControllerInterface
 {
     //Interfaces
-    private BKTypesInterface bkTypesInterface;
+    private BKTypes bkTypesInterface;
     private SelectedTagsInterface selectedTagsInterface;
     private AvailableTagsInterface availableTagsInterface;
     private BookmarksListInterface bookmarksInterface;
@@ -271,7 +271,7 @@ public class GUIController implements GUIControllerInterface
     }
 
     @Override
-    public void setTypesUI(BKTypesInterface types)
+    public void setTypesUI(BKTypes types)
     {
         this.bkTypesInterface = types;
         types.setGUIController(this);
@@ -320,7 +320,7 @@ public class GUIController implements GUIControllerInterface
     }
 
     @Override
-    public BKTypesInterface getTypesUI()
+    public BKTypes getTypesUI()
     {
         return this.bkTypesInterface;
     }

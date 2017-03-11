@@ -36,6 +36,13 @@ public class TerminalBookmark extends AbstractBookmark
     }
 
     @Override
+    public void destroy()
+        throws Exception
+    {
+
+    }
+
+    @Override
     public AbstractBookmark getNew()
     {
         return null;

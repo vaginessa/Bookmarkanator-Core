@@ -6,7 +6,7 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class TypesUI extends VBox implements BKTypesInterface
+public class TypesUI extends VBox implements BKTypes
 {
     private GUIControllerInterface guiController;
     private boolean editMode = false;
@@ -121,15 +121,9 @@ public class TypesUI extends VBox implements BKTypesInterface
     }
 
     @Override
-    public Set<String> getTypes()
+    public Set<String> getAllTypes()
     {
         return this.types;
-    }
-
-    @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
     }
 
     @Override
@@ -139,20 +133,20 @@ public class TypesUI extends VBox implements BKTypesInterface
     }
 
     @Override
-    public void enterEditMode()
+    public void setGUIController(GUIControllerInterface guiController)
     {
-        this.editMode = true;
+        this.guiController = guiController;
     }
 
     @Override
-    public void exitEditMode()
-    {
-        this.editMode = false;
-    }
-
-    @Override
-    public boolean isEditMode()
+    public boolean getEditMode()
     {
         return this.editMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
     }
 }

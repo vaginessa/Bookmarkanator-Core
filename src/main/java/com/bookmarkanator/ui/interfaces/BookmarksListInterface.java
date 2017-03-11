@@ -3,7 +3,7 @@ package com.bookmarkanator.ui.interfaces;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 
-public interface BookmarksListInterface extends GUIItemInterface
+public interface BookmarksListInterface extends GuiItemInterface
 {
     void setVisibleBookmarks(Set<AbstractBookmark> bookmarks)
         throws Exception;

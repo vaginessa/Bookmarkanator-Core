@@ -64,32 +64,27 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     }
 
     @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
-    }
-
-    @Override
     public GUIControllerInterface getGUIController()
     {
         return this.guiController;
     }
 
     @Override
-    public void enterEditMode()
+    public void setGUIController(GUIControllerInterface guiController)
     {
-        this.editMode = true;
+        this.guiController = guiController;
     }
 
     @Override
-    public void exitEditMode()
-    {
-        this.editMode = false;
-    }
-
-    @Override
-    public boolean isEditMode()
+    public boolean getEditMode()
     {
         return this.editMode;
     }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
+    }
+
 }

@@ -30,7 +30,7 @@ public interface BKIOInterface {
     void save(String config)throws Exception;
 
     /**
-     * Does any closing of connections, or writing to files etc...
+     * Does any closing of connections, streams, open files etc...
      */
     void close()throws Exception;
 

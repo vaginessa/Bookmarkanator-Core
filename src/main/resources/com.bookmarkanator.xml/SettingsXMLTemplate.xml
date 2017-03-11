@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <settings type="Blah">
+        <value>/home/bookmarkanator/modules</value>
+    </settings>
+    <settings type="a type">
+        <setting key = "settings directory">
+            <value>/home/bookmarkanator/modules</value>
+        </setting>
+        <setting key="another key">
+            <value>/home/bookmarkanator/modules</value>
+        </setting>
+        <setting key="zzzz">
+            <value>Another setting value</value>
+        </setting>
+    </settings>
+</root>
 
-<settings>
-    <setting>
-        <key>settings-directory</key>
-        <value>/home/bookmarkanator/modules</value>
-    </setting>
-    <setting>
-        <key>modules-directory</key>
-        <value>/home/bookmarkanator/modules</value>
-    </setting>
-    <setting>
-        <key>Another setting key</key>
-        <value>Another setting value</value>
-    </setting>
-</settings>
 

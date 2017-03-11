@@ -27,7 +27,7 @@ public class Main extends Application
     {
         Dimension bestWindowSize = getBestWindowSize();
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.getSettings().diffInto(this.getDefaultSettings());
+        bootstrap.getSettings().importSettings(this.getDefaultSettings());
         bootstrap.saveSettingsFile();
 
         guiController = new GUIController(bootstrap);
@@ -143,17 +143,50 @@ public class Main extends Application
         return d;
     }
 
-    private Settings<String, String> getDefaultSettings()
+    private Settings getDefaultSettings()
+        throws Exception
     {
-        Settings<String, String> settings = new Settings<>();
-        settings.putSetting(Main.getUIClassString()+ BashHistoryBookmark.class.getCanonicalName(), BashHistoryBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+EncryptedBookmark.class.getCanonicalName(), EncryptedBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+FileBookmark.class.getCanonicalName(), FileBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+ReminderBookmark.class.getCanonicalName(), ReminderBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+SequenceBookmark.class.getCanonicalName(), SequenceBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+TerminalBookmark.class.getCanonicalName(), TerminalBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+TextBookmark.class.getCanonicalName(), TextBookmarkUI.class.getCanonicalName());
-        settings.putSetting(Main.getUIClassString()+WebBookmark.class.getCanonicalName(), WebBookmarkUI.class.getCanonicalName());
+        Settings settings = new Settings();
+
+        SettingItem item = new SettingItem(Main.getUIClassString()+ BashHistoryBookmark.class.getCanonicalName());
+        item.setSetting(BashHistoryBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+EncryptedBookmark.class.getCanonicalName());
+        item.setSetting(EncryptedBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+FileBookmark.class.getCanonicalName());
+        item.setSetting(FileBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+ReminderBookmark.class.getCanonicalName());
+        item.setSetting(ReminderBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+SequenceBookmark.class.getCanonicalName());
+        item.setSetting(SequenceBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+TerminalBookmark.class.getCanonicalName());
+        item.setSetting(TerminalBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+TextBookmark.class.getCanonicalName());
+        item.setSetting(TextBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
+
+        item = new SettingItem(Main.getUIClassString()+WebBookmark.class.getCanonicalName());
+        item.setSetting(WebBookmarkUI.class.getCanonicalName());
+        item.setType("mainUI");
+        settings.putSetting(item);
 
         return settings;
     }

@@ -45,13 +45,13 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
                     AbstractUIBookmark abs = bookmarkListView.getSelectionModel().getSelectedItem();
                     if (abs!=null)
                     {
-                        if (isEditMode())
+                        if (getEditMode())
                         {
-                            abs.getBookmarkView(abs.getBookmark(), false);
+                            abs.getTypeIcon();
                         }
                         else
                         {
-                            abs.action();
+                            abs.show();
                         }
                     }
                 }
@@ -74,10 +74,10 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
         for (AbstractBookmark bk : bookmarks)
         {
             String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
-            String className = (String) this.getGUIController().getSettings().getSetting(bkClassNameKey);
+            String className = this.getGUIController().getSettings().getSetting(bkClassNameKey).getSetting();
             final AbstractUIBookmark bkui = ModuleLoader.use()
                 .loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
-            bkui.setAbstractBookmark(bk);
+            bkui.setBookmark(bk);
 
             observableList.add(bkui);
         }
@@ -96,28 +96,24 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
     }
 
     @Override
+    public boolean getEditMode()
+    {
+        return this.editMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
+    }
+
+    @Override
     public GUIControllerInterface getGUIController()
     {
         return this.guiController;
     }
 
-    @Override
-    public void enterEditMode()
-    {
-        this.editMode = true;
-    }
 
-    @Override
-    public void exitEditMode()
-    {
-        this.editMode = false;
-    }
-
-    @Override
-    public boolean isEditMode()
-    {
-        return this.editMode;
-    }
 
     private class BookmarkCell extends ListCell<AbstractUIBookmark>
     {

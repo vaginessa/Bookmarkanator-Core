@@ -14,26 +14,21 @@ public class QuickPanelUI implements QuickPanelInterface
     }
 
     @Override
+    public boolean getEditMode()
+    {
+        return this.editMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
+    }
+
+    @Override
     public GUIControllerInterface getGUIController()
     {
         return this.guiController;
     }
 
-    @Override
-    public void enterEditMode()
-    {
-        this.editMode = true;
-    }
-
-    @Override
-    public void exitEditMode()
-    {
-        this.editMode = false;
-    }
-
-    @Override
-    public boolean isEditMode()
-    {
-        return this.editMode;
-    }
 }

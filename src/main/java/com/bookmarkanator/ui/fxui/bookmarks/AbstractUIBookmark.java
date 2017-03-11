@@ -1,30 +1,33 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
+import javafx.scene.image.*;
 
-public abstract class AbstractUIBookmark<T, L, B, V>
+public abstract class AbstractUIBookmark
 {
     private AbstractBookmark abstractBookmark;
+
+    public void setBookmark(AbstractBookmark abstractBookmark)
+    {
+        this.abstractBookmark = abstractBookmark;
+    }
 
     public AbstractBookmark getBookmark()
     {
         return this.abstractBookmark;
     }
 
-    public void setAbstractBookmark(AbstractBookmark abstractBookmark)
-    {
-        this.abstractBookmark = abstractBookmark;
-    }
+    public abstract Image getTypeIcon();
 
-    public abstract T getTypeView();
+    public abstract void show()throws Exception;
 
-    public abstract L getBookmarkListItemView();
-
-    public abstract B getBookmarkView(AbstractBookmark abstractBookmark, boolean viewOnly);
-
-    public abstract V action()
+    public abstract AbstractBookmark edit()
         throws Exception;
 
-    public abstract V action(Object config)
+    public abstract void delete() throws Exception;
+
+    public abstract AbstractBookmark newBookmarkView()
         throws Exception;
+
+
 }

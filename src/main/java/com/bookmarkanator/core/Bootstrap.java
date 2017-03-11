@@ -31,7 +31,7 @@ public class Bootstrap
     private static final String TERMINAL_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.TerminalBookmark";
     private static final String FILE_BOOKMARK_CLASS = "com.bookmarkanator.bookmarks.FileBookmark";
 
-    //To override a built in bookmark set the following: <original bookmark classname, overriding bookmark class name>
+    //Note: To override a built in bookmark set the following: <original bookmark classname, overriding bookmark class name>
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
 
     //TODO add generics in the settings classes.
@@ -55,7 +55,7 @@ public class Bootstrap
         loadedSettings = loadSettings();
 
         moduleLoader = new ModuleLoader();
-        this.classLoader = moduleLoader.addModulesToClasspath(loadedSettings.getSettings(Bootstrap.MODULE_LOCATIONS_KEY), this.getClass().getClassLoader());
+        this.classLoader = moduleLoader.addModulesToClasspath(((SettingsItemList)loadedSettings.getSetting(Bootstrap.MODULE_LOCATIONS_KEY)).getItems(), this.getClass().getClassLoader());
 
         this.bkioInterface = loadBKIOInterface();
     }
@@ -79,9 +79,9 @@ public class Bootstrap
         throws Exception
     {
         //The class name to use when loading the class
-        List<String> bkioClasses = this.loadedSettings.getSettings(BOOKMARK_IO_CLASS_KEY);
+        List<String> bkioClasses = ((SettingsItemList)loadedSettings.getSetting(BOOKMARK_IO_CLASS_KEY)).getItems();
         //The list of config strings found in the settings. For example FileIo class requires a file path string to load the bookmarks file.
-        List<String> bkioConfigs = this.loadedSettings.getSettings(BOOKMARK_IO_CONFIG_KEY);
+        List<String> bkioConfigs = ((SettingsItemList)loadedSettings.getSetting(BOOKMARK_IO_CONFIG_KEY)).getItems();
 
         assert bkioClasses != null;
         assert bkioConfigs != null;
@@ -120,19 +120,54 @@ public class Bootstrap
      * @throws FileNotFoundException  If the default base directory cannot be accessed.
      */
     private Settings getDefaultSettings()
-        throws FileNotFoundException
+        throws Exception
     {
         Settings res = new Settings();
 
-        res.putSetting(MODULE_LOCATIONS_KEY, getDefaultBaseDirectory());
-        res.putSetting(ENCRYPTED_BOOKMARK_CLASS, ENCRYPTED_BOOKMARK_CLASS);
-        res.putSetting(REMINDER_BOOKMARK_CLASS, REMINDER_BOOKMARK_CLASS);
-        res.putSetting(SEQUENCE_BOOKMARK_CLASS, SEQUENCE_BOOKMARK_CLASS);
-        res.putSetting(TERMINAL_BOOKMARK_CLASS, TERMINAL_BOOKMARK_CLASS);
-        res.putSetting(TEXT_BOOKMARK_CLASS, TEXT_BOOKMARK_CLASS);
-        res.putSetting(WEB_BOOKMARK_CLASS, WEB_BOOKMARK_CLASS);
-        res.putSetting(BOOKMARK_IO_CONFIG_KEY, getDefaultBookmarksDirLocation());
-        res.putSetting(BOOKMARK_IO_CLASS_KEY, "com.bookmarkanator.io.FileIO");
+        SettingsItemList list = new SettingsItemList(MODULE_LOCATIONS_KEY);
+        list.addItem(getDefaultBaseDirectory());
+        list.setType("bootstrap");
+        res.putSetting(list);
+
+        SettingItem item = new SettingItem(ENCRYPTED_BOOKMARK_CLASS);
+        item.setSetting(ENCRYPTED_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        item = new SettingItem(REMINDER_BOOKMARK_CLASS);
+        item.setSetting(REMINDER_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        item = new SettingItem(SEQUENCE_BOOKMARK_CLASS);
+        item.setSetting(SEQUENCE_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        item = new SettingItem(TERMINAL_BOOKMARK_CLASS);
+        item.setSetting(TERMINAL_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        item = new SettingItem(TEXT_BOOKMARK_CLASS);
+        item.setSetting(TEXT_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        item = new SettingItem(WEB_BOOKMARK_CLASS);
+        item.setSetting(WEB_BOOKMARK_CLASS);
+        item.setType("bootstrap");
+        res.putSetting(item);
+
+        list = new SettingsItemList(BOOKMARK_IO_CONFIG_KEY);
+        list.addItem(getDefaultBookmarksDirLocation());
+        list.setType("bootstrap");
+        res.putSetting(list);
+
+        list = new SettingsItemList(BOOKMARK_IO_CLASS_KEY);
+        list.addItem("com.bookmarkanator.io.FileIO");
+        list.setType("bootstrap");
+        res.putSetting(list);
 
         return res;
     }
@@ -155,7 +190,7 @@ public class Bootstrap
         Settings res = Settings.parseSettings(fin);
         fin.close();
 
-        boolean needsSaving = res.diffInto(defaultSettings);
+        boolean needsSaving = res.importSettings(defaultSettings);
 
         if (needsSaving)
         {

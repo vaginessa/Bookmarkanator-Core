@@ -2,78 +2,69 @@ package com.bookmarkanator.core;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import com.bookmarkanator.xml.*;
 
-public class Settings<K, V>
+public class Settings
 {
-    private static final Logger logger = Logger.getLogger(Settings.class.getName());
-    private Map<K, Object> map;
+    private Map<String, SettingItem> map;
+    private Map<String, Set<SettingItem>> typesMap;
 
     public Settings()
     {
         map = new HashMap<>();
+        typesMap = new HashMap<>();
     }
 
-    public void putSettings(K key, List<V> list)
+    public void putSettings(List<SettingItem> list)
     {
-        logger.finest("Putting settings: key \"" + key + "");
-        this.map.put(key, list);
-    }
-
-    public void putSetting(K key, V value)
-    {
-        logger.finest("Putting setting: key \"" + key + "");
-        this.map.put(key, value);
-    }
-
-    public List<V> getSettings(K key)
-    {
-        Object object = this.map.get(key);
-
-        if (object==null)
+        if (list==null || list.isEmpty())
         {
-            return null;
+            return;
         }
 
-        if (object instanceof List)
+        for (SettingItem itemInterface: list)
         {
-            return (List<V>) object;
-        }
-        else
-        {//Return single item list
-            List<V> l = new ArrayList<>();
-            l.add((V) object);
-            return l;
+            putSetting(itemInterface);
         }
     }
 
-    public V getSetting(K key)
+    public void putSetting(SettingItem itemInterface)
     {
-        Object object = this.map.get(key);
+        map.put(itemInterface.getKey(), itemInterface);
 
-        if (object instanceof List)
-        {//Convert single item list into a single item.
-            List l = (List) object;
-            if (l.size() == 1)
-            {
-                return (V) l.get(0);
-            }
-            return null;
-        }
-        else
+        Set<SettingItem> tmp = typesMap.get(itemInterface.getType());
+        if (tmp==null)
         {
-            return (V) object;
+            tmp=new HashSet<>();
+            typesMap.put(itemInterface.getType(), tmp);
         }
+
+        tmp.add(itemInterface);
     }
 
-    public Set<K> keySet()
+    public Set<SettingItem> getByType(String type)
     {
-        return map.keySet();
+        return typesMap.get(type);
+    }
+
+    public SettingItem getSetting(String key)
+    {
+        return map.get(key);
+    }
+
+    public Map<String, SettingItem> getSettingsMap()
+    {
+        return Collections.unmodifiableMap(map);
+    }
+
+    public Map<String, Set<SettingItem>> getSettingsTypesMap()
+    {
+        return Collections.unmodifiableMap(typesMap);
     }
 
     /**
-     * This method accepts a global settings object, goes through it and sets any field that is not currently set in this settings object.
+     * This method imports settings from another settings object. If a value exists in the imported settings object it
+     * replaces the existing object.
      * For example:
      * This Settings Object
      * A = 1
@@ -87,7 +78,7 @@ public class Settings<K, V>
      * D = 5
      * F = 21
      * <p/>
-     * After calling this diffInto method the this settings object would look like:
+     * After calling this importSettings method the this settings object would look like:
      * <p/>
      * This Settings Object
      * A = 1
@@ -99,17 +90,19 @@ public class Settings<K, V>
      * <p/>
      * If a setting is present in this settings object it leaves it alone, if it is missing it adds it.
      *
-     * @param diffSettings The settings to diff into this settings object.
+     * @param settings The settings to diff into this settings object.
      */
-    public boolean diffInto(Settings<K, V> diffSettings)
+    public boolean importSettings(Settings settings)
     {
         boolean hasChanged = false;
-        for (K s : diffSettings.keySet())
+        Map<String, SettingItem> tmpMap = settings.getSettingsMap();
+
+        for (String key : tmpMap.keySet())
         {//ensure default settings are in place if other settings are missing.
-            List<V> l = this.getSettings(s);
-            if (l == null)
+            SettingItem item = tmpMap.get(key);
+            if (item != null)
             {
-                this.putSettings(s, diffSettings.getSettings(s));
+                this.putSetting(item);
                 hasChanged = true;
             }
         }

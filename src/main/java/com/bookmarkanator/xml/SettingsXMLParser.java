@@ -9,10 +9,13 @@ import org.w3c.dom.*;
 public class SettingsXMLParser
 {
     //Tags
+    public static final String ROOT_TAG = "root";
     public static final String SETTINGS_TAG = "settings";
     public static final String SETTING_TAG = "setting";
-    public static final String KEY_TAG = "key";
     public static final String VALUE_TAG = "value";
+
+    public static final String TYPE_ATTRIBUTE = "type";
+    public static final String KEY_ATTRIBUTE = "key";
 
     //Variables
     private InputStream inputStream;
@@ -33,7 +36,7 @@ public class SettingsXMLParser
         document = builder.parse(inputStream);
 
         Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
-        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.SETTINGS_TAG))
+        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.ROOT_TAG))
         {
             throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
         }
@@ -44,41 +47,61 @@ public class SettingsXMLParser
         {
             Node n = nl.item(c);
 
-            if (n.getNodeName().equals(SettingsXMLParser.SETTING_TAG))
+            if (n.getNodeName().equals(SettingsXMLParser.SETTINGS_TAG))
             {
-               getSetting(n);
+                getSettings(n);
             }
         }
         return settings;
     }
 
-
-    private void getSetting(Node node)
+    private void getSettings(Node node)
         throws Exception
     {
-        List<String> results = new ArrayList<>();
-        String key = null;
+        NodeList nl = node.getChildNodes();
+        Node type = node.getAttributes().getNamedItem(SettingsXMLParser.TYPE_ATTRIBUTE);
+
+        String typeString = null;
+
+        if (type != null)
+        {
+            typeString = type.getTextContent();
+        }
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            SettingItem item = getSetting(n);
+            if (item == null)
+            {
+                continue;
+            }
+            item.setType(typeString);
+            settings.putSetting(item);
+        }
+    }
+
+    private SettingItem getSetting(Node node)
+        throws Exception
+    {
+        Node key = node.getAttributes().getNamedItem(SettingsXMLParser.KEY_ATTRIBUTE);
+        Objects.requireNonNull(key);
+        String keyText = key.getTextContent();
+        Objects.requireNonNull(keyText);
+
+        SettingItem settingItem = new SettingItem(keyText);
+
         NodeList nl = node.getChildNodes();
 
         for (int c = 0; c < nl.getLength(); c++)
         {
             Node n = nl.item(c);
-            String textContent = n.getTextContent();
-
-            if (n.getNodeName().equals(SettingsXMLParser.KEY_TAG))
+            if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
             {
-                key = textContent;
-            }
-            else if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
-            {
-                results.add(textContent);
+                settingItem.setSetting(n.getTextContent());
             }
         }
-       if (key!=null && key.trim().isEmpty())
-       {
-           throw new Exception("Settings key value must not be empty.");
-       }
-
-        settings.putSettings(key, results);
+        return settingItem;
     }
+
 }

@@ -1,6 +1,5 @@
 package com.bookmarkanator;
 
-import com.bookmarkanator.ui.defaultui.*;
 import org.junit.*;
 
 public class TestMainProgram
@@ -9,7 +8,7 @@ public class TestMainProgram
     public void test()
         throws Exception
     {
-        MainWindow mainWindow = new MainWindow();
+//        MainWindow mainWindow = new MainWindow();
 //        Bootstrap bootstrap = new Bootstrap();
 //        // Setup terminal and screen layers
 //        Terminal terminal = new DefaultTerminalFactory().createTerminal();
@@ -32,7 +31,7 @@ public class TestMainProgram
 //        Button submit = new Button("Enter", new Runnable() {
 //            @Override
 //            public void run() {
-//                System.out.println("button action");
+//                System.out.println("button edit");
 //                System.out.println(forname.getText());
 //            }
 //        });

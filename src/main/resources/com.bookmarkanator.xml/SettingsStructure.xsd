@@ -2,21 +2,28 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:element name='settings'>
+    <xs:element name='root'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name='setting' type='setting' minOccurs='0'
+                <xs:element name='settings' type='settings' minOccurs='0'
                             maxOccurs='unbounded'/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
+    <xs:complexType name="settings">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" minOccurs='1'
+                        maxOccurs='unbounded'/>
+        </xs:sequence>
+        <xs:attribute name='type' type='xs:string'/>
+    </xs:complexType>
+
     <xs:complexType name="setting">
         <xs:sequence>
-            <xs:element name="key" type="xs:string" minOccurs='1'
-                        maxOccurs='1'/>
             <xs:element name="value" type="xs:string" minOccurs='1'
                         maxOccurs='unbounded'/>
         </xs:sequence>
+        <xs:attribute name='key' type='xs:string'/>
     </xs:complexType>
 </xs:schema>
