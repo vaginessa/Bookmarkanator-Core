@@ -74,6 +74,7 @@ public class BookmarksXMLParser
                 {
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
+
                     if (globalSettings!=null)
                     {
                         String replacementClassName = globalSettings.getSetting(className).getValue();
@@ -85,15 +86,19 @@ public class BookmarksXMLParser
                         }
                     }
 
+                    //TODO Somethings not right with the settings loading. It should not be overriding bookmarks with the same bookmark class name.
+
+                    className = className.trim();
+
                     Class clazz = loadedClasses.get(classNameNode.getTextContent());
 
                     if (clazz == null)
                     {
-                        clazz = loadBookmarkClass(className);
+                        clazz = Bootstrap.loadBookmarkClass(className, this.classLoader);
                         loadedClasses.put(className, clazz);
                     }
 
-                    AbstractBookmark abs = instantiateClass(clazz);
+                    AbstractBookmark abs = Bootstrap.instantiateBookmarkClass(clazz, this.contextInterface);
 
                     //add all bookmarks of this type
                     parseBookmark(n, abs);
@@ -104,19 +109,6 @@ public class BookmarksXMLParser
                 }
             }
         }
-    }
-
-    private Class loadBookmarkClass(String className) throws Exception
-    {
-        Class clazz = this.classLoader.loadClass(className);
-        Class sub = clazz.asSubclass(AbstractBookmark.class);
-        System.out.println("Loaded bookmark class: \"" + className + "\".");
-        return sub;
-    }
-
-    private AbstractBookmark instantiateClass(Class clazz) throws Exception
-    {
-        return (AbstractBookmark) clazz.getConstructor(ContextInterface.class).newInstance(this.contextInterface);
     }
 
     private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
@@ -205,7 +197,7 @@ public class BookmarksXMLParser
     }
 
     /**
-     * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml.
+     * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.
      * It can be in any format because this method ignores everything between the two content tags, and simply returns the
      * raw data.
      * @param node  The content node to parse bookmark settings from.
@@ -237,5 +229,6 @@ public class BookmarksXMLParser
     {
         return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
     }
+
 
 }

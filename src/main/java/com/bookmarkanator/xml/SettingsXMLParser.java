@@ -5,6 +5,7 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
+import org.w3c.dom.ls.*;
 
 public class SettingsXMLParser
 {
@@ -119,22 +120,24 @@ public class SettingsXMLParser
 
         SettingItem settingItem = instantiateClass(clazz, keyText);
 
-        NodeList nl = node.getChildNodes();
+//        NodeList nl = node.getChildNodes();
+//
+//        for (int c = 0; c < nl.getLength(); c++)
+//        {
+//            Node n = nl.item(c);
+//
+//            if (n.getNodeName().startsWith("#"))
+//            {
+//                continue;
+//            }
+//
+//            if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
+//            {
+//                settingItem.setValue(n.getTextContent());
+//            }
+//        }
+        settingItem.setValue(getContent(node));
 
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-
-            if (n.getNodeName().startsWith("#"))
-            {
-                continue;
-            }
-
-            if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
-            {
-                settingItem.setValue(n.getTextContent());
-            }
-        }
         return settingItem;
     }
 
@@ -151,5 +154,39 @@ public class SettingsXMLParser
         throws Exception
     {
         return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
+    }
+
+    /**
+     * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.
+     * It can be in any format because this method ignores everything between the two content tags, and simply returns the
+     * raw data.
+     * @param node  The content node to parse bookmark settings from.
+     * @return  A string containing the settings specific to this bookmark.
+     */
+    private String getContent(Node node)
+    {
+        DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();
+        LSSerializer ser = ls.createLSSerializer();
+        StringBuilder sb = new StringBuilder();
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            sb.append(ser.writeToString(n));
+        }
+
+        return sanitizeXMLString(sb.toString());
+    }
+
+    /**
+     * This method removes the annoying <?xml version="1.0" encoding="UTF-16"?> that the LSSerializer places on it's
+     * string verison of the xml.
+     * @param xmlString  A string containing xml version ... strings.
+     * @return  A string without xml version ... strings in it.
+     */
+    private String sanitizeXMLString(String xmlString)
+    {
+        return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
     }
 }

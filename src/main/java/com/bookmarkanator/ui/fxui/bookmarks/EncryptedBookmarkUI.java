@@ -27,6 +27,12 @@ public class EncryptedBookmarkUI extends AbstractUIBookmark
     }
 
     @Override
+    public String getUsingClassName()
+    {
+        return EncryptedBookmark.class.getCanonicalName();
+    }
+
+    @Override
     public AbstractBookmark edit()
         throws Exception
     {

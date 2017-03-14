@@ -7,6 +7,7 @@ import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import javafx.application.*;
+import javafx.event.*;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.*;
@@ -18,7 +19,7 @@ public class Main extends Application
     public static final String UI_CLASS_VALUE = "class";
     public static final String UI_STRING_SEPARATOR = "-";
 
-    private GUIController guiController;
+    private UIController guiController;
     private ContextInterface context;
 
     @Override
@@ -28,9 +29,8 @@ public class Main extends Application
         Dimension bestWindowSize = getBestWindowSize();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.getSettings().importSettings(this.getDefaultSettings());
-        bootstrap.saveSettingsFile();
 
-        guiController = new GUIController(bootstrap);
+        guiController = new UIController(bootstrap);
 
         GridPane gridPane = new GridPane();
         gridPane.setStyle("-fx-background-color: steelblue");
@@ -45,7 +45,6 @@ public class Main extends Application
         guiController.setMenuUi(menuUI);
 
         MenuBar menuBar = menuUI.getMenuBar();
-//        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
         vBox.getChildren().addAll(menuBar);
 
         vBox.getChildren().add(gridPane);
@@ -89,6 +88,28 @@ public class Main extends Application
 
         guiController.initUI();
         primaryStage.show();
+
+        primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try
+                        {
+                            bootstrap.saveSettingsFile();
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        System.exit(0);
+                    }
+                });
+            }
+        });
 
     }
 

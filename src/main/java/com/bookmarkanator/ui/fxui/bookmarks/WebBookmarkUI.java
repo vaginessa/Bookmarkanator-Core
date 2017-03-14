@@ -39,4 +39,10 @@ public class WebBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return WebBookmark.class.getCanonicalName();
+    }
 }

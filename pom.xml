@@ -80,6 +80,13 @@
             <artifactId>reflections</artifactId>
             <version>0.9.10</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.9</version>
+        </dependency>
         <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jfxtras/jfxtras-controls &ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>org.jfxtras</groupId>-->

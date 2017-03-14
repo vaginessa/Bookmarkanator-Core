@@ -39,4 +39,10 @@ public class TextBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return TextBookmark.class.getCanonicalName();
+    }
 }

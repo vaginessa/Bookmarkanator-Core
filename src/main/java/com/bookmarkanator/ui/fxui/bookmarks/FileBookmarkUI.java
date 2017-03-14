@@ -39,4 +39,10 @@ public class FileBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return FileBookmark.class.getCanonicalName();
+    }
 }

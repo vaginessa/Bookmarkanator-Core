@@ -54,14 +54,7 @@ public class SettingsXMLWriter
     {
         Element settings = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
         settings.setAttribute(SettingsXMLParser.TYPE_ATTRIBUTE,type );
-if (type.equals("bootstrap"))
-{
-    System.out.println();
-}
-        else
-{
-    System.out.println();
-}
+
         for (SettingItem item: items)
         {
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);

@@ -50,6 +50,7 @@ public class ModuleLoader
     public <T> T loadClass(String className, Class<T> toCast, ClassLoader classLoader)
         throws Exception
     {
+        className = className.trim();
         Class clazz = classLoader.loadClass(className);
         Class<T> sub = clazz.asSubclass(toCast);
 
@@ -92,6 +93,7 @@ public class ModuleLoader
         URL[] urlsArray = urls.toArray(new URL[urls.size()]);
         ClassLoader classLoader = new URLClassLoader(urlsArray, parentClassloader);
 
+        //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
         Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(classLoader));
         bookmarkClassesFound.addAll(reflections.getSubTypesOf(AbstractBookmark.class));
 

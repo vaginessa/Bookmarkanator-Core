@@ -39,4 +39,10 @@ public class ReminderBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return ReminderBookmark.class.getCanonicalName();
+    }
 }

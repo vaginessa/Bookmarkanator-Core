@@ -39,4 +39,10 @@ public class TerminalBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return TerminalBookmark.class.getCanonicalName();
+    }
 }

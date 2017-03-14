@@ -39,4 +39,10 @@ public class SequenceBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return SequenceBookmark.class.getCanonicalName();
+    }
 }

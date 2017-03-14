@@ -17,7 +17,7 @@ public class Bootstrap
     private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
 
     //Settings fields related to overriding the default classes.
-    //TODO Go through all keys and types for settings values and improve them to be more obious. Also possibly make a new type of settings object.
+    //TODO Go through all keys and types for settings values and improve them to be more obvious. Also possibly make a new type of settings object.
     //TODO Explicitly set settings for overriding class names.
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
     private static final String BOOKMARK_IO_CONFIG_KEY = "bookmark-io-config";
@@ -36,8 +36,6 @@ public class Bootstrap
     //Note: To override a built in bookmark set the following: <original bookmark classname, overriding bookmark class name>
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
 
-    private Settings loadedSettings;
-    private Settings defaultSettings;
     private boolean hasClosed;
     private ClassLoader classLoader;
     private BKIOInterface bkioInterface;
@@ -47,24 +45,18 @@ public class Bootstrap
     public Bootstrap()
         throws Exception
     {
-        logger.finest("Logging finest");
-
-        //TODO setup logging framework.
         this.classLoader = this.getClass().getClassLoader();
         hasClosed = false;
-        defaultSettings = getDefaultSettings();
-        loadedSettings = loadSettings();
 
-        moduleLoader = new ModuleLoader();
-        this.classLoader = moduleLoader.addModulesToClasspath(((SettingsItemList)loadedSettings.getSetting(Bootstrap.MODULE_LOCATIONS_KEY)).getItems(), this.getClass().getClassLoader());
+        GlobalSettings.use().setFile(new File(getDefaultSettingsDirectory()));
+        Settings defaultSettings = getDefaultSettings();
+        GlobalSettings.use().getSettings().importSettings(defaultSettings);
+
+        this.moduleLoader = new ModuleLoader();
+        this.classLoader = moduleLoader.addModulesToClasspath(((SettingsItemList)GlobalSettings.use().getSettings().getSetting(Bootstrap.MODULE_LOCATIONS_KEY)).getItems(), this.getClass().getClassLoader());
         this.bookmarkClassesFound = moduleLoader.getBookmarkClassesFound();
 
         this.bkioInterface = loadBKIOInterface();
-    }
-
-    public void acceptException(Exception ex)
-    {
-        ex.printStackTrace();
     }
 
     public BKIOInterface getBkioInterface()
@@ -86,9 +78,9 @@ public class Bootstrap
         throws Exception
     {
         //The class name to use when loading the class
-        List<String> bkioClasses = ((SettingsItemList)loadedSettings.getSetting(BOOKMARK_IO_CLASS_KEY)).getItems();
+        List<String> bkioClasses = ((SettingsItemList)GlobalSettings.use().getSettings().getSetting(BOOKMARK_IO_CLASS_KEY)).getItems();
         //The list of config strings found in the settings. For example FileIo class requires a file path string to load the bookmarks file.
-        List<String> bkioConfigs = ((SettingsItemList)loadedSettings.getSetting(BOOKMARK_IO_CONFIG_KEY)).getItems();
+        List<String> bkioConfigs = ((SettingsItemList)GlobalSettings.use().getSettings().getSetting(BOOKMARK_IO_CONFIG_KEY)).getItems();
 
         assert bkioClasses != null;
         assert bkioConfigs != null;
@@ -104,13 +96,14 @@ public class Bootstrap
 
                 logger.config("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
                 logger.config("Calling init()...");
-                bkio2.init(config, loadedSettings, this.classLoader);
+                bkio2.init(config, GlobalSettings.use().getSettings(), this.classLoader);
                 logger.config("Done.");
 
                 return bkio2;
             }
             catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
-            {//Print the error and move on to try loading the next class.
+            {
+                //Print the error and move on to try loading the next class.
                 e.printStackTrace();
             }
         }
@@ -179,60 +172,7 @@ public class Bootstrap
         return res;
     }
 
-    /**
-     * Finds the settings file that is in the users home directory, and loads the settings from it, or if empty adds the settings. If not existent, it creates it.
-     * @return  A map of settings in the form of <Setting key, List<individual multiple settings>>
-     * @throws FileNotFoundException  If the default base directory cannot be accessed.
-     */
-    private Settings loadSettings()
-        throws Exception
-    {
-        File settingsFile = getSettingsFile();
-        FileInputStream fin = new FileInputStream(settingsFile);
-        Settings.validateXML(fin, SETTINGS_XSD_FILE);
-        fin.close();
 
-        fin = new FileInputStream(settingsFile);
-
-        Settings res = Settings.parseSettings(fin, this.classLoader);
-        fin.close();
-
-        boolean needsSaving = res.importSettings(defaultSettings);
-
-        if (needsSaving)
-        {
-            saveSettingsFile(res, settingsFile);//save changes
-        }
-
-        return res;
-    }
-
-    private File getSettingsFile()
-        throws Exception
-    {
-        String path = getDefaultSettingsDirectory();
-        File file = new File(path);
-
-        if (!file.exists())
-        {
-            if (!file.getParentFile().exists())
-            {//create directory to place file
-                file.getParentFile().mkdir();
-            }
-
-            if (!file.createNewFile())
-            {//create settings file
-                throw new IOException("Failed to create file " + file.getCanonicalPath());
-            }
-        }
-
-        if (file.length() == 0)
-        {
-            saveSettingsFile(defaultSettings, file);
-        }
-
-        return file;
-    }
 
     private String getDefaultSettingsDirectory()
     {
@@ -252,33 +192,15 @@ public class Bootstrap
         return usersHome + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY;
     }
 
-    /**
-     * Saves specific settings to a specific directory (with the default setting file name)
-     * @param settings  The settings to save
-     * @param directory  The directory to place the settings file.
-     * @throws Exception
-     */
-    public void saveSettingsFile(Settings settings, File directory)
-        throws Exception
+    public Settings getSettings()
     {
-        hasClosed = true;
-        FileOutputStream fout = new FileOutputStream(directory);
-        Settings.writeSettings(settings, fout);
+        return GlobalSettings.use().getSettings();
     }
 
-    /**
-     * Saves the settings for this class, in the default directory, with the default name.
-     * @throws Exception
-     */
     public void saveSettingsFile()
         throws Exception
     {
-        saveSettingsFile(loadedSettings, new File(getDefaultSettingsDirectory()));
-    }
-
-    public Settings getSettings()
-    {
-        return loadedSettings;
+        GlobalSettings.use().writeToDisk();
     }
 
     public ClassLoader getClassLoader()
@@ -286,15 +208,17 @@ public class Bootstrap
         return this.classLoader;
     }
 
-    @Override
-    protected void finalize()
-        throws Throwable
+    public static Class loadBookmarkClass(String className, ClassLoader classLoader) throws Exception
     {
-        super.finalize();
-        if (!hasClosed)
-        {
-            saveSettingsFile(loadedSettings, new File(getDefaultSettingsDirectory()));
-            bkioInterface.save();
-        }
+        Class clazz = classLoader.loadClass(className);
+        Class sub = clazz.asSubclass(AbstractBookmark.class);
+        System.out.println("Loaded bookmark class: \"" + className + "\".");
+        return sub;
     }
+
+    public static AbstractBookmark instantiateBookmarkClass(Class clazz,ContextInterface contextInterface ) throws Exception
+    {
+        return (AbstractBookmark) clazz.getConstructor(ContextInterface.class).newInstance(contextInterface);
+    }
+
 }

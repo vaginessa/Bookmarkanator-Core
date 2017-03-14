@@ -101,7 +101,9 @@ public class Settings
         for (String key : tmpMap.keySet())
         {//ensure default settings are in place if other settings are missing.
             SettingItem item = tmpMap.get(key);
-            if (item != null)
+            SettingItem original = this.getSettingsMap().get(key);
+
+            if (original == null)
             {
                 this.putSetting(item);
                 hasChanged = true;
@@ -144,4 +146,20 @@ public class Settings
         out.flush();
         out.close();
     }
+
+    /**
+     * Saves specific settings to a specific directory (with the default setting file name)
+     * @param settings  The settings to save
+     * @param directory  The directory to place the settings file.
+     * @throws Exception
+     */
+    public void saveSettingsFile(Settings settings, File directory)
+        throws Exception
+    {
+        FileOutputStream fout = new FileOutputStream(directory);
+        Settings.writeSettings(settings, fout);
+    }
+
+
+
 }

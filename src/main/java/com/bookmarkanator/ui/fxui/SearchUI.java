@@ -180,7 +180,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(GUIController.SEARCH_TAGS_KEY, sTags.isSelected());
+                    getGUIController().setSearchInclusions(UIController.SEARCH_TAGS_KEY, sTags.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -198,7 +198,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(GUIController.SEARCH_BOOKMARK_NAMES_KEY, sBookmarkNames.isSelected());
+                    getGUIController().setSearchInclusions(UIController.SEARCH_BOOKMARK_NAMES_KEY, sBookmarkNames.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -216,7 +216,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(GUIController.SEARCH_BOOKMARK_TEXT_KEY, sBookmarkText.isSelected());
+                    getGUIController().setSearchInclusions(UIController.SEARCH_BOOKMARK_TEXT_KEY, sBookmarkText.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -233,7 +233,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(GUIController.SEARCH_TYPES_KEY, sBookmarkTypeNames.isSelected());
+                    getGUIController().setSearchInclusions(UIController.SEARCH_TYPES_KEY, sBookmarkTypeNames.isSelected());
                 }
                 catch (Exception e)
                 {

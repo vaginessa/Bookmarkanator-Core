@@ -29,5 +29,9 @@ public abstract class AbstractUIBookmark
     public abstract AbstractBookmark newBookmarkView()
         throws Exception;
 
-
+    /**
+     * Using class name is the name that this bookmark requires
+     * @return
+     */
+    public abstract String getUsingClassName();
 }

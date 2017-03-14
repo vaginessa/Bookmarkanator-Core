@@ -59,13 +59,13 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         });
 
         ObservableList<String> options = FXCollections.observableArrayList();
-        options.add(GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
-        options.add(GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS);
-        options.add(GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS);
+        options.add(UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        options.add(UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS);
+        options.add(UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS);
 
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setStyle("-fx-background-radius:15");
-        comboBox.getSelectionModel().select(GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        comboBox.getSelectionModel().select(UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
         comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) -> {
             try
             {

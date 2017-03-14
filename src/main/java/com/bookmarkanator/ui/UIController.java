@@ -8,7 +8,7 @@ import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
 
-public class GUIController implements GUIControllerInterface
+public class UIController implements GUIControllerInterface
 {
     //Interfaces
     private BKTypes bkTypesInterface;
@@ -46,7 +46,7 @@ public class GUIController implements GUIControllerInterface
     public static final String INCLUDE_BOOKMARKS_WITH_ANY_TAGS = "ANY TAG";
     public static final String INCLUDE_BOOKMARKS_WITHOUT_TAGS = "WITHOUT TAGS";
 
-    public GUIController(Bootstrap bootstrap)
+    public UIController(Bootstrap bootstrap)
         throws Exception
     {
         assert bootstrap != null;
@@ -63,10 +63,10 @@ public class GUIController implements GUIControllerInterface
         this.showOnlyTheseTypes = new HashSet<>();
         this.showOnlyTheseTypes.addAll(this.allTypes);
         this.searchInclusions = new HashMap<>();
-        searchInclusions.put(GUIController.SEARCH_TYPES_KEY, false);
-        searchInclusions.put(GUIController.SEARCH_BOOKMARK_TEXT_KEY, true);
-        searchInclusions.put(GUIController.SEARCH_BOOKMARK_NAMES_KEY, true);
-        searchInclusions.put(GUIController.SEARCH_TAGS_KEY, true);
+        searchInclusions.put(UIController.SEARCH_TYPES_KEY, false);
+        searchInclusions.put(UIController.SEARCH_BOOKMARK_TEXT_KEY, true);
+        searchInclusions.put(UIController.SEARCH_BOOKMARK_NAMES_KEY, true);
+        searchInclusions.put(UIController.SEARCH_TAGS_KEY, true);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GUIController implements GUIControllerInterface
 
         this.updateBookmarksData();
         this.showOnlyTheseTypes.addAll(this.getAllTypes());
-//        this.newBookmarkSelectionInterface.setTypes();
+        this.newBookmarkSelectionInterface.setTypes(getAllTypesUIs());
         this.getBookmarksListUI().setVisibleBookmarks(this.getVisibleBookmarks());
         this.getAvailableTagsUI().setAvailableTags(this.getAvailableTags());
         this.getTypesUI().setTypes(this.getVisibleTypes(), this.getShowOnlyTheseTypes());
@@ -238,9 +238,9 @@ public class GUIController implements GUIControllerInterface
     {
         switch (mode)
         {
-            case GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
-            case GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
-            case GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
                 this.selectedTagsOperation = mode;
                 break;
             default:
@@ -275,11 +275,17 @@ public class GUIController implements GUIControllerInterface
 
     public Set<AbstractUIBookmark> getAllTypesUIs()
     {
-//        Set<String>
-//        //Get one new bookmark per type
-//        //Get one new bookmark UI per bookmark
-//        //Return those.
-//        for ()
+        Set<Class<? extends AbstractBookmark>> kbs = bootstrap.getBookmarkClassesFound();
+        Set<AbstractUIBookmark> res = new HashSet<>();
+
+        //TODO MODIFY THE SETTINGS TO INCLUDE TO AND FROM MAPPINGS OF BOOKMARK CLASS NAME AND BOOKMARK CLASS UI NAME.
+
+//        for (Class bookmark: kbs)
+//        {
+//            Class clazz = GUIController.loadBookmarkUIClass();
+//        }
+//        loadBookmarkClass(className);
+
         return null;
     }
 
@@ -409,10 +415,10 @@ public class GUIController implements GUIControllerInterface
 
         ContextInterface context = this.bootstrap.getBkioInterface().getContext();
 
-        boolean includeTags = this.searchInclusions.get(GUIController.SEARCH_TAGS_KEY);
-        boolean includeTypes = this.searchInclusions.get(GUIController.SEARCH_TYPES_KEY);
-        boolean includeBookmarkText = this.searchInclusions.get(GUIController.SEARCH_BOOKMARK_TEXT_KEY);
-        boolean includeBookmarks = this.searchInclusions.get(GUIController.SEARCH_BOOKMARK_NAMES_KEY);
+        boolean includeTags = this.searchInclusions.get(UIController.SEARCH_TAGS_KEY);
+        boolean includeTypes = this.searchInclusions.get(UIController.SEARCH_TYPES_KEY);
+        boolean includeBookmarkText = this.searchInclusions.get(UIController.SEARCH_BOOKMARK_TEXT_KEY);
+        boolean includeBookmarks = this.searchInclusions.get(UIController.SEARCH_BOOKMARK_NAMES_KEY);
 
         Set<AbstractBookmark> res = new HashSet<>();
         if (includeTags && includeTypes && includeBookmarkText && includeBookmarks)
@@ -489,13 +495,13 @@ public class GUIController implements GUIControllerInterface
 
         switch (this.selectedTagsOperation)
         {
-            case GUIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
                 tmp =  Filter.use(bookmarks).keepWithAllTags(this.getSelectedTags()).results();
                 break;
-            case GUIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
                 tmp =  Filter.use(bookmarks).keepWithAnyTag(this.getSelectedTags()).results();
                 break;
-            case GUIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+            case UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
                 tmp =  Filter.use(bookmarks).excludeWithTags(this.getSelectedTags()).results();
                 break;
         }
@@ -503,4 +509,17 @@ public class GUIController implements GUIControllerInterface
         return new HashSet<>(tmp);
     }
 
+
+    public static Class loadBookmarkUIClass(String className, ClassLoader classLoader) throws Exception
+    {
+        Class clazz = classLoader.loadClass(className);
+        Class sub = clazz.asSubclass(AbstractUIBookmark.class);
+        System.out.println("Loaded bookmark UI class: \"" + className + "\".");
+        return sub;
+    }
+
+    public static AbstractUIBookmark instantiateBookmarkUIClass(Class clazz,ContextInterface contextInterface ) throws Exception
+    {
+        return (AbstractUIBookmark) clazz.getConstructor().newInstance();
+    }
 }

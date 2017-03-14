@@ -39,4 +39,10 @@ public class BashHistoryBookmarkUI extends AbstractUIBookmark
     {
         return null;
     }
+
+    @Override
+    public String getUsingClassName()
+    {
+        return BashHistoryBookmark.class.getCanonicalName();
+    }
 }
