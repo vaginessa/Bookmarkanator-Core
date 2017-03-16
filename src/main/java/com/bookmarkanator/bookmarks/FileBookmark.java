@@ -13,7 +13,7 @@ public class FileBookmark extends AbstractBookmark
     @Override
     public String getTypeName()
     {
-        return null;
+        return "File";
     }
 
     @Override

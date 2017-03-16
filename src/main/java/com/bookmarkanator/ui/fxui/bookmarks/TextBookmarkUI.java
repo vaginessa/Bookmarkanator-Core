@@ -37,11 +37,12 @@ public class TextBookmarkUI extends AbstractUIBookmark
     public AbstractBookmark newBookmarkView()
         throws Exception
     {
+        System.out.println(this.getClass().getCanonicalName());
         return null;
     }
 
     @Override
-    public String getUsingClassName()
+    public String getRequiredBookmarkClassName()
     {
         return TextBookmark.class.getCanonicalName();
     }

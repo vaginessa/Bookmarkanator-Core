@@ -7,6 +7,8 @@ import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
+import org.reflections.*;
+import org.reflections.util.*;
 
 public class UIController implements GUIControllerInterface
 {
@@ -274,19 +276,41 @@ public class UIController implements GUIControllerInterface
     }
 
     public Set<AbstractUIBookmark> getAllTypesUIs()
+        throws Exception
     {
         Set<Class<? extends AbstractBookmark>> kbs = bootstrap.getBookmarkClassesFound();
+        Map<String, Class<? extends AbstractBookmark>> bkClassNames = new HashMap<>();
+
+        for (Class clazz: kbs)
+        {
+            bkClassNames.put(clazz.getCanonicalName(), clazz);
+        }
+
+
         Set<AbstractUIBookmark> res = new HashSet<>();
+        Set<Class<? extends AbstractUIBookmark>> loadedUIs = getloadedBKUIInterfaces();
 
-        //TODO MODIFY THE SETTINGS TO INCLUDE TO AND FROM MAPPINGS OF BOOKMARK CLASS NAME AND BOOKMARK CLASS UI NAME.
+        for (Class clazz: loadedUIs)
+        {
+            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor().newInstance();
+            Class bookmarkClass = bkClassNames.get(tmp.getRequiredBookmarkClassName());
+            if (bookmarkClass != null)
+            {
+                AbstractBookmark abs = Bootstrap.instantiateBookmarkClass(bookmarkClass, bootstrap.getBkioInterface().getContext());
+                if (abs.getTypeName()==null || abs.getTypeName().trim().isEmpty())
+                {
+                    MLog.warn("Bookmark "+abs.getClass().getCanonicalName()+" has no type string.");
+                }
+                else
+                {
+                    tmp.setBookmark(abs);
+                    res.add(tmp);
+                }
+            }
+        }
 
-//        for (Class bookmark: kbs)
-//        {
-//            Class clazz = GUIController.loadBookmarkUIClass();
-//        }
-//        loadBookmarkClass(className);
 
-        return null;
+        return res;
     }
 
     @Override
@@ -521,5 +545,14 @@ public class UIController implements GUIControllerInterface
     public static AbstractUIBookmark instantiateBookmarkUIClass(Class clazz,ContextInterface contextInterface ) throws Exception
     {
         return (AbstractUIBookmark) clazz.getConstructor().newInstance();
+    }
+
+    public Set<Class<? extends AbstractUIBookmark>> getloadedBKUIInterfaces()
+    {
+        //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
+        Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(this.bootstrap.getClassLoader()));
+        Set<Class<? extends AbstractUIBookmark>> res = new HashSet<>();
+        res.addAll(reflections.getSubTypesOf(AbstractUIBookmark.class));
+        return res;
     }
 }

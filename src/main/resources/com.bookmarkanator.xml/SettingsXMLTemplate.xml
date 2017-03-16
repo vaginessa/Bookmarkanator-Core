@@ -1,18 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
-    <settings type="Blah">
-        <value>/home/bookmarkanator/modules</value>
+    <settings type="mainUI">
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.BashHistoryBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.BashHistoryBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TextBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TerminalBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.TerminalBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.ReminderBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.ReminderBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.SequenceBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.SequenceBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.FileBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.FileBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.WebBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.WebBookmarkUI
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.EncryptedBookmark">
+            com.bookmarkanator.ui.fxui.bookmarks.EncryptedBookmarkUI
+        </setting>
     </settings>
-    <settings type="a type">
-        <setting key = "settings directory">
-            <value>/home/bookmarkanator/modules</value>
+    <settings type="bootstrap">
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.TerminalBookmark">
+            com.bookmarkanator.bookmarks.TerminalBookmark
         </setting>
-        <setting key="another key">
-            <value>/home/bookmarkanator/modules</value>
+        <setting class="com.bookmarkanator.core.SettingsItemList" key="module-locations">/Users/lloyd1/Bookmark-anator</setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.ReminderBookmark">
+            com.bookmarkanator.bookmarks.ReminderBookmark
         </setting>
-        <setting key="zzzz">
-            <value>Another setting value</value>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.SequenceBookmark">
+            com.bookmarkanator.bookmarks.SequenceBookmark
         </setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.EncryptedBookmark">
+            com.bookmarkanator.bookmarks.EncryptedBookmark
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingsItemList" key="bookmark-io-config">/Users/lloyd1/Bookmark-anator/bookmarks.xml</setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.TextBookmark">
+            com.bookmarkanator.bookmarks.TextBookmark
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.WebBookmark">com.bookmarkanator.bookmarks.WebBookmark
+        </setting>
+        <setting class="com.bookmarkanator.core.SettingsItemList" key="bookmark-io-class">com.bookmarkanator.io.FileIO</setting>
     </settings>
 </root>
 

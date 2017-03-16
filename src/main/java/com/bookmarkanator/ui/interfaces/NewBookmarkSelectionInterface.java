@@ -8,6 +8,7 @@ public interface NewBookmarkSelectionInterface
     void setTypes(Set<AbstractUIBookmark> types);
     Set<AbstractUIBookmark> getTypes();
     AbstractUIBookmark getSelectedBookmarkType();
-    void show();
+    void show()
+        throws Exception;
     void hide();
 }

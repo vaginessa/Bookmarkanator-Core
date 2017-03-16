@@ -24,7 +24,7 @@ public class WebBookmark extends AbstractBookmark{
 
     @Override
     public String getTypeName() {
-        return "web";
+        return "Web";
     }
 
     @Override

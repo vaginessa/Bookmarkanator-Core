@@ -2,6 +2,7 @@ package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.core.*;
 import com.bookmarkanator.util.*;
 
 /**
@@ -12,17 +13,13 @@ import com.bookmarkanator.util.*;
 public class FileContext implements ContextInterface
 {
     private Map<UUID, AbstractBookmark> bookmarks;
-    //Note: the two maps below are for checking if a bookmark being deleted or edited has other bookmarks that depend on it.
-    private Map<UUID, Set<UUID>> bkDependsOnMap;//<bookmark id, set<bk id's that this bk depends on>>
-    private Map<UUID, Set<UUID>> whatDependsOnBKMap;//<bookmark id, set<bk id's that depend on this bk>>
     private Search<UUID> bookmarkNames;
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
     private Search<UUID> bookmarkText;//The text the bookmark contains.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
-    //Bookmarks can store data here and communicate with other bookmarks. They can read/write their own data, but only read the data of other bookmark types.
-    private Map<String, Map<String, Object>> communicationMap;//<Class name of bookmark, Map<Bookmark data key, bookmark data object>>
+    private MessageBoard messageBoard;
 
     public FileContext()
     {
@@ -31,17 +28,19 @@ public class FileContext implements ContextInterface
         bookmarkTypeNames = new Search<>();
         bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
-        communicationMap = new HashMap<>();
-        bkDependsOnMap = new HashMap<>();
-        whatDependsOnBKMap = new HashMap<>();
         numSearchResults = 20;
+        messageBoard = new MessageBoard();
     }
-
-
 
     // ============================================================
     // Bookmark Methods
     // ============================================================
+
+    @Override
+    public MessageBoard getMessageBoard()
+    {
+        return messageBoard;
+    }
 
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)
@@ -55,83 +54,6 @@ public class FileContext implements ContextInterface
         return this.bkioInterface;
     }
 
-
-    @Override
-    public Set<UUID> getDependents(UUID bookmarkId)
-    {
-        return bkDependsOnMap.get(bookmarkId);
-    }
-
-
-    @Override
-    public Set<UUID> getDependsOn(UUID bookmarkId)
-    {
-        return whatDependsOnBKMap.get(bookmarkId);
-    }
-
-    /**
-     * Indicates one bookmark (theBookmark) depends on another bookmark (dependingBookmark)
-     *
-     * @param theBookmark       The bookmark that will depend on another bookmark
-     * @param dependingBookmark The bookmark that is being depended upon.
-     * @return The number of bookmarks 'theBookmark' depends upon.
-     */
-    @Override
-    public int addDependency(UUID theBookmark, UUID dependingBookmark)
-    {
-        Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
-
-        if (dependsOnSet == null)
-        {
-            dependsOnSet = new HashSet<>();
-        }
-
-        dependsOnSet.add(dependingBookmark);//adding a bookmark Id that this bookmark depends on.
-
-        Set<UUID> dependsOnMeSet = whatDependsOnBKMap.get(dependingBookmark);
-
-        if (dependsOnMeSet == null)
-        {
-            dependsOnMeSet = new HashSet<>();
-        }
-
-        dependsOnMeSet.add(theBookmark);//adding this bookmark to the list of bookmarks that the depnd on the depending bookmark.
-
-        return dependsOnSet.size();
-    }
-
-    /**
-     * Removes the indicator that one bookmark (theBookmark) depends on another bookmark (dependingBookmark)
-     *
-     * @param theBookmark       The bookmark that will stop depending on 'dependingBookmark'
-     * @param dependingBookmark The bookmark that will no longer link to 'theBookmark'
-     * @return The number of bookmarks that 'theBookmark' currently depends on.
-     */
-    @Override
-    public int removeDependency(UUID theBookmark, UUID dependingBookmark)
-    {
-        Set<UUID> dependsOnSet = bkDependsOnMap.get(theBookmark);
-
-        if (dependsOnSet != null)
-        {
-            dependsOnSet.remove(dependingBookmark);//'theBookmark' no longer depends on 'dependingBookmark'
-        }
-
-        Set<UUID> dependsOnMeSet = whatDependsOnBKMap.get(dependingBookmark);
-
-        if (dependsOnMeSet != null)
-        {
-            dependsOnMeSet.remove(theBookmark);//'theBookmark' is no longer listed as something that is depending on 'dependingBookmark'
-        }
-
-        return dependsOnSet == null ? 0 : dependsOnSet.size();
-    }
-
-    /**
-     * Gets all bookmark UUID's
-     *
-     * @return A set of bookmark Id's
-     */
     @Override
     public Set<UUID> getBookmarkIDs()
     {

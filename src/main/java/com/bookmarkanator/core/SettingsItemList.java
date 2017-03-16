@@ -3,6 +3,9 @@ package com.bookmarkanator.core;
 import java.net.*;
 import java.util.*;
 
+/**
+ * This class represents a settings item in list form.
+ */
 public class SettingsItemList extends SettingItem
 {
     private List<String> items;

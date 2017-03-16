@@ -21,7 +21,7 @@ public class SequenceBookmark extends AbstractBookmark
     @Override
     public String getTypeName()
     {
-        return "sequence";
+        return "Sequence";
     }
 
     @Override

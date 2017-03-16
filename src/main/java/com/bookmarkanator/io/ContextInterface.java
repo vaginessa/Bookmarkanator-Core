@@ -2,6 +2,7 @@ package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.core.*;
 
 /**
  * The interface that other classes will access to perform operations (searching, sorting, adding, removing) of bookmarks.
@@ -9,33 +10,15 @@ import com.bookmarkanator.bookmarks.*;
 public interface ContextInterface
 {
 
+    /**
+     * Gives the storage object to this class.
+     */
+    MessageBoard getMessageBoard();
+
     //TODO convert to abstract class?
     void setBKIOInterface(BKIOInterface bkioInterface);
 
     BKIOInterface getBKIOInterface();
-
-    /**
-     * Gets a set of bookmark Id's of the bookmarks that depend on this bookmark in some way. Basically asking the question what do I depend on?
-     * *Note: Individual bookmarks are responsible for setting their dependents.
-     *
-     * @param bookmarkId The bookmark to check for dependents.
-     * @return A set of dependent bookmark Id's
-     */
-    Set<UUID> getDependents(UUID bookmarkId);
-
-    /**
-     * Gets a set of bookmark Id's that this bookmark depends on. Basically asking the question what depends on me?
-     * *Note: Individual bookmarks are responsible for setting thei dependents. When dependents are set this depends on list is automatically updated.
-     *
-     * @param bookmarkId
-     * @return
-     */
-    Set<UUID> getDependsOn(UUID bookmarkId);
-
-    int addDependency(UUID theBookmark, UUID dependingBookmark);
-
-    int removeDependency(UUID theBookmark, UUID dependingBookmark);
-
 
     Set<UUID> getBookmarkIDs();
 

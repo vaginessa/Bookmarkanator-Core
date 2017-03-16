@@ -24,7 +24,7 @@ public class EncryptedBookmark extends AbstractBookmark{
 
     @Override
     public String getTypeName() {
-        return "encrypted";
+        return "Encrypted";
     }
 
     @Override

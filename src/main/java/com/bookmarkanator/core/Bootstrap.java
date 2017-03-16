@@ -172,8 +172,6 @@ public class Bootstrap
         return res;
     }
 
-
-
     private String getDefaultSettingsDirectory()
     {
         String directory = getDefaultBaseDirectory();

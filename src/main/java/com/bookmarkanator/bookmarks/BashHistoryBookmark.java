@@ -17,7 +17,7 @@ public class BashHistoryBookmark extends AbstractBookmark
     @Override
     public String getTypeName()
     {
-        return null;
+        return "BashHistory";
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ReminderBookmark extends AbstractBookmark
     @Override
     public String getTypeName()
     {
-        return null;
+        return "Reminder";
     }
 
     @Override

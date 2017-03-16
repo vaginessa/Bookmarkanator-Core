@@ -40,6 +40,8 @@ public class BookmarksXMLParser
     private Settings globalSettings;
     private ClassLoader classLoader;
 
+    //TODO Add bookmark dependencies in.
+
     public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, Settings globalSettings, ClassLoader classLoader)
     {
         this.contextInterface = contextInterface;

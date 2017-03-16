@@ -7,7 +7,7 @@ import org.junit.*;
 public class TestSearchClass
 {
 
-    @Ignore
+//    @Ignore
     @Test
     public void testTextAssociator()
     {

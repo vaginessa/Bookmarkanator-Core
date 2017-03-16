@@ -76,7 +76,7 @@ public class Main extends Application
 //        bookmarksListUI.setPrefWidth(bestWindowSize.getWidth()*.5);
         gridPane.add(bookmarksListUI, 3, 1, 2, 4);
 
-        NewBookmarkSelectorUI newBookmarkSelectorUI= new NewBookmarkSelectorUI();
+        NewBookmarkSelectorUI newBookmarkSelectorUI= new NewBookmarkSelectorUI(guiController);
         guiController.setNewBookmarkSelectorUI(newBookmarkSelectorUI);
 
         setRowConstraints(gridPane);

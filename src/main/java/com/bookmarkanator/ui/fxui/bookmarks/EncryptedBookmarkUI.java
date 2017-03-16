@@ -23,11 +23,12 @@ public class EncryptedBookmarkUI extends AbstractUIBookmark
     public AbstractBookmark newBookmarkView()
         throws Exception
     {
+        System.out.println(this.getClass().getCanonicalName());
         return null;
     }
 
     @Override
-    public String getUsingClassName()
+    public String getRequiredBookmarkClassName()
     {
         return EncryptedBookmark.class.getCanonicalName();
     }

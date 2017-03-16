@@ -43,7 +43,7 @@
     </block>
     <block class="com.bookmarkanator.bookmarks.SequenceBookmark">
         <bookmark>
-            <name>Test Group</name>
+            <name>Three bookmarks in sequence; failed to mail..., test text..., and yahoo.</name>
             <id>3AD60CF5-6257-404D-96CF-89CF99E26E85</id>
             <text>jnjnjn</text>
             <tags>
@@ -53,10 +53,14 @@
             </tags>
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
-            <content>A0457286-2173-47C3-A336-556B55FC2D71,5ECCE5A4-BCAD-4886-B37E-79D014C7260F</content>
+            <content>
+                06F27238-BC6F-4077-BC64-7975689A8364,
+                3112B182-5DB9-43FD-97BE-6A2D4071B7FD,
+                94219EF5-6C6E-4A55-8DA7-5107ED80D0A9
+            </content>
         </bookmark>
         <bookmark>
-            <name>Test Group A</name>
+            <name>Sequence of a single web bookmark.</name>
             <id>42035469-ACE9-470B-A476-C0304701CCE3</id>
             <text>jnjnjn</text>
             <tags>
@@ -66,6 +70,9 @@
             </tags>
             <creationDate>Wed, 4 Jul 2001 12:08:56 -0700</creationDate>
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
+            <content>
+                06F27238-BC6F-4077-BC64-7975689A8364
+            </content>
         </bookmark>
     </block>
 </bookmarks>

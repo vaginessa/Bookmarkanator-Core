@@ -31,7 +31,7 @@ public abstract class AbstractUIBookmark
 
     /**
      * Using class name is the name that this bookmark requires
-     * @return
+     * @return  The name of the bookmark that this UI element needs to use.
      */
-    public abstract String getUsingClassName();
+    public abstract String getRequiredBookmarkClassName();
 }

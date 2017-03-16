@@ -2,6 +2,9 @@ package com.bookmarkanator.core;
 
 import java.util.*;
 
+/**
+ * This class represents a single setting item.
+ */
 public class SettingItem
 {
     protected String key;
