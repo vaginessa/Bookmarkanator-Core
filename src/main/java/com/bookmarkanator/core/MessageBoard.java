@@ -5,19 +5,20 @@ import com.bookmarkanator.bookmarks.*;
 
 public class MessageBoard
 {
-    private Map<String, Map<String, Object>> messageBoard;//<bookmark class name, message board map>
+    private static MessageBoard messageBoard;
+    private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, message board map>
     // secret key assigned after bookmarks are loaded, and is used to restrict write access to the message board.
     private Map<String, String> messageBoardKeyMap;//<bookmark class name, secret key>
 
     public MessageBoard()
     {
-        messageBoard = new HashMap<>();
+        messagesMap = new HashMap<>();
         messageBoardKeyMap = new HashMap<>();
     }
 
     public Object readBoard(String className, String objKey)
     {
-        Map<String, Object> map = messageBoard.get(className);
+        Map<String, Object> map = messagesMap.get(className);
         if (map==null)
         {
             return null;
@@ -33,7 +34,7 @@ public class MessageBoard
 
         if (secretKey.equals(obtainedKey))
         {//Allow writing on message board
-            Map<String, Object> tmp = messageBoard.get(className);
+            Map<String, Object> tmp = messagesMap.get(className);
             if (tmp!=null)
             {
                 tmp.put(objKey, value);
@@ -49,5 +50,14 @@ public class MessageBoard
         {
             messageBoardKeyMap.put(bookmark.getClass().getCanonicalName(), secretKey);
         }
+    }
+
+    public static MessageBoard use()
+    {
+        if (messageBoard==null)
+        {
+            messageBoard = new MessageBoard();
+        }
+        return messageBoard;
     }
 }

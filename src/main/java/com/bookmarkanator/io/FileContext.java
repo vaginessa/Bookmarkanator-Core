@@ -2,7 +2,6 @@ package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
 import com.bookmarkanator.util.*;
 
 /**
@@ -19,7 +18,6 @@ public class FileContext implements ContextInterface
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
-    private MessageBoard messageBoard;
 
     public FileContext()
     {
@@ -29,18 +27,17 @@ public class FileContext implements ContextInterface
         bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
         numSearchResults = 20;
-        messageBoard = new MessageBoard();
     }
 
     // ============================================================
     // Bookmark Methods
     // ============================================================
 
-    @Override
-    public MessageBoard getMessageBoard()
-    {
-        return messageBoard;
-    }
+//    @Override
+//    public MessageBoard getMessageBoard()
+//    {
+//        return MessageBoard.use();
+//    }
 
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)
@@ -603,13 +600,13 @@ public class FileContext implements ContextInterface
         }
     }
 
-    @Override
-    public void bkAction(AbstractBookmark abstractBookmark)
-        throws Exception
-    {
-        //TODO notify listeners, and verify they allow edit.
-        abstractBookmark.action();
-    }
+//    @Override
+//    public void bkAction(AbstractBookmark abstractBookmark)
+//        throws Exception
+//    {
+//        //TODO notify listeners, and verify they allow edit.
+//        abstractBookmark.action();
+//    }
 
     @Override
     public Set<String> getTags(Set<AbstractBookmark> bookmarks)

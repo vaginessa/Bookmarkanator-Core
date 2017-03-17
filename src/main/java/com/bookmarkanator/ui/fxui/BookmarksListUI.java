@@ -71,12 +71,12 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
         throws Exception
     {
         observableList.clear();
+
         for (AbstractBookmark bk : bookmarks)
         {
             String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
             String className = this.getGUIController().getSettings().getSetting(bkClassNameKey).getValue();
-            final AbstractUIBookmark bkui = ModuleLoader.use()
-                .loadClass(className, AbstractUIBookmark.class, this.getGUIController().getBootstrap().getClassLoader());
+            final AbstractUIBookmark bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class);
             bkui.setBookmark(bk);
 
             observableList.add(bkui);

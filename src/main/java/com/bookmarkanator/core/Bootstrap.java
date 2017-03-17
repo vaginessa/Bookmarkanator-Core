@@ -2,14 +2,14 @@ package com.bookmarkanator.core;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.io.*;
 import com.bookmarkanator.util.*;
 
 public class Bootstrap
 {
-    private static final Logger logger = Logger.getLogger(Bootstrap.class.getName());
+    private static Bootstrap bootstrap;
+
     //Default fields
     private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
     private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmark-anator";
@@ -36,38 +36,52 @@ public class Bootstrap
     //Note: To override a built in bookmark set the following: <original bookmark classname, overriding bookmark class name>
     //example: <com.bookmarkanator.TextBookmark, List[com.bookmarkanator.NewTextBookmark]>
 
-    private boolean hasClosed;
-    private ClassLoader classLoader;
     private BKIOInterface bkioInterface;
-    private ModuleLoader moduleLoader;
-    private Set<Class<? extends AbstractBookmark>> bookmarkClassesFound;
 
     public Bootstrap()
         throws Exception
     {
-        this.classLoader = this.getClass().getClassLoader();
-        hasClosed = false;
-
+        //Configure the global settings object
         GlobalSettings.use().setFile(new File(getDefaultSettingsDirectory()));
         Settings defaultSettings = getDefaultSettings();
         GlobalSettings.use().getSettings().importSettings(defaultSettings);
 
-        this.moduleLoader = new ModuleLoader();
-        this.classLoader = moduleLoader.addModulesToClasspath(((SettingsItemList)GlobalSettings.use().getSettings().getSetting(Bootstrap.MODULE_LOCATIONS_KEY)).getItems(), this.getClass().getClassLoader());
-        this.bookmarkClassesFound = moduleLoader.getBookmarkClassesFound();
+        //Track the classes that can be overridden externally...
+        ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
+        ModuleLoader.use().addClassToTrack(BKIOInterface.class);
+        ModuleLoader.use().addClassToTrack(ContextInterface.class);
+
+        SettingsItemList moduleLocations = ((SettingsItemList)GlobalSettings.use().getSettings().getSetting(Bootstrap.MODULE_LOCATIONS_KEY));
+        if (moduleLocations!=null)
+        {//Add jars and then locate tracked classes
+            ModuleLoader.use().addModulesToClasspath(moduleLocations.getItems());
+        }
+        else
+        {//Locate the tracked classes
+            ModuleLoader.use().addModulesToClasspath();
+        }
 
         this.bkioInterface = loadBKIOInterface();
     }
 
-    public BKIOInterface getBkioInterface()
+    // ============================================================
+    // Methods
+    // ============================================================
+
+    public Settings getSettings()
     {
-        return bkioInterface;
+        return GlobalSettings.use().getSettings();
     }
 
-    public Set<Class<? extends AbstractBookmark>> getBookmarkClassesFound()
+    public void saveSettingsFile()
+        throws Exception
     {
-        return bookmarkClassesFound;
+        GlobalSettings.use().writeToDisk();
     }
+
+    // ============================================================
+    // Private Methods
+    // ============================================================
 
     /**
      * Loads the BKIOInterface class that is specified in the settings file, or the default setting added to the settings file.
@@ -77,6 +91,15 @@ public class Bootstrap
     private BKIOInterface loadBKIOInterface()
         throws Exception
     {
+        //TODO: Refactor this class
+        // 1 - The bkio classes are tracked in the Module loader so you should use one of those.
+        // 2 - If there is an override setting in the settings use that class if it can be loaded.
+        // 3 - If not figure out which one to load
+
+
+
+
+
         //The class name to use when loading the class
         List<String> bkioClasses = ((SettingsItemList)GlobalSettings.use().getSettings().getSetting(BOOKMARK_IO_CLASS_KEY)).getItems();
         //The list of config strings found in the settings. For example FileIo class requires a file path string to load the bookmarks file.
@@ -92,12 +115,13 @@ public class Bootstrap
             {
                 String className = bkioClasses.get(c);
                 String config = Util.getItem(bkioConfigs, c);
-                BKIOInterface bkio2 = moduleLoader.loadClass(className, BKIOInterface.class, this.classLoader);
+                BKIOInterface bkio2 = ModuleLoader.use().loadClass(className, BKIOInterface.class);
 
-                logger.config("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
-                logger.config("Calling init()...");
-                bkio2.init(config, GlobalSettings.use().getSettings(), this.classLoader);
-                logger.config("Done.");
+                //TODO The logger writes this stuff out multiple times, Figure out why.
+                System.out.println("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
+                System.out.println("Calling init()...");
+                bkio2.init(config);
+                System.out.println("Done.");
 
                 return bkio2;
             }
@@ -190,33 +214,34 @@ public class Bootstrap
         return usersHome + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY;
     }
 
-    public Settings getSettings()
+    // ============================================================
+    // Static Methods
+    // ============================================================
+
+    public static BKIOInterface IOInterface()
     {
-        return GlobalSettings.use().getSettings();
+        return Bootstrap.use().bkioInterface;
     }
 
-    public void saveSettingsFile()
+    public static ContextInterface context()
         throws Exception
     {
-        GlobalSettings.use().writeToDisk();
+        return Bootstrap.use().bkioInterface.getContext();
     }
 
-    public ClassLoader getClassLoader()
+    public static Bootstrap use()
     {
-        return this.classLoader;
+        if (bootstrap==null)
+        {
+            try
+            {
+                bootstrap = new Bootstrap();
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return bootstrap;
     }
-
-    public static Class loadBookmarkClass(String className, ClassLoader classLoader) throws Exception
-    {
-        Class clazz = classLoader.loadClass(className);
-        Class sub = clazz.asSubclass(AbstractBookmark.class);
-        System.out.println("Loaded bookmark class: \"" + className + "\".");
-        return sub;
-    }
-
-    public static AbstractBookmark instantiateBookmarkClass(Class clazz,ContextInterface contextInterface ) throws Exception
-    {
-        return (AbstractBookmark) clazz.getConstructor(ContextInterface.class).newInstance(contextInterface);
-    }
-
 }

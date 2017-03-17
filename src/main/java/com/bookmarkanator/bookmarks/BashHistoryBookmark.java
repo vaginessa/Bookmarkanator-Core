@@ -1,7 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.io.*;
 
 /**
  * The idea behind this bookmark is to be able to record all bash history in a sorted unique manner. to make it easier to search. Also it should allow
@@ -9,10 +8,10 @@ import com.bookmarkanator.io.*;
  */
 public class BashHistoryBookmark extends AbstractBookmark
 {
-    public BashHistoryBookmark(ContextInterface contextInterface)
-    {
-        super(contextInterface);
-    }
+//    public BashHistoryBookmark(ContextInterface contextInterface)
+//    {
+//        super(contextInterface);
+//    }
 
     @Override
     public String getTypeName()

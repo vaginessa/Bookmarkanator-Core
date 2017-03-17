@@ -1,21 +1,20 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.io.*;
 
 public class TextBookmark extends AbstractBookmark
 {
 
-    /**
-     * This constructor is used to allow custom behaviour or pre-processing to occur relative to the bookmark context object, or for instance
-     * to throw an error if more than one bookmark is created, or other such custom behaviours.
-     *
-     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-     */
-    public TextBookmark(ContextInterface contextInterface)
-    {
-        super(contextInterface);
-    }
+//    /**
+//     * This constructor is used to allow custom behaviour or pre-processing to occur relative to the bookmark context object, or for instance
+//     * to throw an error if more than one bookmark is created, or other such custom behaviours.
+//     *
+//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
+//     */
+//    public TextBookmark(ContextInterface contextInterface)
+//    {
+//        super();
+//    }
 
     @Override
     public String getTypeName()
@@ -49,7 +48,7 @@ public class TextBookmark extends AbstractBookmark
     @Override
     public AbstractBookmark getNew()
     {
-        return new TextBookmark(null);
+        return new TextBookmark();
     }
 
     @Override

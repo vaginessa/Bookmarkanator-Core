@@ -2,10 +2,13 @@ package com.bookmarkanator.bookmarks;
 
 import java.util.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.io.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
+
+
+    //TODO Add a field here to have settings passing? Or do it some other way?
+
     protected static String secretKey;//Key needed to access message board
     public enum ActionTypes
     {
@@ -33,14 +36,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private Set<String> tags;
     private Date creationDate;
     private Date lastAccessedDate;
-    private ContextInterface contextInterface;
     private Set<BKDependency> dependencies;//Things this bookmark wishes to be notified of.
 
     // ============================================================
     // Constructors
     // ============================================================
 
-    private AbstractBookmark()
+    public AbstractBookmark()
     {
         tags = new HashSet<>();
         id = UUID.randomUUID();
@@ -49,38 +51,38 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         creationDate = new Date();
         lastAccessedDate = new Date();
     }
-
-    /**
-     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
-     * custom behaviour upon being initialized.
-     *
-     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-     */
-    public AbstractBookmark(ContextInterface contextInterface)
-    {//Do nothing for the abstract bookmark.
-        this();
-        this.contextInterface = contextInterface;
-    }
+//
+//    /**
+//     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
+//     * custom behaviour upon being initialized.
+//     *
+//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
+//     */
+//    public AbstractBookmark(ContextInterface contextInterface)
+//    {//Do nothing for the abstract bookmark.
+//        this();
+//        this.contextInterface = contextInterface;
+//    }
 
     // ============================================================
     // Methods
     // ============================================================
-
-    /**
-     * @return The context interface that this bookmark belongs to (The context where this bookmark was added).
-     */
-    public ContextInterface getContextInterface()
-    {
-        return contextInterface;
-    }
-
-    /**
-     * @param contextInterface The context interface that this bookmark belongs to (The context where this bookmark was added).
-     */
-    public void setContextInterface(ContextInterface contextInterface)
-    {
-        this.contextInterface = contextInterface;
-    }
+//
+//    /**
+//     * @return The context interface that this bookmark belongs to (The context where this bookmark was added).
+//     */
+//    public ContextInterface getContextInterface()
+//    {
+//        return contextInterface;
+//    }
+//
+//    /**
+//     * @param contextInterface The context interface that this bookmark belongs to (The context where this bookmark was added).
+//     */
+//    public void setContextInterface(ContextInterface contextInterface)
+//    {
+//        this.contextInterface = contextInterface;
+//    }
 
     public String getName()
     {

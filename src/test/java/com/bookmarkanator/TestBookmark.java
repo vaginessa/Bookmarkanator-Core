@@ -28,7 +28,7 @@ public class TestBookmark
     {
         List<AbstractBookmark> bks = new ArrayList<>();
 
-        AbstractBookmark b = new TextBookmark(null);
+        AbstractBookmark b = new TextBookmark();
         b.setName("Text Bookmark 1");
         b.setId(UUID.randomUUID());
         b.setText("This is text of Bookmark 1");
@@ -38,7 +38,7 @@ public class TestBookmark
 
         bks.add(b);
 
-        b = new TextBookmark(null);
+        b = new TextBookmark();
         b.setName("Text Bookmark 2");
         b.setId(UUID.randomUUID());
         b.setText("This is text of Bookmark 2");
@@ -48,7 +48,7 @@ public class TestBookmark
 
         bks.add(b);
 
-        b = new TextBookmark(null);
+        b = new TextBookmark();
         b.setName("Another Bookmark");
         b.setId(UUID.randomUUID());
         b.setText("I'm another bookmark!");
@@ -58,7 +58,7 @@ public class TestBookmark
 
         bks.add(b);
 
-        b = new TextBookmark(null);
+        b = new TextBookmark();
         b.setName("Bob");
         b.setId(UUID.randomUUID());
         b.setText("Is Awesome");
@@ -67,7 +67,7 @@ public class TestBookmark
 
         bks.add(b);
 
-        b = new WebBookmark(null);
+        b = new WebBookmark();
         b.setName("A");
         b.setId(UUID.randomUUID());
         b.setText("B");

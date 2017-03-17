@@ -36,18 +36,13 @@ public class BookmarksXMLParser
     private InputStream inputStream;
     private Document document;
 
-    //Global settings
-    private Settings globalSettings;
-    private ClassLoader classLoader;
 
     //TODO Add bookmark dependencies in.
 
-    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn, Settings globalSettings, ClassLoader classLoader)
+    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
     {
         this.contextInterface = contextInterface;
         this.inputStream = xmlIn;//The calling program must close the stream.
-        this.globalSettings = globalSettings;
-        this.classLoader = classLoader;
     }
 
     public void parse()
@@ -77,30 +72,27 @@ public class BookmarksXMLParser
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    if (globalSettings!=null)
-                    {
-                        String replacementClassName = globalSettings.getSetting(className).getValue();
+                        String replacementClassName = GlobalSettings.use().getSettings().getSetting(className).getValue();
 
                         if (replacementClassName != null && !className.equals(replacementClassName))
                         {//Override class name specified in bookmark file with one specified in the settings file.
-                            System.out.println("Overriding bookmark class name \""+className+"\" with this class name \""+replacementClassName+"\" from the settings file.");
+                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
+                                "\" from the settings file.");
                             className = replacementClassName;
                         }
-                    }
+
 
                     //TODO Somethings not right with the settings loading. It should not be overriding bookmarks with the same bookmark class name.
 
                     className = className.trim();
 
                     Class clazz = loadedClasses.get(classNameNode.getTextContent());
-
+                    AbstractBookmark abs = null;
                     if (clazz == null)
                     {
-                        clazz = Bootstrap.loadBookmarkClass(className, this.classLoader);
-                        loadedClasses.put(className, clazz);
+                        abs = ModuleLoader.use().loadClass(className, AbstractBookmark.class);
+                        loadedClasses.put(className, abs.getClass());
                     }
-
-                    AbstractBookmark abs = Bootstrap.instantiateBookmarkClass(clazz, this.contextInterface);
 
                     //add all bookmarks of this type
                     parseBookmark(n, abs);
@@ -127,7 +119,6 @@ public class BookmarksXMLParser
                 abs = abstractBookmark.getNew();
                 parseBookmarkDetails(n, abs);
                 contextInterface.addBookmark(abs);
-                abs.setContextInterface(this.contextInterface);
             }
         }
     }
@@ -202,8 +193,9 @@ public class BookmarksXMLParser
      * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.
      * It can be in any format because this method ignores everything between the two content tags, and simply returns the
      * raw data.
-     * @param node  The content node to parse bookmark settings from.
-     * @return  A string containing the settings specific to this bookmark.
+     *
+     * @param node The content node to parse bookmark settings from.
+     * @return A string containing the settings specific to this bookmark.
      */
     private String getContent(Node node)
     {
@@ -224,13 +216,13 @@ public class BookmarksXMLParser
     /**
      * This method removes the annoying <?xml version="1.0" encoding="UTF-16"?> that the LSSerializer places on it's
      * string verison of the xml.
-     * @param xmlString  A string containing xml version ... strings.
-     * @return  A string without xml version ... strings in it.
+     *
+     * @param xmlString A string containing xml version ... strings.
+     * @return A string without xml version ... strings in it.
      */
     private String sanitizeXMLString(String xmlString)
     {
         return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
     }
-
 
 }

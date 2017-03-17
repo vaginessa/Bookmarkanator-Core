@@ -1,10 +1,19 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class BashHistoryBookmarkUI extends AbstractUIBookmark
 {
+    public BashHistoryBookmarkUI()
+    {
+    }
+
+    public BashHistoryBookmarkUI(ContextInterface context)
+    {
+        super(context);
+    }
 
     @Override
     public Image getTypeIcon()

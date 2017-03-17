@@ -1,20 +1,19 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.io.*;
 
 public class TerminalBookmark extends AbstractBookmark
 {
-    /**
-     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
-     * custom behaviour upon being initialized.
-     *
-     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-     */
-    public TerminalBookmark(ContextInterface contextInterface)
-    {
-        super(contextInterface);
-    }
+//    /**
+//     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
+//     * custom behaviour upon being initialized.
+//     *
+//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
+//     */
+//    public TerminalBookmark(ContextInterface contextInterface)
+//    {
+//        super(contextInterface);
+//    }
 
     @Override
     public String getTypeName()

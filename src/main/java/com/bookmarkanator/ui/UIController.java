@@ -7,8 +7,6 @@ import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
-import org.reflections.*;
-import org.reflections.util.*;
 
 public class UIController implements GUIControllerInterface
 {
@@ -21,8 +19,6 @@ public class UIController implements GUIControllerInterface
     private MenuInterface menuInterface;
     private QuickPanelInterface quickPanelInterface;
     private NewBookmarkSelectionInterface newBookmarkSelectionInterface;
-
-    private Bootstrap bootstrap;
 
     private Set<AbstractBookmark> visibleBookmarks;
     private Set<String> availableTags;
@@ -48,12 +44,12 @@ public class UIController implements GUIControllerInterface
     public static final String INCLUDE_BOOKMARKS_WITH_ANY_TAGS = "ANY TAG";
     public static final String INCLUDE_BOOKMARKS_WITHOUT_TAGS = "WITHOUT TAGS";
 
-    public UIController(Bootstrap bootstrap)
+    public UIController()
         throws Exception
     {
-        assert bootstrap != null;
-        ContextInterface context = bootstrap.getBkioInterface().getContext();
-        this.bootstrap = bootstrap;
+        ContextInterface context = Bootstrap.IOInterface().getContext();
+        ModuleLoader.use().addClassToTrack(AbstractUIBookmark.class);
+        ModuleLoader.use().addModulesToClasspath();
 
         this.visibleBookmarks = new HashSet<>();
         this.visibleBookmarks.addAll(context.getBookmarks());
@@ -92,15 +88,9 @@ public class UIController implements GUIControllerInterface
     }
 
     @Override
-    public Bootstrap getBootstrap()
-    {
-        return this.bootstrap;
-    }
-
-    @Override
     public Settings getSettings()
     {
-        return getBootstrap().getSettings();
+        return Bootstrap.use().getSettings();
     }
 
     @Override
@@ -278,8 +268,8 @@ public class UIController implements GUIControllerInterface
     public Set<AbstractUIBookmark> getAllTypesUIs()
         throws Exception
     {
-        Set<Class<? extends AbstractBookmark>> kbs = bootstrap.getBookmarkClassesFound();
-        Map<String, Class<? extends AbstractBookmark>> bkClassNames = new HashMap<>();
+        Set<Class> kbs = ModuleLoader.use().getClassesLoaded(AbstractBookmark.class);
+        Map<String, Class> bkClassNames = new HashMap<>();
 
         for (Class clazz: kbs)
         {
@@ -288,15 +278,16 @@ public class UIController implements GUIControllerInterface
 
 
         Set<AbstractUIBookmark> res = new HashSet<>();
-        Set<Class<? extends AbstractUIBookmark>> loadedUIs = getloadedBKUIInterfaces();
+        Set<Class> loadedUIs = ModuleLoader.use().getClassesLoaded(AbstractUIBookmark.class);
+        ContextInterface context =Bootstrap.context();
 
         for (Class clazz: loadedUIs)
         {
-            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor().newInstance();
+            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor(ContextInterface.class).newInstance(context);
             Class bookmarkClass = bkClassNames.get(tmp.getRequiredBookmarkClassName());
             if (bookmarkClass != null)
             {
-                AbstractBookmark abs = Bootstrap.instantiateBookmarkClass(bookmarkClass, bootstrap.getBkioInterface().getContext());
+                AbstractBookmark abs = ModuleLoader.use().loadClass(bookmarkClass.getCanonicalName(), AbstractBookmark.class);
                 if (abs.getTypeName()==null || abs.getTypeName().trim().isEmpty())
                 {
                     MLog.warn("Bookmark "+abs.getClass().getCanonicalName()+" has no type string.");
@@ -308,7 +299,6 @@ public class UIController implements GUIControllerInterface
                 }
             }
         }
-
 
         return res;
     }
@@ -437,7 +427,7 @@ public class UIController implements GUIControllerInterface
             return new HashSet<>(bookmarks);
         }
 
-        ContextInterface context = this.bootstrap.getBkioInterface().getContext();
+        ContextInterface context = Bootstrap.context();
 
         boolean includeTags = this.searchInclusions.get(UIController.SEARCH_TAGS_KEY);
         boolean includeTypes = this.searchInclusions.get(UIController.SEARCH_TYPES_KEY);
@@ -487,7 +477,7 @@ public class UIController implements GUIControllerInterface
     private void updateBookmarksData()
         throws Exception
     {
-        ContextInterface context = this.bootstrap.getBkioInterface().getContext();
+        ContextInterface context = Bootstrap.context();
         this.allTypes = context.getTypesLoaded(context.getBookmarks());
 
         this.visibleBookmarks.clear();
@@ -532,27 +522,27 @@ public class UIController implements GUIControllerInterface
 
         return new HashSet<>(tmp);
     }
+//
+//
+//    public static Class loadBookmarkUIClass(String className, ClassLoader classLoader) throws Exception
+//    {
+//        Class clazz = classLoader.loadClass(className);
+//        Class sub = clazz.asSubclass(AbstractUIBookmark.class);
+//        System.out.println("Loaded bookmark UI class: \"" + className + "\".");
+//        return sub;
+//    }
+//
+//    public static AbstractUIBookmark instantiateBookmarkUIClass(Class clazz,ContextInterface contextInterface ) throws Exception
+//    {
+//        return (AbstractUIBookmark) clazz.getConstructor().newInstance();
+//    }
 
-
-    public static Class loadBookmarkUIClass(String className, ClassLoader classLoader) throws Exception
-    {
-        Class clazz = classLoader.loadClass(className);
-        Class sub = clazz.asSubclass(AbstractUIBookmark.class);
-        System.out.println("Loaded bookmark UI class: \"" + className + "\".");
-        return sub;
-    }
-
-    public static AbstractUIBookmark instantiateBookmarkUIClass(Class clazz,ContextInterface contextInterface ) throws Exception
-    {
-        return (AbstractUIBookmark) clazz.getConstructor().newInstance();
-    }
-
-    public Set<Class<? extends AbstractUIBookmark>> getloadedBKUIInterfaces()
-    {
-        //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
-        Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(this.bootstrap.getClassLoader()));
-        Set<Class<? extends AbstractUIBookmark>> res = new HashSet<>();
-        res.addAll(reflections.getSubTypesOf(AbstractUIBookmark.class));
-        return res;
-    }
+//    public Set<Class<? extends AbstractUIBookmark>> getloadedBKUIInterfaces()
+//    {
+//        //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
+//        Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(ModuleLoader.getClassLoader()));
+//        Set<Class<? extends AbstractUIBookmark>> res = new HashSet<>();
+//        res.addAll(reflections.getSubTypesOf(AbstractUIBookmark.class));
+//        return res;
+//    }
 }

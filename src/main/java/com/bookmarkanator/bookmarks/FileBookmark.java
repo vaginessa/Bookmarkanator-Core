@@ -1,14 +1,9 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.io.*;
 
 public class FileBookmark extends AbstractBookmark
 {
-    public FileBookmark(ContextInterface contextInterface)
-    {
-        super(contextInterface);
-    }
 
     @Override
     public String getTypeName()

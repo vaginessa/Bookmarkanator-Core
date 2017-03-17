@@ -1,10 +1,19 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class WebBookmarkUI extends AbstractUIBookmark
 {
+    public WebBookmarkUI()
+    {
+    }
+
+    public WebBookmarkUI(ContextInterface context)
+    {
+        super(context);
+    }
 
     @Override
     public Image getTypeIcon()

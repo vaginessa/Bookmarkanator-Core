@@ -1,6 +1,7 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
@@ -73,11 +74,16 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
             if (bk!=null)
             {
                 selected = bk;
-                bk.newBookmarkView();
+                AbstractBookmark abBK = bk.newBookmarkView();
+                if (abBK!=null )
+                {
+                    Bootstrap.context().addBookmark(abBK);
+                    controller.updateUI();
+                }
             }
             else
             {
-                MLog.warn("Value selected has not map entry. Selected item: "+item);
+                MLog.warn("Value selected has no map entry. Selected item: "+item);
             }
         }
         System.out.println(result);

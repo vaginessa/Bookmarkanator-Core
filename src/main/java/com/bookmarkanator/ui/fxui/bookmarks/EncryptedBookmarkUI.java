@@ -1,10 +1,19 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class EncryptedBookmarkUI extends AbstractUIBookmark
 {
+    public EncryptedBookmarkUI()
+    {
+    }
+
+    public EncryptedBookmarkUI(ContextInterface context)
+    {
+        super(context);
+    }
 
     @Override
     public Image getTypeIcon()

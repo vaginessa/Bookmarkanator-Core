@@ -2,18 +2,12 @@ package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
 
 /**
  * The interface that other classes will access to perform operations (searching, sorting, adding, removing) of bookmarks.
  */
 public interface ContextInterface
 {
-
-    /**
-     * Gives the storage object to this class.
-     */
-    MessageBoard getMessageBoard();
 
     //TODO convert to abstract class?
     void setBKIOInterface(BKIOInterface bkioInterface);
@@ -88,14 +82,15 @@ public interface ContextInterface
      */
     void deleteTags(Set<String> tagsToDelete);
 
-    /**
-     * Running the bookmark edit command through this interface so it can propagate the edit, and notify listeners.
-     * @param abstractBookmark  The abstractBookmark to call the edit on.
-     */
-    //TODO Move this method the the bookmark? That way it gets called for sure when there is an action.
-    void bkAction(AbstractBookmark abstractBookmark)
-        throws Exception;
+//    /**
+//     * Running the bookmark edit command through this interface so it can propagate the edit, and notify listeners.
+//     * @param abstractBookmark  The abstractBookmark to call the edit on.
+//     */
+//    //TODO Move this method the the bookmark? That way it gets called for sure when there is an action.
+//    void bkAction(AbstractBookmark abstractBookmark)
+//        throws Exception;
 
     Set<String> getTags(Set<AbstractBookmark> bookmarks);
     Set<String> getTypesLoaded(Set<AbstractBookmark> bookmarks);
+
 }

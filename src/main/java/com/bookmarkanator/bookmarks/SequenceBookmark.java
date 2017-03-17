@@ -1,7 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.io.*;
+import com.bookmarkanator.core.*;
 
 /**
  * A SequenceBookmark is a bookmark that contains a sequence of references to other bookmarks. It is merely an ordered container for other bookmarks.
@@ -11,9 +11,9 @@ public class SequenceBookmark extends AbstractBookmark
     private List<UUID> items;
     private List<UUID> errorItems;
 
-    public SequenceBookmark(ContextInterface contextInterface)
+    public SequenceBookmark()
     {
-        super(contextInterface);
+        super();
         items = new ArrayList<>();
         errorItems = new ArrayList<>();
     }
@@ -40,7 +40,7 @@ public class SequenceBookmark extends AbstractBookmark
         StringBuilder sb = new StringBuilder();
         for (UUID uuid: items)
         {
-            AbstractBookmark abs = getContextInterface().getBookmark(uuid);
+            AbstractBookmark abs = Bootstrap.context().getBookmark(uuid);
             if (abs==null)
             {
                 errorItems.add(uuid);
@@ -72,7 +72,7 @@ public class SequenceBookmark extends AbstractBookmark
     @Override
     public AbstractBookmark getNew()
     {
-        return new SequenceBookmark(null);
+        return new SequenceBookmark();
     }
 
     @Override

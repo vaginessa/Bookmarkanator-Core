@@ -1,7 +1,5 @@
 package com.bookmarkanator.io;
 
-import com.bookmarkanator.core.*;
-
 public interface BKIOInterface {
 
     /**
@@ -10,14 +8,6 @@ public interface BKIOInterface {
      * @throws Exception
      */
     void init(String config)throws Exception;
-
-    /**
-     * Set up the data source with a specific configuration string, and the global config object.
-     * @param config  A configuration setting.
-     * @param globalSettings  The settings that were loaded from the settings file.
-     * @throws Exception
-     */
-    void init(String config, Settings globalSettings, ClassLoader classLoader)throws Exception;
 
     /**
      * Perform a save of all bookmarks.
@@ -41,4 +31,6 @@ public interface BKIOInterface {
      * @return  A IO specific type of context.
      */
     ContextInterface getContext()throws Exception;
+
+
 }

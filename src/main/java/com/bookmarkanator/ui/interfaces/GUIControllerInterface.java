@@ -7,7 +7,6 @@ import com.bookmarkanator.core.*;
 public interface GUIControllerInterface
 {
 
-    Bootstrap getBootstrap();
     Settings getSettings();
 
     //Bookmarks

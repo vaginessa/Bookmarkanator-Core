@@ -3,7 +3,6 @@ package com.bookmarkanator.ui.fxui;
 import java.awt.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import javafx.application.*;
@@ -19,18 +18,16 @@ public class Main extends Application
     public static final String UI_CLASS_VALUE = "class";
     public static final String UI_STRING_SEPARATOR = "-";
 
-    private UIController guiController;
-    private ContextInterface context;
+    private UIController uiController;
 
     @Override
     public void start(Stage primaryStage)
         throws Exception
     {
         Dimension bestWindowSize = getBestWindowSize();
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.getSettings().importSettings(this.getDefaultSettings());
+        Bootstrap.use().getSettings().importSettings(this.getDefaultSettings());
 
-        guiController = new UIController(bootstrap);
+        uiController = new UIController();
 
         GridPane gridPane = new GridPane();
         gridPane.setStyle("-fx-background-color: steelblue");
@@ -42,7 +39,7 @@ public class Main extends Application
         Scene scene = new Scene(vBox, bestWindowSize.getWidth(), bestWindowSize.getHeight(), javafx.scene.paint.Paint.valueOf("RED"));
 
         MenuUI menuUI = new MenuUI();
-        guiController.setMenuUi(menuUI);
+        uiController.setMenuUi(menuUI);
 
         MenuBar menuBar = menuUI.getMenuBar();
         vBox.getChildren().addAll(menuBar);
@@ -51,33 +48,33 @@ public class Main extends Application
         VBox.setVgrow(gridPane, Priority.ALWAYS);
 
         SearchUI searchUI = new SearchUI();
-        guiController.setSearchUI(searchUI);
+        uiController.setSearchUI(searchUI);
         searchUI.setPrefHeight(bestWindowSize.getHeight()*.15);
         gridPane.add(searchUI, 0, 0, 5, 1);
 
         TypesUI typesUI = new TypesUI();
-        guiController.setTypesUI(typesUI);
+        uiController.setTypesUI(typesUI);
         gridPane.add(typesUI, 0, 1, 1, 4);
         VBox.setVgrow(typesUI, Priority.ALWAYS);
         typesUI.setPrefWidth(bestWindowSize.getWidth()*.15);
 
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI();
-        guiController.setSelectedTagsUI(selectedTagsUI);
+        uiController.setSelectedTagsUI(selectedTagsUI);
         gridPane.add(selectedTagsUI, 1, 1, 2, 2);
 
         AvailableTagsUI availableTagsUI = new AvailableTagsUI();
-        guiController.setAvailableTagsUI(availableTagsUI);
+        uiController.setAvailableTagsUI(availableTagsUI);
 
         gridPane.add(availableTagsUI, 1, 3, 2, 2);
 
         BookmarksListUI bookmarksListUI = new BookmarksListUI();
-        guiController.setBookmarksListUI(bookmarksListUI);
+        uiController.setBookmarksListUI(bookmarksListUI);
 
 //        bookmarksListUI.setPrefWidth(bestWindowSize.getWidth()*.5);
         gridPane.add(bookmarksListUI, 3, 1, 2, 4);
 
-        NewBookmarkSelectorUI newBookmarkSelectorUI= new NewBookmarkSelectorUI(guiController);
-        guiController.setNewBookmarkSelectorUI(newBookmarkSelectorUI);
+        NewBookmarkSelectorUI newBookmarkSelectorUI= new NewBookmarkSelectorUI(uiController);
+        uiController.setNewBookmarkSelectorUI(newBookmarkSelectorUI);
 
         setRowConstraints(gridPane);
         setColConstraints(gridPane);
@@ -86,7 +83,7 @@ public class Main extends Application
         primaryStage.setMinHeight(bestWindowSize.getHeight());
         primaryStage.setMinWidth(bestWindowSize.getWidth());
 
-        guiController.initUI();
+        uiController.initUI();
         primaryStage.show();
 
         primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
@@ -99,7 +96,7 @@ public class Main extends Application
                     public void run() {
                         try
                         {
-                            bootstrap.saveSettingsFile();
+                            Bootstrap.use().saveSettingsFile();
                         }
                         catch (Exception e)
                         {
@@ -111,6 +108,18 @@ public class Main extends Application
             }
         });
 
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                try
+                {
+                    Bootstrap.IOInterface().save();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void setRowConstraints(GridPane gridPane)
@@ -219,5 +228,6 @@ public class Main extends Application
     {
         return Main.UI_PREFIX_VALUE+Main.UI_STRING_SEPARATOR+Main.UI_CLASS_VALUE+Main.UI_STRING_SEPARATOR;
     }
+
 
 }

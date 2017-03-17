@@ -1,15 +1,12 @@
 package com.bookmarkanator.io;
 
 import java.io.*;
-import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
 
 public class FileIO implements BKIOInterface
 {
     private FileContext context;
     private String bookmarksFileLocation;
-    private Settings globalSettings;
-    private ClassLoader classLoader;
 
     @Override
     public void init(String config)
@@ -22,15 +19,6 @@ public class FileIO implements BKIOInterface
         loadBookmarks(fin);
         fin.close();
         bookmarksFileLocation = config;
-    }
-
-    @Override
-    public void init(String config, Settings globalSettings, ClassLoader classLoader)
-        throws Exception
-    {
-        this.globalSettings = globalSettings;
-        this.classLoader = classLoader;
-        init(config);
     }
 
     @Override
@@ -66,7 +54,7 @@ public class FileIO implements BKIOInterface
     {
         context = new FileContext();
         context.setBKIOInterface(this);
-        BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream, globalSettings, this.classLoader);
+        BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
         parser.parse();
     }
 
