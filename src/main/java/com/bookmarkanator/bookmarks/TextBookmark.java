@@ -23,7 +23,7 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action()
+    public void runAction()
         throws Exception
     {
         //do nothing

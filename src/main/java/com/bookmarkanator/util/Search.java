@@ -22,6 +22,15 @@ public class Search<T> {
         theFullTextRotatedSubstrings = new TextAssociator<>();
     }
 
+    /**
+     * Gets a set of strings that point to the objects.
+     * @return Set of strings that point to the objects.
+     */
+    public Set<String> getFullTextWords()
+    {
+        return theFullText.getAllWords();
+    }
+
     public void add(T item, String word)
     {
         String newWord = word.toLowerCase();
@@ -58,7 +67,7 @@ public class Search<T> {
 //            }
 //        }
 
-        Set<String> rotatedText = Util.getAllStringRotations(word);
+        Set<String> rotatedText = Util.getAllStringRotations(newWord);
 
         for (String s2: rotatedText)
         {
@@ -79,6 +88,7 @@ public class Search<T> {
     {
         for (String s: items)
         {
+            s = s.toLowerCase();
             add(item, s);
         }
     }

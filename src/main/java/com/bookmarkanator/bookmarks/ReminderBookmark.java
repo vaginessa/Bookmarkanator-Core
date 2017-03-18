@@ -28,7 +28,7 @@ public class ReminderBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action()
+    public void runAction()
         throws Exception
     {
 

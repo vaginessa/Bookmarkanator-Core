@@ -72,9 +72,12 @@ public class Filter
 
         for (AbstractBookmark bk : this.results())
         {
-            if (bk.getTags().containsAll(tags))
+            if (tags!=null && !tags.isEmpty())
             {
-                results.add(bk);
+                if (bk.getTags().containsAll(tags))
+                {
+                    results.add(bk);
+                }
             }
         }
 

@@ -25,7 +25,7 @@ public class FileBookmarkUI extends AbstractUIBookmark
     public void show()
         throws Exception
     {
-        this.getBookmark().action();
+        this.getBookmark().runAction();
     }
 
     @Override

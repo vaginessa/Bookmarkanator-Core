@@ -10,6 +10,8 @@ import com.bookmarkanator.util.*;
 
 public class UIController implements GUIControllerInterface
 {
+    private static UIController controller;
+
     //Interfaces
     private BKTypes bkTypesInterface;
     private SelectedTagsInterface selectedTagsInterface;
@@ -276,7 +278,6 @@ public class UIController implements GUIControllerInterface
             bkClassNames.put(clazz.getCanonicalName(), clazz);
         }
 
-
         Set<AbstractUIBookmark> res = new HashSet<>();
         Set<Class> loadedUIs = ModuleLoader.use().getClassesLoaded(AbstractUIBookmark.class);
         ContextInterface context =Bootstrap.context();
@@ -486,7 +487,7 @@ public class UIController implements GUIControllerInterface
         tmpBKs.addAll(applySelectedTags(getVisibleBookmarkTypes(context.getBookmarks())));
         this.visibleBookmarks = search(tmpBKs);
         this.visibleTypes = context.getTypesLoaded(this.visibleBookmarks);
-        this.availableTags = context.getTags(this.visibleBookmarks);
+        this.availableTags = context.getTagsFromBookmarks(this.visibleBookmarks);
         this.availableTags.removeAll(this.selectedTags);
     }
 
@@ -522,27 +523,20 @@ public class UIController implements GUIControllerInterface
 
         return new HashSet<>(tmp);
     }
-//
-//
-//    public static Class loadBookmarkUIClass(String className, ClassLoader classLoader) throws Exception
-//    {
-//        Class clazz = classLoader.loadClass(className);
-//        Class sub = clazz.asSubclass(AbstractUIBookmark.class);
-//        System.out.println("Loaded bookmark UI class: \"" + className + "\".");
-//        return sub;
-//    }
-//
-//    public static AbstractUIBookmark instantiateBookmarkUIClass(Class clazz,ContextInterface contextInterface ) throws Exception
-//    {
-//        return (AbstractUIBookmark) clazz.getConstructor().newInstance();
-//    }
 
-//    public Set<Class<? extends AbstractUIBookmark>> getloadedBKUIInterfaces()
-//    {
-//        //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
-//        Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(ModuleLoader.getClassLoader()));
-//        Set<Class<? extends AbstractUIBookmark>> res = new HashSet<>();
-//        res.addAll(reflections.getSubTypesOf(AbstractUIBookmark.class));
-//        return res;
-//    }
+    public static UIController use()
+    {
+        if (controller==null)
+        {
+            try
+            {
+                controller = new UIController();
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return controller;
+    }
 }

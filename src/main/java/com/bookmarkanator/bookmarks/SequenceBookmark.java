@@ -33,7 +33,7 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void action()
+    public void runAction()
         throws Exception
     {
         boolean error = false;
@@ -49,7 +49,7 @@ public class SequenceBookmark extends AbstractBookmark
             }
             else
             {
-                abs.action();
+                abs.runAction();
                 sb.append(abs.getText());
             }
         }

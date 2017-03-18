@@ -193,9 +193,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract List<String> getTypeLocation();
 
     /**
-     * The action that will happen when this bookmark is called.
+     * The runAction that will happen when this bookmark is called.
      */
-    public abstract void action()
+    public abstract void runAction()
         throws Exception;
 
     /**

@@ -600,16 +600,14 @@ public class FileContext implements ContextInterface
         }
     }
 
-//    @Override
-//    public void bkAction(AbstractBookmark abstractBookmark)
-//        throws Exception
-//    {
-//        //TODO notify listeners, and verify they allow edit.
-//        abstractBookmark.action();
-//    }
+    @Override
+    public Set<String> getAllTags()
+    {
+        return bookmarkTags.getFullTextWords();
+    }
 
     @Override
-    public Set<String> getTags(Set<AbstractBookmark> bookmarks)
+    public Set<String> getTagsFromBookmarks(Collection<AbstractBookmark> bookmarks)
     {
         Set<String> res = new HashSet<>();
 
