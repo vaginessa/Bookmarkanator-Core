@@ -17,7 +17,7 @@ public class TagPanel extends ScrollPane
     Set<String> newTagSet;
     Set<String> availableTags;
     Search<String> search;
-    TextField name;
+    TextField tagNameSearch;
     FlowPane availableTagsPanel;//All tags that match the search query
     FlowPane looselyRelatedTags;////All the other tags the bookmarks that contain at least one of the tags matched in the search
     FlowPane selectedTagsPanel;//Tags selected to be added to the bookmark
@@ -66,13 +66,13 @@ public class TagPanel extends ScrollPane
         selectedTagsPanel.getChildren().clear();
         stronglyRelatedTags.getChildren().clear();
 
-        if (name.getText().isEmpty())
+        if (tagNameSearch.getText().isEmpty())
         {
             availableTags = search.getFullTextWords();
         }
         else
         {
-            availableTags = search.searchAll(name.getText(), 10000);//TODO ADD A SEARCH ALL SO THE SEARCH IS NOT LIMITED...
+            availableTags = search.searchAll(tagNameSearch.getText(), 10000);//TODO ADD A SEARCH ALL SO THE SEARCH IS NOT LIMITED...
         }
 
         for (String s : availableTags)
@@ -142,6 +142,7 @@ public class TagPanel extends ScrollPane
                 try
                 {
                     selectedTags.add(tag);
+                    tagNameSearch.clear();
                     updateUI();
                 }
                 catch (Exception e)
@@ -200,10 +201,10 @@ public class TagPanel extends ScrollPane
 
         HBox tagSearch = new HBox();
         Label label = new Label("Tag");
-        name = new TextField();
+        tagNameSearch = new TextField();
         Button addButton = new Button("add");
 
-        name.textProperty().addListener(new ChangeListener<String>()
+        tagNameSearch.textProperty().addListener(new ChangeListener<String>()
         {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
@@ -211,7 +212,7 @@ public class TagPanel extends ScrollPane
                 try
                 {
                     updateUI();
-                    if (availableTags.contains(name.getText()))
+                    if (availableTags.contains(tagNameSearch.getText()))
                     {
                         addButton.setDisable(true);
                     }
@@ -227,30 +228,32 @@ public class TagPanel extends ScrollPane
             }
         });
 
-
         addButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-                selectedTags.add(name.getText());
-                newTagSet.add(name.getText());
-                name.clear();
-                try
+                if (tagNameSearch.getText()!=null && !tagNameSearch.getText().isEmpty())
                 {
-                    updateUI();
-                }
-                catch (Exception e)
-                {
-                    throw new RuntimeException(e);
+                    selectedTags.add(tagNameSearch.getText());
+                    newTagSet.add(tagNameSearch.getText());
+                    tagNameSearch.clear();
+                    try
+                    {
+                        updateUI();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
 
         HBox.setMargin(label, new Insets(5, 10, 0, 0));
-        HBox.setMargin(name, new Insets(0, 2, 10, 0));
-        HBox.setHgrow(name, Priority.ALWAYS);
-        tagSearch.getChildren().addAll(label, name, addButton);
+        HBox.setMargin(tagNameSearch, new Insets(0, 2, 10, 0));
+        HBox.setHgrow(tagNameSearch, Priority.ALWAYS);
+        tagSearch.getChildren().addAll(label, tagNameSearch, addButton);
 
         content.getChildren().add(tagSearch);
 
@@ -271,7 +274,7 @@ public class TagPanel extends ScrollPane
         VBox.setVgrow(firstRow, Priority.ALWAYS);
         VBox.setVgrow(secondRow, Priority.ALWAYS);
 
-        content.getChildren().addAll(secondRow,firstRow);
+        content.getChildren().addAll(secondRow, firstRow);
 
         this.setContent(content);
     }
@@ -313,7 +316,7 @@ public class TagPanel extends ScrollPane
 
         Label label = new Label("Selected Tags");
 
-        vBox.getChildren().addAll(label, scroll );
+        vBox.getChildren().addAll(label, scroll);
 
         return vBox;
     }
@@ -334,7 +337,7 @@ public class TagPanel extends ScrollPane
 
         Label label = new Label("Loosely Related Tags");
 
-        vBox.getChildren().addAll(label, scroll );
+        vBox.getChildren().addAll(label, scroll);
 
         return vBox;
     }
@@ -355,7 +358,7 @@ public class TagPanel extends ScrollPane
 
         Label label = new Label("Strongly Related Tags");
 
-        vBox.getChildren().addAll(label, scroll );
+        vBox.getChildren().addAll(label, scroll);
 
         return vBox;
     }

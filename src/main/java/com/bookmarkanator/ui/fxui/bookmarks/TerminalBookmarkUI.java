@@ -1,20 +1,10 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class TerminalBookmarkUI extends AbstractUIBookmark
 {
-    public TerminalBookmarkUI()
-    {
-    }
-
-    public TerminalBookmarkUI(ContextInterface context)
-    {
-        super(context);
-    }
-
     @Override
     public Image getTypeIcon()
     {

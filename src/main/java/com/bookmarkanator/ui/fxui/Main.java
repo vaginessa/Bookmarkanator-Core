@@ -20,6 +20,11 @@ public class Main extends Application
 
     private UIController uiController;
 
+    //TODO: Add a drag and drop handler so that each bookmark must handle types dragged and dropped into it.
+    //TODO: Add a one way backup or a versioned backup scheme for bookmarks.
+
+
+
     @Override
     public void start(Stage primaryStage)
         throws Exception

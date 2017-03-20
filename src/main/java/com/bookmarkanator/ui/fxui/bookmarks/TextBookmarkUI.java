@@ -3,7 +3,6 @@ package com.bookmarkanator.ui.fxui.bookmarks;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.*;
 import javafx.application.*;
@@ -18,20 +17,6 @@ import javafx.stage.*;
 
 public class TextBookmarkUI extends AbstractUIBookmark
 {
-    private static Map<UUID, Stage> openStagesMap;//<Bookmark id, Stage that is showing it>
-
-    public TextBookmarkUI()
-    {
-        if (openStagesMap == null)
-        {
-            openStagesMap = new HashMap<>();
-        }
-    }
-
-    public TextBookmarkUI(ContextInterface context)
-    {
-        super(context);
-    }
 
     @Override
     public Image getTypeIcon()
@@ -91,7 +76,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
             stage.close();
         }
 
-        return showBookmarkView(this.getBookmark());
+        return showTextBookmarkView(this.getBookmark());
     }
 
     @Override
@@ -112,25 +97,24 @@ public class TextBookmarkUI extends AbstractUIBookmark
     public AbstractBookmark newBookmarkView()
         throws Exception
     {
-        return showBookmarkView(null);
+        return showTextBookmarkView(null);
     }
 
-    private AbstractBookmark showBookmarkView(AbstractBookmark bookmark)
+    private AbstractBookmark showTextBookmarkView(AbstractBookmark bookmark)
         throws Exception
     {
         Dialog<String> dialog = new Dialog<>();
         if (bookmark!=null)
         {
-            dialog.setTitle("Edit Text Bookmark");
+            dialog.setTitle("Edit Web Bookmark");
         }
         else
         {
-            dialog.setTitle("New Text Bookmark");
+            dialog.setTitle("New Web Bookmark");
         }
 
         // Set the button types.
         ButtonType delete = new ButtonType("Delete",ButtonBar.ButtonData.APPLY);
-
 
         if (bookmark==null)
         {
@@ -138,23 +122,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         }
         else
         {
-            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, delete, ButtonType.CANCEL);
-            final Button tmp =  (Button)dialog.getDialogPane().lookupButton(delete);
-            tmp.setStyle("-fx-background-color:red");
-            tmp.addEventFilter(
-                ActionEvent.ACTION,
-                event -> {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Confirmation Dialog");
-                    alert.setHeaderText("This bookmark will be deleted.");
-                    alert.setContentText("Continue?");
-
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() != ButtonType.OK){
-                        event.consume();
-                    }
-                }
-            );
+            addDeleteButton(dialog, delete);
         }
 
         HBox container = new HBox();

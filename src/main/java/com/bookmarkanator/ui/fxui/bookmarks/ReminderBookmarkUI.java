@@ -1,20 +1,10 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class ReminderBookmarkUI extends AbstractUIBookmark
 {
-    public ReminderBookmarkUI()
-    {
-    }
-
-    public ReminderBookmarkUI(ContextInterface context)
-    {
-        super(context);
-    }
-
     @Override
     public Image getTypeIcon()
     {

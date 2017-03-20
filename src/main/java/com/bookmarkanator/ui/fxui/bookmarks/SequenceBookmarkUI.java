@@ -1,20 +1,10 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.io.*;
 import javafx.scene.image.*;
 
 public class SequenceBookmarkUI extends AbstractUIBookmark
 {
-    public SequenceBookmarkUI()
-    {
-    }
-
-    public SequenceBookmarkUI(ContextInterface context)
-    {
-        super(context);
-    }
-
     @Override
     public Image getTypeIcon()
     {

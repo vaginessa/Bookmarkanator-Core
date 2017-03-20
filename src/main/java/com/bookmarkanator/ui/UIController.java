@@ -287,7 +287,7 @@ public class UIController implements GUIControllerInterface
 
         for (Class clazz: loadedUIs)
         {
-            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor(ContextInterface.class).newInstance(context);
+            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor().newInstance();
             Class bookmarkClass = bkClassNames.get(tmp.getRequiredBookmarkClassName());
             if (bookmarkClass != null)
             {

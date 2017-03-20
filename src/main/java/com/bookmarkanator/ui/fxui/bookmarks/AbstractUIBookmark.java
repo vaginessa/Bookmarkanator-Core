@@ -1,21 +1,24 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
+import java.util.*;
 import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.io.*;
+import javafx.event.*;
+import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.stage.*;
 
 public abstract class AbstractUIBookmark
 {
     private AbstractBookmark abstractBookmark;
-    private ContextInterface context;
+    protected static Map<UUID, Stage> openStagesMap;//<Bookmark id, Stage that is showing it>
+
 
     public AbstractUIBookmark()
     {
-    }
-
-    public AbstractUIBookmark(ContextInterface context)
-    {
-        this.context = context;
+        if (openStagesMap == null)
+        {
+            openStagesMap = new HashMap<>();
+        }
     }
 
     public void setBookmark(AbstractBookmark abstractBookmark)
@@ -26,11 +29,6 @@ public abstract class AbstractUIBookmark
     public AbstractBookmark getBookmark()
     {
         return this.abstractBookmark;
-    }
-
-    public ContextInterface getContext()
-    {
-        return context;
     }
 
     // ============================================================
@@ -49,6 +47,27 @@ public abstract class AbstractUIBookmark
 
     public abstract AbstractBookmark newBookmarkView()
         throws Exception;
+
+    protected void addDeleteButton(Dialog dialog, ButtonType buttonType)
+    {
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, buttonType, ButtonType.CANCEL);
+        final Button tmp =  (Button)dialog.getDialogPane().lookupButton(buttonType);
+        tmp.setStyle("-fx-background-color:red");
+        tmp.addEventFilter(
+            ActionEvent.ACTION,
+            event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog");
+                alert.setHeaderText("This bookmark will be deleted.");
+                alert.setContentText("Continue?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() != ButtonType.OK){
+                    event.consume();
+                }
+            }
+        );
+    }
 
     /**
      * Using class name is the name that this bookmark requires
