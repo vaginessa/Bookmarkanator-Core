@@ -1,6 +1,7 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
+import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -8,7 +9,6 @@ import javafx.scene.layout.*;
 
 public class TypesUI extends VBox implements BKTypes
 {
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
     private VBox vBox;
     private Set<String> types;
@@ -48,7 +48,7 @@ public class TypesUI extends VBox implements BKTypes
             public void handle(ActionEvent event) {
                 try
                 {
-                    guiController.showTypes(types);
+                    UIController.use().showTypes(types);
                 }
                 catch (Exception e)
                 {
@@ -65,7 +65,7 @@ public class TypesUI extends VBox implements BKTypes
             public void handle(ActionEvent event) {
                 try
                 {
-                    guiController.showTypes(null);
+                    UIController.use().showTypes(null);
                 }
                 catch (Exception e)
                 {
@@ -96,7 +96,7 @@ public class TypesUI extends VBox implements BKTypes
                 public void handle(ActionEvent event) {
                     try
                     {
-                        getGUIController().toggleShowType(string);
+                        UIController.use().toggleShowType(string);
                     }
                     catch (Exception e)
                     {
@@ -124,18 +124,6 @@ public class TypesUI extends VBox implements BKTypes
     public Set<String> getAllTypes()
     {
         return this.types;
-    }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
-    }
-
-    @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
     }
 
     @Override

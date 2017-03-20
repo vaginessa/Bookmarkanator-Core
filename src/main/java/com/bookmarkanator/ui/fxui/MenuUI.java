@@ -5,14 +5,7 @@ import javafx.scene.control.*;
 
 public class MenuUI implements MenuInterface
 {
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
-
-    @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
-    }
 
     @Override
     public boolean getEditMode()
@@ -24,12 +17,6 @@ public class MenuUI implements MenuInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
-    }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
     }
 
     public MenuBar getMenuBar()

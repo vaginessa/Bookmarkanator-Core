@@ -1,6 +1,7 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
+import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -9,7 +10,6 @@ import javafx.scene.layout.*;
 
 public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterface
 {
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
     private FlowPane flowPane;
     private String colorString =  "#8fbc8f";
@@ -40,7 +40,7 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
                 {
                     try
                     {
-                        getGUIController().addSelectedTag(string);
+                        UIController.use().addSelectedTag(string);
                     }
                     catch (Exception e)
                     {
@@ -61,18 +61,6 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     public Set getAvailableTags()
     {
         return null;
-    }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
-    }
-
-    @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
     }
 
     @Override

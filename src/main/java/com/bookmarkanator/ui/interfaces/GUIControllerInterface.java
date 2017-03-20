@@ -115,4 +115,8 @@ public interface GUIControllerInterface
     QuickPanelInterface getQuickPanelUI();
 
     NewBookmarkSelectionInterface getNewBookmarkSelectorUI();
+
+    boolean isEditMode();
+
+    void setEditMode(boolean editMode);
 }

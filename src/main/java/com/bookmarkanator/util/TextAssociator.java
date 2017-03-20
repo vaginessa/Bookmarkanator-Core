@@ -110,7 +110,18 @@ public class TextAssociator<T>
      */
     public void remove(T itemId)
     {
+        if (itemId==null)
+        {
+            return;
+        }
+
         Set<String> itemWords = itemToText.get(itemId);
+
+        if (itemWords==null)
+        {
+            return;
+        }
+
         Set<String> wordsToRemove = new HashSet<>();
 
         for (String s : itemWords)

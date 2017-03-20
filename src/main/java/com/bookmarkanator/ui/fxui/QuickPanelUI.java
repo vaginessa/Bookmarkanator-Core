@@ -8,12 +8,6 @@ public class QuickPanelUI implements QuickPanelInterface
     private boolean editMode = false;
 
     @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
-    }
-
-    @Override
     public boolean getEditMode()
     {
         return this.editMode;
@@ -24,11 +18,4 @@ public class QuickPanelUI implements QuickPanelInterface
     {
         this.editMode = editMode;
     }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
-    }
-
 }

@@ -10,7 +10,6 @@ import javafx.scene.layout.*;
 
 public class SearchUI extends HBox implements SearchInterface
 {
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
     private String colorString = "#3fccdb";
     private TextField textField;
@@ -46,7 +45,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchTerm(newValue);
+                    UIController.use().setSearchTerm(newValue);
                 }
                 catch (Exception e)
                 {
@@ -94,7 +93,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().getNewBookmarkSelectorUI().show();
+                    UIController.use().getNewBookmarkSelectorUI().show();
                 }
                 catch (Exception e)
                 {
@@ -145,12 +144,14 @@ public class SearchUI extends HBox implements SearchInterface
                         editModeTogglePane.setAlignment(Pos.CENTER_LEFT);
                         button.setText("Off");
                         editMode = false;
+                        UIController.use().setEditMode(editMode);
                     }
                     else
                     {
                         editModeTogglePane.setAlignment(Pos.CENTER_RIGHT);
                         button.setText("On");
                         editMode = true;
+                        UIController.use().setEditMode(editMode);
                     }
 
                 }
@@ -180,7 +181,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(UIController.SEARCH_TAGS_KEY, sTags.isSelected());
+                    UIController.use().setSearchInclusions(UIController.SEARCH_TAGS_KEY, sTags.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -198,7 +199,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(UIController.SEARCH_BOOKMARK_NAMES_KEY, sBookmarkNames.isSelected());
+                    UIController.use().setSearchInclusions(UIController.SEARCH_BOOKMARK_NAMES_KEY, sBookmarkNames.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -216,7 +217,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(UIController.SEARCH_BOOKMARK_TEXT_KEY, sBookmarkText.isSelected());
+                    UIController.use().setSearchInclusions(UIController.SEARCH_BOOKMARK_TEXT_KEY, sBookmarkText.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -233,7 +234,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    getGUIController().setSearchInclusions(UIController.SEARCH_TYPES_KEY, sBookmarkTypeNames.isSelected());
+                    UIController.use().setSearchInclusions(UIController.SEARCH_TYPES_KEY, sBookmarkTypeNames.isSelected());
                 }
                 catch (Exception e)
                 {
@@ -251,12 +252,6 @@ public class SearchUI extends HBox implements SearchInterface
     }
 
     @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
-    }
-
-    @Override
     public boolean getEditMode()
     {
         return this.editMode;
@@ -266,12 +261,6 @@ public class SearchUI extends HBox implements SearchInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
-    }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
     }
 
 }

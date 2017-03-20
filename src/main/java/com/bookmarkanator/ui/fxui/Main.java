@@ -27,7 +27,7 @@ public class Main extends Application
         Dimension bestWindowSize = getBestWindowSize();
         Bootstrap.use().getSettings().importSettings(this.getDefaultSettings());
 
-        uiController = new UIController();
+        uiController = UIController.use();
 
         GridPane gridPane = new GridPane();
         gridPane.setStyle("-fx-background-color: steelblue");

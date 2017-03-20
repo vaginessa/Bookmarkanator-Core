@@ -19,9 +19,9 @@ public class TagPanel extends ScrollPane
     Search<String> search;
     TextField name;
     FlowPane availableTagsPanel;//All tags that match the search query
-    FlowPane tagsIngroupPanel;////All the other tags the bookmarks that contain at least one of the tags matched in the search
+    FlowPane looselyRelatedTags;////All the other tags the bookmarks that contain at least one of the tags matched in the search
     FlowPane selectedTagsPanel;//Tags selected to be added to the bookmark
-    FlowPane tagsInBookmarksGroupPanel;//All other tags from bookmarks that contain all of the selected
+    FlowPane stronglyRelatedTags;//All other tags from bookmarks that contain all of the selected
 
     private String colorString = "#8fffff";
     private String tagColorString = "#8f9999";
@@ -62,9 +62,9 @@ public class TagPanel extends ScrollPane
         throws Exception
     {
         availableTagsPanel.getChildren().clear();
-        tagsIngroupPanel.getChildren().clear();
+        looselyRelatedTags.getChildren().clear();
         selectedTagsPanel.getChildren().clear();
-        tagsInBookmarksGroupPanel.getChildren().clear();
+        stronglyRelatedTags.getChildren().clear();
 
         if (name.getText().isEmpty())
         {
@@ -79,48 +79,38 @@ public class TagPanel extends ScrollPane
         {
             if (!selectedTags.contains(s))
             {
-                availableTagsPanel.getChildren().add(getRegularTagPane(s));
+                availableTagsPanel.getChildren().add(getRegularTagView(s));
             }
         }
 
         for (String s : selectedTags)
         {
-            selectedTagsPanel.getChildren().add(getSelectedTagPane(s));
+            selectedTagsPanel.getChildren().add(getSelectedTagView(s));
         }
 
         //Get all bookmarks that have any tag in the available tags list.
         List<AbstractBookmark> bks = Filter.use(Bootstrap.context().getBookmarks()).keepWithAnyTag(selectedTags).results();
 
-        Set<String> tags = Bootstrap.context().getTagsFromBookmarks(bks);
-        tags.removeAll(selectedTags);
+        Set<String> strongRelatedTags = getStronglyRelatedTags(bks);
 
-        for (String s : tags)
+        Set<String> relatedTags = Bootstrap.context().getTagsFromBookmarks(bks);
+        relatedTags.removeAll(selectedTags);
+
+        for (String s : relatedTags)
         {
-            if (availableTags.contains(s))
+            if (availableTags.contains(s) && !strongRelatedTags.contains(s))
             {//If it's in the available tags list then allow it here as well
-                tagsIngroupPanel.getChildren().add(getRegularTagPane(s));
+                looselyRelatedTags.getChildren().add(getRegularTagView(s));
             }
         }
 
-        //Get all bookmarks that have any tag in the available tags list.
-        bks = Filter.use(Bootstrap.context().getBookmarks()).keepWithAllTags(selectedTags).results();
-
-        tags = Bootstrap.context().getTagsFromBookmarks(bks);
-        tags.removeAll(selectedTags);
-
-        for (String s : tags)
+        for (String s : strongRelatedTags)
         {
             if (availableTags.contains(s))
             {
-                tagsInBookmarksGroupPanel.getChildren().add(getRegularTagPane(s));
+                stronglyRelatedTags.getChildren().add(getRegularTagView(s));
             }
         }
-        //add all tags that those bookmarks had, minus the available tags.
-        //add those tags to the tags in group panel
-
-        //get all bookmarks that contain all selected tags
-        //get all tags that those bookmarks contain, minus the selected tags.
-        //add those to the tags in bookmarks group panel.
     }
 
     public Set<String> getSelectedTags()
@@ -128,7 +118,20 @@ public class TagPanel extends ScrollPane
         return selectedTags;
     }
 
-    private Pane getRegularTagPane(final String tag)
+    private Set<String> getStronglyRelatedTags(List<AbstractBookmark> bks)
+        throws Exception
+    {
+
+        //Get all bookmarks that have all tags in the available tags list.
+        bks = Filter.use(Bootstrap.context().getBookmarks()).keepWithAllTags(selectedTags).results();
+
+        Set<String> tags = Bootstrap.context().getTagsFromBookmarks(bks);
+        tags.removeAll(selectedTags);
+        return tags;
+    }
+
+    //this is the panel that represents each tag in any non selected tag panel.
+    private Pane getRegularTagView(String tag)
     {
         Pane pane = new Pane();
         pane.setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -154,7 +157,8 @@ public class TagPanel extends ScrollPane
         return pane;
     }
 
-    private Pane getSelectedTagPane(String tag)
+    //This is the panel that represents each tag added to the tags panel
+    private Pane getSelectedTagView(String tag)
     {
         Pane pane = new Pane();
         pane.setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -250,48 +254,16 @@ public class TagPanel extends ScrollPane
 
         content.getChildren().add(tagSearch);
 
-        availableTagsPanel = new FlowPane();
-        availableTagsPanel.setHgap(1);
-        availableTagsPanel.setVgap(1);
-
-        tagsIngroupPanel = new FlowPane();
-        tagsIngroupPanel.setHgap(1);
-        tagsIngroupPanel.setVgap(1);
-
-        selectedTagsPanel = new FlowPane();
-        selectedTagsPanel.setHgap(1);
-        selectedTagsPanel.setVgap(1);
-
-        tagsInBookmarksGroupPanel = new FlowPane();
-        tagsInBookmarksGroupPanel.setHgap(1);
-        tagsInBookmarksGroupPanel.setVgap(1);
-
-        ScrollPane availableTagsScroll = new ScrollPane();
-        availableTagsScroll.setContent(availableTagsPanel);
-        availableTagsPanel.maxWidthProperty().bind(availableTagsScroll.widthProperty().subtract(15));
-
-        ScrollPane tagsInGroupScroll = new ScrollPane();
-        tagsInGroupScroll.setContent(tagsIngroupPanel);
-        tagsIngroupPanel.maxWidthProperty().bind(tagsInGroupScroll.widthProperty().subtract(15));
-
-        ScrollPane selectedTagsScroll = new ScrollPane();
-        selectedTagsScroll.setContent(selectedTagsPanel);
-        selectedTagsPanel.maxWidthProperty().bind(selectedTagsScroll.widthProperty().subtract(15));
-
-        ScrollPane tagsInBookmarksGroupScroll = new ScrollPane();
-        tagsInBookmarksGroupScroll.setContent(tagsInBookmarksGroupPanel);
-        tagsInBookmarksGroupPanel.maxWidthProperty().bind(tagsInBookmarksGroupScroll.widthProperty().subtract(15));
-
         HBox firstRow = new HBox();
         firstRow.setSpacing(3);
-        firstRow.getChildren().addAll(tagsInGroupScroll, tagsInBookmarksGroupScroll);
-        HBox.setHgrow(tagsIngroupPanel, Priority.ALWAYS);
-        HBox.setHgrow(tagsInBookmarksGroupPanel, Priority.ALWAYS);
+        firstRow.getChildren().addAll(getLooselyRelatedTagsPane(), getStronglyRelatedTagsPane());
+        HBox.setHgrow(looselyRelatedTags, Priority.ALWAYS);
+        HBox.setHgrow(stronglyRelatedTags, Priority.ALWAYS);
         firstRow.setPrefHeight(180);
 
         HBox secondRow = new HBox();
         secondRow.setSpacing(3);
-        secondRow.getChildren().addAll(availableTagsScroll, selectedTagsScroll);
+        secondRow.getChildren().addAll(getAvailableTagsPane(), getSelectedTagsPane());
         HBox.setHgrow(availableTagsPanel, Priority.ALWAYS);
         HBox.setHgrow(selectedTagsPanel, Priority.ALWAYS);
         secondRow.setPrefHeight(180);
@@ -299,9 +271,93 @@ public class TagPanel extends ScrollPane
         VBox.setVgrow(firstRow, Priority.ALWAYS);
         VBox.setVgrow(secondRow, Priority.ALWAYS);
 
-        content.getChildren().addAll(firstRow, secondRow);
+        content.getChildren().addAll(secondRow,firstRow);
 
         this.setContent(content);
+    }
+
+    private Pane getAvailableTagsPane()
+    {
+        availableTagsPanel = new FlowPane();
+        availableTagsPanel.setHgap(1);
+        availableTagsPanel.setVgap(1);
+
+        ScrollPane availableTagsScroll = new ScrollPane();
+        availableTagsScroll.setContent(availableTagsPanel);
+        availableTagsPanel.maxWidthProperty().bind(availableTagsScroll.widthProperty().subtract(15));
+
+        VBox vBox = new VBox();
+        VBox.setVgrow(availableTagsScroll, Priority.ALWAYS);
+        vBox.setStyle("-fx-border-color: black");
+
+        Label label = new Label("All Existing Tags");
+
+        vBox.getChildren().addAll(label, availableTagsScroll);
+
+        return vBox;
+    }
+
+    private Pane getSelectedTagsPane()
+    {
+        selectedTagsPanel = new FlowPane();
+        selectedTagsPanel.setHgap(1);
+        selectedTagsPanel.setVgap(1);
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(selectedTagsPanel);
+        selectedTagsPanel.maxWidthProperty().bind(scroll.widthProperty().subtract(15));
+
+        VBox vBox = new VBox();
+        VBox.setVgrow(scroll, Priority.ALWAYS);
+        vBox.setStyle("-fx-border-color: black");
+
+        Label label = new Label("Selected Tags");
+
+        vBox.getChildren().addAll(label, scroll );
+
+        return vBox;
+    }
+
+    private Pane getLooselyRelatedTagsPane()
+    {
+        looselyRelatedTags = new FlowPane();
+        looselyRelatedTags.setHgap(1);
+        looselyRelatedTags.setVgap(1);
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(looselyRelatedTags);
+        looselyRelatedTags.maxWidthProperty().bind(scroll.widthProperty().subtract(15));
+
+        VBox vBox = new VBox();
+        VBox.setVgrow(scroll, Priority.ALWAYS);
+        vBox.setStyle("-fx-border-color: black");
+
+        Label label = new Label("Loosely Related Tags");
+
+        vBox.getChildren().addAll(label, scroll );
+
+        return vBox;
+    }
+
+    private Pane getStronglyRelatedTagsPane()
+    {
+        stronglyRelatedTags = new FlowPane();
+        stronglyRelatedTags.setHgap(1);
+        stronglyRelatedTags.setVgap(1);
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(stronglyRelatedTags);
+        stronglyRelatedTags.maxWidthProperty().bind(scroll.widthProperty().subtract(15));
+
+        VBox vBox = new VBox();
+        VBox.setVgrow(scroll, Priority.ALWAYS);
+        vBox.setStyle("-fx-border-color: black");
+
+        Label label = new Label("Strongly Related Tags");
+
+        vBox.getChildren().addAll(label, scroll );
+
+        return vBox;
     }
 
     public static TagPanel getNew(Set<String> selectedTags)

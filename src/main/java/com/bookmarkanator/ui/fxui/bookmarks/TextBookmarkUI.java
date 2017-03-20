@@ -18,7 +18,7 @@ import javafx.stage.*;
 
 public class TextBookmarkUI extends AbstractUIBookmark
 {
-    private static Map<UUID, Stage> openStagesMap;
+    private static Map<UUID, Stage> openStagesMap;//<Bookmark id, Stage that is showing it>
 
     public TextBookmarkUI()
     {
@@ -84,6 +84,13 @@ public class TextBookmarkUI extends AbstractUIBookmark
     public AbstractBookmark edit()
         throws Exception
     {
+        Stage stage = openStagesMap.get(this.getBookmark().getId());
+
+        if (stage!=null)
+        {
+            stage.close();
+        }
+
         return showBookmarkView(this.getBookmark());
     }
 
@@ -91,6 +98,12 @@ public class TextBookmarkUI extends AbstractUIBookmark
     public void delete()
         throws Exception
     {
+        Stage stage = openStagesMap.get(this.getBookmark().getId());
+        if (stage!=null)
+        {
+            stage.close();
+        }
+
         Bootstrap.context().delete(this.getBookmark().getId());
         UIController.use().updateUI();
     }
@@ -106,11 +119,43 @@ public class TextBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("New Text Bookmark");
+        if (bookmark!=null)
+        {
+            dialog.setTitle("Edit Text Bookmark");
+        }
+        else
+        {
+            dialog.setTitle("New Text Bookmark");
+        }
 
         // Set the button types.
-        ButtonType loginButtonType = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        ButtonType delete = new ButtonType("Delete",ButtonBar.ButtonData.APPLY);
+
+
+        if (bookmark==null)
+        {
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        }
+        else
+        {
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, delete, ButtonType.CANCEL);
+            final Button tmp =  (Button)dialog.getDialogPane().lookupButton(delete);
+            tmp.setStyle("-fx-background-color:red");
+            tmp.addEventFilter(
+                ActionEvent.ACTION,
+                event -> {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Dialog");
+                    alert.setHeaderText("This bookmark will be deleted.");
+                    alert.setContentText("Continue?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() != ButtonType.OK){
+                        event.consume();
+                    }
+                }
+            );
+        }
 
         HBox container = new HBox();
         container.setSpacing(10);
@@ -120,6 +165,11 @@ public class TextBookmarkUI extends AbstractUIBookmark
         Pane hbox = new HBox();
         Label label = new Label("Name");
         TextField name = new TextField();
+        if (bookmark!=null)
+        {
+            name.setText(bookmark.getName());
+        }
+
         HBox.setMargin(label, new Insets(5, 10, 0, 0));
         HBox.setMargin(name, new Insets(0, 2, 10, 0));
         HBox.setHgrow(name, Priority.ALWAYS);
@@ -131,6 +181,11 @@ public class TextBookmarkUI extends AbstractUIBookmark
         HTMLEditor textArea = new HTMLEditor();
         textArea.setPrefWidth(600);
         textArea.setPrefHeight(400);
+        if (bookmark!=null)
+        {
+            textArea.setHtmlText(bookmark.getText());
+        }
+
         vbox.getChildren().add(textArea);
 
         //Tag selection panel
@@ -154,9 +209,20 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == loginButtonType)
+            if (dialogButton == ButtonType.OK)
             {
                 return textArea.getHtmlText();
+            }
+            else if (dialogButton == delete)
+            {
+                try
+                {
+                    Bootstrap.context().delete(this.getBookmark().getId());
+                }
+                catch (Exception e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
             return null;
         });
@@ -165,10 +231,22 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
         if (res.isPresent() && res.get() != null)
         {
-            AbstractBookmark abstractBookmark = new TextBookmark();
-            abstractBookmark.setName(name.getText());
-            abstractBookmark.setText(textArea.getHtmlText());
-            abstractBookmark.setTags(tagPanel.getSelectedTags());
+            AbstractBookmark abstractBookmark;
+            if (bookmark==null)
+            {
+                abstractBookmark = new TextBookmark();
+                abstractBookmark.setName(name.getText());
+                abstractBookmark.setText(textArea.getHtmlText());
+                abstractBookmark.setTags(tagPanel.getSelectedTags());
+            }
+            else
+            {
+                bookmark.setName(name.getText());
+                bookmark.setText(textArea.getHtmlText());
+                bookmark.setTags(tagPanel.getSelectedTags());
+                abstractBookmark = bookmark;
+            }
+
             return abstractBookmark;
         }
         return null;

@@ -46,6 +46,9 @@ public class UIController implements GUIControllerInterface
     public static final String INCLUDE_BOOKMARKS_WITH_ANY_TAGS = "ANY TAG";
     public static final String INCLUDE_BOOKMARKS_WITHOUT_TAGS = "WITHOUT TAGS";
 
+    //Fields
+    private boolean editMode;
+
     public UIController()
         throws Exception
     {
@@ -315,49 +318,42 @@ public class UIController implements GUIControllerInterface
     public void setTypesUI(BKTypes types)
     {
         this.bkTypesInterface = types;
-        types.setGUIController(this);
     }
 
     @Override
     public void setSelectedTagsUI(SelectedTagsInterface selectedTagsUI)
     {
         this.selectedTagsInterface = selectedTagsUI;
-        selectedTagsUI.setGUIController(this);
     }
 
     @Override
     public void setAvailableTagsUI(AvailableTagsInterface availableTagsUI)
     {
         this.availableTagsInterface = availableTagsUI;
-        availableTagsUI.setGUIController(this);
     }
 
     @Override
     public void setBookmarksListUI(BookmarksListInterface bookmarksListUI)
     {
         this.bookmarksInterface = bookmarksListUI;
-        bookmarksListUI.setGUIController(this);
     }
 
     @Override
     public void setSearchUI(SearchInterface searchUI)
     {
         this.searchInterface = searchUI;
-        searchUI.setGUIController(this);
     }
 
     @Override
     public void setMenuUi(MenuInterface menuUI)
     {
         this.menuInterface = menuUI;
-        menuUI.setGUIController(this);
     }
 
     @Override
     public void setQuickPanelUI(QuickPanelInterface quickPanelUI)
     {
         this.quickPanelInterface = quickPanelUI;
-        quickPanelUI.setGUIController(this);
     }
 
     @Override
@@ -412,6 +408,28 @@ public class UIController implements GUIControllerInterface
     public NewBookmarkSelectionInterface getNewBookmarkSelectorUI()
     {
         return newBookmarkSelectionInterface;
+    }
+
+    @Override
+    public boolean isEditMode()
+    {
+        return editMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
+
+        //Interfaces
+        bkTypesInterface.setEditMode(editMode);
+        selectedTagsInterface.setEditMode(editMode);
+        availableTagsInterface.setEditMode(editMode);
+        bookmarksInterface.setEditMode(editMode);
+        searchInterface.setEditMode(editMode);
+        menuInterface.setEditMode(editMode);
+//        quickPanelInterface.setEditMode(editMode);
+//        newBookmarkSelectionInterface.set;
     }
 
     @Override

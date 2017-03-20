@@ -3,6 +3,7 @@ package com.bookmarkanator.ui.fxui;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
+import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.collections.*;
@@ -15,7 +16,6 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
 {
     private ListView<AbstractUIBookmark> bookmarkListView;
     private ObservableList<AbstractUIBookmark> observableList;
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
 
     public BookmarksListUI()
@@ -43,11 +43,12 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
                 try
                 {
                     AbstractUIBookmark abs = bookmarkListView.getSelectionModel().getSelectedItem();
-                    if (abs!=null)
+                    if (abs != null)
                     {
                         if (getEditMode())
                         {
-                            abs.getTypeIcon();
+                            abs.edit();
+                            UIController.use().updateUI();
                         }
                         else
                         {
@@ -75,7 +76,7 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
         for (AbstractBookmark bk : bookmarks)
         {
             String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
-            String className = this.getGUIController().getSettings().getSetting(bkClassNameKey).getValue();
+            String className = UIController.use().getSettings().getSetting(bkClassNameKey).getValue();
             final AbstractUIBookmark bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class);
             bkui.setBookmark(bk);
 
@@ -90,12 +91,6 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
     }
 
     @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
-    }
-
-    @Override
     public boolean getEditMode()
     {
         return this.editMode;
@@ -106,14 +101,6 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
     {
         this.editMode = editMode;
     }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
-    }
-
-
 
     private class BookmarkCell extends ListCell<AbstractUIBookmark>
     {

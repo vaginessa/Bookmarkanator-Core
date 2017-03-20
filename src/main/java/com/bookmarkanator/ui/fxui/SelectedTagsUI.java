@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 
 public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
 {
-    private GUIControllerInterface guiController;
     private boolean editMode = false;
     private FlowPane flowPane;
     private VBox vBox;
@@ -49,7 +48,7 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
             public void handle(ActionEvent event) {
                 try
                 {
-                    guiController.setSelectedTags(null);
+                    UIController.use().setSelectedTags(null);
                 }
                 catch (Exception e)
                 {
@@ -69,7 +68,7 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) -> {
             try
             {
-                guiController.setTagMode(newValue);
+                UIController.use().setTagMode(newValue);
             }
             catch (Exception e)
             {
@@ -97,7 +96,7 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
                 {
                     try
                     {
-                        getGUIController().removeSelectedTag(string);
+                        UIController.use().removeSelectedTag(string);
                     }
                     catch (Exception e)
                     {
@@ -118,18 +117,6 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     public Set<String> getSelectedTags()
     {
         return null;
-    }
-
-    @Override
-    public GUIControllerInterface getGUIController()
-    {
-        return this.guiController;
-    }
-
-    @Override
-    public void setGUIController(GUIControllerInterface guiController)
-    {
-        this.guiController = guiController;
     }
 
     @Override

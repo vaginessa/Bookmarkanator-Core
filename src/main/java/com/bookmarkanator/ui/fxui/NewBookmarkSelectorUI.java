@@ -13,6 +13,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     Map<String, AbstractUIBookmark> typesMap;//<bookmark type string, the ui bookmark it will use>
     AbstractUIBookmark selected;
     GUIControllerInterface controller;
+    private boolean editMode;
 
     public NewBookmarkSelectorUI(GUIControllerInterface controller)
     {
@@ -25,7 +26,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     {
         this.types = types;
 
-        for (AbstractUIBookmark abs: types)
+        for (AbstractUIBookmark abs : types)
         {
             typesMap.put(abs.getBookmark().getTypeName(), abs);
         }
@@ -49,9 +50,9 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     {
 
         List<String> dialogData = new ArrayList<>();
-        for (AbstractUIBookmark bkUI: types)
+        for (AbstractUIBookmark bkUI : types)
         {
-            if (bkUI.getBookmark()==null)
+            if (bkUI.getBookmark() == null)
             {
                 MLog.warn("Null bookmark encountered");
                 continue;
@@ -59,23 +60,23 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
             dialogData.add(bkUI.getBookmark().getTypeName());
         }
 
-
         Dialog dialog = new ChoiceDialog(dialogData.get(0), dialogData);
         dialog.setTitle("New Bookmark Window");
         dialog.setHeaderText("Please select a bookmark type to create");
 
         Optional<String> result = dialog.showAndWait();
 
-        if (result.isPresent()) {
+        if (result.isPresent())
+        {
             String item = result.get();
-            MLog.fine("Selected "+item);
+            MLog.fine("Selected " + item);
 
             AbstractUIBookmark bk = typesMap.get(item);
-            if (bk!=null)
+            if (bk != null)
             {
                 selected = bk;
                 AbstractBookmark abBK = bk.newBookmarkView();
-                if (abBK!=null )
+                if (abBK != null)
                 {
                     Bootstrap.context().addBookmark(abBK);
                     controller.updateUI();
@@ -83,7 +84,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
             }
             else
             {
-                MLog.warn("Value selected has no map entry. Selected item: "+item);
+                MLog.warn("Value selected has no map entry. Selected item: " + item);
             }
         }
         System.out.println(result);
@@ -92,6 +93,18 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     @Override
     public void hide()
     {
-            //Do nothing here because we are using a modal dialog that closes when we are done with it.
+        //Do nothing here because we are using a modal dialog that closes when we are done with it.
+    }
+
+    @Override
+    public boolean getEditMode()
+    {
+        return editMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
     }
 }
