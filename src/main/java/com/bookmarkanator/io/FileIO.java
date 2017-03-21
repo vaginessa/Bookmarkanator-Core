@@ -25,6 +25,10 @@ public class FileIO implements BKIOInterface
         fin.close();
         bookmarksFileLocation = config;
 
+        //TODO Make it so that it won't create multiple backup files if there have been no changes.
+        //TODO Have a backup file created for the settings?
+        //TODO Add a lock so that the user cannot start multiple bookmarkanator programs.
+        //Adding a backup file for the bookmarks.
         Date date = new Date();
         String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
         String extension = FilenameUtils.getExtension(file.getName());
