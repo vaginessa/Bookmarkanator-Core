@@ -36,12 +36,10 @@ public class TextBookmarkUI extends AbstractUIBookmark
             Pane vbox = new VBox();
 
             HTMLEditor textArea = new HTMLEditor();
-            textArea.setPrefWidth(500);
-            textArea.setPrefHeight(300);
             vbox.getChildren().add(textArea);
             Platform.runLater(textArea::requestFocus);
 
-            Scene dialog = new Scene(vbox);
+            Scene dialog = new Scene(vbox,Main.use().getBestWindowSize().getWidth()*.6, Main.use().getBestWindowSize().getHeight()*.75, javafx.scene.paint.Paint.valueOf("white"));
             stage = new Stage();
 
             //Add this stage to the stages map so that it will not open multiple windows per bookmark.

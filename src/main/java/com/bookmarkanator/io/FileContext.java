@@ -151,7 +151,8 @@ public class FileContext implements ContextInterface
 
         bookmarkNames.add(id, bookmark.getName());
         bookmarkTypeNames.add(id, bookmark.getTypeName());
-        bookmarkText.add(id, bookmark.getText());
+        //TODO adding bookmark text is too intense and freezes the program - probably because of rotating the strings to get sub strings. :(
+//        bookmarkText.add(id, bookmark.getText());
         bookmarkTags.add(id, bookmark.getTags());
 
         bookmarks.put(bookmark.getId(), bookmark);

@@ -10,6 +10,7 @@ import org.junit.*;
 
 public class TestParsing
 {
+    @Ignore
     @Test
     public void testParsingBookmarks()
         throws Exception
@@ -32,6 +33,7 @@ public class TestParsing
         System.out.println();
     }
 
+    @Ignore
     @Test
     public void testParsingSettings()
         throws Exception

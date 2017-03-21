@@ -14,75 +14,80 @@ import javafx.stage.*;
 
 public class Main extends Application
 {
+    public static Main main;
     public static final String UI_PREFIX_VALUE = Main.class.getCanonicalName();
     public static final String UI_CLASS_VALUE = "class";
     public static final String UI_STRING_SEPARATOR = "-";
 
     private UIController uiController;
-
+    private Dimension bestWindowSize;
     //TODO: Add a drag and drop handler so that each bookmark must handle types dragged and dropped into it.
     //TODO: Add a one way backup or a versioned backup scheme for bookmarks.
-
-
 
     @Override
     public void start(Stage primaryStage)
         throws Exception
     {
-        Dimension bestWindowSize = getBestWindowSize();
+        //Setting global reference to this here because the JavaFX thread must create this object.
+        main = this;
+
+        bestWindowSize = getBestWindowSize();
         Bootstrap.use().getSettings().importSettings(this.getDefaultSettings());
 
         uiController = UIController.use();
 
-        GridPane gridPane = new GridPane();
-        gridPane.setStyle("-fx-background-color: steelblue");
-        gridPane.setGridLinesVisible(true);
-
         VBox vBox = new VBox();
         vBox.setFillWidth(true);
 
-        Scene scene = new Scene(vBox, bestWindowSize.getWidth(), bestWindowSize.getHeight(), javafx.scene.paint.Paint.valueOf("RED"));
+        Scene scene = new Scene(vBox, bestWindowSize.getWidth(), bestWindowSize.getHeight(), javafx.scene.paint.Paint.valueOf("white"));
 
+        //Set up menu
         MenuUI menuUI = new MenuUI();
         uiController.setMenuUi(menuUI);
-
         MenuBar menuBar = menuUI.getMenuBar();
         vBox.getChildren().addAll(menuBar);
 
-        vBox.getChildren().add(gridPane);
-        VBox.setVgrow(gridPane, Priority.ALWAYS);
-
         SearchUI searchUI = new SearchUI();
         uiController.setSearchUI(searchUI);
-        searchUI.setPrefHeight(bestWindowSize.getHeight()*.15);
-        gridPane.add(searchUI, 0, 0, 5, 1);
+        searchUI.setPrefHeight(bestWindowSize.getHeight() * .15);
+        vBox.getChildren().add(searchUI);
+
+        HBox hBox = new HBox();
+        hBox.setFillHeight(true);
 
         TypesUI typesUI = new TypesUI();
         uiController.setTypesUI(typesUI);
-        gridPane.add(typesUI, 0, 1, 1, 4);
-        VBox.setVgrow(typesUI, Priority.ALWAYS);
-        typesUI.setPrefWidth(bestWindowSize.getWidth()*.15);
+        hBox.getChildren().add(typesUI);
+        typesUI.setPrefWidth(bestWindowSize.getWidth() * .15);
 
+        //Setup tags panels
+        VBox tagsBox = new VBox();
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI();
+        selectedTagsUI.setPrefHeight(bestWindowSize.getHeight() * .35);
         uiController.setSelectedTagsUI(selectedTagsUI);
-        gridPane.add(selectedTagsUI, 1, 1, 2, 2);
+        tagsBox.getChildren().add(selectedTagsUI);
+        VBox.setVgrow(selectedTagsUI, Priority.ALWAYS);
 
         AvailableTagsUI availableTagsUI = new AvailableTagsUI();
+        availableTagsUI.setPrefHeight(bestWindowSize.getHeight() * .4);
         uiController.setAvailableTagsUI(availableTagsUI);
+        tagsBox.getChildren().add(availableTagsUI);
+        VBox.setVgrow(availableTagsUI, Priority.ALWAYS);
 
-        gridPane.add(availableTagsUI, 1, 3, 2, 2);
+        hBox.getChildren().add(tagsBox);
+        HBox.setHgrow(tagsBox, Priority.ALWAYS);
 
         BookmarksListUI bookmarksListUI = new BookmarksListUI();
         uiController.setBookmarksListUI(bookmarksListUI);
+        hBox.getChildren().add(bookmarksListUI);
+        HBox.setHgrow(bookmarksListUI, Priority.ALWAYS);
 
-//        bookmarksListUI.setPrefWidth(bestWindowSize.getWidth()*.5);
-        gridPane.add(bookmarksListUI, 3, 1, 2, 4);
+        vBox.getChildren().add(hBox);
+        VBox.setVgrow(hBox, Priority.ALWAYS);
 
-        NewBookmarkSelectorUI newBookmarkSelectorUI= new NewBookmarkSelectorUI(uiController);
+        NewBookmarkSelectorUI newBookmarkSelectorUI = new NewBookmarkSelectorUI(uiController);
         uiController.setNewBookmarkSelectorUI(newBookmarkSelectorUI);
 
-        setRowConstraints(gridPane);
-        setColConstraints(gridPane);
         primaryStage.setScene(scene);
 
         primaryStage.setMinHeight(bestWindowSize.getHeight());
@@ -91,32 +96,13 @@ public class Main extends Application
         uiController.initUI();
         primaryStage.show();
 
-        primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
-
-            @Override
-            public void handle(WindowEvent event) {
-                Platform.runLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try
-                        {
-                            Bootstrap.use().saveSettingsFile();
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                        System.exit(0);
-                    }
-                });
-            }
-        });
-
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+        {
+            public void handle(WindowEvent we)
+            {
                 try
                 {
+                    Bootstrap.use().saveSettingsFile();
                     Bootstrap.IOInterface().save();
                 }
                 catch (Exception e)
@@ -127,58 +113,22 @@ public class Main extends Application
         });
     }
 
-    private void setRowConstraints(GridPane gridPane)
-    {
-        RowConstraints row1 = new RowConstraints();
-        row1.setVgrow(Priority.NEVER);
-
-        RowConstraints row2 = new RowConstraints();
-        row2.setVgrow(Priority.ALWAYS);
-
-        RowConstraints row3 = new RowConstraints();
-        row3.setVgrow(Priority.ALWAYS);
-
-        RowConstraints row4 = new RowConstraints();
-        row4.setVgrow(Priority.ALWAYS);
-
-        RowConstraints row5 = new RowConstraints();
-        row5.setVgrow(Priority.ALWAYS);
-        gridPane.getRowConstraints().addAll(row1, row2, row3, row4, row5);
-    }
-
-    private void setColConstraints(GridPane gridPane)
-    {
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setHgrow(Priority.NEVER);
-
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setHgrow(Priority.SOMETIMES);
-
-        ColumnConstraints col3 = new ColumnConstraints();
-        col3.setHgrow(Priority.SOMETIMES);
-
-        ColumnConstraints col4 = new ColumnConstraints();
-        col4.setHgrow(Priority.SOMETIMES);
-
-        ColumnConstraints col5 = new ColumnConstraints();
-        col5.setHgrow(Priority.SOMETIMES);
-
-        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
-    }
-
     public static void main(String[] args)
     {
         launch(args);
     }
 
-    private Dimension getBestWindowSize()
+    public Dimension getBestWindowSize()
     {
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
+        if (bestWindowSize==null)
+        {
+            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            int width = gd.getDisplayMode().getWidth();
+            int height = gd.getDisplayMode().getHeight();
 
-        Dimension d = new Dimension((int) (width * .5), (int) (height * .5));
-        return d;
+            bestWindowSize = new Dimension((int) (width * .65), (int) (height * .5));
+        }
+       return bestWindowSize;
     }
 
     private Settings getDefaultSettings()
@@ -186,42 +136,42 @@ public class Main extends Application
     {
         Settings settings = new Settings();
 
-        SettingItem item = new SettingItem(Main.getUIClassString()+ BashHistoryBookmark.class.getCanonicalName());
+        SettingItem item = new SettingItem(Main.getUIClassString() + BashHistoryBookmark.class.getCanonicalName());
         item.setValue(BashHistoryBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+EncryptedBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + EncryptedBookmark.class.getCanonicalName());
         item.setValue(EncryptedBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+FileBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + FileBookmark.class.getCanonicalName());
         item.setValue(FileBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+ReminderBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + ReminderBookmark.class.getCanonicalName());
         item.setValue(ReminderBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+SequenceBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + SequenceBookmark.class.getCanonicalName());
         item.setValue(SequenceBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+TerminalBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + TerminalBookmark.class.getCanonicalName());
         item.setValue(TerminalBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+TextBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + TextBookmark.class.getCanonicalName());
         item.setValue(TextBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
-        item = new SettingItem(Main.getUIClassString()+WebBookmark.class.getCanonicalName());
+        item = new SettingItem(Main.getUIClassString() + WebBookmark.class.getCanonicalName());
         item.setValue(WebBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
@@ -231,8 +181,11 @@ public class Main extends Application
 
     public static String getUIClassString()
     {
-        return Main.UI_PREFIX_VALUE+Main.UI_STRING_SEPARATOR+Main.UI_CLASS_VALUE+Main.UI_STRING_SEPARATOR;
+        return Main.UI_PREFIX_VALUE + Main.UI_STRING_SEPARATOR + Main.UI_CLASS_VALUE + Main.UI_STRING_SEPARATOR;
     }
 
-
+    public static Main use()
+    {
+        return main;
+    }
 }

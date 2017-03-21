@@ -13,7 +13,7 @@ public class TypesUI extends VBox implements BKTypes
     private VBox vBox;
     private Set<String> types;
     private Set<String> visibleTypes;
-    private String backgroundColor = "paleturquoise";
+    private String backgroundColor = "lightgray";
 
     //TODO Add type icons that match bookmark type icons
     //TODO Change type button theme/colors so that its easier to tell when they are selected.

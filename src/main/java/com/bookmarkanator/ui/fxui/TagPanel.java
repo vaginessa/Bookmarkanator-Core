@@ -23,14 +23,14 @@ public class TagPanel extends ScrollPane
     FlowPane selectedTagsPanel;//Tags selected to be added to the bookmark
     FlowPane stronglyRelatedTags;//All other tags from bookmarks that contain all of the selected
 
-    private String colorString = "#8fffff";
-    private String tagColorString = "#8f9999";
-    private String newTagColorString = "aqua";
+    private String colorString = "skyblue";
+    private String tagColorString = "mintcream";
+    private String newTagColorString = "palegreen";
 
     public TagPanel(Set<String> selectedTags)
         throws Exception
     {
-        this.setStyle("-fx-background:" + colorString);
+//        this.setStyle("-fx-background:" + colorString);
         this.setFitToWidth(true);
         this.setPadding(new Insets(5, 5, 5, 5));
 
@@ -282,8 +282,8 @@ public class TagPanel extends ScrollPane
     private Pane getAvailableTagsPane()
     {
         availableTagsPanel = new FlowPane();
-        availableTagsPanel.setHgap(1);
-        availableTagsPanel.setVgap(1);
+        availableTagsPanel.setHgap(2);
+        availableTagsPanel.setVgap(2);
 
         ScrollPane availableTagsScroll = new ScrollPane();
         availableTagsScroll.setContent(availableTagsPanel);
@@ -303,8 +303,8 @@ public class TagPanel extends ScrollPane
     private Pane getSelectedTagsPane()
     {
         selectedTagsPanel = new FlowPane();
-        selectedTagsPanel.setHgap(1);
-        selectedTagsPanel.setVgap(1);
+        selectedTagsPanel.setHgap(2);
+        selectedTagsPanel.setVgap(2);
 
         ScrollPane scroll = new ScrollPane();
         scroll.setContent(selectedTagsPanel);
@@ -324,8 +324,8 @@ public class TagPanel extends ScrollPane
     private Pane getLooselyRelatedTagsPane()
     {
         looselyRelatedTags = new FlowPane();
-        looselyRelatedTags.setHgap(1);
-        looselyRelatedTags.setVgap(1);
+        looselyRelatedTags.setHgap(2);
+        looselyRelatedTags.setVgap(2);
 
         ScrollPane scroll = new ScrollPane();
         scroll.setContent(looselyRelatedTags);
@@ -345,8 +345,8 @@ public class TagPanel extends ScrollPane
     private Pane getStronglyRelatedTagsPane()
     {
         stronglyRelatedTags = new FlowPane();
-        stronglyRelatedTags.setHgap(1);
-        stronglyRelatedTags.setVgap(1);
+        stronglyRelatedTags.setHgap(2);
+        stronglyRelatedTags.setVgap(2);
 
         ScrollPane scroll = new ScrollPane();
         scroll.setContent(stronglyRelatedTags);

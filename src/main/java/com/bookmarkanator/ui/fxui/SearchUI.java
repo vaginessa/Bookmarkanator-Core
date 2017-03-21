@@ -23,7 +23,7 @@ public class SearchUI extends HBox implements SearchInterface
     {
         this.getChildren().add(getSearch());
         this.setAlignment(Pos.CENTER_LEFT);
-        this.setStyle("-fx-background-color: crimson");
+//        this.setStyle("-fx-background-color: crimson");
     }
 
     private Pane getSearch()
@@ -33,7 +33,7 @@ public class SearchUI extends HBox implements SearchInterface
         this.searchBox = new HBox();
         searchBox.setSpacing(5);
 
-        searchBox.setStyle("-fx-background-color:" + colorString);
+//        searchBox.setStyle("-fx-background-color:" + colorString);
         searchBox.setAlignment(Pos.CENTER_LEFT);
 
         textField = new TextField();
@@ -125,7 +125,7 @@ public class SearchUI extends HBox implements SearchInterface
         this.editModeTogglePane = new HBox();
 
         editModeTogglePane.setPrefWidth(60);
-        editModeTogglePane.setStyle("-fx-background-color:blue;-fx-background-radius:15");
+        editModeTogglePane.setStyle("-fx-background-color:aliceblue;-fx-background-radius:15;-fx-border-color: black;-fx-border-radius:15");
         editModeTogglePane.setAlignment(Pos.CENTER_LEFT);
 
         Label label = new Label("Edit Mode");

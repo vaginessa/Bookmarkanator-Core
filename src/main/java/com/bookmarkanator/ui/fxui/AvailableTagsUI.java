@@ -17,11 +17,11 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     public AvailableTagsUI()
     {
         this.flowPane = new FlowPane();
-        flowPane.setStyle("-fx-background-color:"+colorString);
+//        flowPane.setStyle("-fx-background-color:"+colorString);
         flowPane.setVgap(5);
         flowPane.setHgap(5);
 
-        this.setStyle("-fx-background:"+colorString);
+//        this.setStyle("-fx-background:"+colorString);
         this.setFitToWidth(true);
         this.setContent(flowPane);
     }
@@ -50,7 +50,7 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
             });
             Label label = new Label(string);
             label.setStyle("-fx-border-color: black");
-            pane.setStyle("-fx-background-color: #8fbc61");
+            pane.setStyle("-fx-background-color: mintcream");
             pane.getChildren().add(label);
 
             this.flowPane.getChildren().add(pane);

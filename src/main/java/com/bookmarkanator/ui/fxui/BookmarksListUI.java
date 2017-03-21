@@ -10,9 +10,10 @@ import javafx.collections.*;
 import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.*;
 import javafx.util.*;
 
-public class BookmarksListUI extends ScrollPane implements BookmarksListInterface
+public class BookmarksListUI extends VBox implements BookmarksListInterface
 {
     private ListView<AbstractUIBookmark> bookmarkListView;
     private ObservableList<AbstractUIBookmark> observableList;
@@ -22,7 +23,7 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
     {
         observableList = FXCollections.observableArrayList();
         bookmarkListView = new ListView<>(observableList);
-        this.setContent(bookmarkListView);
+        this.getChildren().add(bookmarkListView);
 
         bookmarkListView.setCellFactory(new Callback<ListView<AbstractUIBookmark>, ListCell<AbstractUIBookmark>>()
         {
@@ -63,8 +64,8 @@ public class BookmarksListUI extends ScrollPane implements BookmarksListInterfac
             }
         });
 
-        this.setStyle("-fx-background-color: cyan");
-        this.setFitToWidth(true);
+//        this.setStyle("-fx-background-color: cyan");
+        VBox.setVgrow(bookmarkListView, Priority.ALWAYS);
     }
 
     @Override

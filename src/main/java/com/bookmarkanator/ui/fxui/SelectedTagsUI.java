@@ -20,14 +20,14 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     public SelectedTagsUI()
     {
         this.vBox = new VBox();
-        vBox.setStyle("-fx-background-color:"+colorString);
+//        vBox.setStyle("-fx-background-color:"+colorString);
 
         this.flowPane = new FlowPane();
-        flowPane.setStyle("-fx-background-color:"+colorString);
+//        flowPane.setStyle("-fx-background-color:"+colorString);
         flowPane.setVgap(5);
         flowPane.setHgap(5);
 
-        this.setStyle("-fx-background:"+colorString);
+//        this.setStyle("-fx-background:"+colorString);
         this.setFitToWidth(true);
 
         vBox.getChildren().add(getOptionsPane());
@@ -106,7 +106,7 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
             });
             Label label = new Label(string);
             label.setStyle("-fx-border-color: black");
-            pane.setStyle("-fx-background-color: #8fbc61");
+            pane.setStyle("-fx-background-color: mintcream");
             pane.getChildren().add(label);
 
             this.flowPane.getChildren().add(pane);

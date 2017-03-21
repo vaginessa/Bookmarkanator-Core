@@ -1,7 +1,10 @@
 package com.bookmarkanator.io;
 
 import java.io.*;
+import java.nio.file.*;
+import java.util.*;
 import com.bookmarkanator.xml.*;
+import org.apache.commons.io.*;
 
 public class FileIO implements BKIOInterface
 {
@@ -12,13 +15,21 @@ public class FileIO implements BKIOInterface
     public void init(String config)
         throws Exception
     {
-        FileInputStream fin = new FileInputStream(new File(config));
+        //TODO Add basic bookmark structure if it doesnt' exist.
+        File file = new File(config);
+        FileInputStream fin = new FileInputStream(file);
         validateXML(fin);
         fin = new FileInputStream(new File(config));
 
         loadBookmarks(fin);
         fin.close();
         bookmarksFileLocation = config;
+
+        Date date = new Date();
+        String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
+        String extension = FilenameUtils.getExtension(file.getName());
+        File file2 = new File(file.getParent()+File.separator+date.toString()+"-"+fileNameWithOutExt+".backup."+extension);
+        Files.copy(file.toPath(), file2.toPath());
     }
 
     @Override
