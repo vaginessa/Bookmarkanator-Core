@@ -48,7 +48,7 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
                     {
                         if (getEditMode())
                         {
-                            abs.edit();
+                            Bootstrap.context().updateBookmark(abs.edit());
                             UIController.use().updateUI();
                         }
                         else

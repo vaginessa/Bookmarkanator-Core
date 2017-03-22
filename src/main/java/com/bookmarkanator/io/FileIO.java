@@ -3,6 +3,7 @@ package com.bookmarkanator.io;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
 import org.apache.commons.io.*;
 
@@ -10,6 +11,7 @@ public class FileIO implements BKIOInterface
 {
     private FileContext context;
     private String bookmarksFileLocation;
+    private static String DIRTY_BOOKMARKS_KEY = "dirty-bookmarks";
 
     @Override
     public void init(String config)
@@ -29,11 +31,9 @@ public class FileIO implements BKIOInterface
         //TODO Have a backup file created for the settings?
         //TODO Add a lock so that the user cannot start multiple bookmarkanator programs.
         //Adding a backup file for the bookmarks.
-        Date date = new Date();
-        String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
-        String extension = FilenameUtils.getExtension(file.getName());
-        File file2 = new File(file.getParent()+File.separator+date.toString()+"-"+fileNameWithOutExt+".backup."+extension);
-        Files.copy(file.toPath(), file2.toPath());
+
+
+
     }
 
     @Override
@@ -45,6 +45,11 @@ public class FileIO implements BKIOInterface
         writer.write();
         fout.flush();
         fout.close();
+
+        if (Bootstrap.context().isDirty())
+        {
+            createBookmarksBackup(new File(bookmarksFileLocation));
+        }
     }
 
     @Override
@@ -71,6 +76,16 @@ public class FileIO implements BKIOInterface
         context.setBKIOInterface(this);
         BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
         parser.parse();
+    }
+
+    private void createBookmarksBackup(File file)
+        throws IOException
+    {
+        Date date = new Date();
+        String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
+        String extension = FilenameUtils.getExtension(file.getName());
+        File file2 = new File(file.getParent()+File.separator+date.toString()+"-"+fileNameWithOutExt+".backup."+extension);
+        Files.copy(file.toPath(), file2.toPath());
     }
 
     private void validateXML(InputStream inputStream)

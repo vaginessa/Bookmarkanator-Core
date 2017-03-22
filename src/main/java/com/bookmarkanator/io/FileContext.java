@@ -18,6 +18,8 @@ public class FileContext implements ContextInterface
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
+    private boolean isDirty;
+    private boolean alwaysClean;
 
     public FileContext()
     {
@@ -147,6 +149,8 @@ public class FileContext implements ContextInterface
                 "Id \"" + bookmark.getId() + "\" already exists. If you are trying to modify a bookmark please use the update method.");
         }
 
+        setDirty();
+
         UUID id = bookmark.getId();
 
         bookmarkNames.add(id, bookmark.getName());
@@ -178,9 +182,13 @@ public class FileContext implements ContextInterface
             bookmarkTypeNames.remove(id);
             bookmarkText.remove(id);
             bookmarkTags.remove(id);
+
+            setDirty();
+
+            return abs;
         }
 
-        return abs;
+        return null;
     }
 
     @Override
@@ -206,19 +214,23 @@ public class FileContext implements ContextInterface
     public void updateBookmark(AbstractBookmark bookmark)
         throws Exception
     {
-        if (bookmark.getId() == null)
+        if (bookmark==null || bookmark.getId() == null)
         {
-            throw new Exception("Bookmark ID must be set");
+            throw new Exception("Bookmark must be non null and ID must be set");
         }
 
-        if (bookmarks.get(bookmark) == null)
+        if (getBookmark(bookmark.getId()) == null)
         {
-            throw new Exception("Item \"" + bookmark.getId().toString() + "\" not found.");
+//            throw new Exception("Item \"" + bookmark.getId().toString() + "\" not found.");
+            addBookmark(bookmark);
+        }
+        else
+        {
+            delete(bookmark.getId());
+            addBookmark(bookmark);
         }
 
-        delete(bookmark.getId());
-
-        addBookmark(bookmark);
+        setDirty();
     }
 
     // ============================================================
@@ -473,6 +485,26 @@ public class FileContext implements ContextInterface
     }
 
     @Override
+    public boolean isDirty()
+    {
+        return this.isDirty;
+    }
+
+    @Override
+    public void setAlwaysClean(boolean alwaysClean)
+    {
+        this.alwaysClean = alwaysClean;
+    }
+
+    private void setDirty()
+    {
+        if (!alwaysClean)
+        {
+            isDirty = true;
+        }
+    }
+
+    @Override
     public String bookmarksReport(boolean includeTags, int limit)
     {
         StringBuilder sb = new StringBuilder();
@@ -569,6 +601,8 @@ public class FileContext implements ContextInterface
             bookmark.getTags().remove(oldTag);
             bookmark.addTag(newTag);
         }
+
+        setDirty();
     }
 
     @Override
@@ -585,6 +619,8 @@ public class FileContext implements ContextInterface
             bookmark.getTags().removeAll(tagsToMerge);
             bookmark.addTag(resultingTag);
         }
+
+        setDirty();
     }
 
     @Override
@@ -599,6 +635,8 @@ public class FileContext implements ContextInterface
             AbstractBookmark bookmark = getBookmark(uuid);
             bookmark.getTags().removeAll(tagsToDelete);
         }
+
+        setDirty();
     }
 
     @Override

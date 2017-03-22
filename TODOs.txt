@@ -1,8 +1,6 @@
 TODO Add Logging to the whole project.
 TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same.
-TODO Go through the search class and replace all search rotated words or rotated substrings and replace with full
-text rotated and full text rotated substrings.
-TODO Should we highlight/add/remove bookmark types shown when doing a text search? Maybe just when searching for bookmark types?
+TODO Find a way to index the full text of the bookmark without causing a slowdown.
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
 TODO Handle when a search is done, and then a tag is selected. Currently it doesn't correctly sort the results. It should only be searching tags that are visible with the search string.
 TODO Add a way to show only bookmarks by date range.

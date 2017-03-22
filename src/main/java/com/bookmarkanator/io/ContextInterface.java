@@ -54,6 +54,10 @@ public interface ContextInterface
 
     List<AbstractBookmark> searchBookmarkText(String text);
 
+    boolean isDirty();
+
+    //Will not set the dirty state while this is true
+    void setAlwaysClean(boolean alwaysClean);
     /**
      * Creates a report listing the bookmarks, and possibly their tags as well.
      * @param includeTags  Should tags for each bookmark be included in the report?

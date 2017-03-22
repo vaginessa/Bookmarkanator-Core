@@ -48,6 +48,7 @@ public class BookmarksXMLParser
     public void parse()
         throws Exception
     {
+        contextInterface.setAlwaysClean(true);
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         document = builder.parse(inputStream);
@@ -103,6 +104,8 @@ public class BookmarksXMLParser
                 }
             }
         }
+
+        contextInterface.setAlwaysClean(false);
     }
 
     private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
