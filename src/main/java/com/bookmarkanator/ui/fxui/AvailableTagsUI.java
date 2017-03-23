@@ -58,7 +58,15 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
             label.setStyle("-fx-border-color: black");
             if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
             {
-                pane.setStyle("-fx-background-color: lightgreen");
+                if (currentSearchTerm.equals(tmp))
+                {
+                    label.setStyle("-fx-border-color: orange;-fx-border-width: 2px");
+                }
+//                else
+//                {
+                    pane.setStyle("-fx-background-color: lightgreen");
+//                }
+
                 isFound = true;
             }
             else
