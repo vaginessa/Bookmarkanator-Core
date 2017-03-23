@@ -107,4 +107,16 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     {
         this.editMode = editMode;
     }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return false;
+    }
 }

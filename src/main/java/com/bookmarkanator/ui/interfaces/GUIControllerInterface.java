@@ -37,6 +37,8 @@ public interface GUIControllerInterface
     void setSearchInclusions(String key, boolean value)
         throws Exception;
 
+    void searchKeyAction(String action) throws Exception;
+
     boolean getSearchInclusion(String key)
         throws Exception;
 

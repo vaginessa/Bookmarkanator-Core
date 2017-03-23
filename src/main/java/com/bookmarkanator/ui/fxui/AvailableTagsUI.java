@@ -13,6 +13,8 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     private boolean editMode = false;
     private FlowPane flowPane;
     private String colorString =  "#8fbc8f";
+    private String currentSearchTerm;
+    private boolean isFound;
 
     public AvailableTagsUI()
     {
@@ -33,6 +35,8 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
         for (final String string: availableTags)
         {
             Pane pane = new Pane();
+            String tmp = string.toLowerCase();
+
             pane.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
@@ -48,9 +52,19 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
                     }
                 }
             });
+
+
             Label label = new Label(string);
             label.setStyle("-fx-border-color: black");
-            pane.setStyle("-fx-background-color: mintcream");
+            if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
+            {
+                pane.setStyle("-fx-background-color: lightgreen");
+                isFound = true;
+            }
+            else
+            {
+                pane.setStyle("-fx-background-color: mintcream");
+            }
             pane.getChildren().add(label);
 
             this.flowPane.getChildren().add(pane);
@@ -73,6 +87,18 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
+    }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+        this.currentSearchTerm = searchTerm;
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return isFound;
     }
 
 }

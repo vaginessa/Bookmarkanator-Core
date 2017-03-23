@@ -1,5 +1,7 @@
 package com.bookmarkanator.ui;
 
+//import java.awt.event.KeyEvent;
+
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
@@ -7,6 +9,7 @@ import com.bookmarkanator.io.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
+import javafx.scene.input.*;
 
 public class UIController implements GUIControllerInterface
 {
@@ -34,17 +37,13 @@ public class UIController implements GUIControllerInterface
     private Map<String, Boolean> searchInclusions;
 
     //Selected Tag Related
-    private String selectedTagsOperation = INCLUDE_BOOKMARKS_WITH_ALL_TAGS;
+    private String selectedTagsOperation = SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS;
 
     //Search constants
     public static final String SEARCH_TYPES_KEY = "BOOKMARK-TYPES-SEARCH";
     public static final String SEARCH_TAGS_KEY = "BOOKMARK-TAGS-SEARCH";
     public static final String SEARCH_BOOKMARK_TEXT_KEY = "BOOKMARK-TEXT-SEARCH";
     public static final String SEARCH_BOOKMARK_NAMES_KEY = "BOOKMARK-NAME-SEARCH";
-    //Other constants
-    public static final String INCLUDE_BOOKMARKS_WITH_ALL_TAGS = "ALL TAGS";
-    public static final String INCLUDE_BOOKMARKS_WITH_ANY_TAGS = "ANY TAG";
-    public static final String INCLUDE_BOOKMARKS_WITHOUT_TAGS = "WITHOUT TAGS";
 
     //Fields
     private boolean editMode;
@@ -139,7 +138,15 @@ public class UIController implements GUIControllerInterface
     public void setSearchTerm(String searchTerm)
         throws Exception
     {
+        searchTerm = searchTerm.toLowerCase();
         this.searchTerm = searchTerm;
+        this.availableTagsInterface.setCurrentSearchTerm(searchTerm);
+        this.bkTypesInterface.setCurrentSearchTerm(searchTerm);
+//        this.quickPanelInterface.setCurrentSearchTerm(searchTerm);
+        this.selectedTagsInterface.setCurrentSearchTerm(searchTerm);
+        this.menuInterface.setCurrentSearchTerm(searchTerm);
+        this.bookmarksInterface.setCurrentSearchTerm(searchTerm);
+
         this.updateUI();
     }
 
@@ -157,6 +164,24 @@ public class UIController implements GUIControllerInterface
         {
             this.searchInclusions.put(key, value);
             this.updateUI();
+        }
+    }
+
+    @Override
+    public void searchKeyAction(String action)
+        throws Exception
+    {
+        if (action.equalsIgnoreCase(KeyCode.ENTER.name()) && getAvailableTags().contains(searchTerm))
+        {
+            Set<String> tags = getSelectedTags();
+            if (tags==null)
+            {
+                tags = new HashSet<>();
+            }
+
+            tags.add(searchTerm);
+            selectedTagsInterface.setSelectedTags(tags);
+            updateUI();
         }
     }
 
@@ -235,9 +260,9 @@ public class UIController implements GUIControllerInterface
     {
         switch (mode)
         {
-            case UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
-            case UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
-            case UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
                 this.selectedTagsOperation = mode;
                 break;
             default:
@@ -528,13 +553,13 @@ public class UIController implements GUIControllerInterface
 
         switch (this.selectedTagsOperation)
         {
-            case UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
                 tmp =  Filter.use(bookmarks).keepWithAllTags(this.getSelectedTags()).results();
                 break;
-            case UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
                 tmp =  Filter.use(bookmarks).keepWithAnyTag(this.getSelectedTags()).results();
                 break;
-            case UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+            case SearchParam.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
                 tmp =  Filter.use(bookmarks).excludeWithTags(this.getSelectedTags()).results();
                 break;
         }

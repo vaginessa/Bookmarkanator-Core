@@ -18,6 +18,7 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     private ListView<AbstractUIBookmark> bookmarkListView;
     private ObservableList<AbstractUIBookmark> observableList;
     private boolean editMode = false;
+    private String currentSearchTerm;
 
     public BookmarksListUI()
     {
@@ -101,6 +102,18 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
+    }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+        this.currentSearchTerm = searchTerm;
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return false;
     }
 
     private class BookmarkCell extends ListCell<AbstractUIBookmark>

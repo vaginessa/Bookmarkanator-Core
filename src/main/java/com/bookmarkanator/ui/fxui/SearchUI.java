@@ -2,10 +2,12 @@ package com.bookmarkanator.ui.fxui;
 
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
+import javafx.application.*;
 import javafx.beans.value.*;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
 public class SearchUI extends HBox implements SearchInterface
@@ -57,6 +59,39 @@ public class SearchUI extends HBox implements SearchInterface
                 }
             }
         });
+        textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode()==KeyCode.ENTER)
+                {
+                    try
+                    {
+                        UIController.use().searchKeyAction(ke.getCode().getName());
+                        UIController.use().setSearchTerm("");
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+                    textField.clear();
+                    Platform.runLater(textField::requestFocus);
+                }
+//
+//                String text = "Key Typed: " + ke.getCharacter();
+//                if (ke.isAltDown()) {
+//                    text += " , alt down";
+//                }
+//                if (ke.isControlDown()) {
+//                    text += " , ctrl down";
+//                }
+//                if (ke.isMetaDown()) {
+//                    text += " , meta down";
+//                }
+//                if (ke.isShiftDown()) {
+//                    text += " , shift down";
+//                }
+
+            }
+        });
 
         textFieldContainer.getChildren().add(textField);
 
@@ -72,6 +107,7 @@ public class SearchUI extends HBox implements SearchInterface
                 try
                 {
                     textField.clear();
+                    Platform.runLater(textField::requestFocus);
                     UIController.use().setSearchTerm(textField.getText());
                 }
                 catch (Exception e)
@@ -291,6 +327,18 @@ public class SearchUI extends HBox implements SearchInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
+    }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return false;
     }
 
 }

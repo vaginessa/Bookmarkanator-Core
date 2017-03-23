@@ -3,6 +3,7 @@ package com.bookmarkanator.ui.fxui;
 import java.util.*;
 import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.interfaces.*;
+import com.bookmarkanator.util.*;
 import javafx.collections.*;
 import javafx.event.*;
 import javafx.geometry.*;
@@ -16,6 +17,8 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     private FlowPane flowPane;
     private VBox vBox;
     private String colorString =  "#3fccff";
+    private String currentSearchTerm;
+    private boolean isFound;
 
     public SelectedTagsUI()
     {
@@ -58,13 +61,13 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         });
 
         ObservableList<String> options = FXCollections.observableArrayList();
-        options.add(UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
-        options.add(UIController.INCLUDE_BOOKMARKS_WITH_ANY_TAGS);
-        options.add(UIController.INCLUDE_BOOKMARKS_WITHOUT_TAGS);
+        options.add(SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        options.add(SearchParam.INCLUDE_BOOKMARKS_WITH_ANY_TAGS);
+        options.add(SearchParam.INCLUDE_BOOKMARKS_WITHOUT_TAGS);
 
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setStyle("-fx-background-radius:15");
-        comboBox.getSelectionModel().select(UIController.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
+        comboBox.getSelectionModel().select(SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
         comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) -> {
             try
             {
@@ -89,6 +92,8 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         for (final String string: selectedTags)
         {
             Pane pane = new Pane();
+            String tmp = string.toLowerCase();
+
             pane.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
@@ -106,7 +111,15 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
             });
             Label label = new Label(string);
             label.setStyle("-fx-border-color: black");
-            pane.setStyle("-fx-background-color: mintcream");
+            if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
+            {
+                pane.setStyle("-fx-background-color: lightgreen");
+                isFound = true;
+            }
+            else
+            {
+                pane.setStyle("-fx-background-color: mintcream");
+            }
             pane.getChildren().add(label);
 
             this.flowPane.getChildren().add(pane);
@@ -129,6 +142,18 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
+    }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+        this.currentSearchTerm = searchTerm;
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return isFound;
     }
 
 }

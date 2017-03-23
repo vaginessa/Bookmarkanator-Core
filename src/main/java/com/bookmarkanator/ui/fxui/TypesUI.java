@@ -14,6 +14,8 @@ public class TypesUI extends VBox implements BKTypes
     private Set<String> types;
     private Set<String> visibleTypes;
     private String backgroundColor = "lightgray";
+    private String currentSearchTerm;
+    private boolean isFound;
 
     //TODO Add type icons that match bookmark type icons
     //TODO Change type button theme/colors so that its easier to tell when they are selected.
@@ -90,6 +92,8 @@ public class TypesUI extends VBox implements BKTypes
         {
             ToggleButton toggleButton = new ToggleButton(string);
 
+            String tmp = string.toLowerCase();
+
             toggleButton.setOnAction(new EventHandler<ActionEvent>() {
 
                 @Override
@@ -108,6 +112,11 @@ public class TypesUI extends VBox implements BKTypes
             if (visibleTypes.contains(string))
             {
                 toggleButton.setSelected(true);
+                if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
+                {
+                    toggleButton.setStyle("-fx-background-color: lightgreen");
+                    isFound = true;
+                }
             }
 
             this.vBox.getChildren().add(toggleButton);
@@ -136,5 +145,17 @@ public class TypesUI extends VBox implements BKTypes
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
+    }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+        this.currentSearchTerm = searchTerm;
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return isFound;
     }
 }

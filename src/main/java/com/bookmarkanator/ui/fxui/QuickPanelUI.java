@@ -18,4 +18,16 @@ public class QuickPanelUI implements QuickPanelInterface
     {
         this.editMode = editMode;
     }
+
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return false;
+    }
 }

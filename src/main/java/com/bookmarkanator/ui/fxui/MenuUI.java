@@ -19,6 +19,18 @@ public class MenuUI implements MenuInterface
         this.editMode = editMode;
     }
 
+    @Override
+    public void setCurrentSearchTerm(String searchTerm)
+    {
+
+    }
+
+    @Override
+    public boolean isSearchTermFound()
+    {
+        return false;
+    }
+
     public MenuBar getMenuBar()
 {
     javafx.scene.control.MenuBar menuBar = new MenuBar();
