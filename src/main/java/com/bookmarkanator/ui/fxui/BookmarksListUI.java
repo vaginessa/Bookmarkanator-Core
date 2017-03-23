@@ -65,7 +65,7 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
             }
         });
 
-//        this.setStyle("-fx-background-color: cyan");
+        //        this.setStyle("-fx-background-color: cyan");
         VBox.setVgrow(bookmarkListView, Priority.ALWAYS);
     }
 
@@ -75,7 +75,44 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     {
         observableList.clear();
 
-        for (AbstractBookmark bk : bookmarks)
+        List<AbstractBookmark> bookmarksList = new ArrayList<>();
+        bookmarksList.addAll(bookmarks);
+
+        Collections.sort(bookmarksList, new Comparator<AbstractBookmark>()
+        {
+            @Override
+            public int compare(AbstractBookmark o1, AbstractBookmark o2)
+            {
+                if (o1.getName()==null || o1.getName().isEmpty())
+                {
+                    if (o2.getName()==null || o2.getName().isEmpty())
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else if (o2.getName()==null || o2.getName().isEmpty())
+                {
+                    if (o1.getName()==null || o1.getName().isEmpty())
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            }
+        });
+
+        for (AbstractBookmark bk : bookmarksList)
         {
             String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
             String className = UIController.use().getSettings().getSetting(bkClassNameKey).getValue();

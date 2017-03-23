@@ -216,7 +216,9 @@ public class FileContext implements ContextInterface
     {
         if (bookmark==null || bookmark.getId() == null)
         {
-            throw new Exception("Bookmark must be non null and ID must be set");
+//            throw new Exception("Bookmark must be non null and ID must be set");
+            System.out.println("Supplied bookmark, or it's Id field is");
+            return;
         }
 
         if (getBookmark(bookmark.getId()) == null)

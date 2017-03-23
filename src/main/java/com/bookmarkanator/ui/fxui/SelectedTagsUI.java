@@ -89,7 +89,45 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
     public void setSelectedTags(Set<String> selectedTags)
     {
         this.flowPane.getChildren().clear();
-        for (final String string: selectedTags)
+
+        List<String> tagsList = new ArrayList<>();
+        tagsList.addAll(selectedTags);
+
+        Collections.sort(tagsList, new Comparator<String>()
+        {
+            @Override
+            public int compare(String o1, String o2)
+            {
+                if (o1==null || o1.isEmpty())
+                {
+                    if (o2==null || o2.isEmpty())
+                    {
+                        return 0;
+                    }
+                    else {
+                        return -1;
+                    }
+                }
+                else if (o2==null || o2.isEmpty())
+                {
+                    if (o1.isEmpty())
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else {
+                    return o1.compareToIgnoreCase(o2);
+                }
+
+            }
+        });
+
+
+        for (final String string: tagsList)
         {
             Pane pane = new Pane();
             String tmp = string.toLowerCase();

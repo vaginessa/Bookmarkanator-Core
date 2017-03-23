@@ -4,17 +4,6 @@ import java.util.*;
 
 public class ReminderBookmark extends AbstractBookmark
 {
-//    /**
-//     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
-//     * custom behaviour upon being initialized.
-//     *
-//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-//     */
-//    public ReminderBookmark(ContextInterface contextInterface)
-//    {
-//        super(contextInterface);
-//    }
-
     @Override
     public String getTypeName()
     {

@@ -87,7 +87,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
                 MLog.warn("Value selected has no map entry. Selected item: " + item);
             }
         }
-        System.out.println(result);
+//        System.out.println(result);
     }
 
     @Override
