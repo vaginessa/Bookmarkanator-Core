@@ -1,15 +1,15 @@
 package com.bookmarkanator.ui.interfaces;
 
 import java.util.*;
-import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
+import com.bookmarkanator.ui.fxui.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
+import com.bookmarkanator.util.*;
 
-public interface GUIControllerInterface
+public interface UIControllerInterface
 {
 
     Settings getSettings();
-
-    //Bookmarks
 
     /**
      * Gets a list of visible bookmarks with all the search terms selected. It takes into account the search term, show types fields, and selected tags.
@@ -17,7 +17,7 @@ public interface GUIControllerInterface
      * @return A list of visible bookmarks.
      * @throws Exception
      */
-    Set<AbstractBookmark> getVisibleBookmarks();
+    Set<AbstractUIBookmark> getVisibleUIBookmarks();
 
     /**
      * Should be called after the interfaces are set so that the controller can set an initial state of the UI.
@@ -30,63 +30,46 @@ public interface GUIControllerInterface
     void updateUI()
         throws Exception;
 
-    //Search
-    void setSearchTerm(String searchTerm)
+    SearchOptions getSearchOptions();
+    void setSearchOptions(SearchOptions searchOptions)
         throws Exception;
 
-    void setSearchInclusions(String key, boolean value)
+    SimilarItemIterator getSimilarItemIterator(String closeSearchTerm);
+
+    //Available Bookmark Types Methods
+    void toggleShowType(AbstractUIBookmark abstractUIBookmark)
+        throws Exception;
+    void showAllTypes()
+        throws Exception;
+    void hideAllTypes()
         throws Exception;
 
-    void searchKeyAction(String action) throws Exception;
-
-    boolean getSearchInclusion(String key)
+    //Selected Tags Methods
+    void clearAllSelectedTagGroups()
+        throws Exception;
+    void setTagModeForCurrentGroup(String tagModeForCurrentGroup)
+        throws Exception;
+    void setCurrentGroup(SearchOptions.TagsInfo currentGroup)
         throws Exception;
 
-    String getSearchTerm();
+    SearchOptions.TagsInfo getCurrentGroup();
 
-    //Tags
-    void setSelectedTags(Set<String> tags)
+    void addTagGroup()
+        throws Exception;
+    void removeTagGroup(SearchOptions.TagsInfo tagGroup)
+        throws Exception;
+    void removeTagFromGroup(SearchOptions.TagsInfo tagGroup, String tag)
         throws Exception;
 
-    void addSelectedTag(String tag)
-        throws Exception;
-
-    void removeSelectedTag(String tag)
-        throws Exception;
-
-    Set<String> getSelectedTags();
-
-    Set<String> getAvailableTags();
-
-    void setTagMode(String mode)
-        throws Exception;
-
-    String getTagMode();
-
-    //Types
-    void setShowType(String type, boolean show)
-        throws Exception;
-
-    void showTypes(Set<String> types)
-        throws Exception;
-
-    boolean toggleShowType(String type)
-        throws Exception;
-
-    Set<String> getVisibleTypes();
-
-    Set<String> getShowOnlyTheseTypes();
-
-    Set<String> getAllTypes();
-
-    void newBookmark(String type)
-        throws Exception;
+    //Available Tags Methods
+    void selectTag(String tag)
+        throws Exception;//needs to add the tag only if it is in the list of existing tags.
 
     // ============================================================
     // Interface Getter and Setter Methods
     // ============================================================
 
-    void setTypesUI(BKTypes types);
+    void setTypesUI(BKTypesInterface types);
 
     void setSelectedTagsUI(SelectedTagsInterface selectedTagsUI);
 
@@ -102,7 +85,7 @@ public interface GUIControllerInterface
 
     void setNewBookmarkSelectorUI(NewBookmarkSelectionInterface newBookmarkSelectorUI);
 
-    BKTypes getTypesUI();
+    BKTypesInterface getTypesUI();
 
     SelectedTagsInterface getSelectedTagsUI();
 

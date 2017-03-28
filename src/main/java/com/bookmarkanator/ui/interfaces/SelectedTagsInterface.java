@@ -1,9 +1,9 @@
 package com.bookmarkanator.ui.interfaces;
 
 import java.util.*;
+import com.bookmarkanator.util.*;
 
-public interface SelectedTagsInterface extends GuiItemInterface
+public interface SelectedTagsInterface extends UIItemInterface
 {
-    void setSelectedTags(Set<String> selectedTags);
-    Set<String> getSelectedTags();
+    void setSelectedTags(List<SearchOptions.TagsInfo> selectedTagGroups, Set<String> tagsToHighlight, Set<SearchOptions.TagsInfo> groupsToHighlight, Set<String> tagsToHighlightBorder);
 }

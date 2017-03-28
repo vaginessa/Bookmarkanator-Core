@@ -5,18 +5,15 @@ package com.bookmarkanator.ui;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.io.*;
+import com.bookmarkanator.ui.fxui.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
-import javafx.scene.input.*;
 
-public class UIController implements GUIControllerInterface
+public class UIController implements UIControllerInterface
 {
-    private static UIController controller;
-
     //Interfaces
-    private BKTypes bkTypesInterface;
+    private BKTypesInterface bkTypesInterface;
     private SelectedTagsInterface selectedTagsInterface;
     private AvailableTagsInterface availableTagsInterface;
     private BookmarksListInterface bookmarksInterface;
@@ -25,50 +22,56 @@ public class UIController implements GUIControllerInterface
     private QuickPanelInterface quickPanelInterface;
     private NewBookmarkSelectionInterface newBookmarkSelectionInterface;
 
-    private Set<AbstractBookmark> visibleBookmarks;
-    private Set<String> availableTags;
-    private Set<String> selectedTags;
-    private Set<String> allTypes;
-    private Set<String> visibleTypes;
-    private Set<String> showOnlyTheseTypes;
-
-    //Search related variables
-    private String searchTerm;
-    private Map<String, Boolean> searchInclusions;
-
-    //Selected Tag Related
-    private String selectedTagsOperation = SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS;
-
-    //Search constants
-    public static final String SEARCH_TYPES_KEY = "BOOKMARK-TYPES-SEARCH";
-    public static final String SEARCH_TAGS_KEY = "BOOKMARK-TAGS-SEARCH";
-    public static final String SEARCH_BOOKMARK_TEXT_KEY = "BOOKMARK-TEXT-SEARCH";
-    public static final String SEARCH_BOOKMARK_NAMES_KEY = "BOOKMARK-NAME-SEARCH";
-
-    //Fields
     private boolean editMode;
+
+    //Types
+    private Set<AbstractUIBookmark> allAvailableBKTypes;
+    private Map<String, AbstractUIBookmark> allAvailableBKTypesMap;
+    private Set<AbstractUIBookmark> bkTypesForExistingBookmarks;
+    private Set<String> typesToHighlight;//Bookmark class name here.
+    private Set<String> tagsToHighlightBorders;//Highlights exact search term matches.
+
+    //Bookmarks
+    private Set<AbstractUIBookmark> visibleUIBookmarks;
+
+    //Tags
+    private Set<String> availableTags;
+    private Set<String> highlightTags;
+    private SearchOptions.TagsInfo currentTagGroup;
+    private Set<SearchOptions.TagsInfo> groupsToHighlight;
+
+    //Search
+    private SearchOptions searchOptions;
+    private boolean highlightSearchTerm;
 
     public UIController()
         throws Exception
     {
-        ContextInterface context = Bootstrap.IOInterface().getContext();
         ModuleLoader.use().addClassToTrack(AbstractUIBookmark.class);
         ModuleLoader.use().addModulesToClasspath();
 
-        this.visibleBookmarks = new HashSet<>();
-        this.visibleBookmarks.addAll(context.getBookmarks());
-        this.availableTags = new HashSet<>();
-        this.selectedTags = new HashSet<>();
+        //Types
+        this.allAvailableBKTypes = getAllTypesUIs();
+        this.allAvailableBKTypesMap = wrapAllTypeUIs(this.allAvailableBKTypes);
+        this.bkTypesForExistingBookmarks = new HashSet<>();
+        this.typesToHighlight = new HashSet<>();
 
-        this.allTypes = context.getTypesLoaded(context.getBookmarks());
-        this.visibleTypes = new HashSet<>();
-        this.showOnlyTheseTypes = new HashSet<>();
-        this.showOnlyTheseTypes.addAll(this.allTypes);
-        this.searchInclusions = new HashMap<>();
-        searchInclusions.put(UIController.SEARCH_TYPES_KEY, false);
-        searchInclusions.put(UIController.SEARCH_BOOKMARK_TEXT_KEY, true);
-        searchInclusions.put(UIController.SEARCH_BOOKMARK_NAMES_KEY, true);
-        searchInclusions.put(UIController.SEARCH_TAGS_KEY, true);
+        this.visibleUIBookmarks = new HashSet<>();
+        this.availableTags = new HashSet<>();
+        this.highlightTags = new HashSet<>();
+        this.groupsToHighlight = new HashSet<>();
+        this.tagsToHighlightBorders = new HashSet<>();
+
+        this.searchOptions = new SearchOptions();
+
+        //Initial selection of all types
+        this.bkTypesForExistingBookmarks = getBKTypesForExistingBookmarks();
+
+        for (AbstractUIBookmark abstractUIBookmark : bkTypesForExistingBookmarks)
+        {
+            searchOptions.setSelectedBKType(abstractUIBookmark.getRequiredBookmarkClassName());
+        }
+
     }
 
     @Override
@@ -82,13 +85,118 @@ public class UIController implements GUIControllerInterface
         assert searchInterface != null;
         assert menuInterface != null;
         assert quickPanelInterface != null;
+        this.searchInterface.setSearchOptions(this.searchOptions);//Set this so that the search checkboxes get populated.
 
-        this.updateBookmarksData();
-        this.showOnlyTheseTypes.addAll(this.getAllTypes());
-        this.newBookmarkSelectionInterface.setTypes(getAllTypesUIs());
-        this.getBookmarksListUI().setVisibleBookmarks(this.getVisibleBookmarks());
-        this.getAvailableTagsUI().setAvailableTags(this.getAvailableTags());
-        this.getTypesUI().setTypes(this.getVisibleTypes(), this.getShowOnlyTheseTypes());
+        updateUI();
+    }
+
+    @Override
+    public void updateUI()
+        throws Exception
+    {
+
+        //TODO The tag groups are not properly being synced. When a tag group is removed, it is reflected in the search, but the current tag group
+        //has not changed, and adding or removing tags after that does nothing becaue the current tag group is not in search options.
+
+        //Get all types in the bookmarks list
+        this.bkTypesForExistingBookmarks = getBKTypesForExistingBookmarks();
+
+        for (AbstractUIBookmark abstractUIBookmark : bkTypesForExistingBookmarks)
+        {
+            if (this.searchOptions.getSelectedTypes().contains(abstractUIBookmark.getRequiredBookmarkClassName()))
+            {
+                searchOptions.setSelectedBKType(abstractUIBookmark.getRequiredBookmarkClassName());
+            }
+        }
+
+        //Set bookmark types in the types UI
+        this.bkTypesInterface.setTypes(this.bkTypesForExistingBookmarks, this.searchOptions.getSelectedTypes(), this.typesToHighlight);
+
+        //Compute visible bookmarks using search options, and selected tags
+        this.visibleUIBookmarks = applySearchOptions();
+
+        //set bookmarks in bookmark list
+        this.bookmarksInterface.setVisibleBookmarks(this.visibleUIBookmarks);
+
+        //Set available tags in available tags UI
+        this.availableTagsInterface.setAvailableTags(this.availableTags, this.highlightTags, this.tagsToHighlightBorders);
+
+        //Set selected tags
+        this.selectedTagsInterface
+            .setSelectedTags(searchOptions.getTagGroups(), this.highlightTags, this.groupsToHighlight, this.tagsToHighlightBorders);
+
+        //Highlight search term
+        this.searchInterface.highlightSearchTerm(this.highlightSearchTerm);
+    }
+
+    private Set<AbstractUIBookmark> applySearchOptions()
+        throws Exception
+    {
+        Set<AbstractBookmark> tmp;
+
+        if (searchOptions.getSearchTerm() != null && !searchOptions.getSearchTerm().isEmpty())
+        {
+            tmp = new HashSet<>();
+            String searchTerm = searchOptions.getSearchTerm();
+
+            if (searchOptions.isSearchTags())
+            {
+                tmp.addAll(Bootstrap.context().searchTagsLoosly(searchTerm));
+            }
+
+            if (searchOptions.isSearchBookmarkTypes())
+            {
+                tmp.addAll(Bootstrap.context().searchBookmarkTypes(searchTerm));
+            }
+
+            if (searchOptions.isSearchBookmarkText())
+            {
+                tmp.addAll(Bootstrap.context().searchBookmarkText(searchTerm));
+            }
+
+            if (searchOptions.isSearchBookmarkNames())
+            {
+                tmp.addAll(Bootstrap.context().searchBookmarkNames(searchTerm));
+            }
+        }
+        else
+        {
+            tmp = Bootstrap.context().getBookmarks();
+        }
+
+        List<AbstractBookmark> res = Filter.use(tmp).filterBySearchOptions(searchOptions).results();
+
+        //Set available tags here because we have the list of bookmarks
+        this.availableTags = Bootstrap.context().getTagsFromBookmarks(res);
+
+        this.highlightTags.clear();
+        this.tagsToHighlightBorders.clear();
+
+        highlightSearchTerm = false;
+
+        Set<String> tagsFromAllGroups = searchOptions.getTagsFromAllGroups();
+
+        if (searchOptions.getSearchTerm() != null && !searchOptions.getSearchTerm().isEmpty())
+        {
+            //Determine which tags should be highlighted
+            for (String s : this.availableTags)
+            {
+                if (s.contains(searchOptions.getSearchTerm()) || searchOptions.getSearchTerm().contains(s))
+                {
+                    this.highlightTags.add(s);
+
+                    if (searchOptions.getSearchTerm().equalsIgnoreCase(s))
+                    {
+                        this.tagsToHighlightBorders.add(s);
+                        highlightSearchTerm = true;
+                    }
+                }
+            }
+        }
+
+        this.availableTags.removeAll(tagsFromAllGroups);
+
+        return this.wrapAll(res);
     }
 
     @Override
@@ -97,234 +205,219 @@ public class UIController implements GUIControllerInterface
         return Bootstrap.use().getSettings();
     }
 
+    public Set<AbstractUIBookmark> getVisibleUIBookmarks()
+    {
+        return this.visibleUIBookmarks;
+    }
+
     @Override
-    public void setSelectedTags(Set<String> tags)
+    public SearchOptions getSearchOptions()
+    {
+        return searchOptions;
+    }
+
+    @Override
+    public void setSearchOptions(SearchOptions searchOptions)
         throws Exception
     {
-        if (tags == null)
+        this.searchOptions = searchOptions;
+        this.updateUI();
+    }
+
+    @Override
+    public SimilarItemIterator getSimilarItemIterator(String closeSearchTerm)
+    {
+        List<String> tmpList = new ArrayList<>(tagsToHighlightBorders);
+        tmpList.addAll(highlightTags);
+
+        return new SimilarItemIterator(closeSearchTerm,tmpList);
+    }
+
+    @Override
+    public void toggleShowType(AbstractUIBookmark abstractUIBookmark)
+        throws Exception
+    {
+        if (this.searchOptions.getSelectedTypes().contains(abstractUIBookmark.getRequiredBookmarkClassName()))
         {
-            this.selectedTags.clear();
+            this.searchOptions.setUnselectedBKType(abstractUIBookmark.getRequiredBookmarkClassName());
         }
         else
         {
-            this.selectedTags = tags;
+            this.searchOptions.setSelectedBKType(abstractUIBookmark.getRequiredBookmarkClassName());
         }
-        this.updateUI();
+
+        updateUI();
     }
 
     @Override
-    public void addSelectedTag(String tag)
+    public void showAllTypes()
         throws Exception
     {
-        this.selectedTags.add(tag);
-        this.updateUI();
-    }
-
-    @Override
-    public void removeSelectedTag(String tag)
-        throws Exception
-    {
-        this.selectedTags.remove(tag);
-        this.updateUI();
-    }
-
-    @Override
-    public Set<String> getSelectedTags()
-    {
-        return this.selectedTags;
-    }
-
-    @Override
-    public void setSearchTerm(String searchTerm)
-        throws Exception
-    {
-        searchTerm = searchTerm.toLowerCase();
-        this.searchTerm = searchTerm;
-        this.availableTagsInterface.setCurrentSearchTerm(searchTerm);
-        this.bkTypesInterface.setCurrentSearchTerm(searchTerm);
-//        this.quickPanelInterface.setCurrentSearchTerm(searchTerm);
-        this.selectedTagsInterface.setCurrentSearchTerm(searchTerm);
-        this.menuInterface.setCurrentSearchTerm(searchTerm);
-        this.bookmarksInterface.setCurrentSearchTerm(searchTerm);
-
-        this.updateUI();
-    }
-
-    @Override
-    public String getSearchTerm()
-    {
-        return this.searchTerm;
-    }
-
-    @Override
-    public void setSearchInclusions(String key, boolean value)
-        throws Exception
-    {
-        if (this.searchInclusions.get(key) != null)
+        for (AbstractUIBookmark abstractUIBookmark : this.bkTypesForExistingBookmarks)
         {
-            this.searchInclusions.put(key, value);
-            this.updateUI();
+            this.searchOptions.setSelectedBKType(abstractUIBookmark.getRequiredBookmarkClassName());
         }
+        updateUI();
     }
 
     @Override
-    public void searchKeyAction(String action)
+    public void hideAllTypes()
         throws Exception
     {
-        if (action.equalsIgnoreCase(KeyCode.ENTER.name()) && getAvailableTags().contains(searchTerm))
+        this.searchOptions.setUnselectAllBKTypes();
+        updateUI();
+    }
+
+    private SearchOptions.TagsInfo getLastTagGroup()
+    {
+        return searchOptions.getTagGroups().get(this.searchOptions.getTagGroups().size() - 1);
+    }
+
+    private void ensureTagGroup()
+    {
+        if (this.currentTagGroup == null)
         {
-            Set<String> tags = getSelectedTags();
-            if (tags==null)
+            if (this.searchOptions.getTagGroups().isEmpty())
             {
-                tags = new HashSet<>();
+                this.currentTagGroup = this.searchOptions.new TagsInfo();
+                this.searchOptions.getTagGroups().add(this.currentTagGroup);
             }
+            else
+            {
+                this.currentTagGroup = getLastTagGroup();
+            }
+        }
+    }
 
-            tags.add(searchTerm);
-            selectedTagsInterface.setSelectedTags(tags);
+    @Override
+    public void clearAllSelectedTagGroups()
+        throws Exception
+    {
+        this.searchOptions.getTagGroups().clear();
+        this.currentTagGroup = null;
+        ensureTagGroup();
+        updateUI();
+    }
+
+    @Override
+    public void setTagModeForCurrentGroup(String tagModeForCurrentGroup)
+        throws Exception
+    {
+        ensureTagGroup();
+        this.currentTagGroup.setOperation(tagModeForCurrentGroup);
+        updateUI();
+    }
+
+    @Override
+    public void setCurrentGroup(SearchOptions.TagsInfo currentGroup)
+        throws Exception
+    {
+        this.currentTagGroup = currentGroup;
+    }
+
+    @Override
+    public SearchOptions.TagsInfo getCurrentGroup()
+    {
+        return this.currentTagGroup;
+    }
+
+    @Override
+    public void addTagGroup()
+        throws Exception
+    {
+        if (this.currentTagGroup != null)
+        {
+            SearchOptions.TagsInfo tagsInfo = this.searchOptions.new TagsInfo();
+            tagsInfo.setOperation(this.currentTagGroup.getOperation());
+
+            this.searchOptions.getTagGroups().add(tagsInfo);
+            this.currentTagGroup = tagsInfo;
             updateUI();
         }
     }
 
     @Override
-    public boolean getSearchInclusion(String key)
+    public void removeTagGroup(SearchOptions.TagsInfo tagGroup)
         throws Exception
     {
-        Boolean b = this.searchInclusions.get(key);
-        if (b != null)
+        this.searchOptions.getTagGroups().remove(tagGroup);
+
+        if (tagGroup == this.currentTagGroup)
         {
-            return b;
+            this.currentTagGroup = getLastTagGroup();
         }
-        else
-        {
-            throw new Exception("Search inclusion key \"" + key + "\" is not a valid search inclusion key.");
-        }
+
+        updateUI();
     }
 
     @Override
-    public void setShowType(String type, boolean show)
+    public void removeTagFromGroup(SearchOptions.TagsInfo tagGroup, String tag)
         throws Exception
     {
-        if (show)
+        int i = this.searchOptions.getTagGroups().indexOf(tagGroup);
+
+        if (i > -1)
         {
-            this.showOnlyTheseTypes.add(type);
+            tagGroup = this.searchOptions.getTagGroups().get(i);
+            tagGroup.getTags().remove(tag);
         }
-        else
-        {
-            this.showOnlyTheseTypes.remove(type);
-        }
-        this.updateUI();
+        updateUI();
     }
 
     @Override
-    public void showTypes(Set<String> types)
+    public void selectTag(String tag)
         throws Exception
     {
-        this.showOnlyTheseTypes.clear();
-
-        if (types != null)
+        ensureTagGroup();
+        for (String s : availableTags)
         {
-            this.showOnlyTheseTypes.addAll(types);
+            if (tag.equalsIgnoreCase(s))
+            {
+                this.currentTagGroup.getTags().add(tag);
+                updateUI();
+                return;
+            }
         }
-        this.updateUI();
     }
 
-    @Override
-    public boolean toggleShowType(String type)
-        throws Exception
-    {
-        boolean res;
-        if (this.showOnlyTheseTypes.contains(type))
-        {
-            this.showOnlyTheseTypes.remove(type);
-            res = false;
-        }
-        else
-        {
-            this.showOnlyTheseTypes.add(type);
-            res = true;
-        }
-
-        this.updateUI();
-        return res;
-    }
-
-    @Override
-    public Set<String> getAvailableTags()
-    {
-        return this.availableTags;
-    }
-
-    @Override
-    public void setTagMode(String mode)
-        throws Exception
-    {
-        switch (mode)
-        {
-            case SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
-            case SearchParam.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
-            case SearchParam.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
-                this.selectedTagsOperation = mode;
-                break;
-            default:
-                throw new Exception("Selected Tag Mode \"" + mode + "\" not supported");
-        }
-        this.updateUI();
-    }
-
-    @Override
-    public String getTagMode()
-    {
-        return this.selectedTagsOperation;
-    }
-
-    @Override
-    public Set<String> getVisibleTypes()
-    {
-        return this.visibleTypes;
-    }
-
-    @Override
-    public Set<String> getShowOnlyTheseTypes()
-    {
-        return this.showOnlyTheseTypes;
-    }
-
-    @Override
-    public Set<String> getAllTypes()
-    {
-        return this.allTypes;
-    }
-
+    /**
+     * This method gets all bookmark types available. It is used for showing a list of bookmark types to choose from when
+     * creating a new bookmark.
+     *
+     * @return A set of all AbstractUIBookmark's available.
+     * @throws Exception
+     */
     public Set<AbstractUIBookmark> getAllTypesUIs()
         throws Exception
     {
         Set<Class> kbs = ModuleLoader.use().getClassesLoaded(AbstractBookmark.class);
         Map<String, Class> bkClassNames = new HashMap<>();
 
-        for (Class clazz: kbs)
+        for (Class clazz : kbs)
         {
             bkClassNames.put(clazz.getCanonicalName(), clazz);
         }
 
         Set<AbstractUIBookmark> res = new HashSet<>();
         Set<Class> loadedUIs = ModuleLoader.use().getClassesLoaded(AbstractUIBookmark.class);
-        ContextInterface context =Bootstrap.context();
 
-        for (Class clazz: loadedUIs)
+        for (Class clazz : loadedUIs)
         {
-            AbstractUIBookmark tmp =  (AbstractUIBookmark)clazz.getConstructor().newInstance();
+            AbstractUIBookmark tmp = (AbstractUIBookmark) clazz.getConstructor().newInstance();
+            tmp.setController(this);
             Class bookmarkClass = bkClassNames.get(tmp.getRequiredBookmarkClassName());
             if (bookmarkClass != null)
             {
                 AbstractBookmark abs = ModuleLoader.use().loadClass(bookmarkClass.getCanonicalName(), AbstractBookmark.class);
-                if (abs.getTypeName()==null || abs.getTypeName().trim().isEmpty())
+                if (abs.getTypeName() == null || abs.getTypeName().trim().isEmpty())
                 {
-                    MLog.warn("Bookmark "+abs.getClass().getCanonicalName()+" has no type string.");
+                    MLog.warn("Bookmark " + abs.getClass().getCanonicalName() + " has no type string.");
                 }
                 else
                 {
                     tmp.setBookmark(abs);
                     res.add(tmp);
+
                 }
             }
         }
@@ -332,15 +425,65 @@ public class UIController implements GUIControllerInterface
         return res;
     }
 
-    @Override
-    public void newBookmark(String type)
+    private Map<String, AbstractUIBookmark> wrapAllTypeUIs(Set<AbstractUIBookmark> allAvailableBKTypes)
+    {
+        Map<String, AbstractUIBookmark> res = new HashMap<>();
+
+        for (AbstractUIBookmark abstractUIBookmark : allAvailableBKTypes)
+        {
+            res.put(abstractUIBookmark.getRequiredBookmarkClassName(), abstractUIBookmark);
+        }
+
+        return res;
+    }
+
+    private Set<AbstractUIBookmark> getBKTypesForExistingBookmarks()
         throws Exception
     {
-        newBookmarkSelectionInterface.getSelectedBookmarkType().newBookmarkView();
+        Set<String> types = Bootstrap.context().getTypesClassNames(Bootstrap.context().getBookmarks());
+        Set<AbstractUIBookmark> res = new HashSet<>();
+
+        for (AbstractUIBookmark abstractUIBookmark : this.allAvailableBKTypes)
+        {
+            if (types.contains(abstractUIBookmark.getRequiredBookmarkClassName()))
+            {
+                res.add(abstractUIBookmark);
+            }
+        }
+
+        return res;
+    }
+
+    private AbstractUIBookmark wrap(AbstractBookmark bookmark)
+        throws Exception
+    {
+        AbstractUIBookmark bkUI = this.allAvailableBKTypesMap.get(bookmark.getClass().getCanonicalName());
+
+        if (bkUI != null)
+        {
+            bkUI = bkUI.getClass().getConstructor().newInstance();
+            bkUI.setBookmark(bookmark);
+            bkUI.setController(this);
+            return bkUI;
+        }
+        throw new Exception("Cannot find UI for bookmark " + bookmark.getClass().getCanonicalName());
+    }
+
+    private Set<AbstractUIBookmark> wrapAll(Collection<AbstractBookmark> abstractBookmarks)
+        throws Exception
+    {
+        Set<AbstractUIBookmark> res = new HashSet<>();
+
+        for (AbstractBookmark bookmark : abstractBookmarks)
+        {
+            res.add(this.wrap(bookmark));
+        }
+
+        return res;
     }
 
     @Override
-    public void setTypesUI(BKTypes types)
+    public void setTypesUI(BKTypesInterface types)
     {
         this.bkTypesInterface = types;
     }
@@ -388,7 +531,7 @@ public class UIController implements GUIControllerInterface
     }
 
     @Override
-    public BKTypes getTypesUI()
+    public BKTypesInterface getTypesUI()
     {
         return this.bkTypesInterface;
     }
@@ -453,133 +596,8 @@ public class UIController implements GUIControllerInterface
         bookmarksInterface.setEditMode(editMode);
         searchInterface.setEditMode(editMode);
         menuInterface.setEditMode(editMode);
-//        quickPanelInterface.setEditMode(editMode);
-//        newBookmarkSelectionInterface.set;
+        //        quickPanelInterface.setEditMode(editMode);
+        //        newBookmarkSelectionInterface.set;
     }
 
-    @Override
-    public Set<AbstractBookmark> getVisibleBookmarks()
-    {
-        return this.visibleBookmarks;
-    }
-
-    private Set<AbstractBookmark> search(List<AbstractBookmark> bookmarks)
-        throws Exception
-    {
-        if (this.getSearchTerm()==null || this.getSearchTerm().isEmpty())
-        {
-            return new HashSet<>(bookmarks);
-        }
-
-        ContextInterface context = Bootstrap.context();
-
-        boolean includeTags = this.searchInclusions.get(UIController.SEARCH_TAGS_KEY);
-        boolean includeTypes = this.searchInclusions.get(UIController.SEARCH_TYPES_KEY);
-        boolean includeBookmarkText = this.searchInclusions.get(UIController.SEARCH_BOOKMARK_TEXT_KEY);
-        boolean includeBookmarks = this.searchInclusions.get(UIController.SEARCH_BOOKMARK_NAMES_KEY);
-
-        Set<AbstractBookmark> res = new HashSet<>();
-        if (includeTags && includeTypes && includeBookmarkText && includeBookmarks)
-        {
-            res.addAll(context.searchAll(this.getSearchTerm()));
-        }
-        else
-        {
-            if (includeTags)
-            {
-                res.addAll(context.searchTagsLoosly(this.getSearchTerm()));
-            }
-            if (includeTypes)
-            {
-                res.addAll(context.searchBookmarkTypes(this.getSearchTerm()));
-            }
-            if (includeBookmarks)
-            {
-                res.addAll(context.searchBookmarkNames(this.getSearchTerm()));
-            }
-            if (includeBookmarkText)
-            {
-                res.addAll(context.searchBookmarkText(this.getSearchTerm()));
-            }
-        }
-
-        return new HashSet<>(Filter.use(res).includeIfIn(bookmarks).results());
-    }
-
-    @Override
-    public void updateUI()
-        throws Exception
-    {
-        updateBookmarksData();
-
-        this.bookmarksInterface.setVisibleBookmarks(this.getVisibleBookmarks());
-        this.availableTagsInterface.setAvailableTags(this.getAvailableTags());
-        this.bkTypesInterface.setTypes(this.getAllTypes(), this.getShowOnlyTheseTypes());
-        this.selectedTagsInterface.setSelectedTags(this.getSelectedTags());
-    }
-
-    private void updateBookmarksData()
-        throws Exception
-    {
-        ContextInterface context = Bootstrap.context();
-        this.allTypes = context.getTypesLoaded(context.getBookmarks());
-
-        this.visibleBookmarks.clear();
-
-        List<AbstractBookmark> tmpBKs = new ArrayList<>();
-        tmpBKs.addAll(applySelectedTags(getVisibleBookmarkTypes(context.getBookmarks())));
-        this.visibleBookmarks = search(tmpBKs);
-        this.visibleTypes = context.getTypesLoaded(this.visibleBookmarks);
-        this.availableTags = context.getTagsFromBookmarks(this.visibleBookmarks);
-        this.availableTags.removeAll(this.selectedTags);
-    }
-
-    private List<AbstractBookmark> getVisibleBookmarkTypes(Set<AbstractBookmark> bookmarks)
-        throws Exception
-    {
-        return Filter.use(bookmarks).keepBookmarkTypes(this.showOnlyTheseTypes).results();
-    }
-
-    private Set<AbstractBookmark> applySelectedTags(List<AbstractBookmark> bookmarks)
-    {
-        Set<String> selectedTags = this.getSelectedTags();
-
-        if (selectedTags.isEmpty())
-        {
-            return new HashSet<>(bookmarks);
-        }
-
-        List<AbstractBookmark> tmp = new ArrayList<>();
-
-        switch (this.selectedTagsOperation)
-        {
-            case SearchParam.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
-                tmp =  Filter.use(bookmarks).keepWithAllTags(this.getSelectedTags()).results();
-                break;
-            case SearchParam.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
-                tmp =  Filter.use(bookmarks).keepWithAnyTag(this.getSelectedTags()).results();
-                break;
-            case SearchParam.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
-                tmp =  Filter.use(bookmarks).excludeWithTags(this.getSelectedTags()).results();
-                break;
-        }
-
-        return new HashSet<>(tmp);
-    }
-
-    public static UIController use()
-    {
-        if (controller==null)
-        {
-            try
-            {
-                controller = new UIController();
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-        return controller;
-    }
 }

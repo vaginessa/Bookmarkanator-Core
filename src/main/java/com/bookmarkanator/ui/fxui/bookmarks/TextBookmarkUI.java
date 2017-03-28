@@ -1,16 +1,19 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
+import java.awt.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.*;
+import com.bookmarkanator.ui.fxui.components.*;
 import javafx.application.*;
 import javafx.event.*;
-import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.web.*;
 import javafx.stage.*;
@@ -37,8 +40,8 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
             Pane vbox = getbookmarkView(this.getBookmark());
             Platform.runLater(() -> textArea.requestFocus());
-
-            Scene dialog = new Scene(vbox,Main.use().getBestWindowSize().getWidth()*.6, Main.use().getBestWindowSize().getHeight()*.75, javafx.scene.paint.Paint.valueOf("white"));
+            Dimension bestWindowSize = UIUtil.use().getBestWindowSizeMap().get(0);
+            Scene dialog = new Scene(vbox,bestWindowSize.getWidth()*.6, bestWindowSize.getHeight()*.75, javafx.scene.paint.Paint.valueOf("white"));
             stage = new Stage();
 
             //Add this stage to the stages map so that it will not open multiple windows per bookmark.
@@ -89,7 +92,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         }
 
         Bootstrap.context().delete(this.getBookmark().getId());
-        UIController.use().updateUI();
+        controller.updateUI();
     }
 
     @Override
@@ -184,8 +187,26 @@ public class TextBookmarkUI extends AbstractUIBookmark
     private Pane getbookmarkView(AbstractBookmark bookmark)
     {
         VBox vBox = new VBox();
-        vBox.getChildren().add(getLabelBox(bookmark));
-        vBox.getChildren().add(getTextArea(bookmark));
+        NameBoxPanel nameBoxPanel;
+
+        if (bookmark!=null)
+        {
+            nameBoxPanel = new NameBoxPanel(bookmark.getName());
+        }
+        else
+        {
+            nameBoxPanel = new NameBoxPanel();
+        }
+
+        this.name = nameBoxPanel.getName();
+
+        HTMLEditor textArea = getTextArea(bookmark);
+
+        vBox.getChildren().add(nameBoxPanel);
+        vBox.getChildren().add(textArea);
+
+        VBox.setMargin(textArea, new Insets(5));
+        VBox.setVgrow(textArea, Priority.ALWAYS);
 
         return vBox;
     }
@@ -209,25 +230,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         return tagPanel;
     }
 
-    private Pane getLabelBox(AbstractBookmark bookmark)
-    {
-        //Create name panel
-        Pane hbox = new HBox();
-        Label label = new Label("Name");
-        name = new TextField();
-        if (bookmark!=null)
-        {
-            name.setText(bookmark.getName());
-        }
 
-        HBox.setMargin(label, new Insets(5, 10, 0, 0));
-        HBox.setMargin(name, new Insets(0, 2, 10, 0));
-        HBox.setHgrow(name, Priority.ALWAYS);
-        hbox.getChildren().addAll(label, name);
-        Platform.runLater(() -> name.requestFocus());
-
-        return hbox;
-    }
 
     private HTMLEditor getTextArea(AbstractBookmark bookmark)
     {

@@ -1,27 +1,31 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
-import com.bookmarkanator.ui.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
+import com.bookmarkanator.ui.fxui.components.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-public class TypesUI extends VBox implements BKTypes
+public class TypesUI extends VBox implements BKTypesInterface
 {
     private boolean editMode = false;
     private VBox vBox;
-    private Set<String> types;
-    private Set<String> visibleTypes;
+    private Set<AbstractUIBookmark> types;
+    private Set<String> selectedTypes;
+    private Set<String> highlightedTypes;
     private String backgroundColor = "lightgray";
     private String currentSearchTerm;
     private boolean isFound;
+    private UIControllerInterface controller;
 
-    //TODO Add type icons that match bookmark type icons
     //TODO Change type button theme/colors so that its easier to tell when they are selected.
 
-    public TypesUI()
+    public TypesUI(UIControllerInterface controller)
     {
+        Objects.requireNonNull(controller);
+        this.controller = controller;
         this.setSpacing(5);
         this.setStyle("-fx-background-color:"+backgroundColor);
 
@@ -50,7 +54,7 @@ public class TypesUI extends VBox implements BKTypes
             public void handle(ActionEvent event) {
                 try
                 {
-                    UIController.use().showTypes(types);
+                    controller.showAllTypes();
                 }
                 catch (Exception e)
                 {
@@ -67,7 +71,7 @@ public class TypesUI extends VBox implements BKTypes
             public void handle(ActionEvent event) {
                 try
                 {
-                    UIController.use().showTypes(null);
+                    controller.hideAllTypes();
                 }
                 catch (Exception e)
                 {
@@ -82,17 +86,22 @@ public class TypesUI extends VBox implements BKTypes
     }
 
     @Override
-    public void setTypes(Set<String> types, Set<String> showTypes)
+    public void setTypes(Set<AbstractUIBookmark> types, Set<String> selectedTypes, Set<String> highlightedTypes)
     {
         this.vBox.getChildren().clear();
         this.types = types;
-        this.visibleTypes = showTypes;
+        this.selectedTypes = selectedTypes;
+        this.highlightedTypes = highlightedTypes;
 
-        for (final String string: types)
+        List<AbstractUIBookmark> typesList = new ArrayList<>(types);
+
+        Collections.sort(typesList, new UIBookmarkComparator());
+
+        for (AbstractUIBookmark bookmarkUI: typesList)
         {
-            ToggleButton toggleButton = new ToggleButton(string);
-
-            String tmp = string.toLowerCase();
+            String typeName = bookmarkUI.getBookmark().getTypeName();
+            //TODO Add bookmark image to the toggle button here.
+            ToggleButton toggleButton = new ToggleButton(typeName);
 
             toggleButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -100,7 +109,7 @@ public class TypesUI extends VBox implements BKTypes
                 public void handle(ActionEvent event) {
                     try
                     {
-                        UIController.use().toggleShowType(string);
+                        controller.toggleShowType(bookmarkUI);
                     }
                     catch (Exception e)
                     {
@@ -109,10 +118,11 @@ public class TypesUI extends VBox implements BKTypes
                 }
             });
 
-            if (visibleTypes.contains(string))
+            //Note: using bookmark class name here so that search options doesn't have to know about the UI.
+            if (this.selectedTypes.contains(bookmarkUI.getRequiredBookmarkClassName()))
             {
                 toggleButton.setSelected(true);
-                if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
+                if (this.highlightedTypes.contains(bookmarkUI.getRequiredBookmarkClassName()))
                 {
                     toggleButton.setStyle("-fx-background-color: lightgreen");
                     isFound = true;
@@ -122,18 +132,18 @@ public class TypesUI extends VBox implements BKTypes
             this.vBox.getChildren().add(toggleButton);
         }
     }
-
-    @Override
-    public Set<String> getVisibleTypes()
-    {
-        return this.visibleTypes;
-    }
-
-    @Override
-    public Set<String> getAllTypes()
-    {
-        return this.types;
-    }
+//
+//    @Override
+//    public Set<String> getSelectedTypes()
+//    {
+//        return this.selectedTypes;
+//    }
+//
+//    @Override
+//    public Set<String> getAllTypes()
+//    {
+//        return this.types;
+//    }
 
     @Override
     public boolean getEditMode()
@@ -148,14 +158,14 @@ public class TypesUI extends VBox implements BKTypes
     }
 
     @Override
-    public void setCurrentSearchTerm(String searchTerm)
+    public UIControllerInterface getController()
     {
-        this.currentSearchTerm = searchTerm;
+        return this.controller;
     }
 
     @Override
-    public boolean isSearchTermFound()
+    public void setController(UIControllerInterface controller)
     {
-        return isFound;
+        this.controller = controller;
     }
 }

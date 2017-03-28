@@ -661,13 +661,25 @@ public class FileContext implements ContextInterface
     }
 
     @Override
-    public Set<String> getTypesLoaded(Set<AbstractBookmark> bookmarks)
+    public Set<String> getTypes(Set<AbstractBookmark> bookmarks)
     {
         Set<String> res = new HashSet<>();
 
         for (AbstractBookmark abstractBookmark: bookmarks)
         {
             res.add(abstractBookmark.getTypeName());
+        }
+
+        return res;
+    }
+
+    public Set<String> getTypesClassNames(Set<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abstractBookmark: bookmarks)
+        {
+            res.add(abstractBookmark.getClass().getCanonicalName());
         }
 
         return res;

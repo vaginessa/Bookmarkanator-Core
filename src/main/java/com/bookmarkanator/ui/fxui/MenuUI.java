@@ -6,6 +6,12 @@ import javafx.scene.control.*;
 public class MenuUI implements MenuInterface
 {
     private boolean editMode = false;
+    private UIControllerInterface controller;
+
+    public MenuUI(UIControllerInterface controller)
+    {
+        this.controller = controller;
+    }
 
     @Override
     public boolean getEditMode()
@@ -20,15 +26,15 @@ public class MenuUI implements MenuInterface
     }
 
     @Override
-    public void setCurrentSearchTerm(String searchTerm)
+    public UIControllerInterface getController()
     {
-
+        return this.controller;
     }
 
     @Override
-    public boolean isSearchTermFound()
+    public void setController(UIControllerInterface controller)
     {
-        return false;
+        this.controller = controller;
     }
 
     public MenuBar getMenuBar()

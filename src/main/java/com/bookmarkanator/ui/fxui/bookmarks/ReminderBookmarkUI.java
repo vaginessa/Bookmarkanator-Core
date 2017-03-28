@@ -5,6 +5,7 @@ import javafx.scene.image.*;
 
 public class ReminderBookmarkUI extends AbstractUIBookmark
 {
+
     @Override
     public Image getTypeIcon()
     {

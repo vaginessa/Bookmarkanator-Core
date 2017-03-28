@@ -1,5 +1,9 @@
 package com.bookmarkanator.ui.interfaces;
 
-public interface SearchInterface extends GuiItemInterface
+import com.bookmarkanator.util.*;
+
+public interface SearchInterface extends UIItemInterface
 {
+    void setSearchOptions(SearchOptions searchOptions);
+    void highlightSearchTerm(boolean highlight);
 }

@@ -1,5 +1,5 @@
 package com.bookmarkanator.ui.interfaces;
 
-public interface MenuInterface extends GuiItemInterface
+public interface MenuInterface extends UIItemInterface
 {
 }

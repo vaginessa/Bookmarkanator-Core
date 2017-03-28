@@ -3,7 +3,6 @@ package com.bookmarkanator.ui.fxui.bookmarks;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.*;
 import javafx.application.*;
 import javafx.geometry.*;
@@ -14,7 +13,6 @@ import javafx.stage.*;
 
 public class WebBookmarkUI extends AbstractUIBookmark
 {
-
     @Override
     public Image getTypeIcon()
     {
@@ -53,7 +51,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         }
 
         Bootstrap.context().delete(this.getBookmark().getId());
-        UIController.use().updateUI();
+        controller.updateUI();
     }
 
     @Override

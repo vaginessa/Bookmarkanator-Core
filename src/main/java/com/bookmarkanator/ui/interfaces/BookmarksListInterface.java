@@ -1,11 +1,10 @@
 package com.bookmarkanator.ui.interfaces;
 
 import java.util.*;
-import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.ui.fxui.bookmarks.*;
 
-public interface BookmarksListInterface extends GuiItemInterface
+public interface BookmarksListInterface extends UIItemInterface
 {
-    void setVisibleBookmarks(Set<AbstractBookmark> bookmarks)
+    void setVisibleBookmarks(Set<AbstractUIBookmark> bookmarks)
         throws Exception;
-    Set<AbstractBookmark> getVisibleBookmarks();
 }

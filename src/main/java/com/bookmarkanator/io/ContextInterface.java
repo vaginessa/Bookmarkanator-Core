@@ -88,6 +88,6 @@ public interface ContextInterface
 
     Set<String> getAllTags();
     Set<String> getTagsFromBookmarks(Collection<AbstractBookmark> bookmarks);
-    Set<String> getTypesLoaded(Set<AbstractBookmark> bookmarks);
-
+    Set<String> getTypes(Set<AbstractBookmark> bookmarks);
+    Set<String> getTypesClassNames(Set<AbstractBookmark> bookmarks);
 }

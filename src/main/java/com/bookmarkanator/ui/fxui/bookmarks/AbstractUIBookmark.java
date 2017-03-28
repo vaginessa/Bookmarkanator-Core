@@ -2,6 +2,7 @@ package com.bookmarkanator.ui.fxui.bookmarks;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -11,7 +12,7 @@ public abstract class AbstractUIBookmark
 {
     private AbstractBookmark abstractBookmark;
     protected static Map<UUID, Stage> openStagesMap;//<Bookmark id, Stage that is showing it>
-
+    protected UIControllerInterface controller;
 
     public AbstractUIBookmark()
     {
@@ -67,6 +68,16 @@ public abstract class AbstractUIBookmark
                 }
             }
         );
+    }
+
+    public UIControllerInterface getController()
+    {
+        return controller;
+    }
+
+    public void setController(UIControllerInterface controller)
+    {
+        this.controller = controller;
     }
 
     /**

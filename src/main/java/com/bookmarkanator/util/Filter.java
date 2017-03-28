@@ -1,17 +1,21 @@
 package com.bookmarkanator.util;
 
+import java.text.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 
 public class Filter
 {
-    private List<AbstractBookmark> bookmarkList;
-    private boolean ignoreCase;
     private static Filter filter;
+
+    private List<AbstractBookmark> bookmarkList;
+    private List<AbstractBookmark> tempList;
+    private boolean ignoreCase;
 
     private Filter()
     {
         bookmarkList = new ArrayList<>();
+        tempList = new ArrayList<>();
         ignoreCase = true;
     }
 
@@ -48,7 +52,10 @@ public class Filter
 
     public Filter keepWithAnyTag(Set<String> tags)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
+        if (tags==null || tags.isEmpty())
+        {
+            return this;
+        }
 
         for (AbstractBookmark bk : this.results())
         {
@@ -56,78 +63,84 @@ public class Filter
             {
                 if (bk.getTags().contains(tag))
                 {
-                    results.add(bk);
+                    tempList.add(bk);
                     break;
                 }
             }
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
     public Filter keepWithAllTags(Set<String> tags)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
-        for (AbstractBookmark bk : this.results())
+        if (tags==null || tags.isEmpty())
         {
-            if (tags!=null && !tags.isEmpty())
-            {
-                if (bk.getTags().containsAll(tags))
-                {
-                    results.add(bk);
-                }
-            }
+            return this;
         }
 
-        this.bookmarkList = results;
+        for (AbstractBookmark bk : this.bookmarkList)
+        {
+                if (bk.getTags().containsAll(tags))
+                {
+                    tempList.add(bk);
+                }
+        }
+
+        tempToMainList();
         return this;
     }
 
-    public Filter keepBookmarkTypes(Set<String> bookmarkTypeNames)
+    public Filter keepBookmarkTypesByTypeName(Set<String> bookmarkTypeNames)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
         for (AbstractBookmark bk : this.results())
         {
-            for (String s : bookmarkTypeNames)
+            if (bookmarkTypeNames.contains(bk.getTypeName()))
             {
-                if (bk.getTypeName().equals(s))
-                {
-                    results.add(bk);
-                    break;
-                }
+                tempList.add(bk);
+                break;
             }
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
+        return this;
+    }
 
+    public Filter keepBookmarkTypesByClassName(Set<String> bookmarkClassNames)
+    {
+        for (AbstractBookmark bk : this.results())
+        {
+            if (bookmarkClassNames.contains(bk.getClass().getCanonicalName()))
+            {
+                tempList.add(bk);
+            }
+        }
+
+        tempToMainList();
         return this;
     }
 
     /**
      * Filters a list of bookmarks by date range.
      *
-     * @param bookmarkList    The list to filter
      * @param includeIfAfter  Include the bookmark if the date is equal to or after this date.
      * @param includeIfBefore Include the bookmark if the date is before this date only.
      * @return A list of date range fildtered bookmarks.
      */
 
-    public Filter keepWithinDateRange(List<AbstractBookmark> bookmarkList, Date includeIfAfter, Date includeIfBefore)
+    public Filter keepWithinDateRange( Date includeIfAfter, Date includeIfBefore)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
 
         for (AbstractBookmark bk : this.results())
         {
             if (bk.getCreationDate().compareTo(includeIfAfter) > -1 && bk.getCreationDate().compareTo(includeIfBefore) < 0)
             {
-                results.add(bk);
+                tempList.add(bk);
             }
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
@@ -139,8 +152,6 @@ public class Filter
      */
     public Filter excludeNamesWithText(List<String> exclusions)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
         continueA:
         for (AbstractBookmark bk : this.results())
         {
@@ -151,10 +162,10 @@ public class Filter
                     continue continueA;
                 }
             }
-            results.add(bk);
+            tempList.add(bk);
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
@@ -166,8 +177,6 @@ public class Filter
      */
     public Filter excludeTextWithText(Set<String> exclusions)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
         continueA:
         for (AbstractBookmark bk : this.results())
         {
@@ -178,10 +187,10 @@ public class Filter
                     continue continueA;
                 }
             }
-            results.add(bk);
+            tempList.add(bk);
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
@@ -193,8 +202,6 @@ public class Filter
      */
     public Filter excludeWithTagsWithText(Set<String> exclusions)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
         continueA:
         for (AbstractBookmark bk : this.results())
         {
@@ -208,10 +215,10 @@ public class Filter
                     }
                 }
             }
-            results.add(bk);
+            tempList.add(bk);
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
@@ -223,8 +230,6 @@ public class Filter
      */
     public Filter excludeWithTags(Set<String> exclusions)
     {
-        List<AbstractBookmark> results = new ArrayList<>();
-
         continueA:
         for (AbstractBookmark abs : this.bookmarkList)
         {
@@ -236,41 +241,100 @@ public class Filter
                     continue continueA;
                 }
             }
-            results.add(abs);
+            tempList.add(abs);
         }
 
-        this.bookmarkList = results;
+        tempToMainList();
         return this;
     }
 
     public Filter includeIfIn(Set<AbstractBookmark> include)
     {
-        List<AbstractBookmark> res = new ArrayList<>();
-
-        for (AbstractBookmark abs: this.bookmarkList)
+        for (AbstractBookmark abs : this.bookmarkList)
         {
             if (include.contains(abs))
             {
-                res.add(abs);
+                tempList.add(abs);
             }
         }
-        this.bookmarkList = res;
+        tempToMainList();
         return this;
     }
 
     public Filter includeIfIn(List<AbstractBookmark> include)
     {
-        List<AbstractBookmark> res = new ArrayList<>();
-
-        for (AbstractBookmark abs: this.bookmarkList)
+        for (AbstractBookmark abs : this.bookmarkList)
         {
             if (include.contains(abs))
             {
-                res.add(abs);
+                tempList.add(abs);
             }
         }
-        this.bookmarkList = res;
+        tempToMainList();
         return this;
+    }
+
+    public Filter filterBySearchOptions(SearchOptions searchOptions)
+        throws ParseException
+    {
+        //Remove non selected bookmark types
+        this.keepBookmarkTypesByClassName(searchOptions.getSelectedTypes());
+
+        //Remove all that dont fit within the date range.
+        if (searchOptions.getStartDate()!=null || searchOptions.getEndDate()!=null)
+        {
+            Date start;
+
+            if (searchOptions.getStartDate() != null)
+            {
+                start = searchOptions.getStartDate();
+            }
+            else
+            {
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                start = sdf.parse("01/01/1971");
+            }
+
+            Date end;
+
+            if (searchOptions.getEndDate() != null)
+            {
+                end = searchOptions.getEndDate();
+            }
+            else
+            {
+                end = new Date();
+            }
+
+            this.keepWithinDateRange(start, end);
+        }
+
+        //Filter by selected tags blocks.
+        for (SearchOptions.TagsInfo tagsInfo : searchOptions.getTagGroups())
+        {
+            switch (tagsInfo.getOperation())
+            {
+                case SearchOptions.INCLUDE_BOOKMARKS_WITH_ALL_TAGS:
+                    this.keepWithAllTags(tagsInfo.getTags());
+                    break;
+                case SearchOptions.INCLUDE_BOOKMARKS_WITH_ANY_TAGS:
+                    this.keepWithAnyTag(tagsInfo.getTags());
+                    break;
+                case SearchOptions.INCLUDE_BOOKMARKS_WITHOUT_TAGS:
+                    this.excludeWithTags(tagsInfo.getTags());
+                    break;
+            }
+        }
+
+        //Note: Cannot do search here. Must do search prior to calling this method. This is just a filter method not a search method.
+        return this;
+    }
+
+    private void tempToMainList()
+    {
+        this.bookmarkList.clear();
+        this.bookmarkList.addAll(tempList);
+        this.tempList.clear();
     }
 
     /**

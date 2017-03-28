@@ -2,56 +2,56 @@
 <root>
     <settings type="mainUI">
         <setting class="com.bookmarkanator.core.SettingItem"
-                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.BashHistoryBookmark">
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.BashHistoryBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.BashHistoryBookmarkUI
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TextBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TextBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
-                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TerminalBookmark">
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TerminalBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TerminalBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
-                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.ReminderBookmark">
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.ReminderBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.ReminderBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
-                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.SequenceBookmark">
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.SequenceBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.SequenceBookmarkUI
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.FileBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.FileBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.FileBookmarkUI
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.WebBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.WebBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.WebBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
-                 key="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.EncryptedBookmark">
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.EncryptedBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.EncryptedBookmarkUI
         </setting>
     </settings>
     <settings type="bootstrap">
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.TerminalBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.TerminalBookmark">
             com.bookmarkanator.bookmarks.TerminalBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingsItemList" key="module-locations">/Users/lloyd1/Bookmark-anator</setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.ReminderBookmark">
+        <setting class="com.bookmarkanator.core.SettingsItemList" operation="module-locations">/Users/lloyd1/Bookmark-anator</setting>
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.ReminderBookmark">
             com.bookmarkanator.bookmarks.ReminderBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.SequenceBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.SequenceBookmark">
             com.bookmarkanator.bookmarks.SequenceBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.EncryptedBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.EncryptedBookmark">
             com.bookmarkanator.bookmarks.EncryptedBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingsItemList" key="bookmark-io-config">/Users/lloyd1/Bookmark-anator/bookmarks.xml</setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.TextBookmark">
+        <setting class="com.bookmarkanator.core.SettingsItemList" operation="bookmark-io-config">/Users/lloyd1/Bookmark-anator/bookmarks.xml</setting>
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.TextBookmark">
             com.bookmarkanator.bookmarks.TextBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" key="com.bookmarkanator.bookmarks.WebBookmark">com.bookmarkanator.bookmarks.WebBookmark
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.WebBookmark">com.bookmarkanator.bookmarks.WebBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingsItemList" key="bookmark-io-class">com.bookmarkanator.io.FileIO</setting>
+        <setting class="com.bookmarkanator.core.SettingsItemList" operation="bookmark-io-class">com.bookmarkanator.io.FileIO</setting>
     </settings>
 </root>
 

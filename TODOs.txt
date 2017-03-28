@@ -20,3 +20,52 @@ using the currently showing bookmarks.
 Wish List Items:
 
 -ADD number on the types buttons that shows how many of each type there are.
+
+
+
+Action each UI view needs
+
+Types View:
+    - Set type visible/hidden -> controller
+
+    * Set type visible/hidden <- controller
+    * Highlight type <- controller
+    * Matches search criteria <- controller
+    * Set edit mode <- controller
+
+Selected Tags View:
+    - Set tags and groups -> controller
+
+    - Set groups and tags <- controller
+    - Highlight highlight tags or groups <- controller
+    - Get active group <- controller
+    x (This is a controller operation) Matches search criteria <- controller
+    - Set edit mode <- controller
+
+Available Tags View:
+    - Set tag -> controller
+
+    - Highlight tags <- controller
+    x (This is a controller operation) Matches search criteria <- controller
+    - Set edit mode <- controller
+
+Bookmarks List View:
+
+    * Matches search criteria <- controller
+    * Highlight bookmarks <- controller
+    * Set bookmarks <- controller
+    * Set edit mode <- controller
+
+Search View:
+    * Set search criteria -> controller
+
+Quick Panel View:
+    * Set search criteria-view objects <- controller
+    * Matches search criteria <- controller
+    * Set edit mode <- controller
+    * Highlight matching items? <- controller
+
+File Menu:
+    * Matches search criteria <- controller
+    * Set edit mode <- controller
+    * Highlight menuItems <- controller

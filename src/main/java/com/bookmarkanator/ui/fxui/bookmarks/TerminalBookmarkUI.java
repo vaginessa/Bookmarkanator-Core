@@ -5,6 +5,7 @@ import javafx.scene.image.*;
 
 public class TerminalBookmarkUI extends AbstractUIBookmark
 {
+
     @Override
     public Image getTypeIcon()
     {

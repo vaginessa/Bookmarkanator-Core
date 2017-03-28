@@ -6,6 +6,7 @@ import javafx.scene.image.*;
 public class BashHistoryBookmarkUI extends AbstractUIBookmark
 {
 
+
     @Override
     public Image getTypeIcon()
     {

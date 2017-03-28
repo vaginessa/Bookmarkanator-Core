@@ -1,7 +1,7 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
-import com.bookmarkanator.ui.*;
+import com.bookmarkanator.ui.fxui.components.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -12,67 +12,38 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
 {
     private boolean editMode = false;
     private FlowPane flowPane;
-    private String colorString =  "#8fbc8f";
+    private String colorString = "#8fbc8f";
     private String currentSearchTerm;
     private boolean isFound;
+    private UIControllerInterface controller;
 
-    public AvailableTagsUI()
+    public AvailableTagsUI(UIControllerInterface controller)
     {
+        Objects.requireNonNull(controller);
+        this.controller = controller;
         this.flowPane = new FlowPane();
-//        flowPane.setStyle("-fx-background-color:"+colorString);
+        //        flowPane.setStyle("-fx-background-color:"+colorString);
         flowPane.setVgap(5);
         flowPane.setHgap(5);
 
-//        this.setStyle("-fx-background:"+colorString);
+        //        this.setStyle("-fx-background:"+colorString);
         this.setFitToWidth(true);
         this.setContent(flowPane);
     }
 
     @Override
-    public void setAvailableTags(Set<String> availableTags)
+    public void setAvailableTags(Set<String> availableTags, Set<String> highlightTags, Set<String> tagsToHighlightBorders)
     {
         this.flowPane.getChildren().clear();
 
         List<String> tagsList = new ArrayList<>();
         tagsList.addAll(availableTags);
 
-        Collections.sort(tagsList, new Comparator<String>()
-        {
-            @Override
-            public int compare(String o1, String o2)
-            {
-                if (o1==null || o1.isEmpty())
-                {
-                    if (o2==null || o2.isEmpty())
-                    {
-                        return 0;
-                    }
-                    else {
-                        return -1;
-                    }
-                }
-                else if (o2==null || o2.isEmpty())
-                {
-                    if (o1.isEmpty())
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-                else {
-                    return o1.compareToIgnoreCase(o2);
-                }
+        Collections.sort(tagsList, new TagComparator());
 
-            }
-        });
-
-        for (final String string: tagsList)
+        for (final String string : tagsList)
         {
             Pane pane = new Pane();
-            String tmp = string.toLowerCase();
 
             pane.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
@@ -81,7 +52,7 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
                 {
                     try
                     {
-                        UIController.use().addSelectedTag(string);
+                        controller.selectTag(string);
                     }
                     catch (Exception e)
                     {
@@ -90,19 +61,15 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
                 }
             });
 
-
             Label label = new Label(string);
             label.setStyle("-fx-border-color: black");
-            if (currentSearchTerm!=null && !currentSearchTerm.isEmpty() &&  (tmp.contains(currentSearchTerm) || currentSearchTerm.contains(tmp)))
+            if (highlightTags.contains(string))
             {
-                if (currentSearchTerm.equals(tmp))
+                if (tagsToHighlightBorders.contains(string))
                 {
                     label.setStyle("-fx-border-color: orange;-fx-border-width: 2px");
                 }
-//                else
-//                {
-                    pane.setStyle("-fx-background-color: lightgreen");
-//                }
+                pane.setStyle("-fx-background-color: lightgreen");
 
                 isFound = true;
             }
@@ -114,12 +81,6 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
 
             this.flowPane.getChildren().add(pane);
         }
-    }
-
-    @Override
-    public Set getAvailableTags()
-    {
-        return null;
     }
 
     @Override
@@ -135,15 +96,15 @@ public class AvailableTagsUI extends ScrollPane implements AvailableTagsInterfac
     }
 
     @Override
-    public void setCurrentSearchTerm(String searchTerm)
+    public UIControllerInterface getController()
     {
-        this.currentSearchTerm = searchTerm;
+        return this.controller;
     }
 
     @Override
-    public boolean isSearchTermFound()
+    public void setController(UIControllerInterface controller)
     {
-        return isFound;
+        this.controller = controller;
     }
 
 }

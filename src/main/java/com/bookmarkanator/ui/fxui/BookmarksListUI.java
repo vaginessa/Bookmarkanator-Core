@@ -1,9 +1,7 @@
 package com.bookmarkanator.ui.fxui;
 
 import java.util.*;
-import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
-import com.bookmarkanator.ui.*;
 import com.bookmarkanator.ui.fxui.bookmarks.*;
 import com.bookmarkanator.ui.interfaces.*;
 import javafx.collections.*;
@@ -18,10 +16,12 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     private ListView<AbstractUIBookmark> bookmarkListView;
     private ObservableList<AbstractUIBookmark> observableList;
     private boolean editMode = false;
-    private String currentSearchTerm;
+    private UIControllerInterface controller;
 
-    public BookmarksListUI()
+    public BookmarksListUI(UIControllerInterface controller)
     {
+        Objects.requireNonNull(controller);
+        this.controller = controller;
         observableList = FXCollections.observableArrayList();
         bookmarkListView = new ListView<>(observableList);
         this.getChildren().add(bookmarkListView);
@@ -50,7 +50,7 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
                         if (getEditMode())
                         {
                             Bootstrap.context().updateBookmark(abs.edit());
-                            UIController.use().updateUI();
+                            controller.updateUI();
                         }
                         else
                         {
@@ -70,22 +70,22 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     }
 
     @Override
-    public void setVisibleBookmarks(Set<AbstractBookmark> bookmarks)
+    public void setVisibleBookmarks(Set<AbstractUIBookmark> bookmarks)
         throws Exception
     {
         observableList.clear();
 
-        List<AbstractBookmark> bookmarksList = new ArrayList<>();
+        List<AbstractUIBookmark> bookmarksList = new ArrayList<>();
         bookmarksList.addAll(bookmarks);
 
-        Collections.sort(bookmarksList, new Comparator<AbstractBookmark>()
+        Collections.sort(bookmarksList, new Comparator<AbstractUIBookmark>()
         {
             @Override
-            public int compare(AbstractBookmark o1, AbstractBookmark o2)
+            public int compare(AbstractUIBookmark o1, AbstractUIBookmark o2)
             {
-                if (o1.getName()==null || o1.getName().isEmpty())
+                if (o1.getBookmark().getName()==null || o1.getBookmark().getName().isEmpty())
                 {
-                    if (o2.getName()==null || o2.getName().isEmpty())
+                    if (o2.getBookmark().getName()==null || o2.getBookmark().getName().isEmpty())
                     {
                         return 0;
                     }
@@ -94,9 +94,9 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
                         return -1;
                     }
                 }
-                else if (o2.getName()==null || o2.getName().isEmpty())
+                else if (o2.getBookmark().getName()==null || o2.getBookmark().getName().isEmpty())
                 {
-                    if (o1.getName()==null || o1.getName().isEmpty())
+                    if (o1.getBookmark().getName()==null || o1.getBookmark().getName().isEmpty())
                     {
                         return 0;
                     }
@@ -107,26 +107,21 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
                 }
                 else
                 {
-                    return o1.getName().compareTo(o2.getName());
+                    return o1.getBookmark().getName().compareTo(o2.getBookmark().getName());
                 }
             }
         });
 
-        for (AbstractBookmark bk : bookmarksList)
-        {
-            String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
-            String className = UIController.use().getSettings().getSetting(bkClassNameKey).getValue();
-            final AbstractUIBookmark bkui = ModuleLoader.use().loadClass(className, AbstractUIBookmark.class);
-            bkui.setBookmark(bk);
+        observableList.addAll(bookmarksList);
 
-            observableList.add(bkui);
-        }
-    }
-
-    @Override
-    public Set<AbstractBookmark> getVisibleBookmarks()
-    {
-        return null;
+//        for (AbstractUIBookmark bk : bookmarksList)
+//        {
+//            String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
+//            String className = controller.getSettings().getSetting(bkClassNameKey).getValue();
+//
+//
+//            observableList.add(bkui);
+//        }
     }
 
     @Override
@@ -139,18 +134,6 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
     public void setEditMode(boolean editMode)
     {
         this.editMode = editMode;
-    }
-
-    @Override
-    public void setCurrentSearchTerm(String searchTerm)
-    {
-        this.currentSearchTerm = searchTerm;
-    }
-
-    @Override
-    public boolean isSearchTermFound()
-    {
-        return false;
     }
 
     private class BookmarkCell extends ListCell<AbstractUIBookmark>
@@ -168,7 +151,18 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
             {
                 setText(item.getBookmark().getName());
             }
-
         }
+    }
+
+    @Override
+    public UIControllerInterface getController()
+    {
+        return this.controller;
+    }
+
+    @Override
+    public void setController(UIControllerInterface controller)
+    {
+        this.controller = controller;
     }
 }

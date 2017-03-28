@@ -12,10 +12,10 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     Set<AbstractUIBookmark> types;
     Map<String, AbstractUIBookmark> typesMap;//<bookmark type string, the ui bookmark it will use>
     AbstractUIBookmark selected;
-    GUIControllerInterface controller;
+    UIControllerInterface controller;
     private boolean editMode;
 
-    public NewBookmarkSelectorUI(GUIControllerInterface controller)
+    public NewBookmarkSelectorUI(UIControllerInterface controller)
     {
         this.controller = controller;
         typesMap = new HashMap<>();
@@ -109,14 +109,14 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
     }
 
     @Override
-    public void setCurrentSearchTerm(String searchTerm)
+    public UIControllerInterface getController()
     {
-
+        return this.controller;
     }
 
     @Override
-    public boolean isSearchTermFound()
+    public void setController(UIControllerInterface controller)
     {
-        return false;
+        this.controller = controller;
     }
 }

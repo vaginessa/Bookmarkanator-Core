@@ -1,7 +1,8 @@
 package com.bookmarkanator.ui.fxui;
 
-import com.bookmarkanator.ui.*;
+import java.util.*;
 import com.bookmarkanator.ui.interfaces.*;
+import com.bookmarkanator.util.*;
 import javafx.application.*;
 import javafx.beans.value.*;
 import javafx.event.*;
@@ -16,21 +17,33 @@ public class SearchUI extends HBox implements SearchInterface
     private String colorString = "#3fccdb";
     private TextField textField;
     private HBox searchBox;
-    private Pane searchOptions;
+    private Pane searchOptionsPane;
     private Button newButton, quickPanelButton;
     private HBox editModeTogglePane;
     private HBox editModePane;
+    private SearchOptions searchOptions;
+    private UIControllerInterface controller;
+    private CheckBox sBookmarkTypeNames;
+    private CheckBox sBookmarkText;
+    private CheckBox sBookmarkNames;
+    private CheckBox sTags;
+    private boolean highlightSearchTerm;
+    private SimilarItemIterator similarItemIterator;
 
-    public SearchUI()
+    public SearchUI(UIControllerInterface controller)
     {
+        Objects.requireNonNull(controller);
+        this.controller = controller;
+        this.searchOptions = controller.getSearchOptions();
         this.getChildren().add(getSearch());
         this.setAlignment(Pos.CENTER_LEFT);
+        //        searchOptionsPane = new SearchOptions();
         //        this.setStyle("-fx-background-color: crimson");
     }
 
     private Pane getSearch()
     {
-        this.searchOptions = getSearchOptions();
+        this.searchOptionsPane = getSearchOptionsPane();
 
         this.searchBox = new HBox();
         searchBox.setSpacing(5);
@@ -51,7 +64,8 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().setSearchTerm(newValue);
+                    searchOptions.setSearchTerm(newValue);
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -59,36 +73,66 @@ public class SearchUI extends HBox implements SearchInterface
                 }
             }
         });
-        textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent ke) {
-                if (ke.getCode()==KeyCode.ENTER)
+        textField.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode() == KeyCode.ENTER)
                 {
                     try
                     {
-                        UIController.use().searchKeyAction(ke.getCode().getName());
-                        UIController.use().setSearchTerm("");
+                        controller.selectTag(searchOptions.getSearchTerm());
                     }
                     catch (Exception e)
                     {
                         throw new RuntimeException(e);
                     }
                     textField.clear();
-                    Platform.runLater(textField::requestFocus);
+                    similarItemIterator = null;
+
                 }
-//
-//                String text = "Key Typed: " + ke.getCharacter();
-//                if (ke.isAltDown()) {
-//                    text += " , alt down";
+                else if (ke.getCode() == KeyCode.TAB)
+                {
+                    if (similarItemIterator==null)
+                    {
+                        similarItemIterator = controller.getSimilarItemIterator(textField.getText());
+                    }
+
+                    textField.setText(similarItemIterator.getNextSimilar());
+
+                    ke.consume();
+                }
+                else if (ke.getCode() == KeyCode.ESCAPE)
+                {
+                    textField.clear();
+                    searchOptions.setSearchTerm("");
+                    try
+                    {
+                        controller.setSearchOptions(searchOptions);
+                        similarItemIterator = null;
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+//                else {
+//                    similarItemIterator = null;
 //                }
-//                if (ke.isControlDown()) {
-//                    text += " , ctrl down";
-//                }
-//                if (ke.isMetaDown()) {
-//                    text += " , meta down";
-//                }
-//                if (ke.isShiftDown()) {
-//                    text += " , shift down";
-//                }
+                //
+                //                String text = "Key Typed: " + ke.getCharacter();
+                //                if (ke.isAltDown()) {
+                //                    text += " , alt down";
+                //                }
+                //                if (ke.isControlDown()) {
+                //                    text += " , ctrl down";
+                //                }
+                //                if (ke.isMetaDown()) {
+                //                    text += " , meta down";
+                //                }
+                //                if (ke.isShiftDown()) {
+                //                    text += " , shift down";
+                //                }
 
             }
         });
@@ -96,9 +140,10 @@ public class SearchUI extends HBox implements SearchInterface
         textFieldContainer.getChildren().add(textField);
 
         Button clearText = new Button("X");
-        clearText.setStyle("-fx-border-color: black;-fx-border-radius:15;-fx-background-radius:15;-fx-background-color:white;");//-fx-min-width: 20px;-fx-min-height: 20px;-fx-max-width: 20px; -fx-max-height: 20px;-fx-background-radius: 20em;");
-//        clearText.setMinSize(25,25);
-//        clearText.setMaxSize(25,25);
+        clearText.setStyle(
+            "-fx-border-color: black;-fx-border-radius:15;-fx-background-radius:15;-fx-background-color:white;");//-fx-min-width: 20px;-fx-min-height: 20px;-fx-max-width: 20px; -fx-max-height: 20px;-fx-background-radius: 20em;");
+        //        clearText.setMinSize(25,25);
+        //        clearText.setMaxSize(25,25);
         clearText.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -107,8 +152,9 @@ public class SearchUI extends HBox implements SearchInterface
                 try
                 {
                     textField.clear();
+                    searchOptions.setSearchTerm("");
                     Platform.runLater(textField::requestFocus);
-                    UIController.use().setSearchTerm(textField.getText());
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -132,12 +178,12 @@ public class SearchUI extends HBox implements SearchInterface
                     if (button.getText().equals("->"))
                     {
                         searchBox.getChildren().removeAll(button, newButton, quickPanelButton, editModePane);
-                        searchBox.getChildren().addAll(searchOptions, button, newButton, editModePane);
+                        searchBox.getChildren().addAll(searchOptionsPane, button, newButton, editModePane);
                         button.setText("<-");
                     }
                     else
                     {
-                        searchBox.getChildren().removeAll(searchOptions, button, editModePane, newButton);
+                        searchBox.getChildren().removeAll(searchOptionsPane, button, editModePane, newButton);
                         searchBox.getChildren().addAll(button, newButton, quickPanelButton, editModePane);
                         button.setText("->");
                     }
@@ -159,7 +205,7 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().getNewBookmarkSelectorUI().show();
+                    controller.getNewBookmarkSelectorUI().show();
                 }
                 catch (Exception e)
                 {
@@ -210,14 +256,14 @@ public class SearchUI extends HBox implements SearchInterface
                         editModeTogglePane.setAlignment(Pos.CENTER_LEFT);
                         button.setText("Off");
                         editMode = false;
-                        UIController.use().setEditMode(editMode);
+                        controller.setEditMode(editMode);
                     }
                     else
                     {
                         editModeTogglePane.setAlignment(Pos.CENTER_RIGHT);
                         button.setText("On");
                         editMode = true;
-                        UIController.use().setEditMode(editMode);
+                        controller.setEditMode(editMode);
                     }
 
                 }
@@ -233,13 +279,13 @@ public class SearchUI extends HBox implements SearchInterface
         return editModePane;
     }
 
-    private Pane getSearchOptions()
+    private Pane getSearchOptionsPane()
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
 
-        final CheckBox sTags = new CheckBox("Tags");
-        sTags.setSelected(true);
+        sTags = new CheckBox("Tags");
+//        sTags.setSelected(true);
         sTags.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -247,7 +293,8 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().setSearchInclusions(UIController.SEARCH_TAGS_KEY, sTags.isSelected());
+                    searchOptions.setSearchTags(sTags.isSelected());
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -256,8 +303,8 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
-        final CheckBox sBookmarkNames = new CheckBox("Bookmark Names");
-        sBookmarkNames.setSelected(true);
+        sBookmarkNames = new CheckBox("Bookmark Names");
+//        sBookmarkNames.setSelected(true);
         sBookmarkNames.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -265,7 +312,8 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().setSearchInclusions(UIController.SEARCH_BOOKMARK_NAMES_KEY, sBookmarkNames.isSelected());
+                    searchOptions.setSearchBookmarkNames(sBookmarkNames.isSelected());
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -274,8 +322,8 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
-        final CheckBox sBookmarkText = new CheckBox("Bookmark Text");
-        sBookmarkText.setSelected(true);
+        sBookmarkText = new CheckBox("Bookmark Text");
+//        sBookmarkText.setSelected(true);
         sBookmarkText.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -283,7 +331,8 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().setSearchInclusions(UIController.SEARCH_BOOKMARK_TEXT_KEY, sBookmarkText.isSelected());
+                    searchOptions.setSearchBookmarkText(sBookmarkText.isSelected());
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -292,7 +341,7 @@ public class SearchUI extends HBox implements SearchInterface
             }
         });
 
-        final CheckBox sBookmarkTypeNames = new CheckBox("Bookmark Type Names");
+        sBookmarkTypeNames = new CheckBox("Bookmark Type Names");
         sBookmarkTypeNames.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -300,7 +349,8 @@ public class SearchUI extends HBox implements SearchInterface
             {
                 try
                 {
-                    UIController.use().setSearchInclusions(UIController.SEARCH_TYPES_KEY, sBookmarkTypeNames.isSelected());
+                    searchOptions.setSearchBookmarkTypes(sBookmarkTypeNames.isSelected());
+                    controller.setSearchOptions(searchOptions);
                 }
                 catch (Exception e)
                 {
@@ -330,15 +380,39 @@ public class SearchUI extends HBox implements SearchInterface
     }
 
     @Override
-    public void setCurrentSearchTerm(String searchTerm)
+    public UIControllerInterface getController()
     {
-
+        return this.controller;
     }
 
     @Override
-    public boolean isSearchTermFound()
+    public void setController(UIControllerInterface controller)
     {
-        return false;
+        this.controller = controller;
     }
 
+    public void setSearchOptions(SearchOptions searchOptions)
+    {
+        this.searchOptions = searchOptions;
+        textField.setText(searchOptions.getSearchTerm());
+        sTags.setSelected(searchOptions.isSearchTags());
+        sBookmarkNames.setSelected(searchOptions.isSearchBookmarkNames());
+        sBookmarkTypeNames.setSelected(searchOptions.isSearchBookmarkTypes());
+        sBookmarkText.setSelected(searchOptions.isSearchBookmarkText());
+    }
+
+    @Override
+    public void highlightSearchTerm(boolean highlight)
+    {
+        this.highlightSearchTerm = highlight;
+
+        if (highlight)
+        {
+            textField.setStyle("-fx-border-color: orange;");
+        }
+        else
+        {
+            textField.setStyle("-fx-border-color: white;");
+        }
+    }
 }

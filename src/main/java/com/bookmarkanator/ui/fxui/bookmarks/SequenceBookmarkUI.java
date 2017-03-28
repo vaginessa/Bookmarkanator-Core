@@ -5,6 +5,7 @@ import javafx.scene.image.*;
 
 public class SequenceBookmarkUI extends AbstractUIBookmark
 {
+
     @Override
     public Image getTypeIcon()
     {
