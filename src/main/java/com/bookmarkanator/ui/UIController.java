@@ -85,7 +85,11 @@ public class UIController implements UIControllerInterface
         assert searchInterface != null;
         assert menuInterface != null;
         assert quickPanelInterface != null;
+        assert newBookmarkSelectionInterface !=null;
+
+        newBookmarkSelectionInterface.setTypes(allAvailableBKTypes);
         this.searchInterface.setSearchOptions(this.searchOptions);//Set this so that the search checkboxes get populated.
+
 
         updateUI();
     }

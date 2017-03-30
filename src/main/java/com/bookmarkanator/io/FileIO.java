@@ -9,23 +9,33 @@ import org.apache.commons.io.*;
 
 public class FileIO implements BKIOInterface
 {
-    private FileContext context;
+    private ContextInterface context;
     private String bookmarksFileLocation;
-    private static String DIRTY_BOOKMARKS_KEY = "dirty-bookmarks";
 
     @Override
     public void init(String config)
         throws Exception
     {
         //TODO Add basic bookmark structure if it doesnt' exist.
-        File file = new File(config);
-        FileInputStream fin = new FileInputStream(file);
-        validateXML(fin);
-        fin = new FileInputStream(new File(config));
-
-        loadBookmarks(fin);
-        fin.close();
+        this.context = this.getContext();
         bookmarksFileLocation = config;
+        File file = new File(config);
+
+        if (!file.exists())
+        {
+//            file.createNewFile();
+            this.save();
+        }
+        else
+        {
+            FileInputStream fin = new FileInputStream(file);
+            validateXML(fin);
+            fin = new FileInputStream(new File(config));
+            loadBookmarks(fin);
+            fin.close();
+        }
+
+
 
         //TODO Make it so that it won't create multiple backup files if there have been no changes.
         //TODO Have a backup file created for the settings?
@@ -72,8 +82,6 @@ public class FileIO implements BKIOInterface
     private void loadBookmarks(InputStream inputStream)
         throws Exception
     {
-        context = new FileContext();
-        context.setBKIOInterface(this);
         BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
         parser.parse();
     }

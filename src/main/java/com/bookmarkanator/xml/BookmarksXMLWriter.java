@@ -16,9 +16,6 @@ public class BookmarksXMLWriter
     private ContextInterface contextInterface;
     private OutputStream out;
 
-    //TODO Add bookmark dependencies in.
-
-
     public BookmarksXMLWriter(ContextInterface contextInterface, OutputStream outputStream)
 
     {
