@@ -415,7 +415,7 @@ public class UIController implements UIControllerInterface
                 AbstractBookmark abs = ModuleLoader.use().loadClass(bookmarkClass.getCanonicalName(), AbstractBookmark.class);
                 if (abs.getTypeName() == null || abs.getTypeName().trim().isEmpty())
                 {
-                    MLog.warn("Bookmark " + abs.getClass().getCanonicalName() + " has no type string.");
+//                    MLog.warn("Bookmark " + abs.getClass().getCanonicalName() + " has no type string.");
                 }
                 else
                 {

@@ -57,7 +57,11 @@ public class TextBookmarkUI extends AbstractUIBookmark
             {
                 public void handle(WindowEvent we)
                 {
-                    getBookmark().setText(textArea.getHtmlText());
+                    try {
+                        getBookmark().setText(textArea.getHtmlText());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     getBookmark().setName(name.getText());
                 }
             });

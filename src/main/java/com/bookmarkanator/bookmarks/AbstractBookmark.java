@@ -1,5 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
+import java.net.MalformedURLException;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
@@ -109,8 +110,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         return text;
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) throws Exception {
         this.text = text;
     }
 

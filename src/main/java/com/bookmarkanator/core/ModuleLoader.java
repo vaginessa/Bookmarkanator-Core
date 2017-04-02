@@ -127,7 +127,7 @@ public class ModuleLoader
                 //                }
                 //                System.out.println("End loading jar classes.");
 
-                MLog.info("Loading jar \"" + myJarFile.toString() + "\"");
+//                MLog.info("Loading jar \"" + myJarFile.toString() + "\"");
                 urls.add(myJarFile);
             }
         }
