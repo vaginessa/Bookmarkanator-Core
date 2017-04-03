@@ -7,6 +7,7 @@ import org.junit.*;
 
 public class TestBookmark
 {
+    @Ignore
     @Test
     public void testBookmarkSearch()
         throws Exception

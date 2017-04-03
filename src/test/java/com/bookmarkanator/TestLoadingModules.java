@@ -7,6 +7,7 @@ import org.junit.*;
 
 public class TestLoadingModules
 {
+    @Ignore
     @Test
     public void testLoadingModules()
         throws Exception

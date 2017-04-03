@@ -4,7 +4,7 @@
 
     <groupId>com.bookmarking</groupId>
     <artifactId>bookmarkanator</artifactId>
-    <version>0.1.0-9</version>
+    <version>0.1.0-10</version>
     <packaging>jar</packaging>
     <name>bookmarkanator</name>
     <url></url>
@@ -69,11 +69,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
-        <dependency>
-            <groupId>com.googlecode.lanterna</groupId>
-            <artifactId>lanterna</artifactId>
-            <version>3.0.0-beta3</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.googlecode.lanterna</groupId>-->
+            <!--<artifactId>lanterna</artifactId>-->
+            <!--<version>3.0.0-beta3</version>-->
+        <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
         <dependency>
             <groupId>org.reflections</groupId>
