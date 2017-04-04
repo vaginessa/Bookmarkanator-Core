@@ -17,7 +17,7 @@ public class Bootstrap
     private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
 
     //Settings fields related to overriding the default classes.
-    //TODO Go through all keys and types for settings values and improve them to be more obvious. Also possibly make a new type of settings object.
+    //TODO Go through all keys and types for settings values and improve them to be more obvious.
     //TODO Explicitly set settings for overriding class names.
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
     private static final String BOOKMARK_IO_CONFIG_KEY = "bookmark-io-config";
@@ -113,7 +113,6 @@ public class Bootstrap
                 String config = Util.getItem(bkioConfigs, c);
                 BKIOInterface bkio2 = ModuleLoader.use().loadClass(className, BKIOInterface.class);
 
-                //TODO The logger writes this stuff out multiple times, Figure out why.
                 System.out.println("Loaded BKIOInterface class: \"" + className + "\" with this config: \""+config+"\"");
                 System.out.println("Calling init()...");
                 bkio2.init(config);

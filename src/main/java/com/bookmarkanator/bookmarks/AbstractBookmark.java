@@ -1,35 +1,12 @@
 package com.bookmarkanator.bookmarks;
 
-import java.net.MalformedURLException;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
 
-
-    //TODO Add a field here to have settings passing? Or do it some other way?
-
     protected static String secretKey;//Key needed to access message board
-    public enum ActionTypes
-    {
-        delete("delete"),
-        create("create"),
-        save("save"),
-        update("update");
-
-        private String action;
-
-        ActionTypes(String action)
-        {
-            this.action = action;
-        }
-
-        public String value()
-        {
-            return this.action;
-        }
-    }
 
     private String name;//The user visible name
     private UUID id;

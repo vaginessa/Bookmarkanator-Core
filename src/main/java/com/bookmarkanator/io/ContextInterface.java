@@ -8,8 +8,6 @@ import com.bookmarkanator.bookmarks.*;
  */
 public interface ContextInterface
 {
-
-    //TODO convert to abstract class?
     void setBKIOInterface(BKIOInterface bkioInterface);
 
     BKIOInterface getBKIOInterface();

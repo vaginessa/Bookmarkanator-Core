@@ -1,26 +1,43 @@
 Core:
+_____________________________________
 
+TODO Refactor all source code in core to be simpler, add comments, and simplify usage of shared classes such as settings, module loader etc...
 TODO Add Logging to the whole project.
 TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same. Allow multi case tagging but searching without case?
 TODO Index the words of the text of a bookmark (no string rotations).
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
 TODO Determine bookmarks file size maximum policy (message the user, create multiple files ect...)
+TODO Implement/verify message passing funcationality.
+TODO Refactor/simplify bootstrap
+TODO Add a lock so only one bookmarkinator program can be run in a single workspace at a time.
+TODO Create a backup file for the settings as well.
+TODO Fix the search functionality.
+TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
+
+Settings:
+
+TODO Fix/improve importing of settings from other settings objects.
+TODO Improve setting of overriding classes, and other default settings.
+TODO Enable changing the workspace the program runs from. This simply changes the directory that contains a settings file, bookmarks.xml, and any addon code. This will enable the same program to be used with different kinds of bookmarks, and add a clear separation between different types.
+
+Bookmarks:
 
 TODO Implement Encrypted bookmark
 TODO Implement file bookmark
 TODO Implement Terminal Bookmark
 TODO Implement Sequence bookmark
+TODO Enable bookmarks exporting and importing - even from a bookmarks.xml file.
+TODO Make it so bookmarks.xml backups only store a single backup when changes are detected.
 
-TODO Refactor all source code in core to be simpler, add comments, and simplify usage of shared classes such as settings, module loader etc...
-TODO Enable bookmarks exporting and importing.
-TODO Enable changing the workspace the program runs from. This simply changes the directory that contains a settings file, bookmarks.xml, and any addon code. This will enable the same program to be used with different kinds of bookmarks, and add a clear separation between different types.
-
+Testing:
 
 TODO Perform module addon loading testing - create a separate module, load it, use it etc...
 TODO Perform settings/bookmarks loading/saving testing.
 TODO Perform cross platform tests
 
 UI:
+_____________________________________
+
 TODO Implement functionality in the file menu.
 TODO Add a way to filter bookmarks by date range in the search UI interface.
 TODO Modify the new bookmark window to sort bookmark types, and be able to select a new bookmark with fewer clicks.
@@ -34,15 +51,27 @@ TODO Improve the colors a bit to be more consistent and more easily modified. Po
 TODO Add splash screen
 TODO Add task bar icon
 TODO Look into adding jar icon
+TODO Add tutorial functionality to show users how the program is to be used. /help menu /tutorial -- Runs the first time the program is run.
+TODO Add an about screen /help menu / about
+TODO Add technical documentation /help menu /technicaldocumentation
 
-TODO Add bookmark import/export UI's
+TODO Add bookmark import/export functionality (should export showing bookmarks or all bookmarks)
+TODO Improve setting of overriding classes, and other default settings.
 TODO Add a settings modification window. Specify UI settings, core settings, and default settings. Allow the overriding of any overridable types (currently bookmarks, bookmark UI's, bookmark io, and bookmark context classes, as well as controller, and any UI classes.
+TODO Add the ability to perform actions on tags, e.g. delete, rename, remove, remove from showing bookmarks, add to showing bookmarks, merge tags, suggest operations on tags, and tell the user about redundant tags.
 
 TODO Implement Encrypted bookmark UI
 TODO Implement file bookmark UI
 TODO Implement Terminal Bookmark UI
-TODO Implement Sequence bookmark UI
+TODO Implement Sequence bookmark UI - use main window as the search interface, possibly rearrange windows side by side?
+
+TODO Validate web bookmark is a proper web address before allowing submission.
 
 TODO Perform UI tests
 TODO Perform cross platform tests
+TODO Add right click functionality to all UI elements that need it.
+TODO Add tool tip comments for all UI elements that need it.
 
+Bugs:
+
+TODO Sometimes when a bookmark is added or tags are changed the available tags do not get updated.

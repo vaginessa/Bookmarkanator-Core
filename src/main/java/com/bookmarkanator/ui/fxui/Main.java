@@ -59,7 +59,6 @@ public class Main extends Application
         VBox tagsBox = new VBox();
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI(controller);
         selectedTagsUI.setPrefHeight(bestWindowSize.getHeight() * .35);
-        //TODO CHANGE the selected tags UI to a different kind of pane, and add a scroll pane that will contain the tag groups so only they scroll.
         selectedTagsUI.setPrefWidth(bestWindowSize.getWidth()*.4);
         controller.setSelectedTagsUI(selectedTagsUI);
         tagsBox.getChildren().add(selectedTagsUI);

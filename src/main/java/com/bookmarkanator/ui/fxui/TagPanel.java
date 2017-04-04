@@ -72,7 +72,7 @@ public class TagPanel extends ScrollPane
         }
         else
         {
-            availableTags = search.searchAll(tagNameSearch.getText(), 10000);//TODO ADD A SEARCH ALL SO THE SEARCH IS NOT LIMITED...
+            availableTags = search.searchAll(tagNameSearch.getText(), 10000);
         }
 
         for (String s : availableTags)

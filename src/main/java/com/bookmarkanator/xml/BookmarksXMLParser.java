@@ -37,8 +37,6 @@ public class BookmarksXMLParser
     private Document document;
 
 
-    //TODO Add bookmark dependencies in.
-
     public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
     {
         this.contextInterface = contextInterface;
