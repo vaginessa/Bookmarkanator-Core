@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
     <settings type="mainUI">
-        <setting class="com.bookmarkanator.core.SettingItem"
-                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.BashHistoryBookmark">
-            com.bookmarkanator.ui.fxui.bookmarks.BashHistoryBookmarkUI
-        </setting>
         <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TextBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
                  operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TerminalBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TerminalBookmarkUI
-        </setting>
-        <setting class="com.bookmarkanator.core.SettingItem"
-                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.ReminderBookmark">
-            com.bookmarkanator.ui.fxui.bookmarks.ReminderBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
                  operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.SequenceBookmark">
@@ -36,9 +28,6 @@
             com.bookmarkanator.bookmarks.TerminalBookmark
         </setting>
         <setting class="com.bookmarkanator.core.SettingsItemList" operation="module-locations">/Users/lloyd1/Bookmark-anator</setting>
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.ReminderBookmark">
-            com.bookmarkanator.bookmarks.ReminderBookmark
-        </setting>
         <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.SequenceBookmark">
             com.bookmarkanator.bookmarks.SequenceBookmark
         </setting>

@@ -133,23 +133,13 @@ public class Main extends Application
     {
         Settings settings = new Settings();
 
-        SettingItem item = new SettingItem(Main.getUIClassString() + BashHistoryBookmark.class.getCanonicalName());
-        item.setValue(BashHistoryBookmarkUI.class.getCanonicalName());
-        item.setType("mainUI");
-        settings.putSetting(item);
-
-        item = new SettingItem(Main.getUIClassString() + EncryptedBookmark.class.getCanonicalName());
+        SettingItem item = new SettingItem(Main.getUIClassString() + EncryptedBookmark.class.getCanonicalName());
         item.setValue(EncryptedBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 
         item = new SettingItem(Main.getUIClassString() + FileBookmark.class.getCanonicalName());
         item.setValue(FileBookmarkUI.class.getCanonicalName());
-        item.setType("mainUI");
-        settings.putSetting(item);
-
-        item = new SettingItem(Main.getUIClassString() + ReminderBookmark.class.getCanonicalName());
-        item.setValue(ReminderBookmarkUI.class.getCanonicalName());
         item.setType("mainUI");
         settings.putSetting(item);
 

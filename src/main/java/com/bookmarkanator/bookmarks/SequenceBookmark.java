@@ -11,6 +11,8 @@ public class SequenceBookmark extends AbstractBookmark
     private List<UUID> items;
     private List<UUID> errorItems;
 
+    //TODO: Use main UI as the search functionality of this addon window. Means it cannot be modal.
+
     public SequenceBookmark()
     {
         super();

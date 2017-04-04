@@ -96,10 +96,6 @@ public class Bootstrap
         // 2 - If there is an override setting in the settings use that class if it can be loaded.
         // 3 - If not figure out which one to load
 
-
-
-
-
         //The class name to use when loading the class
         List<String> bkioClasses = ((SettingsItemList)GlobalSettings.use().getSettings().getSetting(BOOKMARK_IO_CLASS_KEY)).getItems();
         //The list of config strings found in the settings. For example FileIo class requires a file path string to load the bookmarks file.
