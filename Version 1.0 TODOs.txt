@@ -6,13 +6,14 @@ TODO Add Logging to the whole project.
 TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same. Allow multi case tagging but searching without case?
 TODO Index the words of the text of a bookmark (no string rotations).
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
-TODO Determine bookmarks file size maximum policy (message the user, create multiple files ect...)
+TODO Determine bookmarks file size maximum policy (message the user, create multiple files ect...), Single files just get to large. Multiple linked files is probably a good idea. After a file gets to large save it and create another to use while saving.
 TODO Implement/verify message passing funcationality.
 TODO Refactor/simplify bootstrap
 TODO Add a lock so only one bookmarkinator program can be run in a single workspace at a time.
 TODO Create a backup file for the settings as well.
 TODO Fix the search functionality.
 TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
+TODO Add a mechanism for a bookmark to indicate which kind of data it can handle (for drag and drop in UI)
 
 Settings:
 
@@ -71,6 +72,7 @@ TODO Perform UI tests
 TODO Perform cross platform tests
 TODO Add right click functionality to all UI elements that need it.
 TODO Add tool tip comments for all UI elements that need it.
+TODO ADD drag and drop support - expected: drag file, text, web address, etc into the main program, and a popup should show with the bookmarks that indicate they can handle the dropped data. Simply select the correct one and it will pop up a new bookmark dialog for that bookmark.
 
 Bugs:
 
