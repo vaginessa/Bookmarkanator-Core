@@ -21,6 +21,12 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
+    public Set<String> getSearchWords()
+    {
+        return null;
+    }
+
+    @Override
     public String getTypeName()
     {
         return "Sequence";
@@ -52,11 +58,11 @@ public class SequenceBookmark extends AbstractBookmark
             else
             {
                 abs.runAction();
-                sb.append(abs.getText());
+                sb.append(abs.getData());
             }
         }
 
-        this.setText(sb.toString());
+        this.setData(sb.toString());
 
         if (error)
         {

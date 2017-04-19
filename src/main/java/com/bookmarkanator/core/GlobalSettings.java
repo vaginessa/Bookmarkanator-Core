@@ -2,9 +2,15 @@ package com.bookmarkanator.core;
 
 import java.io.*;
 import com.bookmarkanator.util.*;
+import org.apache.logging.log4j.*;
 
+/**
+ * This class is used as a global settings object. It uses a single Settings object and adds features such as loading and saving
+ * the settings files.
+ */
 public class GlobalSettings
 {
+    private static final Logger logger = LogManager.getLogger(GlobalSettings.class.getCanonicalName());
     private static GlobalSettings globalSettings;
     public static String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
     public static String DEFAULT_SETTINGS_DIRECTORY_NAME = "Settings";
@@ -74,13 +80,20 @@ public class GlobalSettings
         try
         {
             file = Util.getOrCreateFile(file);
-            fin = new FileInputStream(file);
-            settings = Settings.parseSettings(fin, this.getClass().getClassLoader());
-            fin.close();
+            if (file.length()!=0)
+            {
+                fin = new FileInputStream(file);
+                settings = Settings.parseSettings(fin, this.getClass().getClassLoader());
+                fin.close();
+            }
         }
         catch (Exception e)
         {
-            throw e;
+            logger.error(e);
+            //TODO Mark current setting file bad.
+            //TODO Create new settings file
+            //TODO save current settings to it.
+            //TODO Continue on with program
         }
         finally
         {

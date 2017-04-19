@@ -27,7 +27,7 @@ public class ModuleLoader
         return this.addJarsToClassloader();
     }
 
-    public ClassLoader addModulesToClasspath(List<String> jarLocations)
+    public ClassLoader addModulesToClasspath(Collection<String> jarLocations)
         throws Exception
     {
         if (jarLocations != null && !jarLocations.isEmpty())

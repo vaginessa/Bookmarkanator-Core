@@ -4,6 +4,9 @@ import java.text.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 
+/**
+ * This class is used to filter a list of bookmarks.
+ */
 public class Filter
 {
     private static Filter filter;
@@ -182,7 +185,7 @@ public class Filter
         {
             for (String s : exclusions)
             {
-                if (bk.getText().contains(s))
+                if (bk.getData().contains(s))
                 {
                     continue continueA;
                 }

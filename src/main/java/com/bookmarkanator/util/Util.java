@@ -9,7 +9,7 @@ public class Util
 {
 
     /**
-     * This method extracts all items that are considered individual words
+     * This method extracts all items that are considered individual words, divided by spaces.
      *
      * @param theString The string to use to extract the words.
      * @return A set of words contained in the string.
@@ -18,8 +18,9 @@ public class Util
     {
         Set<String> words = new HashSet<>();
 
+        //simple white space split
         for (String s : theString.split(" "))
-        {//simple white space split
+        {
             s = s.trim();
             if (!s.isEmpty())
             {
@@ -32,6 +33,13 @@ public class Util
 
     /**
      * This method splits a word up into all substrings that it contains.
+     *
+     * For example the text "ABCD" split into all substrings would become the list:
+     *
+     * ABCD
+     * ABC
+     * AB
+     * A
      *
      * @param theString The string to extract substrings from.
      * @return A set of the sub strings contained in the supplied string.
@@ -54,9 +62,18 @@ public class Util
 
     /**
      * This method gets a list of all strings that would be present if the characters were rotated and any that would fall of the end were
-     * placed at the beginning.
+     * placed at the beginning. For example:
      *
-     * @param string The string to get the substrings from.
+     * Text "ABCD"
+     *
+     * Fully rotated strings would look like:
+     *
+     * ABCD
+     * DABC
+     * CDAB
+     * BCDA
+     *
+     * @param string The string to get the string rotations.
      * @return A set of rotated strings.
      */
     public static Set<String> getAllStringRotations(String string)
@@ -71,11 +88,28 @@ public class Util
         return strings;
     }
 
+    /**
+     * Rotates a string so many characters, placing any characters that fall of the end at the beginning.
+     *
+     * For example:
+     *
+     * Text "ABCD"
+     *
+     * Rotated 2 spaces would look like
+     *
+     * CDAB
+     *
+     * @param theString
+     * @param characters
+     * @return
+     */
     public static String rotateString(String theString, int characters)
     {
         int a = characters;
+
+        //reduce the number to less than the string length.
         while (a > theString.length())
-        {//reduce the number to less than the string length.
+        {
             a = a - theString.length();
         }
 
@@ -91,16 +125,6 @@ public class Util
         File rootDir = new File(directoryBase);
         Collection<File> files = FileUtils.listFiles(rootDir, SUFFIX, true);
         return files;
-    }
-
-    public static <E> E getItem(List<E> items, int index)
-    {
-        if (items.size() <= index)
-        {
-            return null;
-        }
-        else
-            return items.get(index);
     }
 
     public static File getOrCreateFile(File file)

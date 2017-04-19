@@ -1,14 +1,20 @@
 package com.bookmarkanator.util;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 /**
- * A series of lists and functions intended to link a series of objects (The Id's) with a series of words.
+ * This method associates words with id's, enabling the ability to look up an item by word, or Id.
+ *
+ * For example you could have a set of UUID's that (T) that are associated with strings that represent tags.
+ * You could get a list of all strings associated with a particular Id, or a list of Id's associated with a particular
+ * string.
  *
  * @param <T> The object to associate with words.
  */
 public class TextAssociator<T>
 {
+    private static final Logger logger = LogManager.getLogger(TextAssociator.class.getCanonicalName());
     private Set<String> words;//All words present
     private Map<T, Set<String>> itemToText;//<Id of item, set of text words associated with it>
     private Map<String, Set<T>> textToItem;//<Word, set of id's that contain this word>
@@ -28,6 +34,7 @@ public class TextAssociator<T>
      */
     public void add(T itemId, String word)
     {
+        logger.trace("Associating item \"" + itemId.toString() + "\" with word \"" + word + "\"");
         words.add(word);
         Set<String> items = itemToText.get(itemId);
         if (items == null)
@@ -57,6 +64,7 @@ public class TextAssociator<T>
      */
     public void remove(T itemId, String word)
     {
+        logger.trace("Un-associating item \"" + itemId.toString() + "\" from \""+word + "\"");
         Set<String> items = itemToText.get(itemId);
 
         if (items != null)
@@ -71,8 +79,9 @@ public class TextAssociator<T>
             ids.remove(itemId);
         }
 
+        // remove the word from the master list when all other items that have it are gone.
         if (ids.isEmpty())
-        {//remove the word from the master list when all other items that have it are gone.
+        {
             words.remove(word);
         }
     }
@@ -84,12 +93,14 @@ public class TextAssociator<T>
      */
     public void remove(String word)
     {
+        logger.trace("Removing \""+word+"\" from all associations.");
         words.remove(word);
 
         Set<T> items = textToItem.get(word);
 
+        // remove the word from individual lists
         for (T i : items)
-        {//remove the word from individual lists
+        {
             Set<String> theWords = itemToText.get(i);
 
             theWords.remove(word);
@@ -110,6 +121,8 @@ public class TextAssociator<T>
      */
     public void remove(T itemId)
     {
+        logger.trace("Removing this item \"" + itemId.toString() + "\" and all associated words it had.");
+
         if (itemId==null)
         {
             return;
@@ -124,12 +137,15 @@ public class TextAssociator<T>
 
         Set<String> wordsToRemove = new HashSet<>();
 
+        // remove this id from the list of words.
         for (String s : itemWords)
-        {//remove this id from the list of words.
+        {
             Set<T> items = textToItem.get(s);
             items.remove(itemId);
+
+            // remove word if no more items.
             if (items.isEmpty())
-            {//remove word if no more items.
+            {
                 textToItem.remove(s);
                 wordsToRemove.add(s);
             }

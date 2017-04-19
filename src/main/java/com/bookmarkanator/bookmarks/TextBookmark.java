@@ -5,16 +5,11 @@ import java.util.*;
 public class TextBookmark extends AbstractBookmark
 {
 
-//    /**
-//     * This constructor is used to allow custom behaviour or pre-processing to occur relative to the bookmark context object, or for instance
-//     * to throw an error if more than one bookmark is created, or other such custom behaviours.
-//     *
-//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-//     */
-//    public TextBookmark(ContextInterface contextInterface)
-//    {
-//        super();
-//    }
+    @Override
+    public Set<String> getSearchWords()
+    {
+        return null;
+    }
 
     @Override
     public String getTypeName()
@@ -27,7 +22,7 @@ public class TextBookmark extends AbstractBookmark
         throws Exception
     {
         //do nothing
-//        System.out.println(this.getText());
+//        System.out.println(this.getData());
     }
 
     @Override

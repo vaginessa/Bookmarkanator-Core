@@ -16,7 +16,8 @@ public class FileIO implements BKIOInterface
     public void init(String config)
         throws Exception
     {
-        //TODO Add basic bookmark structure if it doesnt' exist.
+        //TODO Add basic bookmark structure if it doesnt' exist. Or if file is empty or corrupt mark it as bad, create a new one, and move on.
+        //TODO Figure out what to do about the bookmarks.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
         this.context = this.getContext();
         bookmarksFileLocation = config;
         File file = new File(config);

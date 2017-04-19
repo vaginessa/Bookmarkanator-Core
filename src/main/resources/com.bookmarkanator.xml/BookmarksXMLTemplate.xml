@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <bookmarks>
-    <block class="com.bookmarkanator.bookmarks.TextBookmark">
+    <block class="com.bookmarkanator.bookmarks.HTMLTextBookmark">
         <bookmark>
             <name>Test Text Bookmark</name>
             <id>3112B182-5DB9-43FD-97BE-6A2D4071B7FD</id>

@@ -3,9 +3,8 @@ package com.bookmarkanator.util;
 import java.util.*;
 
 /**
- * This is a class used to encapsulate all the options that are possible from the search panel.
- * <p/>
- * Adding it to a class so it will be easier to save searches.
+ * This is a class used to encapsulate all the options that are possible. Encapsulating them here allows the saving of search
+ * recipes, and a simplifies the search interface.
  */
 public class SearchOptions
 {

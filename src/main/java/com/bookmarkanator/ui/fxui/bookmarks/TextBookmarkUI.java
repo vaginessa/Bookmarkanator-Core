@@ -50,7 +50,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
             stage.setScene(dialog);
 
             this.getBookmark().runAction();
-            textArea.setHtmlText(this.getBookmark().getText());
+            textArea.setHtmlText(this.getBookmark().getData());
             name.setText(this.getBookmark().getName());
 
             stage.setOnCloseRequest(new EventHandler<WindowEvent>()
@@ -58,7 +58,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
                 public void handle(WindowEvent we)
                 {
                     try {
-                        getBookmark().setText(textArea.getHtmlText());
+                        getBookmark().setData(textArea.getHtmlText());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -172,13 +172,13 @@ public class TextBookmarkUI extends AbstractUIBookmark
             {
                 abstractBookmark = new TextBookmark();
                 abstractBookmark.setName(name.getText());
-                abstractBookmark.setText(textArea.getHtmlText());
+                abstractBookmark.setData(textArea.getHtmlText());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
             }
             else
             {
                 bookmark.setName(name.getText());
-                bookmark.setText(textArea.getHtmlText());
+                bookmark.setData(textArea.getHtmlText());
                 bookmark.setTags(tagPanel.getSelectedTags());
                 abstractBookmark = bookmark;
             }
@@ -244,7 +244,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         textArea.setPrefHeight(400);
         if (bookmark!=null)
         {
-            textArea.setHtmlText(bookmark.getText());
+            textArea.setHtmlText(bookmark.getData());
         }
         return textArea;
     }

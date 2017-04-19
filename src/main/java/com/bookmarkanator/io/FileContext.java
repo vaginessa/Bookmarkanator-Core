@@ -14,7 +14,8 @@ public class FileContext implements ContextInterface
     private Map<UUID, AbstractBookmark> bookmarks;
     private Search<UUID> bookmarkNames;
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
-    private Search<UUID> bookmarkText;//The text the bookmark contains.
+//    private Search<UUID> bookmarkText;//The text the bookmark contains.
+    private Map<String,Set<UUID> > fullTextSearchMap;//The map used to search only words of the bookmarks.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;
@@ -26,20 +27,15 @@ public class FileContext implements ContextInterface
         bookmarks = new HashMap<>();
         bookmarkNames = new Search<>();
         bookmarkTypeNames = new Search<>();
-        bookmarkText = new Search<>();
+//        bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
+        fullTextSearchMap = new HashMap<>();
         numSearchResults = 20;
     }
 
     // ============================================================
     // Bookmark Methods
     // ============================================================
-
-//    @Override
-//    public MessageBoard getMessageBoard()
-//    {
-//        return MessageBoard.use();
-//    }
 
     @Override
     public void setBKIOInterface(BKIOInterface bkioInterface)
@@ -103,8 +99,9 @@ public class FileContext implements ContextInterface
             {
                 bks.add(ab);
             }
-            else {
-                System.out.println("Warning bookmark "+uuid+" cannot be found.");
+            else
+            {
+                System.out.println("Warning bookmark " + uuid + " cannot be found.");
             }
         }
 
@@ -155,9 +152,37 @@ public class FileContext implements ContextInterface
 
         bookmarkNames.add(id, bookmark.getName());
         bookmarkTypeNames.add(id, bookmark.getTypeName());
-        //TODO adding bookmark text is too intense and freezes the program - probably because of rotating the strings to get sub strings. :(
-//        bookmarkText.add(id, bookmark.getText());
         bookmarkTags.add(id, bookmark.getTags());
+
+        // Adding the text of bookmarks.
+        String[] strings = bookmark.getData().split(" ");
+
+
+
+        for (String s : strings)
+        {
+            s = s.toLowerCase();
+            s = s.trim();
+
+            if (s.contains("awscli"))
+            {
+                System.out.println();
+            }
+
+            //TODO How to handle the raw text being html?
+
+            if (!s.isEmpty())
+            {
+                Set<UUID> uuids = fullTextSearchMap.get(s);
+                if (uuids == null)
+                {
+                    uuids = new HashSet<>();
+                    fullTextSearchMap.put(s, uuids);
+                }
+
+                uuids.add(id);
+            }
+        }
 
         bookmarks.put(bookmark.getId(), bookmark);
     }
@@ -180,7 +205,7 @@ public class FileContext implements ContextInterface
             bookmarks.remove(id);
             bookmarkNames.remove(id);
             bookmarkTypeNames.remove(id);
-            bookmarkText.remove(id);
+//            bookmarkText.remove(id);
             bookmarkTags.remove(id);
 
             setDirty();
@@ -197,7 +222,7 @@ public class FileContext implements ContextInterface
         List<AbstractBookmark> bks = getBookmarks(bookmarks);
         List<AbstractBookmark> res = new ArrayList<>();
 
-        for (AbstractBookmark bookmark: bks)
+        for (AbstractBookmark bookmark : bks)
         {
             bks.add(delete(bookmark.getId()));
         }
@@ -214,16 +239,16 @@ public class FileContext implements ContextInterface
     public void updateBookmark(AbstractBookmark bookmark)
         throws Exception
     {
-        if (bookmark==null || bookmark.getId() == null)
+        if (bookmark == null || bookmark.getId() == null)
         {
-//            throw new Exception("Bookmark must be non null and ID must be set");
+            //            throw new Exception("Bookmark must be non null and ID must be set");
             System.out.println("Supplied bookmark, or it's Id field is");
             return;
         }
 
         if (getBookmark(bookmark.getId()) == null)
         {
-//            throw new Exception("Item \"" + bookmark.getId().toString() + "\" not found.");
+            //            throw new Exception("Item \"" + bookmark.getId().toString() + "\" not found.");
             addBookmark(bookmark);
         }
         else
@@ -288,11 +313,11 @@ public class FileContext implements ContextInterface
             uuids.addAll(bookmarkTypeNames.searchFullTextOnly(text));
         }
 
-        if (uuids.size() < getNumSearchResults())
-        {
-            //If text matches the full text returned by a bookmark.
-            uuids.addAll(bookmarkText.searchFullTextOnly(text));
-        }
+//        if (uuids.size() < getNumSearchResults())
+//        {
+//            //If text matches the full text returned by a bookmark.
+//            uuids.addAll(bookmarkText.searchFullTextOnly(text));
+//        }
 
         if (uuids.size() < getNumSearchResults())
         {
@@ -330,11 +355,11 @@ public class FileContext implements ContextInterface
             uuids.addAll(bookmarkTags.searchSubstringsOfRotatedWordsOnly(text));
         }
 
-        if (uuids.size() < getNumSearchResults())
-        {
-            //If text matches a substring of one of the bookmark text words rotated.
-            uuids.addAll(bookmarkText.searchSubstringsOfRotatedWordsOnly(text));
-        }
+//        if (uuids.size() < getNumSearchResults())
+//        {
+//            //If text matches a substring of one of the bookmark text words rotated.
+//            uuids.addAll(bookmarkText.searchSubstringsOfRotatedWordsOnly(text));
+//        }
 
         if (uuids.size() < getNumSearchResults())
         {
@@ -360,11 +385,17 @@ public class FileContext implements ContextInterface
             uuids.addAll(bookmarkTypeNames.searchAll(text, getNumSearchResults()));
         }
 
-        if (uuids.size() < getNumSearchResults())
+//        if (uuids.size() < getNumSearchResults())
+//        {
+//            //General search because nothing has enough results yet.
+//            uuids.addAll(bookmarkText.searchAll(text, getNumSearchResults()));
+//        }
+        if (uuids.size()<getNumSearchResults())
         {
-            //General search because nothing has enough results yet.
-            uuids.addAll(bookmarkText.searchAll(text, getNumSearchResults()));
+            // Search bookmarks text because not enough is found yet.
+            res.addAll(searchBookmarkText(text));
         }
+
 
         res.addAll(getBookmarks(uuids));
 
@@ -483,7 +514,17 @@ public class FileContext implements ContextInterface
     @Override
     public List<AbstractBookmark> searchBookmarkText(String text)
     {
-        return getBookmarks(bookmarkText.searchAll(text, getNumSearchResults()));
+        text = text.toLowerCase();
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        Set<UUID>  ids = fullTextSearchMap.get(text);
+
+        if (ids!=null)
+        {
+            res.addAll(getBookmarks(ids));
+        }
+
+        return res;
     }
 
     @Override
@@ -529,16 +570,16 @@ public class FileContext implements ContextInterface
     {
         StringBuilder sb = new StringBuilder();
         int c = 0;
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
-            if (limit >-1 && c>=limit)
+            if (limit > -1 && c >= limit)
             {
                 break;
             }
             sb.append("Bookmark: ");
             sb.append(bookmark.getName());
 
-            c = c+1;
+            c = c + 1;
         }
         return sb.toString();
     }
@@ -548,9 +589,9 @@ public class FileContext implements ContextInterface
         StringBuilder sb = new StringBuilder();
         int c = 0;
 
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
-            if (limit >-1 && c>=limit)
+            if (limit > -1 && c >= limit)
             {
                 break;
             }
@@ -559,7 +600,7 @@ public class FileContext implements ContextInterface
             sb.append("\n");
             sb.append(tagsToString(bookmark.getTags(), 10));
 
-            c = c+1;
+            c = c + 1;
         }
         return sb.toString();
     }
@@ -567,18 +608,18 @@ public class FileContext implements ContextInterface
     private String tagsToString(Set<String> tags, int colWidth)
     {
         StringBuilder sb = new StringBuilder();
-        int c=1;
+        int c = 1;
         sb.append("Tags: \t\t");
 
-        for (String tag: tags)
+        for (String tag : tags)
         {
             sb.append(tag);
             sb.append("\t");
 
-            if (colWidth>0 && c>=colWidth)
+            if (colWidth > 0 && c >= colWidth)
             {
                 sb.append("\n\t\t\t");
-                c=0;
+                c = 0;
             }
             c = c + 1;
         }
@@ -597,7 +638,7 @@ public class FileContext implements ContextInterface
         theTag.add(oldTag);
         Set<UUID> tags = searchAllTagsExact(theTag);
 
-        for (UUID uuid: tags)
+        for (UUID uuid : tags)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             bookmark.getTags().remove(oldTag);
@@ -615,7 +656,7 @@ public class FileContext implements ContextInterface
 
         Set<UUID> tags = searchAllTagsExact(tagsToMerge);
 
-        for (UUID uuid: tags)
+        for (UUID uuid : tags)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             bookmark.getTags().removeAll(tagsToMerge);
@@ -632,7 +673,7 @@ public class FileContext implements ContextInterface
 
         Set<UUID> tags = searchAllTagsExact(tagsToDelete);
 
-        for (UUID uuid: tags)
+        for (UUID uuid : tags)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             bookmark.getTags().removeAll(tagsToDelete);
@@ -652,7 +693,7 @@ public class FileContext implements ContextInterface
     {
         Set<String> res = new HashSet<>();
 
-        for (AbstractBookmark abstractBookmark: bookmarks)
+        for (AbstractBookmark abstractBookmark : bookmarks)
         {
             res.addAll(abstractBookmark.getTags());
         }
@@ -665,7 +706,7 @@ public class FileContext implements ContextInterface
     {
         Set<String> res = new HashSet<>();
 
-        for (AbstractBookmark abstractBookmark: bookmarks)
+        for (AbstractBookmark abstractBookmark : bookmarks)
         {
             res.add(abstractBookmark.getTypeName());
         }
@@ -677,7 +718,7 @@ public class FileContext implements ContextInterface
     {
         Set<String> res = new HashSet<>();
 
-        for (AbstractBookmark abstractBookmark: bookmarks)
+        for (AbstractBookmark abstractBookmark : bookmarks)
         {
             res.add(abstractBookmark.getClass().getCanonicalName());
         }

@@ -83,7 +83,7 @@ public class BookmarksXMLWriter
         bookmarkNode.appendChild(bookmarkId);
 
         Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
-        bookmarkText.setTextContent(bookmark.getText());
+        bookmarkText.setTextContent(bookmark.getData());
         bookmarkNode.appendChild(bookmarkText);
 
         Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);

@@ -16,6 +16,12 @@ public class TerminalBookmark extends AbstractBookmark
 //    }
 
     @Override
+    public Set<String> getSearchWords()
+    {
+        return null;
+    }
+
+    @Override
     public String getTypeName()
     {
         return "Terminal";

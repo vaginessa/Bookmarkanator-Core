@@ -29,38 +29,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         creationDate = new Date();
         lastAccessedDate = new Date();
     }
-//
-//    /**
-//     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
-//     * custom behaviour upon being initialized.
-//     *
-//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-//     */
-//    public AbstractBookmark(ContextInterface contextInterface)
-//    {//Do nothing for the abstract bookmark.
-//        this();
-//        this.contextInterface = contextInterface;
-//    }
-
-    // ============================================================
-    // Methods
-    // ============================================================
-//
-//    /**
-//     * @return The context interface that this bookmark belongs to (The context where this bookmark was added).
-//     */
-//    public ContextInterface getContextInterface()
-//    {
-//        return contextInterface;
-//    }
-//
-//    /**
-//     * @param contextInterface The context interface that this bookmark belongs to (The context where this bookmark was added).
-//     */
-//    public void setContextInterface(ContextInterface contextInterface)
-//    {
-//        this.contextInterface = contextInterface;
-//    }
 
     public String getName()
     {
@@ -82,14 +50,16 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.id = id;
     }
 
-    public String getText()
+    public String getData()
     {
         return text;
     }
 
-    public void setText(String text) throws Exception {
-        this.text = text;
+    public void setData(String data) throws Exception {
+        this.text = data;
     }
+
+    public abstract Set<String> getSearchWords();
 
     public Set<String> getTags()
     {
@@ -189,7 +159,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract AbstractBookmark getNew();
 
     /**
-     * Write this bookmark to the com.bookmarkanator.xml string that will represent it.
+     * Write this bookmark to the xml string that will represent it.
      *
      * @return The settings this bookmark wants to preserve written to a String in com.bookmarkanator.xml format.
      * <p/>

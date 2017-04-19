@@ -1,13 +1,11 @@
 package com.bookmarkanator.bookmarks;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.awt.*;
 import java.net.*;
 import java.util.*;
 import java.util.List;
+import org.apache.logging.log4j.*;
 
 /**
  * The text of this bookmark would represent a web address.
@@ -28,27 +26,27 @@ public class WebBookmark extends AbstractBookmark {
         String os = System.getProperty("os.name").toLowerCase();
 
         if (os.contains("mac")) {
-            openMacBrowserWindow(getText());
+            openMacBrowserWindow(getData());
         } else if (os.contains("win")) {
-            openWindowsBrowserWindow(getText());
+            openWindowsBrowserWindow(getData());
         } else {//Not windows or mac assumed to be linux.
-            openLinuxBrowserWindow(getText());
+            openLinuxBrowserWindow(getData());
         }
 
 
 //
 //        if (Runtime.getRuntime().exec(new String[] { "which", "xdg-open" }).getInputStream().read() != -1) {
-//            Runtime.getRuntime().exec(new String[] { "xdg-open",new URI(this.getText()).toURL().toString()});
+//            Runtime.getRuntime().exec(new String[] { "xdg-open",new URI(this.getData()).toURL().toString()});
 //        }
     }
 
     @Override
-    public String getText() {
+    public String getData() {
         return url.toString();
     }
 
     @Override
-    public void setText(String text) throws Exception {
+    public void setData(String data) throws Exception {
 
         //Use this library to validate:
 
@@ -61,7 +59,13 @@ public class WebBookmark extends AbstractBookmark {
 
 //        http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/UrlValidator.html
 
-        url = new URL(text);
+        url = new URL(data);
+    }
+
+    @Override
+    public Set<String> getSearchWords()
+    {
+        return null;
     }
 
     @Override

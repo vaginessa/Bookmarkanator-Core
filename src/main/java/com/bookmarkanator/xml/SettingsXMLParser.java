@@ -17,7 +17,7 @@ public class SettingsXMLParser
 
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String KEY_ATTRIBUTE = "key";
-    public static final String CLASS_ATTRIBUTE = "class";
+//    public static final String CLASS_ATTRIBUTE = "class";
 
     //Variables
     private InputStream inputStream;
@@ -96,65 +96,30 @@ public class SettingsXMLParser
     {
         Node key = node.getAttributes().getNamedItem(SettingsXMLParser.KEY_ATTRIBUTE);
         Objects.requireNonNull(key);
+
         String keyText = key.getTextContent();
         Objects.requireNonNull(keyText);
 
-        String className;
-
-        Node theClass = node.getAttributes().getNamedItem(SettingsXMLParser.CLASS_ATTRIBUTE);
-        if (theClass == null)
-        {
-            className = SettingItem.class.getCanonicalName();
-        }
-        else
-        {
-            className = theClass.getTextContent();
-            if (className == null)
-            {
-                className = SettingItem.class.getCanonicalName();
-            }
-        }
-
-        Class clazz = loadSettingClass(className);
-        Objects.requireNonNull(clazz);
-
-        SettingItem settingItem = instantiateClass(clazz, keyText);
-
-//        NodeList nl = node.getChildNodes();
-//
-//        for (int c = 0; c < nl.getLength(); c++)
-//        {
-//            Node n = nl.item(c);
-//
-//            if (n.getNodeName().startsWith("#"))
-//            {
-//                continue;
-//            }
-//
-//            if (n.getNodeName().equals(SettingsXMLParser.VALUE_TAG))
-//            {
-//                settingItem.setValue(n.getTextContent());
-//            }
-//        }
+        SettingItem settingItem = new SettingItem(keyText);
         settingItem.setValue(getContent(node));
 
         return settingItem;
     }
 
-    private Class loadSettingClass(String className)
-        throws Exception
-    {
-        Class clazz = this.classLoader.loadClass(className);
-        Class sub = clazz.asSubclass(SettingItem.class);
-        System.out.println("Loaded Setting item class: \"" + className + "\".");
-        return sub;
-    }
+//    private Class loadSettingClass(String className)
+//        throws Exception
+//    {
+//        Class clazz = this.classLoader.loadClass(className);
+//        Class sub = clazz.asSubclass(SettingItem.class);
+//        System.out.println("Loaded Setting item class: \"" + className + "\".");
+//        return sub;
+//    }
 
-    private SettingItem instantiateClass(Class clazz, String key)
-        throws Exception
-    {
-        return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
-    }
+//    private SettingItem instantiateClass(Class clazz, String key)
+//        throws Exception
+//    {
+//        return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
+//    }
 
     /**
      * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.

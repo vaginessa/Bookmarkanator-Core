@@ -71,13 +71,19 @@ public class BookmarksXMLParser
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                        String replacementClassName = GlobalSettings.use().getSettings().getSetting(className).getValue();
+                         SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CORE_CLASSES, className);
 
-                        if (replacementClassName != null && !className.equals(replacementClassName))
+                        if (settingItem != null)
                         {//Override class name specified in bookmark file with one specified in the settings file.
-                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
-                                "\" from the settings file.");
-                            className = replacementClassName;
+                            String replacementClassName = settingItem.getValue();
+
+                            if (replacementClassName!=null && !replacementClassName.isEmpty())
+                            {
+                                System.out
+                                    .println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
+                                        "\" from the settings file.");
+                                className = replacementClassName;
+                            }
                         }
 
 
@@ -142,7 +148,7 @@ public class BookmarksXMLParser
                     abstractBookmark.setId(UUID.fromString(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
-                    abstractBookmark.setText(n.getTextContent());
+                    abstractBookmark.setData(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
                     abstractBookmark.setTags(getTags(n));

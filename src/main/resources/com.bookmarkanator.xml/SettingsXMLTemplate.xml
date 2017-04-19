@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
     <settings type="mainUI">
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.TextBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.HTMLTextBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"

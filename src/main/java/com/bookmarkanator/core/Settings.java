@@ -4,6 +4,10 @@ import java.io.*;
 import java.util.*;
 import com.bookmarkanator.xml.*;
 
+/**
+ * This class is used to as the main source of settings for the bookmarkanator program. All versions of this program
+ * will at a minimum need some way to access settings.
+ */
 public class Settings
 {
     private Map<String, SettingItem> map;
@@ -47,9 +51,23 @@ public class Settings
         return typesMap.get(type);
     }
 
-    public SettingItem getSetting(String key)
+    public SettingItem getSetting(String type, String key)
     {
-        return map.get(key);
+        Set<SettingItem> settingItems = typesMap.get(type);
+
+        if (settingItems==null)
+        {
+            return null;
+        }
+
+        for (SettingItem settingItem: settingItems)
+        {
+            if (settingItem.getKey().equals(key))
+            {
+                return settingItem;
+            }
+        }
+        return null;
     }
 
     public Map<String, SettingItem> getSettingsMap()
@@ -115,6 +133,34 @@ public class Settings
     // ============================================================
     // Static Methods
     // ============================================================
+
+    public static Collection<String> extractKeys(Collection<SettingItem> settingItems)
+    {
+        Objects.requireNonNull(settingItems);
+
+        Collection<String> res = new HashSet<>();
+
+        for (SettingItem settingItem: settingItems)
+        {
+            res.add(settingItem.getKey());
+        }
+
+        return res;
+    }
+
+    public static Collection<String> extractValues(Collection<SettingItem> settingItems)
+    {
+        Objects.requireNonNull(settingItems);
+
+        Collection<String> res = new HashSet<>();
+
+        for (SettingItem settingItem: settingItems)
+        {
+            res.add(settingItem.getValue());
+        }
+
+        return res;
+    }
 
     public static void validateXML(InputStream inputStream, String xsdFile)
         throws Exception

@@ -14,6 +14,9 @@ TODO Create a backup file for the settings as well.
 TODO Fix the search functionality.
 TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
 TODO Add a mechanism for a bookmark to indicate which kind of data it can handle (for drag and drop in UI)
+TODO Add statistics to the bookmarks, such as use count, and how many bookmarks per type.
+
+*** TODO Modify the bookmarks to have a method that returns the words to search in the text. This will allow the text bookmarks to have formatting stored in them, but to also have searchable text. This would necessitate modification of the search systems to use this new method. Also there would have to be an HTML bookmark that could strip the formatting out when necessary.
 
 Settings:
 
@@ -38,8 +41,9 @@ TODO Perform cross platform tests
 
 UI:
 _____________________________________
-
+TODO When closing the main window, if other windows are open, and then updated their text is not updated. throw a warning when trying to update a window after closing the main window.
 TODO Implement functionality in the file menu.
+TODO Add workspace switching to the file menu.
 TODO Add a way to filter bookmarks by date range in the search UI interface.
 TODO Modify the new bookmark window to sort bookmark types, and be able to select a new bookmark with fewer clicks.
 TODO Create quick panel.
@@ -74,6 +78,11 @@ TODO Add right click functionality to all UI elements that need it.
 TODO Add tool tip comments for all UI elements that need it.
 TODO ADD drag and drop support - expected: drag file, text, web address, etc into the main program, and a popup should show with the bookmarks that indicate they can handle the dropped data. Simply select the correct one and it will pop up a new bookmark dialog for that bookmark.
 
+TODO Add bookmark counts in the various panels (a count indicator on each type button, a total bookmarks count above the bookmarks list panel, and counts for the tags windows)
+TODO Setup help screens that pop up when using something for the first time, or add a question mark on things to people can get information about it.
+
 Bugs:
 
 TODO Sometimes when a bookmark is added or tags are changed the available tags do not get updated.
+TODO Full text search is not working properly because the bookmark text contains html. What to do with the html?
+TODO When doing a search only the tags in the left most selected tag panel highlight, any additional panels dont have highlight.
