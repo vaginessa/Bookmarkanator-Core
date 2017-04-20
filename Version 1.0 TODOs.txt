@@ -18,11 +18,14 @@ TODO Add statistics to the bookmarks, such as use count, and how many bookmarks 
 
 *** TODO Modify the bookmarks to have a method that returns the words to search in the text. This will allow the text bookmarks to have formatting stored in them, but to also have searchable text. This would necessitate modification of the search systems to use this new method. Also there would have to be an HTML bookmark that could strip the formatting out when necessary.
 
+TODO Have a way to list workspaces and transfer bookmarks between them.
+
 Settings:
 
 TODO Fix/improve importing of settings from other settings objects.
 TODO Improve setting of overriding classes, and other default settings.
 TODO Enable changing the workspace the program runs from. This simply changes the directory that contains a settings file, bookmarks.xml, and any addon code. This will enable the same program to be used with different kinds of bookmarks, and add a clear separation between different types.
+TODO Add a way to convert between versions of bookmarks.xml and settings.xml
 
 Bookmarks:
 

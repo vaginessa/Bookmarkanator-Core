@@ -5,8 +5,8 @@ import com.bookmarkanator.util.*;
 import org.apache.logging.log4j.*;
 
 /**
- * This class is used as a global settings object. It uses a single Settings object and adds features such as loading and saving
- * the settings files.
+ * This class is used as a global settings object. It adds features such as loading and saving the settings files. The default for this class is
+ * to store settings in the users home directory. So only the folder name, and settings file name are necessary.
  */
 public class GlobalSettings
 {
@@ -17,7 +17,6 @@ public class GlobalSettings
 
     private Settings settings;
     private File file;
-    //The default for this class is to store settings in the users home directory. So only the folder name, and settings file name are necessary.
 
     public GlobalSettings()
     {
@@ -34,9 +33,48 @@ public class GlobalSettings
     }
 
     public void setFile(File file)
-        throws IOException
+        throws Exception
     {
-        this.file = file;
+        String originalFileName = (this.file != null ? this.file.getCanonicalPath() : "<none set>");
+        String newFileName = (file != null ? file.getCanonicalPath() : "<unknown>");
+
+        if (file!=null)
+        {
+            if (file.isFile())
+            {
+                if (file.canRead())
+                {
+                    if (file.canWrite())
+                    {
+                        this.file = file;
+                    }
+                    else
+                    {
+                        logger.warn("Permission to write file \"" +newFileName+"\" is denied. Defaulting to previously set file \""+originalFileName+"\"");
+                    }
+                }
+                else
+                {
+                    logger.warn("Permission to read file \"" +newFileName+"\" is denied. Defaulting to previously set file \""+originalFileName+"\"");
+                }
+            }
+            else
+            {
+                logger.warn("File \"" +newFileName+"\" is not a file. Defaulting to previously set file \""+originalFileName+"\"");
+            }
+        }
+        else
+        {
+            logger.warn("File \"" +newFileName+"\" null. Defaulting to previously set file \""+originalFileName+"\"");
+        }
+    }
+
+    public void replaceAndLoadSettings(File file)
+        throws Exception
+    {
+        setFile(file);
+        this.clearSettings();
+        this.readFromDisk();
     }
 
     public Settings getSettings()
@@ -102,6 +140,11 @@ public class GlobalSettings
                 fin.close();
             }
         }
+    }
+
+    public void clearSettings()
+    {
+        this.settings = new Settings();
     }
 
     public static GlobalSettings use()
