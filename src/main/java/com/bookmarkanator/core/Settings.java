@@ -3,6 +3,7 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.util.*;
 import com.bookmarkanator.xml.*;
+import org.apache.logging.log4j.*;
 
 /**
  * This class is used to as the main source of settings for the bookmarkanator program. All versions of this program
@@ -10,6 +11,7 @@ import com.bookmarkanator.xml.*;
  */
 public class Settings
 {
+    private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
     private Map<String, SettingItem> map;
     private Map<String, Set<SettingItem>> typesMap;
 
@@ -81,8 +83,8 @@ public class Settings
     }
 
     /**
-     * This method imports settings from another settings object. If a value exists in the imported settings object it
-     * replaces the existing object.
+     * This method imports settings from another settings object.
+     *
      * For example:
      * This Settings Object
      * A = 1
@@ -90,13 +92,13 @@ public class Settings
      * C = 3
      * E = 4
      * <p/>
-     * Diff settings Object
+     * Imported settings Object
      * A = 7
      * B = 2
      * D = 5
      * F = 21
      * <p/>
-     * After calling this importSettings method the this settings object would look like:
+     * After calling this importSettings method the settings object would look like:
      * <p/>
      * This Settings Object
      * A = 1
@@ -106,13 +108,13 @@ public class Settings
      * E = 4
      * F = 21
      * <p/>
+     *
      * If a setting is present in this settings object it leaves it alone, if it is missing it adds it.
      *
      * @param settings The settings to diff into this settings object.
      */
     public boolean importSettings(Settings settings)
     {
-        //TODO Fix importing of settings to use the settings types and not necessarily replace settings, but merge them.
         boolean hasChanged = false;
         Map<String, SettingItem> tmpMap = settings.getSettingsMap();
 

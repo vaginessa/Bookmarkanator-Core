@@ -118,7 +118,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         TextField textArea = new TextField();
         if (bookmark!=null)
         {
-            textArea.setText(bookmark.getData());
+            textArea.setText(bookmark.getText());
         }
 
         vbox.getChildren().add(textArea);
@@ -171,13 +171,13 @@ public class WebBookmarkUI extends AbstractUIBookmark
             {
                 abstractBookmark = new WebBookmark();
                 abstractBookmark.setName(name.getText());
-                abstractBookmark.setData(textArea.getText());
+                abstractBookmark.setText(textArea.getText());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
             }
             else
             {
                 bookmark.setName(name.getText());
-                bookmark.setData(textArea.getText());
+                bookmark.setText(textArea.getText());
                 bookmark.setTags(tagPanel.getSelectedTags());
                 abstractBookmark = bookmark;
             }

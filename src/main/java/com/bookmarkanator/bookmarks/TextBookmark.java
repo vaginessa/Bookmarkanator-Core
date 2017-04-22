@@ -1,14 +1,20 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 public class TextBookmark extends AbstractBookmark
 {
-
+    private static final Logger logger = LogManager.getLogger(TextBookmark.class.getCanonicalName());
     @Override
     public Set<String> getSearchWords()
     {
-        return null;
+        Set<String> strings = new HashSet<>();
+        for (String s: getText().split(" "))
+        {
+            strings.add(s);
+        }
+        return strings;
     }
 
     @Override
@@ -22,7 +28,6 @@ public class TextBookmark extends AbstractBookmark
         throws Exception
     {
         //do nothing
-//        System.out.println(this.getData());
     }
 
     @Override
@@ -47,13 +52,13 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
-    public String getSettings()
+    public String getContent()
     {
         return null;
     }
 
     @Override
-    public void setSettings(String xml)
+    public void setContent(String xml)
     {
 
     }

@@ -20,10 +20,11 @@ public class GlobalSettings
 
     public GlobalSettings()
     {
+        logger.trace("Init global settings.");
         file = null;
-        String abc = System.getProperty("user.home") + File.separatorChar + DEFAULT_SETTINGS_DIRECTORY_NAME + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME;
-        file = new File(abc);
-
+        String defaultSettingsLocation = System.getProperty("user.home") + File.separatorChar + DEFAULT_SETTINGS_DIRECTORY_NAME + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME;
+        file = new File(defaultSettingsLocation);
+        logger.trace("Default settings file: \""+defaultSettingsLocation+"\"");
         settings = new Settings();
     }
 
@@ -35,11 +36,13 @@ public class GlobalSettings
     public void setFile(File file)
         throws Exception
     {
-        String originalFileName = (this.file != null ? this.file.getCanonicalPath() : "<none set>");
         String newFileName = (file != null ? file.getCanonicalPath() : "<unknown>");
+        String originalFileName = (this.file != null ? this.file.getCanonicalPath() : "<none set>");
 
         if (file!=null)
         {
+            logger.info("Changing settings file to \""+file.getCanonicalPath()+"\"");
+
             if (file.isFile())
             {
                 if (file.canRead())
@@ -72,6 +75,7 @@ public class GlobalSettings
     public void replaceAndLoadSettings(File file)
         throws Exception
     {
+        logger.info("Replace and load settings file");
         setFile(file);
         this.clearSettings();
         this.readFromDisk();
@@ -84,22 +88,20 @@ public class GlobalSettings
 
     public void setSettings(Settings settings)
     {
+        logger.info("Setting settings object ");
         this.settings = settings;
     }
 
     public void writeToDisk()
         throws Exception
     {
+        logger.trace("Writing settings file to disk.");
         FileOutputStream fout = null;
         try
         {
             file = Util.getOrCreateFile(file);
             fout = new FileOutputStream(file);
             Settings.writeSettings(settings, fout);
-        }
-        catch (Exception e)
-        {
-            throw e;
         }
         finally
         {
@@ -114,24 +116,19 @@ public class GlobalSettings
     public void readFromDisk()
         throws Exception
     {
+        logger.trace("Reading settings file from disk.");
         FileInputStream fin = null;
         try
         {
             file = Util.getOrCreateFile(file);
+
+            // If the file has nothing in it it won't try to parse it. The settings file should get filled upon saving.
             if (file.length()!=0)
             {
                 fin = new FileInputStream(file);
                 settings = Settings.parseSettings(fin, this.getClass().getClassLoader());
                 fin.close();
             }
-        }
-        catch (Exception e)
-        {
-            logger.error(e);
-            //TODO Mark current setting file bad.
-            //TODO Create new settings file
-            //TODO save current settings to it.
-            //TODO Continue on with program
         }
         finally
         {

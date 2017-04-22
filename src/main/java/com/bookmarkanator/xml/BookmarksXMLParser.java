@@ -71,7 +71,7 @@ public class BookmarksXMLParser
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                         SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CORE_CLASSES, className);
+                         SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
 
                         if (settingItem != null)
                         {//Override class name specified in bookmark file with one specified in the settings file.
@@ -148,7 +148,7 @@ public class BookmarksXMLParser
                     abstractBookmark.setId(UUID.fromString(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
-                    abstractBookmark.setData(n.getTextContent());
+                    abstractBookmark.setText(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
                     abstractBookmark.setTags(getTags(n));
@@ -160,7 +160,7 @@ public class BookmarksXMLParser
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
-                    abstractBookmark.setSettings(getContent(n));
+                    abstractBookmark.setContent(getContent(n));
                     break;
                 default:
                     if (!n.getNodeName().startsWith("#"))

@@ -10,7 +10,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     private String name;//The user visible name
     private UUID id;
-    private String text;//contents of the bookmark - depends on which kind of bookmark it is.
+    private String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
     private Set<String> tags;
     private Date creationDate;
     private Date lastAccessedDate;
@@ -50,16 +50,14 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.id = id;
     }
 
-    public String getData()
+    public String getText()
     {
         return text;
     }
 
-    public void setData(String data) throws Exception {
+    public void setText(String data) throws Exception {
         this.text = data;
     }
-
-    public abstract Set<String> getSearchWords();
 
     public Set<String> getTags()
     {
@@ -159,20 +157,25 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract AbstractBookmark getNew();
 
     /**
-     * Write this bookmark to the xml string that will represent it.
+     * The context is a string representation of configuration data that a particular bookmark requires.
+     * This field is intended for more structured data. It can be in any form, xml, csv, json, etc... The parser doesn't validate anything
+     * in between the content tags. The bookmark is expected to know how to deal with the structure of the string parsed in.
      *
-     * @return The settings this bookmark wants to preserve written to a String in com.bookmarkanator.xml format.
-     * <p/>
-     * Note: The string returned will be placed inside a larger com.bookmarkanator.xml structure, and only represents a single bookmark. A string in any form can be written here.
+     * @return  A string of configuration data for this bookmark.
      */
-    public abstract String getSettings();
+    public abstract String getContent();
 
     /**
-     * Populate the settings of this bookmark with a string containing com.bookmarkanator.xml for that purpose. This bookmark must understand how to interpret the string sent in.
-     * The form of this string depends on how this bookmark type writes it's settings out.
-     *
-     * @param settings The string to parse and use to configure the settings of this specific type of bookmark.
+     * This method will be called mostly by the xml parser. It reads everything between the two context tags without consideration
+     * for what format it is in, and sets it here as a single string.
+     * @param settings  The config string (usually) stored in the xml.
      */
-    public abstract void setSettings(String settings);
+    public abstract void setContent(String settings);
+
+    /**
+     * Extract words to use for searching from the settings for this bookmark.
+     * @return  A set of search words that can be used to locate this bookmark.
+     */
+    public abstract Set<String> getSearchWords();
 
 }

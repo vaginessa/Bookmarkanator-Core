@@ -1,10 +1,11 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 public class FileBookmark extends AbstractBookmark
 {
-
+    private static final Logger logger = LogManager.getLogger(FileBookmark.class.getCanonicalName());
     @Override
     public Set<String> getSearchWords()
     {
@@ -44,13 +45,13 @@ public class FileBookmark extends AbstractBookmark
     }
 
     @Override
-    public String getSettings()
+    public String getContent()
     {
         return null;
     }
 
     @Override
-    public void setSettings(String xml)
+    public void setContent(String xml)
     {
 
     }

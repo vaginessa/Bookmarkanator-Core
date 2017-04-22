@@ -1,21 +1,12 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 public class EncryptedBookmark extends AbstractBookmark{
+    private static final Logger logger = LogManager.getLogger(EncryptedBookmark.class.getCanonicalName());
     private String passwordHash;
     private long valid;//stores how long after entering this password, until the bookmark text is encrypted again.
-
-//    /**
-//     * This constructor is used to allow custom behaviour or pre-processing to occure relative to the bookmark context object, or for instance
-//     * to throw an error if more than one bookmark is created, or other such custom behaviours.
-//     *
-//     * @param contextInterface The Bookmark context object for the custom bookmark to use.
-//     */
-//    public EncryptedBookmark(ContextInterface contextInterface)
-//    {
-//        super(contextInterface);
-//    }
 
     @Override
     public Set<String> getSearchWords()
@@ -59,12 +50,12 @@ public class EncryptedBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String getSettings() {
+    public String getContent() {
         return null;
     }
 
     @Override
-    public void setSettings(String xml) {
+    public void setContent(String xml) {
 
     }
 

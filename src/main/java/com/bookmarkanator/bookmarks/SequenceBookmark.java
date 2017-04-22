@@ -2,12 +2,14 @@ package com.bookmarkanator.bookmarks;
 
 import java.util.*;
 import com.bookmarkanator.core.*;
+import org.apache.logging.log4j.*;
 
 /**
  * A SequenceBookmark is a bookmark that contains a sequence of references to other bookmarks. It is merely an ordered container for other bookmarks.
  */
 public class SequenceBookmark extends AbstractBookmark
 {
+    private static final Logger logger = LogManager.getLogger(SequenceBookmark.class.getCanonicalName());
     private List<UUID> items;
     private List<UUID> errorItems;
 
@@ -58,11 +60,11 @@ public class SequenceBookmark extends AbstractBookmark
             else
             {
                 abs.runAction();
-                sb.append(abs.getData());
+                sb.append(abs.getText());
             }
         }
 
-        this.setData(sb.toString());
+        this.setText(sb.toString());
 
         if (error)
         {
@@ -84,7 +86,7 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public String getSettings()
+    public String getContent()
     {
         StringBuilder sb = new StringBuilder();
 
@@ -103,7 +105,7 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void setSettings(String settings)
+    public void setContent(String settings)
     {
         String[] strings = settings.split(",");
 

@@ -3,6 +3,7 @@ package com.bookmarkanator.io;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.util.*;
+import org.apache.logging.log4j.*;
 
 /**
  * This class represents the main interface for interacting with bookmarks that are loaded/saved to/from the file system.
@@ -11,6 +12,7 @@ import com.bookmarkanator.util.*;
  */
 public class FileContext implements ContextInterface
 {
+    private static final Logger logger = LogManager.getLogger(FileContext.class.getCanonicalName());
     private Map<UUID, AbstractBookmark> bookmarks;
     private Search<UUID> bookmarkNames;
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
@@ -155,7 +157,7 @@ public class FileContext implements ContextInterface
         bookmarkTags.add(id, bookmark.getTags());
 
         // Adding the text of bookmarks.
-        String[] strings = bookmark.getData().split(" ");
+        String[] strings = bookmark.getText().split(" ");
 
 
 

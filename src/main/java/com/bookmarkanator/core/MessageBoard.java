@@ -2,9 +2,11 @@ package com.bookmarkanator.core;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import org.apache.logging.log4j.*;
 
 public class MessageBoard
 {
+    private static final Logger logger = LogManager.getLogger(MessageBoard.class.getCanonicalName());
     private static MessageBoard messageBoard;
     private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, message board map>
     // secret key assigned after bookmarks are loaded, and is used to restrict write access to the message board.

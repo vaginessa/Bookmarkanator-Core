@@ -1,0 +1,4 @@
+TODO Determine bookmarks file size maximum policy (message the user, create multiple files ect...), Single files just get to large. Multiple linked files is probably a good idea. After a file gets to large save it and create another to use while saving.
+TODO Add a lock so only one bookmarkinator program can be run in a single workspace at a time.
+TODO Create a backup file for the settings as well.
+TODO Add a way to convert between versions of bookmarks.xml and settings.xml

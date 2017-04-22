@@ -1,12 +1,14 @@
 package com.bookmarkanator.core;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 /**
  * This class represents a single setting item.
  */
 public class SettingItem
 {
+    private static final Logger logger = LogManager.getLogger(SettingItem.class.getCanonicalName());
     protected String key;
     protected String type;
     protected String value;

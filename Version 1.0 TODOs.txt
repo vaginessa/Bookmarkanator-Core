@@ -4,28 +4,26 @@ _____________________________________
 TODO Refactor all source code in core to be simpler, add comments, and simplify usage of shared classes such as settings, module loader etc...
 TODO Add Logging to the whole project.
 TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same. Allow multi case tagging but searching without case?
-TODO Index the words of the text of a bookmark (no string rotations).
+
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
-TODO Determine bookmarks file size maximum policy (message the user, create multiple files ect...), Single files just get to large. Multiple linked files is probably a good idea. After a file gets to large save it and create another to use while saving.
+
 TODO Implement/verify message passing funcationality.
-TODO Refactor/simplify bootstrap
-TODO Add a lock so only one bookmarkinator program can be run in a single workspace at a time.
-TODO Create a backup file for the settings as well.
+Done - TODO Refactor/simplify bootstrap
 TODO Fix the search functionality.
-TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
+Done - TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
 TODO Add a mechanism for a bookmark to indicate which kind of data it can handle (for drag and drop in UI)
 TODO Add statistics to the bookmarks, such as use count, and how many bookmarks per type.
 
 *** TODO Modify the bookmarks to have a method that returns the words to search in the text. This will allow the text bookmarks to have formatting stored in them, but to also have searchable text. This would necessitate modification of the search systems to use this new method. Also there would have to be an HTML bookmark that could strip the formatting out when necessary.
+TODO Index the words of the text of a bookmark (no string rotations).
 
-TODO Have a way to list workspaces and transfer bookmarks between them.
+Not done - Added loading from current directory which would have a similar affect - TODO Have a way to list workspaces and transfer bookmarks between them.
+TODO Make a way to encrypt the contents of the selected directory, and unencrypt it (im memory only) when running.
 
 Settings:
 
-TODO Fix/improve importing of settings from other settings objects.
+Done - TODO Fix/improve importing of settings from other settings objects.
 TODO Improve setting of overriding classes, and other default settings.
-TODO Enable changing the workspace the program runs from. This simply changes the directory that contains a settings file, bookmarks.xml, and any addon code. This will enable the same program to be used with different kinds of bookmarks, and add a clear separation between different types.
-TODO Add a way to convert between versions of bookmarks.xml and settings.xml
 
 Bookmarks:
 

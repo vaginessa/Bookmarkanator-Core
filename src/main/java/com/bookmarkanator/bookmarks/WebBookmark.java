@@ -26,27 +26,27 @@ public class WebBookmark extends AbstractBookmark {
         String os = System.getProperty("os.name").toLowerCase();
 
         if (os.contains("mac")) {
-            openMacBrowserWindow(getData());
+            openMacBrowserWindow(getText());
         } else if (os.contains("win")) {
-            openWindowsBrowserWindow(getData());
+            openWindowsBrowserWindow(getText());
         } else {//Not windows or mac assumed to be linux.
-            openLinuxBrowserWindow(getData());
+            openLinuxBrowserWindow(getText());
         }
 
 
 //
 //        if (Runtime.getRuntime().exec(new String[] { "which", "xdg-open" }).getInputStream().read() != -1) {
-//            Runtime.getRuntime().exec(new String[] { "xdg-open",new URI(this.getData()).toURL().toString()});
+//            Runtime.getRuntime().exec(new String[] { "xdg-open",new URI(this.getText()).toURL().toString()});
 //        }
     }
 
     @Override
-    public String getData() {
+    public String getText() {
         return url.toString();
     }
 
     @Override
-    public void setData(String data) throws Exception {
+    public void setText(String data) throws Exception {
 
         //Use this library to validate:
 
@@ -87,12 +87,12 @@ public class WebBookmark extends AbstractBookmark {
     }
 
     @Override
-    public String getSettings() {
+    public String getContent() {
         return null;
     }
 
     @Override
-    public void setSettings(String xml) {
+    public void setContent(String xml) {
 
     }
 

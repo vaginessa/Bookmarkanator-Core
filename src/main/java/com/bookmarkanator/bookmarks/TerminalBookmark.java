@@ -1,9 +1,12 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
+import org.apache.logging.log4j.*;
 
 public class TerminalBookmark extends AbstractBookmark
 {
+    private static final Logger logger = LogManager.getLogger(TerminalBookmark.class.getCanonicalName());
+
 //    /**
 //     * Bookmarks are required to have a constructor that accepts a ContextInterface because it allows extending classes the opportunity to implement
 //     * custom behaviour upon being initialized.
@@ -54,13 +57,13 @@ public class TerminalBookmark extends AbstractBookmark
     }
 
     @Override
-    public String getSettings()
+    public String getContent()
     {
         return null;
     }
 
     @Override
-    public void setSettings(String xml)
+    public void setContent(String xml)
     {
 
     }

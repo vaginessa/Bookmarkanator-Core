@@ -117,7 +117,7 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
 //        for (AbstractUIBookmark bk : bookmarksList)
 //        {
 //            String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
-//            String className = controller.getSettings().getSetting(bkClassNameKey).getValue();
+//            String className = controller.getContent().getSetting(bkClassNameKey).getValue();
 //
 //
 //            observableList.add(bkui);

@@ -6,97 +6,102 @@ import java.util.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
 import org.apache.commons.io.*;
+import org.apache.logging.log4j.*;
 
 public class FileIO implements BKIOInterface
 {
+    // Static fields
+    private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
+    public static String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
+    public static String DEFAULT_BACKUP_FILE_NAME = "bookmarks.backup.xml";
+
+    // Fields
     private ContextInterface context;
-    private String bookmarksFileLocation;
+    private File file;
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     @Override
     public void init(String config)
         throws Exception
     {
-        //TODO Add basic bookmark structure if it doesnt' exist. Or if file is empty or corrupt mark it as bad, create a new one, and move on.
+        logger.trace("Entering init method with config \""+config+"\"");
         //TODO Figure out what to do about the bookmarks.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
         this.context = this.getContext();
-        bookmarksFileLocation = config;
-        File file = new File(config);
 
-        if (!file.exists())
-        {
-//            file.createNewFile();
+        if (config == null || config.trim().isEmpty())
+        {//
+            logger.trace("No file location sent in. Inferring location from settings file used.");
+            File settingsFile = GlobalSettings.use().getFile();
+            Objects.requireNonNull(settingsFile, "Settings file is not set.");
+
+            String parent = settingsFile.getParent();
+
+            String bookmarkFileName = parent + File.separatorChar + DEFAULT_BOOKMARKS_FILE_NAME;
+            logger.trace("Bookmarks file inferred from settings file is \""+bookmarkFileName+"\"");
+            file = new File(bookmarkFileName);
+        }
+        else
+        {// Using file sent in.
+            file = new File(config);
+        }
+
+        if (!file.exists() || file.length()==0)
+        {// Fill file with default xml tags.
+            logger.trace("File \""+file.getCanonicalPath()+"\" was present but empty. Adding initial xml tags.");
             this.save();
         }
         else
-        {
+        {// Parse existing xml
+            logger.trace("Reading file \""+file.getCanonicalPath()+"\" in.");
             FileInputStream fin = new FileInputStream(file);
             validateXML(fin);
-            fin = new FileInputStream(new File(config));
+            fin = new FileInputStream(file);
             loadBookmarks(fin);
             fin.close();
         }
 
-        //TODO Have a backup file created for the settings?
-        //TODO Add a lock so that the user cannot start multiple bookmarkanator programs.
-        //Adding a backup file for the bookmarks.
-
+        // Backup the bookmarks file every time the program starts up.
+        createSingleBookmarksBackup();
     }
 
     @Override
     public void save()
         throws Exception
     {
-        FileOutputStream fout = new FileOutputStream(bookmarksFileLocation);
+        logger.trace("Saving file to \""+file.getCanonicalPath()+"\"");
+        FileOutputStream fout = new FileOutputStream(file);
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
         fout.flush();
         fout.close();
 
-        if (Bootstrap.context().isDirty())
-        {
-            createBookmarksBackup(new File(bookmarksFileLocation));
-        }
+//        if (Bootstrap.context().isDirty())
+//        {
+//            createRollingBookmarksBackup(new File(bookmarksFileLocation));
+//        }
+        logger.trace("Done.");
     }
 
     @Override
     public void save(String config)
         throws Exception
     {
+        logger.trace("Saving file to \""+config+"\"");
         FileOutputStream fout = new FileOutputStream(new File(config));
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
         fout.flush();
         fout.close();
+        logger.trace("Done.");
     }
 
     @Override
     public void close()
     {
         //close any open file sources.
-    }
-
-    private void loadBookmarks(InputStream inputStream)
-        throws Exception
-    {
-        BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
-        parser.parse();
-    }
-
-    private void createBookmarksBackup(File file)
-        throws IOException
-    {
-        Date date = new Date();
-        String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
-        String extension = FilenameUtils.getExtension(file.getName());
-        File file2 = new File(file.getParent()+File.separator+date.toString()+"-"+fileNameWithOutExt+".backup."+extension);
-        Files.copy(file.toPath(), file2.toPath());
-    }
-
-    private void validateXML(InputStream inputStream)
-        throws Exception
-    {
-        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/BookmarksStructure.xsd");
-        XMLValidator.validate(inputStream, xsd);
     }
 
     @Override
@@ -111,4 +116,60 @@ public class FileIO implements BKIOInterface
         return context;
     }
 
+    // ============================================================
+    // Private Methods
+    // ============================================================
+
+    private void loadBookmarks(InputStream inputStream)
+        throws Exception
+    {
+        logger.trace("Parsing bookmarks...");
+        BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
+        parser.parse();
+        logger.trace("Done.");
+    }
+
+    private void createRollingBookmarksBackup()
+    {
+        logger.trace("Creating rolling backup file");
+        Date date = new Date();
+        String fileNameWithOutExt = FilenameUtils.removeExtension(file.getName());
+        String extension = FilenameUtils.getExtension(file.getName());
+        File file2 = new File(file.getParent() + File.separator + date.toString() + "-" + fileNameWithOutExt + ".backup." + extension);
+        try
+        {
+            logger.info("Original file: \""+file.getCanonicalPath()+" backup: \""+file2.getCanonicalPath()+"\"");
+            Files.copy(file.toPath(), file2.toPath());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void createSingleBookmarksBackup()
+    {
+        logger.trace("Creating single backup file.");
+        File existingBackup = new File(file.getParent()+File.separatorChar+DEFAULT_BACKUP_FILE_NAME);
+        File tmp = file;
+        file = existingBackup;
+        try
+        {
+            logger.info("Original file: \""+tmp.getCanonicalPath()+"\" backup: \""+existingBackup.getCanonicalPath()+"\"");
+            this.save();
+        }
+        catch (Exception e)
+        {
+            logger.error(e);
+        }
+        file = tmp;
+    }
+
+    private void validateXML(InputStream inputStream)
+        throws Exception
+    {
+        logger.trace("Validating xml");
+        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/BookmarksStructure.xsd");
+        XMLValidator.validate(inputStream, xsd);
+    }
 }

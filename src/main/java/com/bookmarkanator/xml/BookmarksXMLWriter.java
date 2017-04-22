@@ -17,7 +17,6 @@ public class BookmarksXMLWriter
     private OutputStream out;
 
     public BookmarksXMLWriter(ContextInterface contextInterface, OutputStream outputStream)
-
     {
         this.contextInterface = contextInterface;
         this.out = outputStream;
@@ -83,7 +82,7 @@ public class BookmarksXMLWriter
         bookmarkNode.appendChild(bookmarkId);
 
         Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
-        bookmarkText.setTextContent(bookmark.getData());
+        bookmarkText.setTextContent(bookmark.getText());
         bookmarkNode.appendChild(bookmarkText);
 
         Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);
@@ -99,11 +98,11 @@ public class BookmarksXMLWriter
         appendBookmarkTagsElements(bookmarTags, document, bookmark);
         bookmarkNode.appendChild(bookmarTags);
 
-        String settings = bookmark.getSettings();
+        String settings = bookmark.getContent();
         if (settings!=null)
         {
             Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
-            contentTag.setTextContent(bookmark.getSettings());
+            contentTag.setTextContent(bookmark.getContent());
             bookmarkNode.appendChild(contentTag);
         }
 

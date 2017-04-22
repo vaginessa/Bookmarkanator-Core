@@ -3,23 +3,37 @@ package com.bookmarkanator.core;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.zip.*;
 import com.bookmarkanator.util.*;
+import org.apache.logging.log4j.*;
 import org.reflections.*;
 import org.reflections.util.*;
 
 public class ModuleLoader
 {
+    // Static fields
+    private static final Logger logger = LogManager.getLogger(ModuleLoader.class.getCanonicalName());
     private static ModuleLoader moduleLoader;
+
+    // Fields
     private Set<File> jarDirectories;
-    private Map<String, Set<Class>> classesFoundMap;
+    private Map<String, Set<Class>> classesToTrackMap;
     private ClassLoader classLoader;
+
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     public ModuleLoader()
     {
         this.jarDirectories = new HashSet<>();
-        classesFoundMap = new HashMap<>();
+        classesToTrackMap = new HashMap<>();
         classLoader = this.getClass().getClassLoader();
     }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     public ClassLoader addModulesToClasspath()
         throws Exception
@@ -32,18 +46,21 @@ public class ModuleLoader
     {
         if (jarLocations != null && !jarLocations.isEmpty())
         {
+            logger.trace("Begin loading modules...");
             for (String s : jarLocations)
             {
+                logger.info("Attempting to load modules directory \'" + s + "\"");
+
                 File f = new File(s);
 
                 if (f.exists() || f.canRead())
                 {
                     this.addDirectory(f);
-                    System.out.println("Adding directory \"" + f.getCanonicalPath() + "\" to class loader paths.");
+                    logger.info("Success.");
                 }
                 else
                 {
-                    System.out.println("Attempted to add \"" + s + "\" to the classloader but this file either doesn't exist or cannot be accessed.");
+                    logger.warn("Failed to load. The file either doesn't exist or cannot be read.");
                 }
             }
         }
@@ -57,11 +74,13 @@ public class ModuleLoader
             return;
         }
 
-        Set<Class> classes = classesFoundMap.get(classname);
+        logger.info("Tracking class \"" + classname + "\"");
+
+        Set<Class> classes = classesToTrackMap.get(classname);
 
         if (classes == null)
         {
-            classesFoundMap.put(classname, new HashSet<>());
+            classesToTrackMap.put(classname, new HashSet<>());
         }
     }
 
@@ -72,33 +91,40 @@ public class ModuleLoader
             return;
         }
 
-        Set<Class> classes = classesFoundMap.get(clazz.getCanonicalName());
+        logger.info("Tracking class \"" + clazz.getCanonicalName() + "\"");
+
+        Set<Class> classes = classesToTrackMap.get(clazz.getCanonicalName());
 
         if (classes == null)
         {
-            classesFoundMap.put(clazz.getCanonicalName(), new HashSet<>());
+            classesToTrackMap.put(clazz.getCanonicalName(), new HashSet<>());
         }
     }
 
     public Set<Class> getClassesLoaded(String className)
     {
-        return classesFoundMap.get(className);
+        return classesToTrackMap.get(className);
     }
 
     public Set<Class> getClassesLoaded(Class clazz)
     {
-        return classesFoundMap.get(clazz.getCanonicalName());
+        return classesToTrackMap.get(clazz.getCanonicalName());
     }
 
     public <T> T loadClass(String className, Class<T> toCast)
         throws Exception
     {
+        logger.trace("Loading class \"" + className + "\"");
         className = className.trim();
         Class clazz = this.getClass().getClassLoader().loadClass(className);
         Class<T> sub = clazz.asSubclass(toCast);
 
         return sub.newInstance();
     }
+
+    // ============================================================
+    // Private Methods
+    // ============================================================
 
     private ModuleLoader addDirectory(File jarDirectory)
     {
@@ -109,25 +135,25 @@ public class ModuleLoader
     private ClassLoader addJarsToClassloader()
         throws Exception
     {
+        logger.trace("Adding jars to classloader");
         List<URL> urls = new ArrayList<>();
 
         for (File file : this.jarDirectories)
         {
+            logger.trace("Inspecting files in directory \"" + file.getCanonicalPath() + "\"");
             Collection<File> jars = Util.listFiles(file.getCanonicalPath(), "jar");
 
             for (File jarFile : jars)
             {
                 URL myJarFile = jarFile.toURI().toURL();
 
-                //                System.out.println("\n\nLoading jar classes for jar "+jarFile.getName());
-                //                ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
-                //                for (ZipEntry entry = zip.getNextEntry(); entry!=null; entry = zip.getNextEntry())
-                //                {
-                //                    System.out.println(entry.getName());
-                //                }
-                //                System.out.println("End loading jar classes.");
-
-//                MLog.info("Loading jar \"" + myJarFile.toString() + "\"");
+                logger.trace("\n\nLoading jar classes for jar " + jarFile.getName());
+                ZipInputStream zip = new ZipInputStream(new FileInputStream(jarFile));
+                for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry())
+                {
+                    logger.trace(entry.getName());
+                }
+                logger.trace("=====================================");
                 urls.add(myJarFile);
             }
         }
@@ -138,17 +164,28 @@ public class ModuleLoader
 
         //Getting loaded bookmark types so that when a new bookmark is created it can be selected from a list of these types.
         Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(classLoader));
-        //        bookmarkClassesFound.addAll(reflections.getSubTypesOf(AbstractBookmark.class));
 
-        for (String s: classesFoundMap.keySet())
+        logger.trace("Locating tracked classes");
+        for (String s : classesToTrackMap.keySet())
         {
+            logger.trace("Adding classes of type \""+s+"\"");
             Class clazz = classLoader.loadClass(s);
             Set<Class> classes = reflections.getSubTypesOf(clazz);
-            classesFoundMap.put(s, classes);
+
+            for (Class tmpClass:classes)
+            {
+                logger.trace("Found class \""+tmpClass.getCanonicalName()+"\"");
+            }
+
+            classesToTrackMap.put(s, classes);
         }
 
         return this.classLoader;
     }
+
+    // ============================================================
+    // Static Methods
+    // ============================================================
 
     public static ClassLoader getClassLoader()
     {

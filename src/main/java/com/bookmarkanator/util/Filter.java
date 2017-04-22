@@ -185,7 +185,7 @@ public class Filter
         {
             for (String s : exclusions)
             {
-                if (bk.getData().contains(s))
+                if (bk.getText().contains(s))
                 {
                     continue continueA;
                 }
