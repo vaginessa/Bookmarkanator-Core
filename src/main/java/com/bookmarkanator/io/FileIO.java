@@ -8,6 +8,9 @@ import com.bookmarkanator.xml.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * This class is used solely for reading and writing bookmark files to a file system.
+ */
 public class FileIO implements BKIOInterface
 {
     // Static fields

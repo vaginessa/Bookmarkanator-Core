@@ -134,6 +134,14 @@ public class Util
 
         if (!Files.exists(file.toPath(), LinkOption.NOFOLLOW_LINKS))
         {
+            File folder = file.getParentFile();
+
+            // Create folder to contain the settings file if it doesn't exist.
+            if (!folder.exists())
+            {
+                Files.createDirectory(folder.toPath()).toFile();
+            }
+
             file = Files.createFile(file.toPath()).toFile();
         }
 

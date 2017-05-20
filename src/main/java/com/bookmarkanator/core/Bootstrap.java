@@ -6,6 +6,9 @@ import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.io.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * This class is responsible for doing the initial settings, and class loading.
+ */
 public class Bootstrap
 {
     // Static fields
@@ -28,6 +31,7 @@ public class Bootstrap
     public Bootstrap()
         throws Exception
     {
+        // Get settings file
         File currentDir = new File(".");
         logger.info("Current directory "+currentDir.getCanonicalPath());
         logger.info("Locating settings file...");

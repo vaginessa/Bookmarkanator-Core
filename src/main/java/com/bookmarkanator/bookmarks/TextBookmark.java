@@ -6,13 +6,19 @@ import org.apache.logging.log4j.*;
 public class TextBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(TextBookmark.class.getCanonicalName());
+    private String content;
+
     @Override
     public Set<String> getSearchWords()
     {
         Set<String> strings = new HashSet<>();
-        for (String s: getText().split(" "))
+        String content = getContent();
+        if (content!=null)
         {
-            strings.add(s);
+            for (String s : getContent().split(" "))
+            {
+                strings.add(s);
+            }
         }
         return strings;
     }
@@ -54,13 +60,13 @@ public class TextBookmark extends AbstractBookmark
     @Override
     public String getContent()
     {
-        return null;
+        return content;
     }
 
     @Override
-    public void setContent(String xml)
+    public void setContent(String content)
     {
-
+        this.content = content;
     }
 
     @Override

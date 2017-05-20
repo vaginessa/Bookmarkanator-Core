@@ -2,7 +2,7 @@ Core:
 _____________________________________
 
 TODO Refactor all source code in core to be simpler, add comments, and simplify usage of shared classes such as settings, module loader etc...
-TODO Add Logging to the whole project.
+Done Add Logging to the whole project.
 TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same. Allow multi case tagging but searching without case?
 
 TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
@@ -84,6 +84,8 @@ TODO Setup help screens that pop up when using something for the first time, or 
 
 Bugs:
 
-TODO Sometimes when a bookmark is added or tags are changed the available tags do not get updated.
+TODO Sometimes when a bookmark is added or tags are changed, or the text is changed, the available tags do not get updated, and neither does the text search.
 TODO Full text search is not working properly because the bookmark text contains html. What to do with the html?
 TODO When doing a search only the tags in the left most selected tag panel highlight, any additional panels dont have highlight.
+TODO It appears that selecting search specific types doesn't restrict types. I selected search bookmark names only, and when I searched "ab" it found tags with "ab" in them.
+TODO When a text bookmark is opened, but not in edit mode, if the text is changed the text is updated, if the name is changed it is not updated.

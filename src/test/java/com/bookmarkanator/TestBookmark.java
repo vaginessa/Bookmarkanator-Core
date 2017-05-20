@@ -31,7 +31,7 @@ public class TestBookmark
         AbstractBookmark b = new TextBookmark();
         b.setName("Text Bookmark 1");
         b.setId(UUID.randomUUID());
-        b.setText("This is text of Bookmark 1");
+        b.setContent("This is text of Bookmark 1");
         b.addTag("Text");
         b.addTag("Bookmark");
         b.addTag("1");
@@ -41,7 +41,7 @@ public class TestBookmark
         b = new TextBookmark();
         b.setName("Text Bookmark 2");
         b.setId(UUID.randomUUID());
-        b.setText("This is text of Bookmark 2");
+        b.setContent("This is text of Bookmark 2");
         b.addTag("Text");
         b.addTag("Bookmark");
         b.addTag("2");
@@ -51,7 +51,7 @@ public class TestBookmark
         b = new TextBookmark();
         b.setName("Another Bookmark");
         b.setId(UUID.randomUUID());
-        b.setText("I'm another bookmark!");
+        b.setContent("I'm another bookmark!");
         b.addTag("Text");
         b.addTag("Bookmark");
         b.addTag("Another!");
@@ -61,7 +61,7 @@ public class TestBookmark
         b = new TextBookmark();
         b.setName("Bob");
         b.setId(UUID.randomUUID());
-        b.setText("Is Awesome");
+        b.setContent("Is Awesome");
         b.addTag("Bookmark");
         b.addTag("Another!");
 
@@ -70,7 +70,7 @@ public class TestBookmark
         b = new WebBookmark();
         b.setName("A");
         b.setId(UUID.randomUUID());
-        b.setText("B");
+        b.setContent("B");
         b.addTag("1024");
         b.addTag("2055");
 

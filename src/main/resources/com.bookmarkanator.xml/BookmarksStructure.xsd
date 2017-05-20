@@ -8,6 +8,7 @@
                 <xs:element name='block' type='block' minOccurs='0'
                             maxOccurs='unbounded'/>
             </xs:sequence>
+            <xs:attribute name='xmlVersion' type='xs:string'/>
         </xs:complexType>
     </xs:element>
 
@@ -22,7 +23,8 @@
         <xs:all>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="id" type="xs:string"/>
-            <xs:element name="text" type="xs:string"/>
+            <xs:element name="text" type="xs:string" minOccurs='0'
+                        maxOccurs='1'/>
             <xs:element name="tags" type="tags" minOccurs='0'
                         maxOccurs='1'/>
             <xs:element name="creationDate" type="xs:string"/>

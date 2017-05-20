@@ -1,5 +1,9 @@
 package com.bookmarkanator.io;
 
+/**
+ * This is the interface that other classes will use to load and save bookmarks. It could point to files on the file system as FileIo does,
+ * or it could point to a database, web service, ftp server, etc...
+ */
 public interface BKIOInterface {
 
     /**

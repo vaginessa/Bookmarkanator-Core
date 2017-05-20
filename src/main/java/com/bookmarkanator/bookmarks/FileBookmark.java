@@ -51,7 +51,7 @@ public class FileBookmark extends AbstractBookmark
     }
 
     @Override
-    public void setContent(String xml)
+    public void setContent(String content)
     {
 
     }

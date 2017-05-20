@@ -27,8 +27,9 @@ public class BookmarksXMLWriter
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
-
         Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
+
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
 
         addBlocks(rootElement, doc, contextInterface);
 
@@ -81,9 +82,9 @@ public class BookmarksXMLWriter
         bookmarkId.setTextContent(bookmark.getId().toString());
         bookmarkNode.appendChild(bookmarkId);
 
-        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
-        bookmarkText.setTextContent(bookmark.getText());
-        bookmarkNode.appendChild(bookmarkText);
+//        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
+//        bookmarkText.setTextContent(bookmark.getContent());
+//        bookmarkNode.appendChild(bookmarkText);
 
         Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);
         bookmarkCreationDate.setTextContent(getDateString(bookmark.getCreationDate()));

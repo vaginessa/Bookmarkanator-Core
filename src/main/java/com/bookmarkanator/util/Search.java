@@ -2,6 +2,11 @@ package com.bookmarkanator.util;
 
 import java.util.*;
 
+/**
+ * This class enables searching of key value pairs (usually UUID to tag pairs) by splitting up the text in various ways and associating
+ * those splits to the ID that is linked to it.
+ * @param <T>  The Object to associate the strings with (for bookmarks this is the bookmark Id's)
+ */
 public class Search<T> {
     private TextAssociator<T> theFullText;
     private TextAssociator<T> theFullTextRotated;

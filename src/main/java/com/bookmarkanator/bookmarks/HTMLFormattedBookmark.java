@@ -3,58 +3,61 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import org.apache.logging.log4j.*;
 
-public class TerminalBookmark extends AbstractBookmark
+public class HTMLFormattedBookmark extends AbstractBookmark
 {
-    private static final Logger logger = LogManager.getLogger(TerminalBookmark.class.getCanonicalName());
-
-    @Override
-    public Set<String> getSearchWords()
-    {
-        return null;
-    }
-
+    private static final Logger logger = LogManager.getLogger(HTMLFormattedBookmark.class.getCanonicalName());
+    private String content;
     @Override
     public String getTypeName()
     {
-        return "Terminal";
+        return "HTMLText";
     }
 
     @Override
     public List<String> getTypeLocation()
     {
-        return null;
+        List<String> list = new ArrayList<>();
+        list.add("");
+        return list;
     }
 
     @Override
     public void runAction()
         throws Exception
     {
-
+        // Do nothing.
     }
 
     @Override
     public void destroy()
         throws Exception
     {
-
+        // Do nothing.
     }
 
     @Override
     public AbstractBookmark getNew()
     {
-        return null;
+        return new HTMLFormattedBookmark();
     }
+
 
     @Override
     public String getContent()
     {
-        return null;
+        return content ;
     }
 
     @Override
     public void setContent(String content)
     {
-        //Parse format here into the command required.
+        this.content = content;
+    }
+
+    @Override
+    public Set<String> getSearchWords()
+    {
+        return null;
     }
 
     @Override

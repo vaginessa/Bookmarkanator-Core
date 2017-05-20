@@ -172,30 +172,30 @@ public class Filter
         return this;
     }
 
-    /**
-     * Excludes bookmarks that have any of the specified exclusion strings in the bookmark text.
-     *
-     * @param exclusions
-     * @return
-     */
-    public Filter excludeTextWithText(Set<String> exclusions)
-    {
-        continueA:
-        for (AbstractBookmark bk : this.results())
-        {
-            for (String s : exclusions)
-            {
-                if (bk.getText().contains(s))
-                {
-                    continue continueA;
-                }
-            }
-            tempList.add(bk);
-        }
-
-        tempToMainList();
-        return this;
-    }
+//    /**
+//     * Excludes bookmarks that have any of the specified exclusion strings in the bookmark text.
+//     *
+//     * @param exclusions
+//     * @return
+//     */
+//    public Filter excludeTextThatContains(Set<String> exclusions)
+//    {
+//        continueA:
+//        for (AbstractBookmark bk : this.results())
+//        {
+//            for (String s : exclusions)
+//            {
+//                if (bk.getText().contains(s))
+//                {
+//                    continue continueA;
+//                }
+//            }
+//            tempList.add(bk);
+//        }
+//
+//        tempToMainList();
+//        return this;
+//    }
 
     /**
      * Excludes bookmarks that have any of the specified exclusion strings in the bookmark tags.
@@ -203,7 +203,7 @@ public class Filter
      * @param exclusions
      * @return
      */
-    public Filter excludeWithTagsWithText(Set<String> exclusions)
+    public Filter excludeIfTagsContainAny(Set<String> exclusions)
     {
         continueA:
         for (AbstractBookmark bk : this.results())

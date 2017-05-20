@@ -27,15 +27,20 @@ public class BookmarksXMLParser
 
     //Attributes
     public static final String CLASS_ATTRIBUTE = "class";
+    public static final String XML_VERSION_ATTRIBUTE = "xmlVersion";
 
     //Date format
     public static final String DATE_FORMAT_STRING = "EEE, d MMM yyyy HH:mm:ss Z";
+
+    // Current Version
+    public static final String CURRENT_VERSION = "0.2";
+    public static final String BASE_VERSION = "0.1";
 
     //Variables
     private ContextInterface contextInterface;
     private InputStream inputStream;
     private Document document;
-
+    private String xmlVerison;
 
     public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
     {
@@ -52,10 +57,27 @@ public class BookmarksXMLParser
         document = builder.parse(inputStream);
         Map<String, Class> loadedClasses = new HashMap<>();
 
-        Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
+        Node docNodeRoot = document.getDocumentElement();
+
         if (!docNodeRoot.getNodeName().equals(BookmarksXMLParser.BOOKMARKS_TAG))
         {
             throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
+        }
+
+        Node xmlVersionNode = docNodeRoot.getAttributes().getNamedItem(XML_VERSION_ATTRIBUTE);
+
+        // Getting the xml version number so earlier versions of the data can be parsed.
+        if (xmlVersionNode != null)
+        {
+            xmlVerison = xmlVersionNode.getNodeValue();
+            if (xmlVerison == null || xmlVerison.trim().isEmpty())
+            {
+                xmlVerison = BASE_VERSION;
+            }
+        }
+        else
+        {
+            xmlVerison = BASE_VERSION;
         }
 
         NodeList nl = docNodeRoot.getChildNodes();
@@ -71,21 +93,19 @@ public class BookmarksXMLParser
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                         SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
+                    SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
 
-                        if (settingItem != null)
-                        {//Override class name specified in bookmark file with one specified in the settings file.
-                            String replacementClassName = settingItem.getValue();
+                    if (settingItem != null)
+                    {//Override class name specified in bookmark file with one specified in the settings file.
+                        String replacementClassName = settingItem.getValue();
 
-                            if (replacementClassName!=null && !replacementClassName.isEmpty())
-                            {
-                                System.out
-                                    .println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
-                                        "\" from the settings file.");
-                                className = replacementClassName;
-                            }
+                        if (replacementClassName != null && !replacementClassName.isEmpty())
+                        {
+                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
+                                "\" from the settings file.");
+                            className = replacementClassName;
                         }
-
+                    }
 
                     //TODO Somethings not right with the settings loading. It should not be overriding bookmarks with the same bookmark class name.
 
@@ -148,7 +168,8 @@ public class BookmarksXMLParser
                     abstractBookmark.setId(UUID.fromString(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
-                    abstractBookmark.setText(n.getTextContent());
+                    // Set text as content when parsing files in from now on.
+                    abstractBookmark.setContent(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
                     abstractBookmark.setTags(getTags(n));

@@ -20,7 +20,7 @@ public class FileContext implements ContextInterface
     private Map<String,Set<UUID> > fullTextSearchMap;//The map used to search only words of the bookmarks.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
-    private BKIOInterface bkioInterface;
+    private BKIOInterface bkioInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
     private boolean isDirty;
     private boolean alwaysClean;
 
@@ -157,32 +157,28 @@ public class FileContext implements ContextInterface
         bookmarkTags.add(id, bookmark.getTags());
 
         // Adding the text of bookmarks.
-        String[] strings = bookmark.getText().split(" ");
+        Set<String> strings = bookmark.getSearchWords();
 
-
-
-        for (String s : strings)
+        if (strings!=null)
         {
-            s = s.toLowerCase();
-            s = s.trim();
-
-            if (s.contains("awscli"))
+            for (String s : strings)
             {
-                System.out.println();
-            }
+                s = s.toLowerCase();
+                s = s.trim();
 
-            //TODO How to handle the raw text being html?
+                //TODO How to handle the raw text being html?
 
-            if (!s.isEmpty())
-            {
-                Set<UUID> uuids = fullTextSearchMap.get(s);
-                if (uuids == null)
+                if (!s.isEmpty())
                 {
-                    uuids = new HashSet<>();
-                    fullTextSearchMap.put(s, uuids);
-                }
+                    Set<UUID> uuids = fullTextSearchMap.get(s);
+                    if (uuids == null)
+                    {
+                        uuids = new HashSet<>();
+                        fullTextSearchMap.put(s, uuids);
+                    }
 
-                uuids.add(id);
+                    uuids.add(id);
+                }
             }
         }
 

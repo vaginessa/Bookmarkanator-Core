@@ -1,20 +1,20 @@
 package com.bookmarkanator.bookmarks;
 
+import java.net.*;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
-
     protected static String secretKey;//Key needed to access message board
 
-    private String name;//The user visible name
-    private UUID id;
-    private String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
-    private Set<String> tags;
-    private Date creationDate;
-    private Date lastAccessedDate;
-    private Set<BKDependency> dependencies;//Things this bookmark wishes to be notified of.
+    protected String name;//The user visible name
+    protected UUID id;
+//    protected String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
+    protected Set<String> tags;
+    protected Date creationDate;
+    protected Date lastAccessedDate;
+    protected Set<BKDependency> dependencies;//Things this bookmark wishes to be notified of.
 
     // ============================================================
     // Constructors
@@ -25,7 +25,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         tags = new HashSet<>();
         id = UUID.randomUUID();
         name = "";
-        text = "";
+//        text = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
     }
@@ -50,14 +50,14 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.id = id;
     }
 
-    public String getText()
-    {
-        return text;
-    }
-
-    public void setText(String data) throws Exception {
-        this.text = data;
-    }
+//    public String getText()
+//    {
+//        return text;
+//    }
+//
+//    public void setText(String data) throws Exception {
+//        this.text = data;
+//    }
 
     public Set<String> getTags()
     {
@@ -167,10 +167,12 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     /**
      * This method will be called mostly by the xml parser. It reads everything between the two context tags without consideration
-     * for what format it is in, and sets it here as a single string.
-     * @param settings  The config string (usually) stored in the xml.
+     * for what format it is in, and sets it here as a single string. When it is set, is when the bookmark it self should do whatever
+     * parsing is necessary to read it in.
+     * @param content  The config string (usually) stored in the xml.
      */
-    public abstract void setContent(String settings);
+    public abstract void setContent(String content)
+        throws MalformedURLException;
 
     /**
      * Extract words to use for searching from the settings for this bookmark.

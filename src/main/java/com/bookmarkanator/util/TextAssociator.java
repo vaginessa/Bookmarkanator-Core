@@ -4,9 +4,9 @@ import java.util.*;
 import org.apache.logging.log4j.*;
 
 /**
- * This method associates words with id's, enabling the ability to look up an item by word, or Id.
+ * This class associates words with id's, enabling the ability to look up an item by word, or Id.
  *
- * For example you could have a set of UUID's that (T) that are associated with strings that represent tags.
+ * For example you could have a set of UUID's that that are associated with strings that represent tags.
  * You could get a list of all strings associated with a particular Id, or a list of Id's associated with a particular
  * string.
  *

@@ -35,8 +35,18 @@ public interface ContextInterface
 
     int getNumSearchResults();
 
+    /**
+     * Sets the number of search results it is trying to obtain on each search. It could match this number early (for instance on bookmark
+     * name search), or it might need to try searching all sorts of things to fill this quantity of results.
+     * @param numSearchResults
+     */
     void setNumSearchResults(int numSearchResults);
 
+    /**
+     * Searches bookmark names, tags, type names, and text words.
+     * @param text  The text to search for.
+     * @return
+     */
     List<AbstractBookmark> searchAll(String text);
 
     List<AbstractBookmark> searchBookmarkNames(String text);

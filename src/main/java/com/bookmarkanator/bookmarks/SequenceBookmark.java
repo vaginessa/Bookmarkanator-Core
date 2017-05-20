@@ -60,11 +60,11 @@ public class SequenceBookmark extends AbstractBookmark
             else
             {
                 abs.runAction();
-                sb.append(abs.getText());
+                sb.append(abs.getContent());
             }
         }
 
-        this.setText(sb.toString());
+        this.setContent(sb.toString());
 
         if (error)
         {
@@ -105,9 +105,9 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void setContent(String settings)
+    public void setContent(String content)
     {
-        String[] strings = settings.split(",");
+        String[] strings = content.split(",");
 
         for (String s: strings)
         {

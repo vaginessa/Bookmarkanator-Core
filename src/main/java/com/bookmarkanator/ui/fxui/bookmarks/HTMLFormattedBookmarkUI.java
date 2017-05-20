@@ -18,7 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.web.*;
 import javafx.stage.*;
 
-public class TextBookmarkUI extends AbstractUIBookmark
+public class HTMLFormattedBookmarkUI extends AbstractUIBookmark
 {
     private TextField name;
     private HTMLEditor textArea;
@@ -82,7 +82,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
             stage.close();
         }
 
-        return showTextBookmarkView(this.getBookmark());
+        return showHTMLFormattedBookmarkView(this.getBookmark());
     }
 
     @Override
@@ -103,10 +103,10 @@ public class TextBookmarkUI extends AbstractUIBookmark
     public AbstractBookmark newBookmarkView()
         throws Exception
     {
-        return showTextBookmarkView(null);
+        return showHTMLFormattedBookmarkView(null);
     }
 
-    private AbstractBookmark showTextBookmarkView(AbstractBookmark bookmark)
+    private AbstractBookmark showHTMLFormattedBookmarkView(AbstractBookmark bookmark)
         throws Exception
     {
         Dialog<String> dialog = new Dialog<>();
@@ -143,6 +143,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
         dialog.getDialogPane().setContent(container);
 
+        // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK)
             {
@@ -169,7 +170,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
             AbstractBookmark abstractBookmark;
             if (bookmark==null)
             {
-                abstractBookmark = new TextBookmark();
+                abstractBookmark = new HTMLFormattedBookmark();
                 abstractBookmark.setName(name.getText());
                 abstractBookmark.setContent(textArea.getHtmlText());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
@@ -251,6 +252,6 @@ public class TextBookmarkUI extends AbstractUIBookmark
     @Override
     public String getRequiredBookmarkClassName()
     {
-        return TextBookmark.class.getCanonicalName();
+        return HTMLFormattedBookmark.class.getCanonicalName();
     }
 }

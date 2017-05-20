@@ -26,11 +26,11 @@ public class WebBookmark extends AbstractBookmark {
         String os = System.getProperty("os.name").toLowerCase();
 
         if (os.contains("mac")) {
-            openMacBrowserWindow(getText());
+            openMacBrowserWindow(getContent());
         } else if (os.contains("win")) {
-            openWindowsBrowserWindow(getText());
-        } else {//Not windows or mac assumed to be linux.
-            openLinuxBrowserWindow(getText());
+            openWindowsBrowserWindow(getContent());
+        } else {//Not windows or mac, assumed to be linux.
+            openLinuxBrowserWindow(getContent());
         }
 
 
@@ -40,13 +40,13 @@ public class WebBookmark extends AbstractBookmark {
 //        }
     }
 
-    @Override
-    public String getText() {
-        return url.toString();
-    }
-
-    @Override
-    public void setText(String data) throws Exception {
+//    @Override
+//    public String getText() {
+//        return url.toString();
+//    }
+//
+//    @Override
+//    public void setText(String data) throws Exception {
 
         //Use this library to validate:
 
@@ -59,8 +59,8 @@ public class WebBookmark extends AbstractBookmark {
 
 //        http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/UrlValidator.html
 
-        url = new URL(data);
-    }
+//        url = new URL(data);
+//    }
 
     @Override
     public Set<String> getSearchWords()
@@ -88,12 +88,14 @@ public class WebBookmark extends AbstractBookmark {
 
     @Override
     public String getContent() {
-        return null;
+        return url.toString();
     }
 
     @Override
-    public void setContent(String xml) {
-
+    public void setContent(String content)
+        throws MalformedURLException
+    {
+        url = new URL(content);
     }
 
     @Override
