@@ -29,9 +29,14 @@
                         maxOccurs='1'/>
             <xs:element name="creationDate" type="xs:string"/>
             <xs:element name="lastAccessedDate" type="xs:string"/>
-            <xs:element name="content" type="xs:string" minOccurs='0'
-                        maxOccurs='1'/>
+            <xs:element name="content" type="contentType" minOccurs='0'
+                        maxOccurs='1' />
         </xs:all>
+    </xs:complexType>
+    <xs:complexType name="contentType" mixed="true" >
+        <xs:sequence>
+            <xs:any processContents="skip" minOccurs="0"/>
+        </xs:sequence>
     </xs:complexType>
     <xs:complexType name="tags">
         <xs:sequence>

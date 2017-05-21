@@ -4,11 +4,13 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
-import org.w3c.dom.ls.*;
 
 public class BookmarksXMLParser
 {
@@ -181,7 +183,7 @@ public class BookmarksXMLParser
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
-                    abstractBookmark.setContent(getContent(n));
+                    abstractBookmark.setContent(n.getTextContent());
                     break;
                 default:
                     if (!n.getNodeName().startsWith("#"))
@@ -226,16 +228,30 @@ public class BookmarksXMLParser
      * @return A string containing the settings specific to this bookmark.
      */
     private String getContent(Node node)
+        throws Exception
     {
-        DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();
-        LSSerializer ser = ls.createLSSerializer();
+//        DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();
+//        LSSerializer ser = ls.createLSSerializer();
         StringBuilder sb = new StringBuilder();
         NodeList nl = node.getChildNodes();
+//        String s = node.getTextContent();
+
+        StringWriter writer = new StringWriter();
+
 
         for (int c = 0; c < nl.getLength(); c++)
         {
             Node n = nl.item(c);
-            sb.append(ser.writeToString(n));
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Properties properties = new Properties();
+            properties.setProperty("omit-xml-declaration","yes");
+            transformer.setOutputProperties(properties);
+            transformer.transform(new DOMSource(n), new StreamResult(writer));
+            String xml = writer.toString();
+
+            // Note: getting the text content unescapes all the characters (setting must escape them), but getting the raw unescaped string does not (obviously).
+            sb.append(xml);
         }
 
         return sanitizeXMLString(sb.toString());
