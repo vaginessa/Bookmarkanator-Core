@@ -4,9 +4,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.*;
-import javax.xml.transform.stream.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.io.*;
@@ -218,55 +215,4 @@ public class BookmarksXMLParser
         }
         return results;
     }
-
-    /**
-     * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.
-     * It can be in any format because this method ignores everything between the two content tags, and simply returns the
-     * raw data.
-     *
-     * @param node The content node to parse bookmark settings from.
-     * @return A string containing the settings specific to this bookmark.
-     */
-    private String getContent(Node node)
-        throws Exception
-    {
-//        DOMImplementationLS ls = (DOMImplementationLS) document.getImplementation();
-//        LSSerializer ser = ls.createLSSerializer();
-        StringBuilder sb = new StringBuilder();
-        NodeList nl = node.getChildNodes();
-//        String s = node.getTextContent();
-
-        StringWriter writer = new StringWriter();
-
-
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            Properties properties = new Properties();
-            properties.setProperty("omit-xml-declaration","yes");
-            transformer.setOutputProperties(properties);
-            transformer.transform(new DOMSource(n), new StreamResult(writer));
-            String xml = writer.toString();
-
-            // Note: getting the text content unescapes all the characters (setting must escape them), but getting the raw unescaped string does not (obviously).
-            sb.append(xml);
-        }
-
-        return sanitizeXMLString(sb.toString());
-    }
-
-    /**
-     * This method removes the annoying <?xml version="1.0" encoding="UTF-16"?> that the LSSerializer places on it's
-     * string verison of the xml.
-     *
-     * @param xmlString A string containing xml version ... strings.
-     * @return A string without xml version ... strings in it.
-     */
-    private String sanitizeXMLString(String xmlString)
-    {
-        return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
-    }
-
 }
