@@ -2,6 +2,7 @@ package com.bookmarkanator.bookmarks;
 
 import java.util.*;
 import org.apache.logging.log4j.*;
+import org.jsoup.*;
 
 public class HTMLFormattedBookmark extends AbstractBookmark
 {
@@ -57,8 +58,18 @@ public class HTMLFormattedBookmark extends AbstractBookmark
 
     @Override
     public Set<String> getSearchWords()
+        throws Exception
     {
-        return null;
+        Set<String> strings = new HashSet<>();
+        String content = Jsoup.parse(getContent()).text();
+        if (content!=null)
+        {
+            for (String s : content.split("[\\s\\\\\"'\\./-]"))
+            {
+                strings.add(s);
+            }
+        }
+        return strings;
     }
 
     @Override

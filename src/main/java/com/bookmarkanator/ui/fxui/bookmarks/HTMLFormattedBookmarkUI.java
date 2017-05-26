@@ -1,7 +1,6 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import java.awt.*;
-import java.net.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
@@ -35,7 +34,6 @@ public class HTMLFormattedBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
-
         if (stage==null)
         {
 

@@ -15,7 +15,7 @@ public class TextBookmark extends AbstractBookmark
         String content = getContent();
         if (content!=null)
         {
-            for (String s : getContent().split(" "))
+            for (String s : getContent().split("[\\s\\\\\"'\\./-]"))
             {
                 strings.add(s);
             }

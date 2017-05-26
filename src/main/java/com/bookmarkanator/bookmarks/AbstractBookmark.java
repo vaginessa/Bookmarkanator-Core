@@ -180,6 +180,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      *
      * @return A set of search words that can be used to locate this bookmark.
      */
-    public abstract Set<String> getSearchWords();
+    public abstract Set<String> getSearchWords()
+        throws Exception;
 
 }

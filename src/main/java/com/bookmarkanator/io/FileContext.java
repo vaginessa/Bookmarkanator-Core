@@ -166,8 +166,6 @@ public class FileContext implements ContextInterface
                 s = s.toLowerCase();
                 s = s.trim();
 
-                //TODO How to handle the raw text being html?
-
                 if (!s.isEmpty())
                 {
                     Set<UUID> uuids = fullTextSearchMap.get(s);
