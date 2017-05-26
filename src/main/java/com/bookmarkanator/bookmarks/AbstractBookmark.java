@@ -1,6 +1,5 @@
 package com.bookmarkanator.bookmarks;
 
-import java.net.*;
 import java.util.*;
 import com.bookmarkanator.core.*;
 
@@ -10,7 +9,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     protected String name;//The user visible name
     protected UUID id;
-//    protected String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
+    //    protected String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
     protected Set<String> tags;
     protected Date creationDate;
     protected Date lastAccessedDate;
@@ -25,7 +24,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         tags = new HashSet<>();
         id = UUID.randomUUID();
         name = "";
-//        text = "";
+        //        text = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
     }
@@ -50,14 +49,14 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.id = id;
     }
 
-//    public String getText()
-//    {
-//        return text;
-//    }
-//
-//    public void setText(String data) throws Exception {
-//        this.text = data;
-//    }
+    //    public String getText()
+    //    {
+    //        return text;
+    //    }
+    //
+    //    public void setText(String data) throws Exception {
+    //        this.text = data;
+    //    }
 
     public Set<String> getTags()
     {
@@ -111,7 +110,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     public boolean setSecretKey(String secretKey)
     {
-        if (secretKey!=null)
+        if (secretKey != null)
         {
             AbstractBookmark.secretKey = secretKey;
             return true;
@@ -161,22 +160,25 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * This field is intended for more structured data. It can be in any form, xml, csv, json, etc... The parser doesn't validate anything
      * in between the content tags. The bookmark is expected to know how to deal with the structure of the string parsed in.
      *
-     * @return  A string of configuration data for this bookmark.
+     * @return A string of configuration data for this bookmark.
      */
-    public abstract String getContent();
+    public abstract String getContent()
+        throws Exception;
 
     /**
      * This method will be called mostly by the xml parser. It reads everything between the two context tags without consideration
      * for what format it is in, and sets it here as a single string. When it is set, is when the bookmark it self should do whatever
      * parsing is necessary to read it in.
-     * @param content  The config string (usually) stored in the xml.
+     *
+     * @param content The config string (usually) stored in the xml.
      */
     public abstract void setContent(String content)
-        throws MalformedURLException;
+        throws Exception;
 
     /**
      * Extract words to use for searching from the settings for this bookmark.
-     * @return  A set of search words that can be used to locate this bookmark.
+     *
+     * @return A set of search words that can be used to locate this bookmark.
      */
     public abstract Set<String> getSearchWords();
 

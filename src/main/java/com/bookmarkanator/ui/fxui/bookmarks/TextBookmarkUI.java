@@ -12,16 +12,16 @@ import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.web.*;
 import javafx.stage.*;
 
 public class TextBookmarkUI extends AbstractUIBookmark
 {
     private TextField name;
-    private HTMLEditor textArea;
+    private TextArea textArea;
 
     @Override
     public Image getTypeIcon()
@@ -50,7 +50,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
             stage.setScene(dialog);
 
             this.getBookmark().runAction();
-            textArea.setHtmlText(this.getBookmark().getContent());
+            textArea.setText(this.getBookmark().getContent());
             name.setText(this.getBookmark().getName());
 
             stage.setOnCloseRequest(new EventHandler<WindowEvent>()
@@ -58,7 +58,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
                 public void handle(WindowEvent we)
                 {
                     try {
-                        getBookmark().setContent(textArea.getHtmlText());
+                        getBookmark().setContent(textArea.getText());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -146,7 +146,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK)
             {
-                return textArea.getHtmlText();
+                return textArea.getText();
             }
             else if (dialogButton == delete)
             {
@@ -171,13 +171,13 @@ public class TextBookmarkUI extends AbstractUIBookmark
             {
                 abstractBookmark = new TextBookmark();
                 abstractBookmark.setName(name.getText());
-                abstractBookmark.setContent(textArea.getHtmlText());
+                abstractBookmark.setContent(textArea.getText());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
             }
             else
             {
                 bookmark.setName(name.getText());
-                bookmark.setContent(textArea.getHtmlText());
+                bookmark.setContent(textArea.getText());
                 bookmark.setTags(tagPanel.getSelectedTags());
                 abstractBookmark = bookmark;
             }
@@ -188,6 +188,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
     }
 
     private Pane getbookmarkView(AbstractBookmark bookmark)
+        throws Exception
     {
         VBox vBox = new VBox();
         NameBoxPanel nameBoxPanel;
@@ -203,7 +204,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
         this.name = nameBoxPanel.getName();
 
-        HTMLEditor textArea = getTextArea(bookmark);
+        TextArea textArea = getTextArea(bookmark);
 
         vBox.getChildren().add(nameBoxPanel);
         vBox.getChildren().add(textArea);
@@ -235,15 +236,16 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
 
 
-    private HTMLEditor getTextArea(AbstractBookmark bookmark)
+    private TextArea getTextArea(AbstractBookmark bookmark)
+        throws Exception
     {
         //Text area
-        textArea = new HTMLEditor();
+        textArea = new TextArea();
         textArea.setPrefWidth(600);
         textArea.setPrefHeight(400);
         if (bookmark!=null)
         {
-            textArea.setHtmlText(bookmark.getContent());
+            textArea.setText(bookmark.getContent());
         }
         return textArea;
     }

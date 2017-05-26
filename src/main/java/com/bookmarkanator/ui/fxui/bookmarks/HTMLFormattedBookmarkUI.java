@@ -1,7 +1,6 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
 import java.awt.*;
-import java.io.*;
 import java.net.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
@@ -191,7 +190,7 @@ public class HTMLFormattedBookmarkUI extends AbstractUIBookmark
     }
 
     private Pane getbookmarkView(AbstractBookmark bookmark)
-        throws UnsupportedEncodingException
+        throws Exception
     {
         VBox vBox = new VBox();
         NameBoxPanel nameBoxPanel;
@@ -240,7 +239,7 @@ public class HTMLFormattedBookmarkUI extends AbstractUIBookmark
 
 
     private HTMLEditor getTextArea(AbstractBookmark bookmark)
-        throws UnsupportedEncodingException
+        throws Exception
     {
         //Text area
         textArea = new HTMLEditor();
@@ -248,7 +247,7 @@ public class HTMLFormattedBookmarkUI extends AbstractUIBookmark
         textArea.setPrefHeight(400);
         if (bookmark!=null)
         {
-            textArea.setHtmlText(URLDecoder.decode(bookmark.getContent(), "UTF-8"));
+            textArea.setHtmlText(bookmark.getContent());
         }
         return textArea;
     }

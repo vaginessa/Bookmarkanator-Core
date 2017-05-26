@@ -89,3 +89,43 @@ TODO Full text search is not working properly because the bookmark text contains
 TODO When doing a search only the tags in the left most selected tag panel highlight, any additional panels dont have highlight.
 TODO It appears that selecting search specific types doesn't restrict types. I selected search bookmark names only, and when I searched "ab" it found tags with "ab" in them.
 TODO When a text bookmark is opened, but not in edit mode, if the text is changed the text is updated, if the name is changed it is not updated.
+
+- Fixed - TODO Bug when adding text that has a "%h:" in it. Here is the stacktrace:
+Exception in thread "JavaFX Application Thread" java.lang.RuntimeException: java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern - For input string: "h:"
+	at com.bookmarkanator.ui.fxui.BookmarksListUI$2.handle(BookmarksListUI.java:63)
+	at com.bookmarkanator.ui.fxui.BookmarksListUI$2.handle(BookmarksListUI.java:40)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.scene.Scene$ClickGenerator.postProcess(Scene.java:3470)
+	at javafx.scene.Scene$ClickGenerator.access$8100(Scene.java:3398)
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3766)
+	at javafx.scene.Scene$MouseHandler.access$1500(Scene.java:3485)
+	at javafx.scene.Scene.impl_processMouseEvent(Scene.java:1762)
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2494)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:352)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:275)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$354(GlassViewEventHandler.java:388)
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:389)
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:387)
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:555)
+	at com.sun.glass.ui.View.notifyMouse(View.java:937)
+Caused by: java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern - For input string: "h:"
+	at java.net.URLDecoder.decode(URLDecoder.java:194)
+	at com.bookmarkanator.ui.fxui.bookmarks.HTMLFormattedBookmarkUI.getTextArea(HTMLFormattedBookmarkUI.java:251)
+	at com.bookmarkanator.ui.fxui.bookmarks.HTMLFormattedBookmarkUI.getbookmarkView(HTMLFormattedBookmarkUI.java:210)
+	at com.bookmarkanator.ui.fxui.bookmarks.HTMLFormattedBookmarkUI.show(HTMLFormattedBookmarkUI.java:43)
+	at com.bookmarkanator.ui.fxui.BookmarksListUI$2.handle(BookmarksListUI.java:57)
+	... 28 more
+

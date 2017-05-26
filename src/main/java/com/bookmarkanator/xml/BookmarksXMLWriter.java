@@ -1,6 +1,7 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
@@ -45,6 +46,7 @@ public class BookmarksXMLWriter
     }
 
     private void addBlocks(Element element,Document document, ContextInterface contextInterface)
+        throws Exception
     {
         Map<String, Element> blocks = new HashMap<>();
 
@@ -71,6 +73,7 @@ public class BookmarksXMLWriter
     }
 
     private void appendBookmarkElement(Element parentElement, Document document, AbstractBookmark bookmark)
+        throws Exception
     {
         Element bookmarkNode = document.createElement(BookmarksXMLParser.BOOKMARK_TAG);
 
@@ -99,10 +102,11 @@ public class BookmarksXMLWriter
         appendBookmarkTagsElements(bookmarTags, document, bookmark);
         bookmarkNode.appendChild(bookmarTags);
 
-        String settings = bookmark.getContent();
-        if (settings!=null)
+        String content = bookmark.getContent();
+        if (content!=null)
         {
             Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
+//            contentTag.setTextContent(URLEncoder.encode(bookmark.getContent(), "UTF-8"));
             contentTag.setTextContent(bookmark.getContent());
             bookmarkNode.appendChild(contentTag);
         }

@@ -1,6 +1,7 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
@@ -168,6 +169,7 @@ public class BookmarksXMLParser
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
                     // Set text as content when parsing files in from now on.
+//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
                     abstractBookmark.setContent(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
@@ -180,6 +182,7 @@ public class BookmarksXMLParser
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
+//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
                     abstractBookmark.setContent(n.getTextContent());
                     break;
                 default:

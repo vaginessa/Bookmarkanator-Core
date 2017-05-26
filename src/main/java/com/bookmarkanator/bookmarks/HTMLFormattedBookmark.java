@@ -43,13 +43,14 @@ public class HTMLFormattedBookmark extends AbstractBookmark
 
 
     @Override
-    public String getContent()
+    public String getContent() throws Exception
     {
-        return content ;
+        return content;
     }
 
     @Override
     public void setContent(String content)
+        throws Exception
     {
         this.content = content;
     }
