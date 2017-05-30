@@ -32,35 +32,7 @@ public class WebBookmark extends AbstractBookmark {
         } else {//Not windows or mac, assumed to be linux.
             openLinuxBrowserWindow(getContent());
         }
-
-
-//
-//        if (Runtime.getRuntime().exec(new String[] { "which", "xdg-open" }).getInputStream().read() != -1) {
-//            Runtime.getRuntime().exec(new String[] { "xdg-open",new URI(this.getText()).toURL().toString()});
-//        }
     }
-
-//    @Override
-//    public String getText() {
-//        return url.toString();
-//    }
-//
-//    @Override
-//    public void setText(String data) throws Exception {
-
-        //Use this library to validate:
-
-//        <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
-//<dependency>
-//    <groupId>commons-validator</groupId>
-//    <artifactId>commons-validator</artifactId>
-//    <version>1.6</version>
-//</dependency>
-
-//        http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/UrlValidator.html
-
-//        url = new URL(data);
-//    }
 
     @Override
     public Set<String> getSearchWords()

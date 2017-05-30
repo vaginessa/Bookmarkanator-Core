@@ -75,11 +75,11 @@ public class WebBookmarkUI extends AbstractUIBookmark
         Dialog<String> dialog = new Dialog<>();
         if (bookmark!=null)
         {
-            dialog.setTitle("Edit Text Bookmark");
+            dialog.setTitle("Edit Web Bookmark");
         }
         else
         {
-            dialog.setTitle("New Text Bookmark");
+            dialog.setTitle("New Web Bookmark");
         }
 
         // Set the button types.
@@ -114,14 +114,15 @@ public class WebBookmarkUI extends AbstractUIBookmark
         vbox.getChildren().add(vBox);
         Platform.runLater(() -> name.requestFocus());
 
+        Label webAddressLabel = new Label("Web Address");
         //Text area
-        TextField textArea = new TextField();
+        TextField webAddress = new TextField();
         if (bookmark!=null)
         {
-            textArea.setText(bookmark.getContent());
+            webAddress.setText(bookmark.getContent());
         }
-
-        vbox.getChildren().add(textArea);
+        vBox.getChildren().add( webAddressLabel);
+        vbox.getChildren().add(webAddress);
 
         //Tag selection panel
         TagPanel tagPanel;
@@ -146,7 +147,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK)
             {
-                return textArea.getText();
+                return webAddress.getText();
             }
             else if (dialogButton == delete)
             {
@@ -171,13 +172,13 @@ public class WebBookmarkUI extends AbstractUIBookmark
             {
                 abstractBookmark = new WebBookmark();
                 abstractBookmark.setName(name.getText());
-                abstractBookmark.setContent(textArea.getText());
+                abstractBookmark.setContent(webAddress.getText());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
             }
             else
             {
                 bookmark.setName(name.getText());
-                bookmark.setContent(textArea.getText());
+                bookmark.setContent(webAddress.getText());
                 bookmark.setTags(tagPanel.getSelectedTags());
                 abstractBookmark = bookmark;
             }
