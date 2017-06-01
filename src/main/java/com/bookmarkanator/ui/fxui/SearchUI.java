@@ -1,5 +1,6 @@
 package com.bookmarkanator.ui.fxui;
 
+import java.time.*;
 import java.util.*;
 import com.bookmarkanator.ui.interfaces.*;
 import com.bookmarkanator.util.*;
@@ -29,6 +30,8 @@ public class SearchUI extends HBox implements SearchInterface
     private CheckBox sTags;
     private boolean highlightSearchTerm;
     private SimilarItemIterator similarItemIterator;
+    private DatePicker startDate;
+    private DatePicker endDate;
 
     public SearchUI(UIControllerInterface controller)
     {
@@ -93,7 +96,7 @@ public class SearchUI extends HBox implements SearchInterface
                 }
                 else if (ke.getCode() == KeyCode.TAB)
                 {
-                    if (similarItemIterator==null)
+                    if (similarItemIterator == null)
                     {
                         similarItemIterator = controller.getSimilarItemIterator(textField.getText());
                     }
@@ -116,9 +119,9 @@ public class SearchUI extends HBox implements SearchInterface
                         e.printStackTrace();
                     }
                 }
-//                else {
-//                    similarItemIterator = null;
-//                }
+                //                else {
+                //                    similarItemIterator = null;
+                //                }
                 //
                 //                String text = "Key Typed: " + ke.getCharacter();
                 //                if (ke.isAltDown()) {
@@ -177,14 +180,14 @@ public class SearchUI extends HBox implements SearchInterface
                 {
                     if (button.getText().equals("->"))
                     {
-                        searchBox.getChildren().removeAll(button, newButton, quickPanelButton, editModePane);
-                        searchBox.getChildren().addAll(searchOptionsPane, button, newButton, editModePane);
+                        searchBox.getChildren().removeAll(button, newButton, quickPanelButton, editModePane, startDate, endDate);
+                        searchBox.getChildren().addAll(searchOptionsPane, button, newButton, editModePane, startDate, endDate);
                         button.setText("<-");
                     }
                     else
                     {
-                        searchBox.getChildren().removeAll(searchOptionsPane, button, editModePane, newButton);
-                        searchBox.getChildren().addAll(button, newButton, quickPanelButton, editModePane);
+                        searchBox.getChildren().removeAll(searchOptionsPane, button, editModePane, newButton, startDate, endDate);
+                        searchBox.getChildren().addAll(button, newButton, quickPanelButton, editModePane, startDate, endDate);
                         button.setText("->");
                     }
                 }
@@ -222,6 +225,66 @@ public class SearchUI extends HBox implements SearchInterface
         searchBox.getChildren().add(newButton);
         searchBox.getChildren().add(quickPanelButton);
         searchBox.getChildren().add(getTogglePane());
+
+        startDate = new DatePicker();
+
+        startDate.valueProperty().addListener(new ChangeListener<LocalDate>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
+            {
+                System.out.println(newValue);
+                try
+                {
+                    if (newValue != null)
+                    {
+                        Date date = Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        searchOptions.setStartDate(date);
+                    }
+                    else
+                    {
+                        searchOptions.setStartDate(null);
+                    }
+
+                    controller.setSearchOptions(searchOptions);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        endDate = new DatePicker();
+        endDate.valueProperty().addListener(new ChangeListener<LocalDate>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue)
+            {
+                System.out.println(newValue);
+                try
+                {
+                    if (newValue != null)
+                    {
+                        Date date = Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                        searchOptions.setEndDate(date);
+                    }
+                    else
+                    {
+                        searchOptions.setEndDate(null);
+                    }
+
+                    controller.setSearchOptions(searchOptions);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        searchBox.getChildren().add(startDate);
+        searchBox.getChildren().add(endDate);
 
         HBox.setHgrow(searchBox, Priority.ALWAYS);
         searchBox.setFillHeight(false);
@@ -285,7 +348,7 @@ public class SearchUI extends HBox implements SearchInterface
         gridPane.setAlignment(Pos.CENTER);
 
         sTags = new CheckBox("Tags");
-//        sTags.setSelected(true);
+        //        sTags.setSelected(true);
         sTags.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -304,7 +367,7 @@ public class SearchUI extends HBox implements SearchInterface
         });
 
         sBookmarkNames = new CheckBox("Bookmark Names");
-//        sBookmarkNames.setSelected(true);
+        //        sBookmarkNames.setSelected(true);
         sBookmarkNames.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -323,7 +386,7 @@ public class SearchUI extends HBox implements SearchInterface
         });
 
         sBookmarkText = new CheckBox("Bookmark Text");
-//        sBookmarkText.setSelected(true);
+        //        sBookmarkText.setSelected(true);
         sBookmarkText.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override

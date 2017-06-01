@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import org.apache.commons.exec.*;
 import org.apache.logging.log4j.*;
+import org.zeroturnaround.exec.*;
 
 public class TerminalBookmark extends AbstractBookmark
 {
@@ -36,20 +37,19 @@ public class TerminalBookmark extends AbstractBookmark
     public void runAction()
         throws Exception
     {
-//
-//        new ProcessExecutor().command(command)
-//            .redirectOutput(new LogOutputStream() {
-//
-//                @Override
-//                protected void processLine(String line, int logLevel)
-//                {
-//                    System.out.println(line.toString());
-//                }
-//            })
-//            .execute();
+
+        new ProcessExecutor().destroyOnExit().command(command.split("~~"))
+            .redirectOutput(new LogOutputStream() {
+                @Override
+                protected void processLine(String line, int logLevel)
+                {
+                    System.out.println(line.toString());
+                }
+            })
+            .execute();
 
 
-//        CommandLine cmdLine = CommandLine.parse(command);
+//        CommandLine cmdLine = new CommandLine(command);
 //
 //        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
 //
@@ -58,28 +58,27 @@ public class TerminalBookmark extends AbstractBookmark
 //        executor.setExitValue(substitueExitValue);
 //        executor.setWatchdog(watchdog);
 //        executor.execute(cmdLine, resultHandler);
-        List<String> commands = new ArrayList<String>();
-        commands.add("ls");
-        commands.add("-all");
-        commands.add("|");
-        commands.add("grep");
-        commands.add("a");
-        ProcessBuilder pb = new ProcessBuilder(command);
-        pb.redirectErrorStream(true);
-        try {
 
-            Process prs = pb.start();
-            Thread inThread = new Thread(new In(prs.getInputStream()));
-            inThread.start();
-            Thread.sleep(2000);
-            OutputStream writeTo = prs.getOutputStream();
-            writeTo.write("oops\n".getBytes());
-            writeTo.flush();
-            writeTo.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String[] env = {"PATH=/bin:/usr/bin/"};
+////        ProcessBuilder pb = new ProcessBuilder(command, env);
+//
+//        Process prs = Runtime.getRuntime().exec(command, env);
+//
+////        pb.redirectErrorStream(true);
+//        try {
+//
+////            Process prs = pb.start();
+//            Thread inThread = new Thread(new In(prs.getInputStream()));
+//            inThread.start();
+//            Thread.sleep(2000);
+//            OutputStream writeTo = prs.getOutputStream();
+//            writeTo.write("Output:\n".getBytes());
+//            writeTo.flush();
+//            writeTo.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -127,7 +126,7 @@ public class TerminalBookmark extends AbstractBookmark
             byte[] b = new byte[1024];
             int size = 0;
             try {
-                while ((size = is.read(b)) != -1) {
+                while (is.available()>0) {
                     System.err.println(new String(b));
                 }
                 is.close();

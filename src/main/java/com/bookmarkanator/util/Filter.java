@@ -137,7 +137,7 @@ public class Filter
 
         for (AbstractBookmark bk : this.results())
         {
-            if (bk.getCreationDate().compareTo(includeIfAfter) > -1 && bk.getCreationDate().compareTo(includeIfBefore) < 0)
+            if (bk.getCreationDate().after(includeIfAfter) && bk.getCreationDate().before(includeIfBefore))
             {
                 tempList.add(bk);
             }
@@ -283,7 +283,7 @@ public class Filter
         //Remove non selected bookmark types
         this.keepBookmarkTypesByClassName(searchOptions.getSelectedTypes());
 
-        //Remove all that dont fit within the date range.
+        //Remove all that don't fit within the date range.
         if (searchOptions.getStartDate()!=null || searchOptions.getEndDate()!=null)
         {
             Date start;

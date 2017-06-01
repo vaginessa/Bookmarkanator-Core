@@ -114,7 +114,7 @@ public class TerminalBookmarkUI extends AbstractUIBookmark
         vbox.getChildren().add(vBox);
         Platform.runLater(() -> name.requestFocus());
 
-        Label command = new Label("Command");
+        Label command = new Label("Command (split by using ~~ between commands");
         //Text area
         TextField textArea = new TextField();
         if (bookmark!=null)
