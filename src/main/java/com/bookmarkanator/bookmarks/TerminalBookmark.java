@@ -34,7 +34,7 @@ public class TerminalBookmark extends AbstractBookmark
     }
 
     @Override
-    public void runAction()
+    public String runAction(String actionCommand)
         throws Exception
     {
 
@@ -79,6 +79,7 @@ public class TerminalBookmark extends AbstractBookmark
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        return "";
     }
 
     @Override

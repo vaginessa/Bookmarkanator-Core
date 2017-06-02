@@ -31,11 +31,12 @@ public class FileBookmark extends AbstractBookmark
     }
 
     @Override
-    public void runAction()
+    public String runAction(String commandString)
         throws Exception
     {
         File file = new File(getContent());
         open(file);
+        return "";
     }
 
     @Override

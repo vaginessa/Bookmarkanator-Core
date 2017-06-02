@@ -1,21 +1,12 @@
 Core:
 _____________________________________
 
-TODO Refactor all source code in core to be simpler, add comments, and simplify usage of shared classes such as settings, module loader etc...
+
 Done Add Logging to the whole project.
-TODO Fix tag submission so it is always to lower or to upper case. That way "Java Fx" and "java fx" would be considered the same. Allow multi case tagging but searching without case?
-
-TODO Handle missing but not required fields in the xml (such as last accessed date, or tags)
-
-TODO Implement/verify message passing funcationality.
 Done - TODO Refactor/simplify bootstrap
-TODO Fix the search functionality.
 Done - TODO Take a look at the bookmarks xml parser and verify the settings loading is working properly.
-TODO Add a mechanism for a bookmark to indicate which kind of data it can handle (for drag and drop in UI)
-TODO Add statistics to the bookmarks, such as use count, and how many bookmarks per type.
 
 *** TODO Modify the bookmarks to have a method that returns the words to search in the text. This will allow the text bookmarks to have formatting stored in them, but to also have searchable text. This would necessitate modification of the search systems to use this new method. Also there would have to be an HTML bookmark that could strip the formatting out when necessary.
-TODO Index the words of the text of a bookmark (no string rotations).
 
 Not done - Added loading from current directory which would have a similar affect - TODO Have a way to list workspaces and transfer bookmarks between them.
 TODO Make a way to encrypt the contents of the selected directory, and unencrypt it (im memory only) when running.
@@ -23,20 +14,15 @@ TODO Make a way to encrypt the contents of the selected directory, and unencrypt
 Settings:
 
 Done - TODO Fix/improve importing of settings from other settings objects.
-TODO Improve setting of overriding classes, and other default settings.
 
 Bookmarks:
 
-TODO Implement Encrypted bookmark
-TODO Implement file bookmark
 TODO Implement Terminal Bookmark
 TODO Implement Sequence bookmark
-TODO Enable bookmarks exporting and importing - even from a bookmarks.xml file.
 TODO Make it so bookmarks.xml backups only store a single backup when changes are detected.
 
 Testing:
 
-TODO Perform module addon loading testing - create a separate module, load it, use it etc...
 TODO Perform settings/bookmarks loading/saving testing.
 TODO Perform cross platform tests
 
@@ -65,9 +51,10 @@ TODO Add bookmark import/export functionality (should export showing bookmarks o
 TODO Improve setting of overriding classes, and other default settings.
 TODO Add a settings modification window. Specify UI settings, core settings, and default settings. Allow the overriding of any overridable types (currently bookmarks, bookmark UI's, bookmark io, and bookmark context classes, as well as controller, and any UI classes.
 TODO Add the ability to perform actions on tags, e.g. delete, rename, remove, remove from showing bookmarks, add to showing bookmarks, merge tags, suggest operations on tags, and tell the user about redundant tags.
+TODO Prevent shutting down of main window while other windows are open.
 
 TODO Implement Encrypted bookmark UI
-TODO Implement file bookmark UI
+--Done - TODO Implement file bookmark UI
 TODO Implement Terminal Bookmark UI
 TODO Implement Sequence bookmark UI - use main window as the search interface, possibly rearrange windows side by side?
 
@@ -85,7 +72,7 @@ TODO Setup help screens that pop up when using something for the first time, or 
 Bugs:
 
 TODO Sometimes when a bookmark is added or tags are changed, or the text is changed, the available tags do not get updated, and neither does the text search.
-TODO Full text search is not working properly because the bookmark text contains html. What to do with the html?
+- Done (created plain text and html text bookmarks) - TODO Full text search is not working properly because the bookmark text contains html. What to do with the html?
 TODO When doing a search only the tags in the left most selected tag panel highlight, any additional panels dont have highlight.
 TODO It appears that selecting search specific types doesn't restrict types. I selected search bookmark names only, and when I searched "ab" it found tags with "ab" in them.
 TODO When a text bookmark is opened, but not in edit mode, if the text is changed the text is updated, if the name is changed it is not updated.

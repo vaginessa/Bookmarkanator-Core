@@ -30,10 +30,11 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
-    public void runAction()
+    public String runAction(String actionCommand)
         throws Exception
     {
         //do nothing
+        return null;
     }
 
     @Override

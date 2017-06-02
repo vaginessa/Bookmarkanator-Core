@@ -9,6 +9,8 @@ import com.bookmarkanator.bookmarks.*;
  */
 public class Filter
 {
+    private static final long MILISECONDS_PER_SECOND = 1000;
+    private static final long SECONDS_PER_DAY = 86400;
     private static Filter filter;
 
     private List<AbstractBookmark> bookmarkList;
@@ -307,6 +309,8 @@ public class Filter
             else
             {
                 end = new Date();
+                // Adjusting end date to be the current day at 11:59pm.
+//                end.setTime(end.getTime()+(MILISECONDS_PER_SECOND * SECONDS_PER_DAY)-1000);
             }
 
             this.keepWithinDateRange(start, end);

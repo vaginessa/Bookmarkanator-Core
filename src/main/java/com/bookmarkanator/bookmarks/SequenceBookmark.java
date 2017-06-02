@@ -43,7 +43,7 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
-    public void runAction()
+    public String runAction(String commandString)
         throws Exception
     {
         boolean error = false;
@@ -64,12 +64,11 @@ public class SequenceBookmark extends AbstractBookmark
             }
         }
 
-        this.setContent(sb.toString());
-
         if (error)
         {
             throw new Exception("One or more referenced bookmarks couldn't be found. Please check error bookmarks list for bookmark Id's.");
         }
+        return sb.toString();
     }
 
     @Override

@@ -23,10 +23,11 @@ public class HTMLFormattedBookmark extends AbstractBookmark
     }
 
     @Override
-    public void runAction()
+    public String runAction(String actionCommand)
         throws Exception
     {
         // Do nothing.
+        return null;
     }
 
     @Override

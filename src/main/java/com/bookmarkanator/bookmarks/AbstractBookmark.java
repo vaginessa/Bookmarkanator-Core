@@ -14,6 +14,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     protected Date creationDate;
     protected Date lastAccessedDate;
     protected Set<BKDependency> dependencies;//Things this bookmark wishes to be notified of.
+    protected Set<String> supportedActions;// The list of actions this bookmarks supports
 
     // ============================================================
     // Constructors
@@ -27,6 +28,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         //        text = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
+        supportedActions = new HashSet<>();
     }
 
     public String getName()
@@ -48,15 +50,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     {
         this.id = id;
     }
-
-    //    public String getText()
-    //    {
-    //        return text;
-    //    }
-    //
-    //    public void setText(String data) throws Exception {
-    //        this.text = data;
-    //    }
 
     public Set<String> getTags()
     {
@@ -118,6 +111,28 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         return false;
     }
 
+    protected void setSupportedActions(Set<String> newActions)
+    {
+        this.supportedActions = newActions;
+    }
+
+    public Set<String> getSupportedActions()
+    {
+        return supportedActions;
+    }
+
+    /**
+     * Run whatever default action this bookmark has.
+     * @return  The result string for the action
+     * @throws Exception
+     */
+    public String runAction()
+        throws Exception
+    {
+        return runAction("");
+    }
+
+
     // ============================================================
     // Abstract Methods
     // ============================================================
@@ -137,9 +152,12 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract List<String> getTypeLocation();
 
     /**
-     * The runAction that will happen when this bookmark is called.
+     * Run specified action
+     * @param action The action to run
+     * @return  The result string for the action
+     * @throws Exception
      */
-    public abstract void runAction()
+    public abstract String runAction(String action)
         throws Exception;
 
     /**

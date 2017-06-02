@@ -20,7 +20,7 @@ public class WebBookmark extends AbstractBookmark {
     }
 
     @Override
-    public void runAction() throws Exception {
+    public String runAction(String actionCommand) throws Exception {
         logger.info("Hey I'm a log!");
 
         String os = System.getProperty("os.name").toLowerCase();
@@ -32,6 +32,7 @@ public class WebBookmark extends AbstractBookmark {
         } else {//Not windows or mac, assumed to be linux.
             openLinuxBrowserWindow(getContent());
         }
+        return "";
     }
 
     @Override
