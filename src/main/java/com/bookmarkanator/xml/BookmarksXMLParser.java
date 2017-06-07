@@ -1,7 +1,6 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
-import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
@@ -37,21 +36,20 @@ public class BookmarksXMLParser
     public static final String BASE_VERSION = "0.1";
 
     //Variables
-    private ContextInterface contextInterface;
+    private AbstractContext abstractContext;
     private InputStream inputStream;
     private Document document;
     private String xmlVerison;
 
-    public BookmarksXMLParser(ContextInterface contextInterface, InputStream xmlIn)
+    public BookmarksXMLParser(AbstractContext abstractContext, InputStream xmlIn)
     {
-        this.contextInterface = contextInterface;
+        this.abstractContext = abstractContext;
         this.inputStream = xmlIn;//The calling program must close the stream.
     }
 
     public void parse()
         throws Exception
     {
-        contextInterface.setAlwaysClean(true);
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         document = builder.parse(inputStream);
@@ -129,7 +127,7 @@ public class BookmarksXMLParser
             }
         }
 
-        contextInterface.setAlwaysClean(false);
+        abstractContext.setClean();
     }
 
     private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
@@ -145,7 +143,7 @@ public class BookmarksXMLParser
             {
                 abs = abstractBookmark.getNew();
                 parseBookmarkDetails(n, abs);
-                contextInterface.addBookmark(abs);
+                abstractContext.addBookmark(abs);
             }
         }
     }

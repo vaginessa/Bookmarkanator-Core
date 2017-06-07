@@ -10,7 +10,7 @@ import org.apache.logging.log4j.*;
  * When loading/laving the bookmarks will be written/read in xml format. Each bookmark has a section of text within the xml
  * that it can save to (in any format), but is also responsible for parsing when the bookmark is loaded.
  */
-public class FileContext implements ContextInterface
+public class FileContext extends AbstractContext
 {
     private static final Logger logger = LogManager.getLogger(FileContext.class.getCanonicalName());
     private Map<UUID, AbstractBookmark> bookmarks;
@@ -521,45 +521,6 @@ public class FileContext implements ContextInterface
         }
 
         return res;
-    }
-
-    @Override
-    public boolean isDirty()
-    {
-        return this.isDirty;
-    }
-
-    @Override
-    public void setAlwaysClean(boolean alwaysClean)
-    {
-        this.alwaysClean = alwaysClean;
-    }
-
-    private void setDirty()
-    {
-        if (!alwaysClean)
-        {
-            isDirty = true;
-        }
-    }
-
-    @Override
-    public String bookmarksReport(boolean includeTags, int limit)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-        sb.append("***Bookmarks Report***");
-        sb.append("\n\n");
-
-        if (includeTags)
-        {
-            sb.append(bookmarksToStringWTags(getBookmarks(), limit));
-        }
-        else
-        {
-            sb.append(bookmarksToString(getBookmarks(), limit));
-        }
-        return sb.toString();
     }
 
     private String bookmarksToString(Set<AbstractBookmark> bookmarks, int limit)

@@ -17,7 +17,7 @@ public class TestParsing
     {
         FileIO fileIO = new FileIO();
         fileIO.init("/Users/lloyd1/Projects/Bookmark-anator/src/main/resources/com.bookmarkanator.xml/BookmarksXMLTemplate.xml");
-        ContextInterface fileContext = fileIO.getContext();
+        AbstractContext fileContext = fileIO.getContext();
 //        fileContext.getBookmark(UUID.fromString("94219EF5-6C6E-4A55-8DA7-5107ED80D0A9")).edit(fileContext);
 
         //TODO Fix problem where if the program exits before fileIO.save() is called then all the file contents are removed.

@@ -47,7 +47,7 @@ public class Bootstrap
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(BKIOInterface.class);
-        ModuleLoader.use().addClassToTrack(ContextInterface.class);
+        ModuleLoader.use().addClassToTrack(AbstractContext.class);
 
         Set<SettingItem> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
 
@@ -251,7 +251,7 @@ public class Bootstrap
         return Bootstrap.use().bkioInterface;
     }
 
-    public static ContextInterface context()
+    public static AbstractContext context()
         throws Exception
     {
         return Bootstrap.use().bkioInterface.getContext();

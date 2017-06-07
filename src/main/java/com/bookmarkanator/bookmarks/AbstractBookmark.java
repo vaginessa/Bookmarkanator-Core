@@ -1,7 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.core.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
@@ -9,12 +8,12 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     protected String name;//The user visible name
     protected UUID id;
-    //    protected String text;//contents of the bookmark. Intended to be human readable text stored in the xml.
     protected Set<String> tags;
     protected Date creationDate;
     protected Date lastAccessedDate;
-    protected Set<BKDependency> dependencies;//Things this bookmark wishes to be notified of.
     protected Set<String> supportedActions;// The list of actions this bookmarks supports
+    protected Map<String, Set<AbstractBookmark>> beforeListeners;
+    protected Map<String, Set<AbstractBookmark>> afterListeners;
 
     // ============================================================
     // Constructors
@@ -29,6 +28,8 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         creationDate = new Date();
         lastAccessedDate = new Date();
         supportedActions = new HashSet<>();
+        beforeListeners = new HashMap<>();
+        afterListeners = new HashMap<>();
     }
 
     public String getName()
@@ -91,16 +92,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.lastAccessedDate = lastAccessedDate;
     }
 
-    public Set<BKDependency> getDependencies()
-    {
-        return dependencies;
-    }
-
-    public void setDependencies(Set<BKDependency> dependencies)
-    {
-        this.dependencies = dependencies;
-    }
-
     public boolean setSecretKey(String secretKey)
     {
         if (secretKey != null)
@@ -122,8 +113,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * Run whatever default action this bookmark has.
-     * @return  The result string for the action
+     * Run specified action.
+     *
+     * @return The result string for the action
      * @throws Exception
      */
     public String runAction()
@@ -132,13 +124,110 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         return runAction("");
     }
 
+    /**
+     * Run whatever default action this bookmark has.
+     *
+     * @return The result string for the action
+     * @throws Exception
+     */
+    public String runAction(String actionString)
+        throws Exception
+    {
+        return runTheAction(actionString);
+    }
+
+    public void addBeforeListener(AbstractBookmark abstractBookmark, String actionString)
+    {
+        Set<AbstractBookmark> items = beforeListeners.get(actionString);
+
+        if (items == null)
+        {
+            items = new HashSet<>();
+            beforeListeners.put(actionString, items);
+        }
+
+        items.add(abstractBookmark);
+    }
+
+    public void removeBeforeListener(AbstractBookmark abstractBookmark, String actionString)
+    {
+        Set<AbstractBookmark> items = beforeListeners.get(actionString);
+
+        if (items != null)
+        {
+            items.remove(abstractBookmark);
+        }
+    }
+
+    public void addAfterListener(AbstractBookmark abstractBookmark, String actionString)
+    {
+        Set<AbstractBookmark> items = afterListeners.get(actionString);
+
+        if (items == null)
+        {
+            items = new HashSet<>();
+            afterListeners.put(actionString, items);
+        }
+
+        items.add(abstractBookmark);
+    }
+
+    public void removeAfterListener(AbstractBookmark abstractBookmark, String actionString)
+    {
+        Set<AbstractBookmark> items = afterListeners.get(actionString);
+
+        if (items != null)
+        {
+            items.remove(abstractBookmark);
+        }
+    }
+
+    private void notifyBeforeListeners(String actionString)
+    {
+        Set<AbstractBookmark> items = beforeListeners.get(actionString);
+
+        if (items != null)
+        {
+            for (AbstractBookmark abstractBookmark : items)
+            {
+                abstractBookmark.notifyBeforeAction(this, actionString);
+            }
+        }
+    }
+
+    private void notifyAfterListeners(String actionString)
+    {
+        Set<AbstractBookmark> items = afterListeners.get(actionString);
+
+        if (items != null)
+        {
+            for (AbstractBookmark abstractBookmark : items)
+            {
+                abstractBookmark.notifyAfterAction(this, actionString);
+            }
+        }
+    }
 
     // ============================================================
     // Abstract Methods
     // ============================================================
 
+    public abstract void notifyBeforeAction(AbstractBookmark source, String actionString);
+
+    public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
+
     /**
-     * The type name is the name that will be displayed to the user for this type of bookmark.
+     * Run specified action
+     *
+     * @param action The action to run
+     * @return The result string for the action
+     * @throws Exception
+     */
+    protected abstract String runTheAction(String action)
+        throws Exception;
+
+    /**
+     * This is the human readable name for this bookmark type.
      *
      * @return Text of the name of the type of this bookmark.
      */
@@ -150,15 +239,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark type string (UI's could do this in any way of course).
      */
     public abstract List<String> getTypeLocation();
-
-    /**
-     * Run specified action
-     * @param action The action to run
-     * @return  The result string for the action
-     * @throws Exception
-     */
-    public abstract String runAction(String action)
-        throws Exception;
 
     /**
      * Called prior to deleting this bookmark.
@@ -201,4 +281,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract Set<String> getSearchWords()
         throws Exception;
 
+
+    public abstract void systemInit();
+    public abstract void systemShuttingDown();
 }

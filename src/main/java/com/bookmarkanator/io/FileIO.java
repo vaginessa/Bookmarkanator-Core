@@ -19,7 +19,7 @@ public class FileIO implements BKIOInterface
     public static String DEFAULT_BACKUP_FILE_NAME = "bookmarks.backup.xml";
 
     // Fields
-    private ContextInterface context;
+    private AbstractContext context;
     private File file;
 
     // ============================================================
@@ -108,7 +108,7 @@ public class FileIO implements BKIOInterface
     }
 
     @Override
-    public ContextInterface getContext()
+    public AbstractContext getContext()
     {
         if (this.context == null)
         {

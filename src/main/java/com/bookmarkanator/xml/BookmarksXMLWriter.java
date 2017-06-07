@@ -1,7 +1,6 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
-import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
@@ -14,12 +13,12 @@ import org.w3c.dom.*;
 
 public class BookmarksXMLWriter
 {
-    private ContextInterface contextInterface;
+    private AbstractContext abstractContext;
     private OutputStream out;
 
-    public BookmarksXMLWriter(ContextInterface contextInterface, OutputStream outputStream)
+    public BookmarksXMLWriter(AbstractContext abstractContext, OutputStream outputStream)
     {
-        this.contextInterface = contextInterface;
+        this.abstractContext = abstractContext;
         this.out = outputStream;
     }
 
@@ -32,7 +31,7 @@ public class BookmarksXMLWriter
 
         rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
 
-        addBlocks(rootElement, doc, contextInterface);
+        addBlocks(rootElement, doc, abstractContext);
 
         doc.appendChild(rootElement);
 
@@ -45,12 +44,12 @@ public class BookmarksXMLWriter
         transformer.transform(source, result);
     }
 
-    private void addBlocks(Element element,Document document, ContextInterface contextInterface)
+    private void addBlocks(Element element,Document document, AbstractContext abstractContext)
         throws Exception
     {
         Map<String, Element> blocks = new HashMap<>();
 
-        Set<AbstractBookmark> bookmarks = contextInterface.getBookmarks();
+        Set<AbstractBookmark> bookmarks = abstractContext.getBookmarks();
 
         for (AbstractBookmark bookmark: bookmarks)
         {

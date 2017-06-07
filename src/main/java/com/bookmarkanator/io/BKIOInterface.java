@@ -34,7 +34,7 @@ public interface BKIOInterface {
      * the context is operated on.
      * @return  A IO specific type of context.
      */
-    ContextInterface getContext()throws Exception;
+    AbstractContext getContext()throws Exception;
 
 
 }
