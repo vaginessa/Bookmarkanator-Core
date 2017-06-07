@@ -15,6 +15,18 @@ public class EncryptedBookmark extends AbstractBookmark{
         return null;
     }
 
+    @Override
+    public void systemInit()
+    {
+
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+
+    }
+
     /**
      * Add field to the context if this bookmark is unencrypted so that the user doesn't have to unencrypt it each time.
      */
@@ -27,6 +39,25 @@ public class EncryptedBookmark extends AbstractBookmark{
     @Override
     public String runAction(String actionString) throws Exception {
 return null;
+    }
+
+    @Override
+    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    protected String runTheAction(String action)
+        throws Exception
+    {
+        return null;
     }
 
     @Override

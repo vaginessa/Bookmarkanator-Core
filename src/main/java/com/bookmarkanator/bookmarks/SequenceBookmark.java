@@ -29,6 +29,18 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
+    public void systemInit()
+    {
+
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+
+    }
+
+    @Override
     public String getTypeName()
     {
         return "Sequence";
@@ -69,6 +81,25 @@ public class SequenceBookmark extends AbstractBookmark
             throw new Exception("One or more referenced bookmarks couldn't be found. Please check error bookmarks list for bookmark Id's.");
         }
         return sb.toString();
+    }
+
+    @Override
+    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    protected String runTheAction(String action)
+        throws Exception
+    {
+        return null;
     }
 
     @Override

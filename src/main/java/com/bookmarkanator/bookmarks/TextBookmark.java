@@ -24,6 +24,18 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
+    public void systemInit()
+    {
+
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+
+    }
+
+    @Override
     public String getTypeName()
     {
         return "Text";
@@ -34,6 +46,25 @@ public class TextBookmark extends AbstractBookmark
         throws Exception
     {
         //do nothing
+        return null;
+    }
+
+    @Override
+    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    protected String runTheAction(String action)
+        throws Exception
+    {
         return null;
     }
 

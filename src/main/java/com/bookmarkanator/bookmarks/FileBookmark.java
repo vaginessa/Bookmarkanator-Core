@@ -19,6 +19,18 @@ public class FileBookmark extends AbstractBookmark
     }
 
     @Override
+    public void systemInit()
+    {
+
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+
+    }
+
+    @Override
     public String getTypeName()
     {
         return "File";
@@ -37,6 +49,25 @@ public class FileBookmark extends AbstractBookmark
         File file = new File(getContent());
         open(file);
         return "";
+    }
+
+    @Override
+    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(AbstractBookmark source, String actionString)
+    {
+
+    }
+
+    @Override
+    protected String runTheAction(String action)
+        throws Exception
+    {
+        return null;
     }
 
     @Override
