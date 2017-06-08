@@ -1,7 +1,6 @@
 package com.bookmarkanator.bookmarks;
 
 import java.util.*;
-import com.bookmarkanator.core.*;
 import org.apache.logging.log4j.*;
 
 public class TextBookmark extends AbstractBookmark
@@ -69,19 +68,6 @@ public class TextBookmark extends AbstractBookmark
     protected String runTheAction(String action)
         throws Exception
     {
-        Object obj = MessageBoard.use().readBoard(this.getClass().getCanonicalName(), "counter");
-
-        if (obj instanceof Integer)
-        {
-            Integer i = (Integer)obj;
-            i++;
-            MessageBoard.use().writeBoard(this.getClass().getCanonicalName(), secretKey,"counter",i );
-            System.out.println("Value = "+i);
-        }
-        else if (obj==null)
-        {
-            MessageBoard.use().writeBoard(this.getClass().getCanonicalName(), secretKey,"counter",0);
-        }
         return null;
     }
 
