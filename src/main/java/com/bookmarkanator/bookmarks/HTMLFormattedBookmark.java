@@ -7,6 +7,7 @@ import org.jsoup.*;
 public class HTMLFormattedBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(HTMLFormattedBookmark.class.getCanonicalName());
+    private static String secretKey;
     private String content;
     @Override
     public String getTypeName()
@@ -29,7 +30,16 @@ public class HTMLFormattedBookmark extends AbstractBookmark
         // Do nothing.
         return null;
     }
-
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (HTMLFormattedBookmark.secretKey == null && secretKey!=null)
+        {
+            HTMLFormattedBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
+    }
     @Override
     public void notifyBeforeAction(AbstractBookmark source, String actionString)
     {

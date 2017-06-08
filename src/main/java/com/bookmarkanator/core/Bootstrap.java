@@ -61,6 +61,13 @@ public class Bootstrap
         }
 
         this.bkioInterface = loadBKIOInterface();
+
+        // Give bookmarks access to the message board
+        MessageBoard messageBoard = MessageBoard.use();
+        for (AbstractBookmark abs: this.bkioInterface.getContext().getBookmarks())
+        {
+            messageBoard.setSecretKey(abs);
+        }
     }
 
     // ============================================================

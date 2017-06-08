@@ -12,7 +12,19 @@ import org.apache.logging.log4j.*;
  */
 public class WebBookmark extends AbstractBookmark {
     private static final Logger logger = LogManager.getLogger(WebBookmark.class.getCanonicalName());
+    private static String secretKey;
     private URL url;
+
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (WebBookmark.secretKey == null && secretKey!=null)
+        {
+            WebBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String getTypeName() {

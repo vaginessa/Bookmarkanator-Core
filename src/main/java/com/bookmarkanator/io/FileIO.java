@@ -35,6 +35,8 @@ public class FileIO implements BKIOInterface
         //TODO Figure out what to do about the bookmarks.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
         this.context = this.getContext();
 
+
+
         if (config == null || config.trim().isEmpty())
         {//
             logger.trace("No file location sent in. Inferring location from settings file used.");

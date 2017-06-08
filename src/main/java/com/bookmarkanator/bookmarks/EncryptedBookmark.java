@@ -5,6 +5,7 @@ import org.apache.logging.log4j.*;
 
 public class EncryptedBookmark extends AbstractBookmark{
     private static final Logger logger = LogManager.getLogger(EncryptedBookmark.class.getCanonicalName());
+    private static String secretKey;
     private String passwordHash;
     private String salt;
     private long valid;//stores how long after entering this password, until the bookmark text is encrypted again.
@@ -34,6 +35,17 @@ public class EncryptedBookmark extends AbstractBookmark{
     @Override
     public String getTypeName() {
         return "Encrypted";
+    }
+
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (EncryptedBookmark.secretKey == null && secretKey!=null)
+        {
+            EncryptedBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
     }
 
     @Override

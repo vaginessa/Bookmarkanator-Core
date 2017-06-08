@@ -10,6 +10,7 @@ import org.apache.logging.log4j.*;
 public class FileBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(FileBookmark.class.getCanonicalName());
+    private static String secretKey;
     String content;
 
     @Override
@@ -63,6 +64,16 @@ public class FileBookmark extends AbstractBookmark
 
     }
 
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (FileBookmark.secretKey == null && secretKey!=null)
+        {
+            FileBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
+    }
     @Override
     protected String runTheAction(String action)
         throws Exception

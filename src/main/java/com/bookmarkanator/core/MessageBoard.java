@@ -8,11 +8,11 @@ public class MessageBoard
 {
     private static final Logger logger = LogManager.getLogger(MessageBoard.class.getCanonicalName());
     private static MessageBoard messageBoard;
-    private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, message board map>
+    private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, Map<message key, message object> >
     // secret key assigned after bookmarks are loaded, and is used to restrict write access to the message board.
     private Map<String, String> messageBoardKeyMap;//<bookmark class name, secret key>
 
-    public MessageBoard()
+    private MessageBoard()
     {
         messagesMap = new HashMap<>();
         messageBoardKeyMap = new HashMap<>();
@@ -21,7 +21,7 @@ public class MessageBoard
     public Object readBoard(String className, String objKey)
     {
         Map<String, Object> map = messagesMap.get(className);
-        if (map==null)
+        if (map == null)
         {
             return null;
         }
@@ -37,26 +37,42 @@ public class MessageBoard
         if (secretKey.equals(obtainedKey))
         {//Allow writing on message board
             Map<String, Object> tmp = messagesMap.get(className);
-            if (tmp!=null)
+
+            if (tmp == null)
             {
-                tmp.put(objKey, value);
+                tmp = new HashMap<>();
+                messagesMap.put(className, tmp);
             }
+
+            tmp.put(objKey, value);
         }
     }
 
     public void setSecretKey(AbstractBookmark bookmark)
     {
         String secretKey = UUID.randomUUID().toString();
+        String className = bookmark.getClass().getCanonicalName();
+        String str = messageBoardKeyMap.get(className);
 
-        if (bookmark.setSecretKey(secretKey))
+        if (str == null)
         {
-            messageBoardKeyMap.put(bookmark.getClass().getCanonicalName(), secretKey);
+            if (bookmark.setSecretKey(secretKey))
+            {
+                messageBoardKeyMap.put(bookmark.getClass().getCanonicalName(), secretKey);
+            }
+            else
+            {
+                logger.warn("Could not set secret key for " + className + " bookmark with Id \"" + bookmark.getId() + "\"");
+            }
         }
     }
 
+    /**
+     * Single message board object allowed.
+     */
     public static MessageBoard use()
     {
-        if (messageBoard==null)
+        if (messageBoard == null)
         {
             messageBoard = new MessageBoard();
         }

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.*;
 public class SequenceBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(SequenceBookmark.class.getCanonicalName());
+    private static String secretKey;
     private List<UUID> items;
     private List<UUID> errorItems;
 
@@ -21,7 +22,16 @@ public class SequenceBookmark extends AbstractBookmark
         items = new ArrayList<>();
         errorItems = new ArrayList<>();
     }
-
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (SequenceBookmark.secretKey == null && secretKey!=null)
+        {
+            SequenceBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
+    }
     @Override
     public Set<String> getSearchWords()
     {

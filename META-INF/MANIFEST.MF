@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: com.bookmarkanator.App
+Main-Class: com.bookmarkanator.ui.fxui.Main

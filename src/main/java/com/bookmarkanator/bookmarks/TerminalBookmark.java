@@ -9,11 +9,22 @@ import org.zeroturnaround.exec.*;
 public class TerminalBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(TerminalBookmark.class.getCanonicalName());
-
+    private static String secretKey;
     String command;
     private long timeOut = ExecuteWatchdog.INFINITE_TIMEOUT;
     private int substitueExitValue;
-//    private ExecuteWatchdog watchdog;
+
+    //    private ExecuteWatchdog watchdog;
+    @Override
+    public boolean setSecretKey(String secretKey)
+    {
+        if (TerminalBookmark.secretKey == null && secretKey != null)
+        {
+            TerminalBookmark.secretKey = secretKey;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Set<String> getSearchWords()
@@ -50,47 +61,45 @@ public class TerminalBookmark extends AbstractBookmark
         throws Exception
     {
 
-        new ProcessExecutor().destroyOnExit().command(command.split("~~"))
-            .redirectOutput(new LogOutputStream() {
-                @Override
-                protected void processLine(String line, int logLevel)
-                {
-                    System.out.println(line.toString());
-                }
-            })
-            .execute();
+        new ProcessExecutor().destroyOnExit().command(command.split("~~")).redirectOutput(new LogOutputStream()
+        {
+            @Override
+            protected void processLine(String line, int logLevel)
+            {
+                System.out.println(line.toString());
+            }
+        }).execute();
 
+        //        CommandLine cmdLine = new CommandLine(command);
+        //
+        //        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+        //
+        //        ExecuteWatchdog watchdog = new ExecuteWatchdog(timeOut);
+        //        Executor executor = new DefaultExecutor();
+        //        executor.setExitValue(substitueExitValue);
+        //        executor.setWatchdog(watchdog);
+        //        executor.execute(cmdLine, resultHandler);
 
-//        CommandLine cmdLine = new CommandLine(command);
-//
-//        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
-//
-//        ExecuteWatchdog watchdog = new ExecuteWatchdog(timeOut);
-//        Executor executor = new DefaultExecutor();
-//        executor.setExitValue(substitueExitValue);
-//        executor.setWatchdog(watchdog);
-//        executor.execute(cmdLine, resultHandler);
-
-//        String[] env = {"PATH=/bin:/usr/bin/"};
-////        ProcessBuilder pb = new ProcessBuilder(command, env);
-//
-//        Process prs = Runtime.getRuntime().exec(command, env);
-//
-////        pb.redirectErrorStream(true);
-//        try {
-//
-////            Process prs = pb.start();
-//            Thread inThread = new Thread(new In(prs.getInputStream()));
-//            inThread.start();
-//            Thread.sleep(2000);
-//            OutputStream writeTo = prs.getOutputStream();
-//            writeTo.write("Output:\n".getBytes());
-//            writeTo.flush();
-//            writeTo.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        //        String[] env = {"PATH=/bin:/usr/bin/"};
+        ////        ProcessBuilder pb = new ProcessBuilder(command, env);
+        //
+        //        Process prs = Runtime.getRuntime().exec(command, env);
+        //
+        ////        pb.redirectErrorStream(true);
+        //        try {
+        //
+        ////            Process prs = pb.start();
+        //            Thread inThread = new Thread(new In(prs.getInputStream()));
+        //            inThread.start();
+        //            Thread.sleep(2000);
+        //            OutputStream writeTo = prs.getOutputStream();
+        //            writeTo.write("Output:\n".getBytes());
+        //            writeTo.flush();
+        //            writeTo.close();
+        //
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
         return "";
     }
 
@@ -117,10 +126,10 @@ public class TerminalBookmark extends AbstractBookmark
     public void destroy()
         throws Exception
     {
-//        if (watchdog!=null)
-//        {
-//            watchdog.destroyProcess();
-//        }
+        //        if (watchdog!=null)
+        //        {
+        //            watchdog.destroyProcess();
+        //        }
     }
 
     @Override
@@ -132,13 +141,13 @@ public class TerminalBookmark extends AbstractBookmark
     @Override
     public String getContent()
     {
-       return command;
+        return command;
     }
 
     @Override
     public void setContent(String content)
     {
-       this.command = content;
+        this.command = content;
     }
 
     @Override
@@ -146,23 +155,31 @@ public class TerminalBookmark extends AbstractBookmark
     {
         return this.getId().compareTo(o.getId());
     }
-    class In implements Runnable {
+
+    class In implements Runnable
+    {
         private InputStream is;
 
-        public In(InputStream is) {
+        public In(InputStream is)
+        {
             this.is = is;
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             byte[] b = new byte[1024];
             int size = 0;
-            try {
-                while (is.available()>0) {
+            try
+            {
+                while (is.available() > 0)
+                {
                     System.err.println(new String(b));
                 }
                 is.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

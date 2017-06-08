@@ -4,8 +4,6 @@ import java.util.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
-    protected static String secretKey;//Key needed to access message board
-
     protected String name;//The user visible name
     protected UUID id;
     protected Set<String> tags;
@@ -92,15 +90,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.lastAccessedDate = lastAccessedDate;
     }
 
-    public boolean setSecretKey(String secretKey)
-    {
-        if (secretKey != null)
-        {
-            AbstractBookmark.secretKey = secretKey;
-            return true;
-        }
-        return false;
-    }
+    /**
+     * This is a secret key that has only a setter with no getter. It is intended to be set by the message board
+     * as the key that this bookmark can use to post to the message board.
+     * @param secretKey  The secret key to use when modifying message board messages.
+     * @return  True if it was set.
+     */
+    public abstract boolean setSecretKey(String secretKey);
 
     protected void setSupportedActions(Set<String> newActions)
     {

@@ -12,6 +12,7 @@ public abstract class AbstractContext
     private BKIOInterface bkioInterface;
     private int numberOfSearchResults;
     private boolean isDirty;
+    private Settings settings;
 
     public void setBKIOInterface(BKIOInterface bkioInterface)
     {
@@ -44,7 +45,17 @@ public abstract class AbstractContext
     public abstract void updateBookmark(AbstractBookmark bookmark)
         throws Exception;
 
-    int getNumSearchResults()
+    public Settings getSettings()
+    {
+        return this.settings;
+    }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
+
+    public int getNumSearchResults()
     {
         return this.numberOfSearchResults;
     }
@@ -54,7 +65,7 @@ public abstract class AbstractContext
      * name search), or it might need to try searching all sorts of things to fill this quantity of results.
      * @param numSearchResults
      */
-    void setNumSearchResults(int numSearchResults)
+    public void setNumSearchResults(int numSearchResults)
     {
         this.numberOfSearchResults = numSearchResults;
     }
@@ -93,12 +104,6 @@ public abstract class AbstractContext
     {
         this.isDirty = false;
     }
-
-    /**
-     * Obtains a settings object that is specific to the context, and will be saved in the same manner as the bookmarks (file xml, database, web service etc...)
-     * @return  A settings object that will be saved in the same way as the bookmarks.
-     */
-    public abstract Settings settings();
 
     /**
      * Searches for and renames all oldTag's with newTag
