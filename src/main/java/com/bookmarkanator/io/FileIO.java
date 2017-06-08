@@ -3,6 +3,7 @@ package com.bookmarkanator.io;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.xml.*;
 import org.apache.commons.io.*;
@@ -92,7 +93,15 @@ public class FileIO implements BKIOInterface
     public void save(String config)
         throws Exception
     {
-        logger.trace("Saving file to \""+config+"\"");
+        logger.info("Calling systemShuttingDown() on all the bookmarks.");
+        Set<AbstractBookmark> bks = context.getBookmarks();
+        for (AbstractBookmark abs: bks)
+        {
+            abs.systemShuttingDown();
+        }
+        logger.trace("Done.");
+
+        logger.trace("Writing bookmarks file to \""+config+"\"");
         FileOutputStream fout = new FileOutputStream(new File(config));
         BookmarksXMLWriter writer = new BookmarksXMLWriter(context, fout);
         writer.write();
@@ -129,6 +138,14 @@ public class FileIO implements BKIOInterface
         logger.trace("Parsing bookmarks...");
         BookmarksXMLParser parser = new BookmarksXMLParser(context, inputStream);
         parser.parse();
+        logger.trace("Done.");
+
+        logger.info("Calling systemInit() on the bookmarks.");
+        Set<AbstractBookmark> bks = context.getBookmarks();
+        for (AbstractBookmark abs: bks)
+        {
+            abs.systemInit();
+        }
         logger.trace("Done.");
     }
 

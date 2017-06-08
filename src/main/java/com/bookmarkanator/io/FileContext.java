@@ -21,8 +21,6 @@ public class FileContext extends AbstractContext
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
-    private boolean isDirty;
-    private boolean alwaysClean;
 
     public FileContext()
     {

@@ -2,6 +2,7 @@ package com.bookmarkanator.io;
 
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.core.*;
 
 /**
  * The interface that other classes will access to perform operations (searching, sorting, adding, removing) of bookmarks.
@@ -11,7 +12,6 @@ public abstract class AbstractContext
     private BKIOInterface bkioInterface;
     private int numberOfSearchResults;
     private boolean isDirty;
-
 
     public void setBKIOInterface(BKIOInterface bkioInterface)
     {
@@ -93,6 +93,12 @@ public abstract class AbstractContext
     {
         this.isDirty = false;
     }
+
+    /**
+     * Obtains a settings object that is specific to the context, and will be saved in the same manner as the bookmarks (file xml, database, web service etc...)
+     * @return  A settings object that will be saved in the same way as the bookmarks.
+     */
+    public abstract Settings settings();
 
     /**
      * Searches for and renames all oldTag's with newTag
