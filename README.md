@@ -1,4 +1,4 @@
-# Bookmark-anator
+# Bookmarkanator
 A cross platform bookmarking tool inspired by the OwnCloud bookmarks addon. 
 
 In the OwnCloud bookmarks addon, one could create web bookmarks, tag them and search them.
