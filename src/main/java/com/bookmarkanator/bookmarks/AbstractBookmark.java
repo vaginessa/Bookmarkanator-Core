@@ -4,6 +4,20 @@ import java.util.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
+    public enum HandleData
+    {
+        yes(2),
+        maybe(1),
+        no(0);
+
+        private int level;
+
+        HandleData(int level)
+        {
+            this.level = level;
+        }
+    }
+
     protected String name;//The user visible name
     protected UUID id;
     protected Set<String> tags;
@@ -277,7 +291,22 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract Set<String> getSearchWords()
         throws Exception;
 
-
+    /**
+     * Called as the system is starting up so that if individual bookmarks want to do some kind of configuration they can.
+     */
     public abstract void systemInit();
+
+    /**
+     * Called prior to shutting the system down, so that individual bookmarks can perform any actions they deem necessary
+     * prior to being shut down.
+     */
     public abstract void systemShuttingDown();
+
+    /**
+     * This method is used to determine if a particular bookmark can handle certain input. If it can handle the input, then
+     * that input should be able to be set using the setContent method.
+     *
+     * @param content The content in question
+     */
+    public abstract HandleData canHandle(String content);
 }
