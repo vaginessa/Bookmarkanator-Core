@@ -126,7 +126,7 @@ public class GlobalSettings
             if (file.length()!=0)
             {
                 fin = new FileInputStream(file);
-                settings = Settings.parseSettings(fin, this.getClass().getClassLoader());
+                settings = Settings.parseSettings(fin);
                 fin.close();
             }
         }

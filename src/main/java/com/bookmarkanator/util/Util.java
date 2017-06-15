@@ -1,6 +1,5 @@
 package com.bookmarkanator.util;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -19,7 +18,7 @@ public class Util
     {
         Set<String> words = new HashSet<>();
 
-        //simple white space split
+        // simple white space split
         for (String s : theString.split(" "))
         {
             s = s.trim();

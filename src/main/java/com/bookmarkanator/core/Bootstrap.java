@@ -35,7 +35,7 @@ public class Bootstrap
         File currentDir = new File(".");
         logger.info("Current directory "+currentDir.getCanonicalPath());
         logger.info("Locating settings file...");
-        settingsFile = getSettingsFileFile();
+        settingsFile = locateSettingsDirectory();
 
         // Configure the global settings object
         GlobalSettings.use().setFile(settingsFile);
@@ -163,7 +163,7 @@ public class Bootstrap
         return res;
     }
 
-    private File getSettingsFileFile()
+    private File locateSettingsDirectory()
         throws Exception
     {
         // Try [current dir]/Settings.xml

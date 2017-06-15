@@ -126,6 +126,11 @@ public class SequenceBookmark extends AbstractBookmark
     }
 
     @Override
+    public HandleData canHandle(String content)
+    {
+        return null;
+    }
+    @Override
     public String getContent()
     {
         StringBuilder sb = new StringBuilder();

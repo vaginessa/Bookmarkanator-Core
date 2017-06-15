@@ -7,6 +7,14 @@ import javax.xml.validation.*;
 
 public class XMLValidator
 {
+
+    public static void validateXML(InputStream inputStream, String xsdFile)
+        throws Exception
+    {
+        InputStream xsd = XMLValidator.class.getResourceAsStream(xsdFile);
+        XMLValidator.validate(inputStream, xsd);
+    }
+
     public static void validate(InputStream xmlIn, InputStream xsdIn)
         throws Exception
     {

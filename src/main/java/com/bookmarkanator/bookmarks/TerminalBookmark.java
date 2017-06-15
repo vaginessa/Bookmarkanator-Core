@@ -37,7 +37,11 @@ public class TerminalBookmark extends AbstractBookmark
     {
 
     }
-
+    @Override
+    public HandleData canHandle(String content)
+    {
+        return null;
+    }
     @Override
     public void systemShuttingDown()
     {

@@ -164,17 +164,10 @@ public class Settings
         return res;
     }
 
-    public static void validateXML(InputStream inputStream, String xsdFile)
+    public static Settings parseSettings(InputStream in)
         throws Exception
     {
-        InputStream xsd = Settings.class.getResourceAsStream(xsdFile);
-        XMLValidator.validate(inputStream, xsd);
-    }
-
-    public static Settings parseSettings(InputStream in, ClassLoader classLoader)
-        throws Exception
-    {
-        SettingsXMLParser parser = new SettingsXMLParser(in, classLoader);
+        SettingsXMLParser parser = new SettingsXMLParser(in);
         return parser.parse();
     }
 

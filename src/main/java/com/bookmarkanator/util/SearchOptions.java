@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * This is a class used to encapsulate all the search options that are possible. Encapsulating them here allows the saving of search
- * recipes, and a simplifies the search interface.
+ * recipes, and it simplifies the search interface.
  */
 public class SearchOptions
 {

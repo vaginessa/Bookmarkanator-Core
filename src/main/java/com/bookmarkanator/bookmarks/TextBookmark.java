@@ -63,7 +63,11 @@ public class TextBookmark extends AbstractBookmark
     {
 
     }
-
+    @Override
+    public HandleData canHandle(String content)
+    {
+        return null;
+    }
     @Override
     protected String runTheAction(String action)
         throws Exception

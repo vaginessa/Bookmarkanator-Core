@@ -23,13 +23,11 @@ public class SettingsXMLParser
     private InputStream inputStream;
     private Document document;
     private Settings settings;
-    private ClassLoader classLoader;
 
-    public SettingsXMLParser(InputStream xmlIn, ClassLoader classLoader)
+    public SettingsXMLParser(InputStream xmlIn)
     {
         this.inputStream = xmlIn;//Note the calling program must close the stream.
         this.settings = new Settings();
-        this.classLoader = classLoader;
     }
 
     public Settings parse()
