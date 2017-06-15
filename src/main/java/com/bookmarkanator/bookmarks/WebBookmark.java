@@ -85,6 +85,11 @@ public class WebBookmark extends AbstractBookmark {
     }
 
     @Override
+    public HandleData canHandle(String content) {
+        return null;
+    }
+
+    @Override
     public void destroy()
             throws Exception {
 

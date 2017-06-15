@@ -115,6 +115,11 @@ public class HTMLFormattedBookmark extends AbstractBookmark
     }
 
     @Override
+    public HandleData canHandle(String content) {
+        return null;
+    }
+
+    @Override
     public int compareTo(AbstractBookmark o)
     {
         return 0;

@@ -28,6 +28,11 @@ public class EncryptedBookmark extends AbstractBookmark{
 
     }
 
+    @Override
+    public HandleData canHandle(String content) {
+        return null;
+    }
+
     /**
      * Add field to the context if this bookmark is unencrypted so that the user doesn't have to unencrypt it each time.
      */
