@@ -5,6 +5,7 @@
 
 # Package Files #
 *.jar
+!/download/*.jar
 *.war
 *.ear
 *.project
