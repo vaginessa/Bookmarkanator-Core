@@ -2,6 +2,9 @@ package com.bookmarkanator.xml;
 
 import java.util.*;
 
+/**
+ * This class is used to give convenient access to a map of FileSync objects.
+ */
 public class FileService
 {
     private static FileService fileService;
@@ -20,6 +23,11 @@ public class FileService
     public FileSync deleteFile(String context)
     {
         return map.remove(context);
+    }
+
+    public FileSync getFile(String context)
+    {
+        return map.get(context);
     }
 
     public static FileService use()

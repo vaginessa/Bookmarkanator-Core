@@ -3,8 +3,14 @@ package com.bookmarkanator.xml;
 import java.io.*;
 import java.util.*;
 
-public interface FileReaderInterface
+public interface FileReaderInterface <T>
 {
+    enum InvalidFilePolicy
+    {
+        markBadAndContinue,
+        thowError,
+    }
+
     enum InvalidFilePolicy
     {
         markBadAndContinue,
@@ -14,13 +20,16 @@ public interface FileReaderInterface
     enum FileBackupPolicy
     {
         createBackupOnRead,
-        noBackup
+        noBackup,
+        createBackupOnWrite
     }
 
-    void parse();
+    void parse(InputStream inputStream);
     void validate(InputStream inputStream);
+
+    T getObject();
+
     InvalidFilePolicy getInvalidFilePolicy();
     FileBackupPolicy getFileBackupPolicy();
-    Set<File> getFileLocations();
 
 }

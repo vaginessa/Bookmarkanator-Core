@@ -1,9 +1,14 @@
 package com.bookmarkanator.xml;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 
 public class FileSync
 {
+    private static final Logger logger = LogManager.getLogger(FileSync.class.getCanonicalName());
+
     private FileWriterInterface fileWriter;
     private FileReaderInterface fileReader;
     private File file;
@@ -35,8 +40,18 @@ public class FileSync
 
     }
 
-    public void readFromDisk()
-    {
+    public void readFromDisk() throws IOException {
+        if (file.exists())
+        {
+
+        }
+        else
+        {
+            logger.info("File "+file.getCanonicalPath()+" doesn't exist.");
+
+            if (fileReader.)
+        }
+
         //get file
         //if no exist create
         //validate
