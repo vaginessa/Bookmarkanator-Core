@@ -1,9 +1,26 @@
 package com.bookmarkanator.io;
 
-import java.util.*;
-import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.util.*;
-import org.apache.logging.log4j.*;
+import com.bookmarkanator.bookmarks.AbstractBookmark;
+import com.bookmarkanator.util.Search;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * This class represents the main interface for interacting with bookmarks that are loaded/saved to/from the file system.
@@ -21,6 +38,9 @@ public class FileContext extends AbstractContext
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
+
+    private Properties statistics;
+    private static final String STATS_FILE = "~/bookmarkanator/stats.properties";
 
     public FileContext()
     {
@@ -681,4 +701,37 @@ public class FileContext extends AbstractContext
         return res;
     }
 
+    @Override
+    public Properties loadStatistics() {
+        Properties properties = new Properties();
+        try (InputStream inputStream = new FileInputStream(STATS_FILE)) {
+            properties.load(inputStream);
+            return properties;
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return properties;
+        }
+    }
+
+    @Override
+    public void setStatistics(final Properties statistics) {
+        this.statistics = statistics;
+        try (OutputStream outputStream = new FileOutputStream(STATS_FILE)){
+            statistics.store(outputStream, null);
+        } catch (IOException e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public String getStatistic(String property) {
+        return statistics.getProperty(property);
+    }
+
+    public void setStatistic(String property, String value) {
+        statistics.setProperty(property, value);
+        setStatistics(statistics);
+    }
 }

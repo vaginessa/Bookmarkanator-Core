@@ -1,13 +1,17 @@
 package com.bookmarkanator.io;
 
-import java.util.*;
-import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
+import com.bookmarkanator.bookmarks.AbstractBookmark;
+import com.bookmarkanator.core.Settings;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * The interface that other classes will access to perform operations (searching, sorting, adding, removing) of bookmarks.
  */
-public abstract class AbstractContext
+public abstract class AbstractContext implements Statistics
 {
     private BKIOInterface bkioInterface;
     private int numberOfSearchResults;
