@@ -9,25 +9,15 @@ import javax.xml.transform.stream.*;
 import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
 
-public class SettingsXMLWriter
+public class SettingsXMLWriter implements FileWriterInterface<Settings>
 {
-    private OutputStream out;
-    private Settings settings;
-
-    public SettingsXMLWriter(Settings settings, OutputStream out)
+    @Override
+    public void write(Settings settings, OutputStream outputStream)throws Exception
     {
-        this.settings = settings;
-        this.out = out;
-    }
-
-    public void write()throws Exception
-    {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
+        Document doc = getDocument();
 
         Element rootElement = doc.createElement(SettingsXMLParser.ROOT_TAG);
-        Map<String, Set<SettingItem>> typesMap = this.settings.getSettingsTypesMap();
+        Map<String, Set<SettingItem>> typesMap = settings.getSettingsTypesMap();
 
         for (String s: typesMap.keySet())
         {
@@ -39,14 +29,22 @@ public class SettingsXMLWriter
         }
 
         doc.appendChild(rootElement);
+        writeOut(doc, outputStream);
+    }
 
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
+    @Override
+    public void writeInitial(OutputStream outputStream) throws Exception{
+       Document doc = getDocument();
 
+        Element rootElement = doc.createElement(SettingsXMLParser.ROOT_TAG);
+        doc.appendChild(rootElement);
 
-        StreamResult result = new StreamResult(new OutputStreamWriter(out));
-        transformer.transform(source, result);
+        writeOut(doc, outputStream);
+    }
+
+    @Override
+    public FileBackupPolicy getFileBackupPolicy() {
+        return FileBackupPolicy.noBackup;
     }
 
     public void appendSettings(Document doc, Element rootElement,String type, Set<SettingItem> items)
@@ -59,12 +57,28 @@ public class SettingsXMLWriter
         {
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
             setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, item.getKey());
-//            setting.setAttribute(SettingsXMLParser.CLASS_ATTRIBUTE, item.getClass().getCanonicalName());
             setting.setTextContent(item.getValue());
-
             settings.appendChild(setting);
         }
 
         rootElement.appendChild(settings);
+    }
+
+    private Document getDocument() throws Exception
+    {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        return docBuilder.newDocument();
+    }
+
+    private void writeOut(Document doc, OutputStream outputStream) throws Exception
+    {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+
+        StreamResult result = new StreamResult(new OutputStreamWriter(outputStream));
+        transformer.transform(source, result);
     }
 }

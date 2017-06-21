@@ -167,8 +167,8 @@ public class Settings
     public static Settings parseSettings(InputStream in)
         throws Exception
     {
-        SettingsXMLParser parser = new SettingsXMLParser(in);
-        return parser.parse();
+        SettingsXMLParser parser = new SettingsXMLParser();
+        return parser.parse(in);
     }
 
     public static String settingsToString(Settings globalSettings)
@@ -182,8 +182,8 @@ public class Settings
     public static void writeSettings(Settings globalSettings, OutputStream out)
         throws Exception
     {
-        SettingsXMLWriter writer = new SettingsXMLWriter(globalSettings, out);
-        writer.write();
+        SettingsXMLWriter writer = new SettingsXMLWriter();
+        writer.write(globalSettings, out);
         out.flush();
         out.close();
     }

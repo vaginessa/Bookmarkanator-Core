@@ -1,5 +1,6 @@
 package com.bookmarkanator.xml;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.*;
 
@@ -11,25 +12,23 @@ public interface FileReaderInterface <T>
         thowError,
     }
 
-    enum InvalidFilePolicy
+    enum MissingFilePolicy
     {
-        markBadAndContinue,
+        createNew,
         thowError,
     }
 
     enum FileBackupPolicy
     {
         createBackupOnRead,
-        noBackup,
-        createBackupOnWrite
+        noBackup
     }
 
-    void parse(InputStream inputStream);
-    void validate(InputStream inputStream);
+    T parse(InputStream inputStream) throws ParserConfigurationException, Exception;
+    void validate(InputStream inputStream) throws Exception;
 
-    T getObject();
 
     InvalidFilePolicy getInvalidFilePolicy();
+    MissingFilePolicy getMissingFilePolicy();
     FileBackupPolicy getFileBackupPolicy();
-
 }

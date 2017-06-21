@@ -1,7 +1,19 @@
 package com.bookmarkanator.xml;
 
-public interface FileWriterInterface
+import com.bookmarkanator.core.Settings;
+
+import java.io.OutputStream;
+
+public interface FileWriterInterface <T>
 {
-    void write();
-    void writeInitial();
+    enum FileBackupPolicy
+    {
+        createBackupOnWrite,
+        noBackup
+    }
+
+    void write(T object, OutputStream out) throws Exception;
+    void writeInitial(OutputStream outputStream) throws Exception;
+
+    FileBackupPolicy getFileBackupPolicy();
 }

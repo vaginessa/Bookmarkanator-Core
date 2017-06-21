@@ -7,7 +7,7 @@ import com.bookmarkanator.core.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
 
-public class SettingsXMLParser
+public class SettingsXMLParser implements FileReaderInterface<Settings>
 {
     //Tags
     public static final String ROOT_TAG = "root";
@@ -19,42 +19,12 @@ public class SettingsXMLParser
     public static final String KEY_ATTRIBUTE = "key";
 //    public static final String CLASS_ATTRIBUTE = "class";
 
-    //Variables
-    private InputStream inputStream;
     private Document document;
     private Settings settings;
 
-    public SettingsXMLParser(InputStream xmlIn)
+    public SettingsXMLParser()
     {
-        this.inputStream = xmlIn;//Note the calling program must close the stream.
         this.settings = new Settings();
-    }
-
-    public Settings parse()
-        throws Exception
-    {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
-        document = builder.parse(inputStream);
-
-        Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
-        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.ROOT_TAG))
-        {
-            throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
-        }
-
-        NodeList nl = docNodeRoot.getChildNodes();
-
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-
-            if (n.getNodeName().equals(SettingsXMLParser.SETTINGS_TAG))
-            {
-                getSettings(n);
-            }
-        }
-        return settings;
     }
 
     private void getSettings(Node node)
@@ -151,5 +121,52 @@ public class SettingsXMLParser
     private String sanitizeXMLString(String xmlString)
     {
         return xmlString.replaceAll("[<]{1}[?]{1}.*[?]{1}[>]{1}\\s", "");
+    }
+
+    @Override
+    public Settings parse(InputStream inputStream) throws Exception {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+        document = builder.parse(inputStream);
+
+        Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
+        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.ROOT_TAG))
+        {
+            throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
+        }
+
+        NodeList nl = docNodeRoot.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+
+            if (n.getNodeName().equals(SettingsXMLParser.SETTINGS_TAG))
+            {
+                getSettings(n);
+            }
+        }
+        return settings;
+    }
+
+    @Override
+    public void validate(InputStream inputStream) throws Exception{
+        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
+        XMLValidator.validate(inputStream, xsd);
+    }
+
+    @Override
+    public InvalidFilePolicy getInvalidFilePolicy() {
+        return InvalidFilePolicy.markBadAndContinue;
+    }
+
+    @Override
+    public MissingFilePolicy getMissingFilePolicy() {
+        return MissingFilePolicy.createNew;
+    }
+
+    @Override
+    public FileBackupPolicy getFileBackupPolicy() {
+        return FileBackupPolicy.createBackupOnRead;
     }
 }

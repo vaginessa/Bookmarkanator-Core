@@ -5,32 +5,29 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
-public class FileSync
+public class FileSync <T>
 {
     private static final Logger logger = LogManager.getLogger(FileSync.class.getCanonicalName());
 
-    private FileWriterInterface fileWriter;
-    private FileReaderInterface fileReader;
+    private FileWriterInterface<T> fileWriter;
+    private FileReaderInterface<T> fileReader;
     private File file;
+    private T obj;
 
-    public void setFileWriter(FileWriterInterface fileWriter)
-    {
+    public FileSync(FileWriterInterface fileWriter, FileReaderInterface fileReader, File file) {
         this.fileWriter = fileWriter;
-    }
-
-    public void setFileReader(FileReaderInterface fileReader)
-    {
         this.fileReader = fileReader;
-    }
-
-    public void setFile(File file)
-    {
         this.file = file;
     }
 
     public File getFile()
     {
         return file;
+    }
+
+    public T getObject()
+    {
+        return obj;
     }
 
     public void writeToDisk()
@@ -40,21 +37,53 @@ public class FileSync
 
     }
 
-    public void readFromDisk() throws IOException {
+    public void readFromDisk() throws Exception {
+
         if (file.exists())
         {
+            try
+            {
+                FileInputStream fin = new FileInputStream(file);
+                fileReader.validate(fin);
+                fin.close();
 
+                fin = new FileInputStream(file);
+                obj = fileReader.parse(fin);
+                fin.close();
+            }
+            catch (Exception e)
+            {
+                if (fileReader.getInvalidFilePolicy()== FileReaderInterface.InvalidFilePolicy.markBadAndContinue)
+                {
+                    // TODO mark file bad and continue
+                }
+                else
+                {
+                    throw e;
+                }
+            }
         }
         else
         {
             logger.info("File "+file.getCanonicalPath()+" doesn't exist.");
-
-            if (fileReader.)
+            if (fileReader.getMissingFilePolicy()== FileReaderInterface.MissingFilePolicy.createNew)
+            {
+                // TODO create file here.
+            }
+            else
+            {
+                throw new FileNotFoundException(file.getCanonicalPath());
+            }
         }
 
         //get file
         //if no exist create
         //validate
         //handle errors in validation or parsing.
+    }
+
+    public T getParsedObject()
+    {
+        return obj;
     }
 }
