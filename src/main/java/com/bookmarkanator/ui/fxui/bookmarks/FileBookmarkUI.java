@@ -1,39 +1,42 @@
 package com.bookmarkanator.ui.fxui.bookmarks;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.ui.fxui.*;
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class FileBookmarkUI extends AbstractUIBookmark
-{
+public class FileBookmarkUI extends AbstractUIBookmark {
+
+    private File selectedfile;
+
     @Override
-    public Image getTypeIcon()
-    {
+    public Image getTypeIcon() {
         return null;
     }
 
     @Override
     public void show()
-        throws Exception
-    {
+            throws Exception {
         this.getBookmark().runAction();
     }
 
     @Override
     public AbstractBookmark edit()
-        throws Exception
-    {
+            throws Exception {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
 
-        if (stage!=null)
-        {
+        if (stage != null) {
             stage.close();
         }
 
@@ -42,11 +45,9 @@ public class FileBookmarkUI extends AbstractUIBookmark
 
     @Override
     public void delete()
-        throws Exception
-    {
+            throws Exception {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
-        if (stage!=null)
-        {
+        if (stage != null) {
             stage.close();
         }
 
@@ -56,41 +57,32 @@ public class FileBookmarkUI extends AbstractUIBookmark
 
     @Override
     public AbstractBookmark newBookmarkView()
-        throws Exception
-    {
+            throws Exception {
         return showView(null);
     }
 
     @Override
-    public String getRequiredBookmarkClassName()
-    {
+    public String getRequiredBookmarkClassName() {
         return FileBookmark.class.getCanonicalName();
     }
 
     private AbstractBookmark showView(AbstractBookmark bookmark)
-        throws Exception
-    {
+            throws Exception {
 
         //TODO Only enable submit button when the web address is a real web address of some kind.
         Dialog<String> dialog = new Dialog<>();
-        if (bookmark!=null)
-        {
+        if (bookmark != null) {
             dialog.setTitle("Edit File Bookmark");
-        }
-        else
-        {
+        } else {
             dialog.setTitle("New File Bookmark");
         }
 
         // Set the button types.
-        ButtonType delete = new ButtonType("Delete",ButtonBar.ButtonData.APPLY);
+        ButtonType delete = new ButtonType("Delete", ButtonBar.ButtonData.APPLY);
 
-        if (bookmark==null)
-        {
+        if (bookmark == null) {
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        }
-        else
-        {
+        } else {
             addDeleteButton(dialog, delete);
         }
 
@@ -102,8 +94,7 @@ public class FileBookmarkUI extends AbstractUIBookmark
         Pane vBox = new VBox();
         Label label = new Label("Name");
         TextField name = new TextField();
-        if (bookmark!=null)
-        {
+        if (bookmark != null) {
             name.setText(bookmark.getName());
         }
 
@@ -116,24 +107,51 @@ public class FileBookmarkUI extends AbstractUIBookmark
 
         Label fileLabel = new Label("File");
         //Text area
-        TextField textArea = new TextField();
-        if (bookmark!=null)
-        {
-            textArea.setText(bookmark.getContent());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Please select a file");
+        if (bookmark != null) {
+            File file = new File(bookmark.getContent());
+            fileChooser.setInitialDirectory(file);
         }
 
         vBox.getChildren().add(fileLabel);
-        vbox.getChildren().add(textArea);
+
+        Button fileChooserButton = new Button("Select a file");
+
+        fileChooserButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                selectedfile = fileChooser.showOpenDialog(null);
+            }
+        });
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Please select a folder");
+
+        if (bookmark != null) {
+            File file = new File(bookmark.getContent());
+            directoryChooser.setInitialDirectory(file);
+        }
+
+        Button folderChooserButton = new Button("Select a folder");
+
+        folderChooserButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                selectedfile = directoryChooser.showDialog(null);
+                System.out.println();
+            }
+        });
+
+
+        vbox.getChildren().addAll(fileChooserButton, folderChooserButton);
 
         //Tag selection panel
         TagPanel tagPanel;
 
-        if (bookmark!=null)
-        {
+        if (bookmark != null) {
             tagPanel = TagPanel.getNew(bookmark.getTags());
-        }
-        else
-        {
+        } else {
             tagPanel = TagPanel.getNew(null);
         }
         tagPanel.setPrefWidth(400);
@@ -146,18 +164,16 @@ public class FileBookmarkUI extends AbstractUIBookmark
 
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == ButtonType.OK)
-            {
-                return textArea.getText();
-            }
-            else if (dialogButton == delete)
-            {
-                try
-                {
-                    Bootstrap.context().delete(this.getBookmark().getId());
+            if (dialogButton == ButtonType.OK) {
+                try {
+                    return selectedfile.getCanonicalPath();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                catch (Exception e)
-                {
+            } else if (dialogButton == delete) {
+                try {
+                    Bootstrap.context().delete(this.getBookmark().getId());
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -166,20 +182,16 @@ public class FileBookmarkUI extends AbstractUIBookmark
 
         Optional<String> res = dialog.showAndWait();
 
-        if (res.isPresent() && res.get() != null)
-        {
+        if (res.isPresent() && res.get() != null) {
             AbstractBookmark abstractBookmark;
-            if (bookmark==null)
-            {
+            if (bookmark == null) {
                 abstractBookmark = new FileBookmark();
                 abstractBookmark.setName(name.getText());
-                abstractBookmark.setContent(textArea.getText());
+                abstractBookmark.setContent(selectedfile.getCanonicalPath());
                 abstractBookmark.setTags(tagPanel.getSelectedTags());
-            }
-            else
-            {
+            } else {
                 bookmark.setName(name.getText());
-                bookmark.setContent(textArea.getText());
+                bookmark.setContent(selectedfile.getCanonicalPath());
                 bookmark.setTags(tagPanel.getSelectedTags());
                 abstractBookmark = bookmark;
             }
