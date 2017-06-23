@@ -7,6 +7,7 @@ import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
 import com.bookmarkanator.ui.fxui.*;
+import com.bookmarkanator.util.*;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -105,6 +106,8 @@ public class FileBookmarkUI extends AbstractUIBookmark {
         vbox.getChildren().add(vBox);
         Platform.runLater(() -> name.requestFocus());
 
+
+        Label locationLabel = new Label("(nothing selected yet)");
         Label fileLabel = new Label("File");
         //Text area
         FileChooser fileChooser = new FileChooser();
@@ -122,6 +125,14 @@ public class FileBookmarkUI extends AbstractUIBookmark {
             @Override
             public void handle(ActionEvent event) {
                 selectedfile = fileChooser.showOpenDialog(null);
+                try
+                {
+                    locationLabel.setText(Util.compressString(selectedfile.getCanonicalPath(), 60));
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -131,6 +142,7 @@ public class FileBookmarkUI extends AbstractUIBookmark {
         if (bookmark != null) {
             File file = new File(bookmark.getContent());
             directoryChooser.setInitialDirectory(file);
+            locationLabel.setText(file.getCanonicalPath());
         }
 
         Button folderChooserButton = new Button("Select a folder");
@@ -139,12 +151,20 @@ public class FileBookmarkUI extends AbstractUIBookmark {
             @Override
             public void handle(ActionEvent event) {
                 selectedfile = directoryChooser.showDialog(null);
-                System.out.println();
+                try
+                {
+                    locationLabel.setText(Util.compressString(selectedfile.getCanonicalPath(), 60));
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
 
-
-        vbox.getChildren().addAll(fileChooserButton, folderChooserButton);
+        HBox fileButtonsBox = new HBox();
+        fileButtonsBox.getChildren().addAll(fileChooserButton, folderChooserButton);
+        vbox.getChildren().addAll(fileButtonsBox, locationLabel);
 
         //Tag selection panel
         TagPanel tagPanel;
