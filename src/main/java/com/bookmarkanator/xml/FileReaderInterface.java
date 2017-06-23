@@ -1,8 +1,7 @@
 package com.bookmarkanator.xml;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.*;
+import javax.xml.parsers.*;
 
 public interface FileReaderInterface <T>
 {
@@ -20,7 +19,8 @@ public interface FileReaderInterface <T>
 
     enum FileBackupPolicy
     {
-        createBackupOnRead,
+        singleBackupOnRead,
+        rollingBackupOnRead,
         noBackup
     }
 

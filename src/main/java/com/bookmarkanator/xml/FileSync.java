@@ -1,9 +1,7 @@
 package com.bookmarkanator.xml;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.*;
+import org.apache.logging.log4j.*;
 
 public class FileSync <T>
 {
@@ -41,11 +39,17 @@ public class FileSync <T>
 
         if (file.exists())
         {
+            FileInputStream fin = new FileInputStream(file);
+
             try
             {
-                FileInputStream fin = new FileInputStream(file);
                 fileReader.validate(fin);
                 fin.close();
+
+                if (fileReader.getFileBackupPolicy().equals(FileReaderInterface.FileBackupPolicy.singleBackupOnRead))
+                {
+
+                }
 
                 fin = new FileInputStream(file);
                 obj = fileReader.parse(fin);
@@ -55,11 +59,19 @@ public class FileSync <T>
             {
                 if (fileReader.getInvalidFilePolicy()== FileReaderInterface.InvalidFilePolicy.markBadAndContinue)
                 {
-                    // TODO mark file bad and continue
+                    File newFile = new File(file.getPath()+File.separatorChar+file.getName()+".bad");
+                    file.renameTo(newFile);
                 }
                 else
                 {
                     throw e;
+                }
+            }
+            finally
+            {
+                if (fin.getChannel().isOpen())
+                {
+                    fin.close();
                 }
             }
         }
@@ -68,18 +80,25 @@ public class FileSync <T>
             logger.info("File "+file.getCanonicalPath()+" doesn't exist.");
             if (fileReader.getMissingFilePolicy()== FileReaderInterface.MissingFilePolicy.createNew)
             {
-                // TODO create file here.
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+                FileOutputStream fout = new FileOutputStream(file);
+
+                try
+                {
+                    fileWriter.writeInitial(fout);
+                }
+                finally
+                {
+                    fout.flush();
+                    fout.close();
+                }
             }
             else
             {
                 throw new FileNotFoundException(file.getCanonicalPath());
             }
         }
-
-        //get file
-        //if no exist create
-        //validate
-        //handle errors in validation or parsing.
     }
 
     public T getParsedObject()

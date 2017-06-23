@@ -167,6 +167,6 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
 
     @Override
     public FileBackupPolicy getFileBackupPolicy() {
-        return FileBackupPolicy.createBackupOnRead;
+        return FileBackupPolicy.singleBackupOnRead;
     }
 }
