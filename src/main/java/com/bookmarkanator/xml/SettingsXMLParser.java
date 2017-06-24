@@ -151,22 +151,23 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
 
     @Override
     public void validate(InputStream inputStream) throws Exception{
-        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
-        XMLValidator.validate(inputStream, xsd);
+        // TODO fix schema so it can validate the settings file.
+//        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
+//        XMLValidator.validate(inputStream, xsd);
     }
 
     @Override
-    public InvalidFilePolicy getInvalidFilePolicy() {
-        return InvalidFilePolicy.markBadAndContinue;
+    public FileSync.InvalidFilePolicy getInvalidFilePolicy() {
+        return FileSync.InvalidFilePolicy.markBadAndContinue;
     }
 
     @Override
-    public MissingFilePolicy getMissingFilePolicy() {
-        return MissingFilePolicy.createNew;
+    public FileSync.MissingFilePolicy getMissingFilePolicy() {
+        return FileSync.MissingFilePolicy.createNew;
     }
 
     @Override
-    public FileBackupPolicy getFileBackupPolicy() {
-        return FileBackupPolicy.singleBackupOnRead;
+    public FileSync.FileBackupPolicy getFileBackupPolicy() {
+        return FileSync.FileBackupPolicy.SINGLE_BACKUP;
     }
 }

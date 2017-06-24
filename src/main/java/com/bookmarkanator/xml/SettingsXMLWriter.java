@@ -43,8 +43,8 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
     }
 
     @Override
-    public FileBackupPolicy getFileBackupPolicy() {
-        return FileBackupPolicy.noBackup;
+    public FileSync.FileBackupPolicy getFileBackupPolicy() {
+        return FileSync.FileBackupPolicy.NO_BACKUP;
     }
 
     public void appendSettings(Document doc, Element rootElement,String type, Set<SettingItem> items)

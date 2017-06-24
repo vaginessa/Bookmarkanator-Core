@@ -39,7 +39,10 @@ public class FileSync<T>
     {
         return file;
     }
-
+    public void setFile(File file)
+    {
+        this.file = file;
+    }
     public T getObject()
     {
         return obj;

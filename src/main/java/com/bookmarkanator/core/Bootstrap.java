@@ -167,29 +167,21 @@ public class Bootstrap
         throws Exception
     {
         // Try [current dir]/Settings.xml
-        File file = new File(getCurrentDirSettingsFileInBKFolder());
+        File file = new File(getCurrentDirSettingsFile());
 
         if (file.exists())
         {
             logger.info("Using settings file at "+file.getCanonicalPath());
             return file;
-        }
-        else
-        {
-            logger.trace("No settings file found at " + file.getCanonicalPath());
         }
 
         // Try [current dir]/Bookmark-anator/Settings.xml
-        file = new File(getCurrentDirSettingsFile());
+        file = new File(getCurrentDirSettingsFileInBKFolder());
 
         if (file.exists())
         {
             logger.info("Using settings file at "+file.getCanonicalPath());
             return file;
-        }
-        else
-        {
-            logger.trace("No settings file found at " + file.getCanonicalPath());
         }
 
         // Try [user home]/Bookmark-anator/Settings.xml
@@ -200,22 +192,14 @@ public class Bootstrap
             logger.info("Using settings file at "+file.getCanonicalPath());
             return file;
         }
-        else
-        {
-            logger.trace("No settings file found at " + file.getCanonicalPath());
-        }
 
-        // Try [user home]/Settings.xml
+        // Try [user home]/settings/Settings.xml
         file = new File(getDefaultHomeDirSettingsFile());
 
         if (file.exists())
         {
             logger.info("Using settings file at "+file.getCanonicalPath());
             return file;
-        }
-        else
-        {
-            logger.trace("No settings file found at " + file.getCanonicalPath());
         }
 
         // Default to [user home]/Bookmark-anator/Settings.xml and let the settings engine handle creating the file if necessary.
@@ -240,7 +224,7 @@ public class Bootstrap
     private String getDefaultHomeDirSettingsFile()
     {
         String directory = System.getProperty("user.home");
-        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+        return directory + File.separatorChar + "settings"+File.separatorChar+ Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
 
     private String getDefaultHomeDirSettingsFileInBKFolder()
