@@ -25,7 +25,9 @@ public class TestBookmark
         System.out.println();
     }
 
-    private List<AbstractBookmark> getBookmarks() throws Exception {
+    private List<AbstractBookmark> getBookmarks()
+        throws Exception
+    {
         List<AbstractBookmark> bks = new ArrayList<>();
 
         AbstractBookmark b = new TextBookmark();

@@ -8,6 +8,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.fileservice.*;
 import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 
@@ -16,18 +17,18 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
     private AbstractContext abstractContext;
     private OutputStream out;
 
-    private void addBlocks(Element element,Document document, AbstractContext abstractContext)
+    private void addBlocks(Element element, Document document, AbstractContext abstractContext)
         throws Exception
     {
         Map<String, Element> blocks = new HashMap<>();
 
         Set<AbstractBookmark> bookmarks = abstractContext.getBookmarks();
 
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             Element e = blocks.get(bookmark.getClass().getCanonicalName());
 
-            if (e==null)
+            if (e == null)
             {
                 e = document.createElement(BookmarksXMLParser.BLOCK_TAG);
                 e.setAttribute(BookmarksXMLParser.CLASS_ATTRIBUTE, bookmark.getClass().getCanonicalName());
@@ -37,7 +38,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
             appendBookmarkElement(e, document, bookmark);
         }
 
-        for (String s: blocks.keySet())
+        for (String s : blocks.keySet())
         {
             element.appendChild(blocks.get(s));
         }
@@ -56,9 +57,9 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
         bookmarkId.setTextContent(bookmark.getId().toString());
         bookmarkNode.appendChild(bookmarkId);
 
-//        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
-//        bookmarkText.setTextContent(bookmark.getContent());
-//        bookmarkNode.appendChild(bookmarkText);
+        //        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
+        //        bookmarkText.setTextContent(bookmark.getContent());
+        //        bookmarkNode.appendChild(bookmarkText);
 
         Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);
         bookmarkCreationDate.setTextContent(getDateString(bookmark.getCreationDate()));
@@ -74,10 +75,10 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
         bookmarkNode.appendChild(bookmarTags);
 
         String content = bookmark.getContent();
-        if (content!=null)
+        if (content != null)
         {
             Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
-//            contentTag.setTextContent(URLEncoder.encode(bookmark.getContent(), "UTF-8"));
+            //            contentTag.setTextContent(URLEncoder.encode(bookmark.getContent(), "UTF-8"));
             contentTag.setTextContent(bookmark.getContent());
             bookmarkNode.appendChild(contentTag);
         }
@@ -87,7 +88,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
 
     private void appendBookmarkTagsElements(Element bookmarkTagsElement, Document document, AbstractBookmark bookmark)
     {
-        for (String tag: bookmark.getTags())
+        for (String tag : bookmark.getTags())
         {
             Element tagElement = document.createElement(BookmarksXMLParser.TAG_TAG);
             tagElement.setTextContent(tag);
@@ -113,7 +114,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
         Document doc = docBuilder.newDocument();
         Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
 
-        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
 
         addBlocks(rootElement, doc, abstractContext);
 
@@ -136,7 +137,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
         Document doc = docBuilder.newDocument();
         Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
 
-        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
         doc.appendChild(rootElement);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
     <settings type="mainUI">
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.HTMLTextBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.HTMLTextBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
@@ -12,10 +13,12 @@
                  operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.SequenceBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.SequenceBookmarkUI
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.FileBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.FileBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.FileBookmarkUI
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.WebBookmark">
+        <setting class="com.bookmarkanator.core.SettingItem"
+                 operation="com.bookmarkanator.ui.fxui.Main-class-com.bookmarkanator.bookmarks.WebBookmark">
             com.bookmarkanator.ui.fxui.bookmarks.WebBookmarkUI
         </setting>
         <setting class="com.bookmarkanator.core.SettingItem"
@@ -38,7 +41,8 @@
         <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.TextBookmark">
             com.bookmarkanator.bookmarks.TextBookmark
         </setting>
-        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.WebBookmark">com.bookmarkanator.bookmarks.WebBookmark
+        <setting class="com.bookmarkanator.core.SettingItem" operation="com.bookmarkanator.bookmarks.WebBookmark">
+            com.bookmarkanator.bookmarks.WebBookmark
         </setting>
         <setting class="com.bookmarkanator.core.SettingsItemList" operation="bookmark-io-class">com.bookmarkanator.io.FileIO</setting>
     </settings>

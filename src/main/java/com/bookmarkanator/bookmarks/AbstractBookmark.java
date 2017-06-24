@@ -6,9 +6,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
     public enum HandleData
     {
-        yes(2),
-        maybe(1),
-        no(0);
+        yes(2), maybe(1), no(0);
 
         private int level;
 
@@ -107,8 +105,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     /**
      * This is a secret key that has only a setter with no getter. It is intended to be set by the message board
      * as the key that this bookmark can use to post to the message board.
-     * @param secretKey  The secret key to use when modifying message board messages.
-     * @return  True if it was set.
+     *
+     * @param secretKey The secret key to use when modifying message board messages.
+     * @return True if it was set.
      */
     public abstract boolean setSecretKey(String secretKey);
 

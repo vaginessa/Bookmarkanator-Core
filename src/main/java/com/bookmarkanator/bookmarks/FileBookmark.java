@@ -63,21 +63,24 @@ public class FileBookmark extends AbstractBookmark
     {
 
     }
+
     @Override
     public HandleData canHandle(String content)
     {
         return null;
     }
+
     @Override
     public boolean setSecretKey(String secretKey)
     {
-        if (FileBookmark.secretKey == null && secretKey!=null)
+        if (FileBookmark.secretKey == null && secretKey != null)
         {
             FileBookmark.secretKey = secretKey;
             return true;
         }
         return false;
     }
+
     @Override
     protected String runTheAction(String action)
         throws Exception

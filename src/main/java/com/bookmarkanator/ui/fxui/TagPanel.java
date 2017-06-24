@@ -30,7 +30,7 @@ public class TagPanel extends ScrollPane
     public TagPanel(Set<String> selectedTags)
         throws Exception
     {
-//        this.setStyle("-fx-background:" + colorString);
+        //        this.setStyle("-fx-background:" + colorString);
         this.setFitToWidth(true);
         this.setPadding(new Insets(5, 5, 5, 5));
 
@@ -233,7 +233,7 @@ public class TagPanel extends ScrollPane
             @Override
             public void handle(ActionEvent event)
             {
-                if (tagNameSearch.getText()!=null && !tagNameSearch.getText().isEmpty())
+                if (tagNameSearch.getText() != null && !tagNameSearch.getText().isEmpty())
                 {
                     selectedTags.add(tagNameSearch.getText());
                     newTagSet.add(tagNameSearch.getText());

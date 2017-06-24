@@ -54,7 +54,7 @@ public class SettingItem
     @Override
     public int hashCode()
     {
-            return key.hashCode();
+        return key.hashCode();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SettingItem
     {
         if (obj instanceof SettingItem)
         {
-            SettingItem item = (SettingItem)obj;
+            SettingItem item = (SettingItem) obj;
             return this.getKey().equals(item.getKey());
         }
 
@@ -72,6 +72,6 @@ public class SettingItem
     @Override
     public String toString()
     {
-        return "Key: "+this.getKey()+", type: "+this.getType();
+        return "Key: " + this.getKey() + ", type: " + this.getType();
     }
 }

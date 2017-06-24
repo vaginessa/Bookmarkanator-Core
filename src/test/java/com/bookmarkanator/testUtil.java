@@ -4,9 +4,10 @@ import java.util.*;
 import com.bookmarkanator.util.*;
 import org.junit.*;
 
-public class testUtil {
+public class testUtil
+{
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void testGetWords()
     {
@@ -15,8 +16,7 @@ public class testUtil {
 
         Set<String> words = Util.getWords(theString);
 
-        Assert.assertTrue(words.size()==5);
-
+        Assert.assertTrue(words.size() == 5);
 
         theString = "Hello";
 
@@ -24,9 +24,7 @@ public class testUtil {
 
         words = Util.getAllStringRotations(theString);
 
-
         System.out.println();
-
 
     }
 }

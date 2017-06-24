@@ -54,7 +54,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
         {
             if (bkUI.getBookmark() == null)
             {
-//                MLog.warn("Null bookmark encountered");
+                //                MLog.warn("Null bookmark encountered");
                 continue;
             }
             dialogData.add(bkUI.getBookmark().getTypeName());
@@ -69,7 +69,7 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
         if (result.isPresent())
         {
             String item = result.get();
-//            MLog.fine("Selected " + item);
+            //            MLog.fine("Selected " + item);
 
             AbstractUIBookmark bk = typesMap.get(item);
             if (bk != null)
@@ -84,10 +84,10 @@ public class NewBookmarkSelectorUI implements NewBookmarkSelectionInterface
             }
             else
             {
-//                MLog.warn("Value selected has no map entry. Selected item: " + item);
+                //                MLog.warn("Value selected has no map entry. Selected item: " + item);
             }
         }
-//        System.out.println(result);
+        //        System.out.println(result);
     }
 
     @Override

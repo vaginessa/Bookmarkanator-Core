@@ -27,13 +27,13 @@ public class TypesUI extends VBox implements BKTypesInterface
         Objects.requireNonNull(controller);
         this.controller = controller;
         this.setSpacing(5);
-        this.setStyle("-fx-background-color:"+backgroundColor);
+        this.setStyle("-fx-background-color:" + backgroundColor);
 
         this.vBox = new VBox();
         this.vBox.setSpacing(5);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setStyle("-fx-background:"+backgroundColor);
+        scrollPane.setStyle("-fx-background:" + backgroundColor);
 
         scrollPane.setContent(vBox);
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
@@ -46,12 +46,14 @@ public class TypesUI extends VBox implements BKTypesInterface
         HBox hBox = new HBox();
         HBox.setHgrow(hBox, Priority.ALWAYS);
         hBox.setSpacing(10);
-        hBox.setStyle("-fx-background-color:"+backgroundColor);
+        hBox.setStyle("-fx-background-color:" + backgroundColor);
         Button all = new Button("All");
-        all.setOnAction(new EventHandler<ActionEvent>() {
+        all.setOnAction(new EventHandler<ActionEvent>()
+        {
 
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 try
                 {
                     controller.showAllTypes();
@@ -65,10 +67,12 @@ public class TypesUI extends VBox implements BKTypesInterface
 
         Button none = new Button("None");
 
-        none.setOnAction(new EventHandler<ActionEvent>() {
+        none.setOnAction(new EventHandler<ActionEvent>()
+        {
 
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 try
                 {
                     controller.hideAllTypes();
@@ -97,16 +101,18 @@ public class TypesUI extends VBox implements BKTypesInterface
 
         Collections.sort(typesList, new UIBookmarkComparator());
 
-        for (AbstractUIBookmark bookmarkUI: typesList)
+        for (AbstractUIBookmark bookmarkUI : typesList)
         {
             String typeName = bookmarkUI.getBookmark().getTypeName();
             //TODO Add bookmark image to the toggle button here.
             ToggleButton toggleButton = new ToggleButton(typeName);
 
-            toggleButton.setOnAction(new EventHandler<ActionEvent>() {
+            toggleButton.setOnAction(new EventHandler<ActionEvent>()
+            {
 
                 @Override
-                public void handle(ActionEvent event) {
+                public void handle(ActionEvent event)
+                {
                     try
                     {
                         controller.toggleShowType(bookmarkUI);
@@ -132,18 +138,18 @@ public class TypesUI extends VBox implements BKTypesInterface
             this.vBox.getChildren().add(toggleButton);
         }
     }
-//
-//    @Override
-//    public Set<String> getSelectedTypes()
-//    {
-//        return this.selectedTypes;
-//    }
-//
-//    @Override
-//    public Set<String> getAllTypes()
-//    {
-//        return this.types;
-//    }
+    //
+    //    @Override
+    //    public Set<String> getSelectedTypes()
+    //    {
+    //        return this.selectedTypes;
+    //    }
+    //
+    //    @Override
+    //    public Set<String> getAllTypes()
+    //    {
+    //        return this.types;
+    //    }
 
     @Override
     public boolean getEditMode()

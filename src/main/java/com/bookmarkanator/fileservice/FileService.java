@@ -1,4 +1,4 @@
-package com.bookmarkanator.xml;
+package com.bookmarkanator.fileservice;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class FileService
 
     public static FileService use()
     {
-        if (fileService==null)
+        if (fileService == null)
         {
             fileService = new FileService();
         }

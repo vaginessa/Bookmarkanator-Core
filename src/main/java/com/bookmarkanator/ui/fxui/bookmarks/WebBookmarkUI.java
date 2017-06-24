@@ -32,7 +32,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
 
-        if (stage!=null)
+        if (stage != null)
         {
             stage.close();
         }
@@ -45,7 +45,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
-        if (stage!=null)
+        if (stage != null)
         {
             stage.close();
         }
@@ -73,7 +73,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
 
         //TODO Only enable submit button when the web address is a real web address of some kind.
         Dialog<String> dialog = new Dialog<>();
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             dialog.setTitle("Edit Web Bookmark");
         }
@@ -83,9 +83,9 @@ public class WebBookmarkUI extends AbstractUIBookmark
         }
 
         // Set the button types.
-        ButtonType delete = new ButtonType("Delete",ButtonBar.ButtonData.APPLY);
+        ButtonType delete = new ButtonType("Delete", ButtonBar.ButtonData.APPLY);
 
-        if (bookmark==null)
+        if (bookmark == null)
         {
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         }
@@ -102,7 +102,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         Pane vBox = new VBox();
         Label label = new Label("Name");
         TextField name = new TextField();
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             name.setText(bookmark.getName());
         }
@@ -117,17 +117,17 @@ public class WebBookmarkUI extends AbstractUIBookmark
         Label webAddressLabel = new Label("Web Address");
         //Text area
         TextField webAddress = new TextField();
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             webAddress.setText(bookmark.getContent());
         }
-        vBox.getChildren().add( webAddressLabel);
+        vBox.getChildren().add(webAddressLabel);
         vbox.getChildren().add(webAddress);
 
         //Tag selection panel
         TagPanel tagPanel;
 
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             tagPanel = TagPanel.getNew(bookmark.getTags());
         }
@@ -144,7 +144,8 @@ public class WebBookmarkUI extends AbstractUIBookmark
         dialog.getDialogPane().setContent(container);
 
         // Convert the result to a username-password-pair when the login button is clicked.
-        dialog.setResultConverter(dialogButton -> {
+        dialog.setResultConverter(dialogButton ->
+        {
             if (dialogButton == ButtonType.OK)
             {
                 return webAddress.getText();
@@ -168,7 +169,7 @@ public class WebBookmarkUI extends AbstractUIBookmark
         if (res.isPresent() && res.get() != null)
         {
             AbstractBookmark abstractBookmark;
-            if (bookmark==null)
+            if (bookmark == null)
             {
                 abstractBookmark = new WebBookmark();
                 abstractBookmark.setName(name.getText());

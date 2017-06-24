@@ -83,9 +83,9 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
             @Override
             public int compare(AbstractUIBookmark o1, AbstractUIBookmark o2)
             {
-                if (o1.getBookmark().getName()==null || o1.getBookmark().getName().isEmpty())
+                if (o1.getBookmark().getName() == null || o1.getBookmark().getName().isEmpty())
                 {
-                    if (o2.getBookmark().getName()==null || o2.getBookmark().getName().isEmpty())
+                    if (o2.getBookmark().getName() == null || o2.getBookmark().getName().isEmpty())
                     {
                         return 0;
                     }
@@ -94,9 +94,9 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
                         return -1;
                     }
                 }
-                else if (o2.getBookmark().getName()==null || o2.getBookmark().getName().isEmpty())
+                else if (o2.getBookmark().getName() == null || o2.getBookmark().getName().isEmpty())
                 {
-                    if (o1.getBookmark().getName()==null || o1.getBookmark().getName().isEmpty())
+                    if (o1.getBookmark().getName() == null || o1.getBookmark().getName().isEmpty())
                     {
                         return 0;
                     }
@@ -114,14 +114,14 @@ public class BookmarksListUI extends VBox implements BookmarksListInterface
 
         observableList.addAll(bookmarksList);
 
-//        for (AbstractUIBookmark bk : bookmarksList)
-//        {
-//            String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
-//            String className = controller.getContent().getSetting(bkClassNameKey).getValue();
-//
-//
-//            observableList.add(bkui);
-//        }
+        //        for (AbstractUIBookmark bk : bookmarksList)
+        //        {
+        //            String bkClassNameKey = Main.getUIClassString() + bk.getClass().getCanonicalName();
+        //            String className = controller.getContent().getSetting(bkClassNameKey).getValue();
+        //
+        //
+        //            observableList.add(bkui);
+        //        }
     }
 
     @Override

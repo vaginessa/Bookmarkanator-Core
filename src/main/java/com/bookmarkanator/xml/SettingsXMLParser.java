@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.core.*;
+import com.bookmarkanator.fileservice.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
 
@@ -17,7 +18,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
 
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String KEY_ATTRIBUTE = "key";
-//    public static final String CLASS_ATTRIBUTE = "class";
+    //    public static final String CLASS_ATTRIBUTE = "class";
 
     private Document document;
     private Settings settings;
@@ -74,27 +75,28 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         return settingItem;
     }
 
-//    private Class loadSettingClass(String className)
-//        throws Exception
-//    {
-//        Class clazz = this.classLoader.loadClass(className);
-//        Class sub = clazz.asSubclass(SettingItem.class);
-//        System.out.println("Loaded Setting item class: \"" + className + "\".");
-//        return sub;
-//    }
+    //    private Class loadSettingClass(String className)
+    //        throws Exception
+    //    {
+    //        Class clazz = this.classLoader.loadClass(className);
+    //        Class sub = clazz.asSubclass(SettingItem.class);
+    //        System.out.println("Loaded Setting item class: \"" + className + "\".");
+    //        return sub;
+    //    }
 
-//    private SettingItem instantiateClass(Class clazz, String key)
-//        throws Exception
-//    {
-//        return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
-//    }
+    //    private SettingItem instantiateClass(Class clazz, String key)
+    //        throws Exception
+    //    {
+    //        return (SettingItem) clazz.getConstructor(String.class).newInstance(key);
+    //    }
 
     /**
      * The content represents any data that the individual bookmark chooses to store here. It doesn't have to be in xml form.
      * It can be in any format because this method ignores everything between the two content tags, and simply returns the
      * raw data.
-     * @param node  The content node to parse bookmark settings from.
-     * @return  A string containing the settings specific to this bookmark.
+     *
+     * @param node The content node to parse bookmark settings from.
+     * @return A string containing the settings specific to this bookmark.
      */
     private String getContent(Node node)
     {
@@ -115,8 +117,9 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     /**
      * This method removes the annoying <?xml version="1.0" encoding="UTF-16"?> that the LSSerializer places on it's
      * string verison of the xml.
-     * @param xmlString  A string containing xml version ... strings.
-     * @return  A string without xml version ... strings in it.
+     *
+     * @param xmlString A string containing xml version ... strings.
+     * @return A string without xml version ... strings in it.
      */
     private String sanitizeXMLString(String xmlString)
     {
@@ -124,7 +127,9 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     }
 
     @Override
-    public Settings parse(InputStream inputStream) throws Exception {
+    public Settings parse(InputStream inputStream)
+        throws Exception
+    {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         document = builder.parse(inputStream);
@@ -156,24 +161,29 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     }
 
     @Override
-    public void validate(InputStream inputStream) throws Exception{
+    public void validate(InputStream inputStream)
+        throws Exception
+    {
         // TODO fix schema so it can validate the settings file.
         InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
         XMLValidator.validate(inputStream, xsd);
     }
 
     @Override
-    public FileSync.InvalidFilePolicy getInvalidFilePolicy() {
+    public FileSync.InvalidFilePolicy getInvalidFilePolicy()
+    {
         return FileSync.InvalidFilePolicy.markBadAndContinue;
     }
 
     @Override
-    public FileSync.MissingFilePolicy getMissingFilePolicy() {
+    public FileSync.MissingFilePolicy getMissingFilePolicy()
+    {
         return FileSync.MissingFilePolicy.createNew;
     }
 
     @Override
-    public FileSync.FileBackupPolicy getFileBackupPolicy() {
+    public FileSync.FileBackupPolicy getFileBackupPolicy()
+    {
         return FileSync.FileBackupPolicy.SINGLE_BACKUP;
     }
 }

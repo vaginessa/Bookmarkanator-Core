@@ -7,7 +7,7 @@ import org.junit.*;
 public class TestSearchClass
 {
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void testTextAssociator()
     {
@@ -24,13 +24,13 @@ public class TestSearchClass
         textAssociator.add(0, b);
         textAssociator.add(0, c);
 
-        textAssociator.add(1,d);
-        textAssociator.add(1,e);
+        textAssociator.add(1, d);
+        textAssociator.add(1, e);
         textAssociator.add(1, c);
         textAssociator.add(2, f);
 
         Set<String> theSet = textAssociator.getAllWords();
-        Assert.assertTrue(theSet.size()==6);
+        Assert.assertTrue(theSet.size() == 6);
 
         theSet = textAssociator.getWords(0);
 
@@ -139,12 +139,10 @@ public class TestSearchClass
         search.add(2, c);
         search.add(0, d);
 
-        for (int count=0;count<100;count++)
+        for (int count = 0; count < 100; count++)
         {
-            search.add(count, ((char)(count+65))+"");
+            search.add(count, ((char) (count + 65)) + "");
         }
-
-
 
         LinkedHashSet<Integer> results = search.searchAll("am", 10);
         System.out.println();

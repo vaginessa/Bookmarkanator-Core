@@ -1,6 +1,7 @@
 package com.bookmarkanator.core;
 
 import java.io.*;
+import com.bookmarkanator.fileservice.*;
 import com.bookmarkanator.xml.*;
 import org.apache.logging.log4j.*;
 
@@ -22,11 +23,12 @@ public class GlobalSettings
     {
         logger.trace("Init global settings.");
 
-        String defaultSettingsLocation = System.getProperty("user.home") + File.separatorChar + DEFAULT_SETTINGS_DIRECTORY_NAME + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME;
+        String defaultSettingsLocation =
+            System.getProperty("user.home") + File.separatorChar + DEFAULT_SETTINGS_DIRECTORY_NAME + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME;
         File file = new File(defaultSettingsLocation);
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), file);
         FileService.use().addFile(fileSync, GLOBAL_SETTINGS_KEY);
-        logger.trace("Default settings file: \""+defaultSettingsLocation+"\"");
+        logger.trace("Default settings file: \"" + defaultSettingsLocation + "\"");
         settings = new Settings();
     }
 

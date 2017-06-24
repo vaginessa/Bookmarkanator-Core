@@ -1,32 +1,49 @@
-package com.bookmarkanator.xml;
+package com.bookmarkanator.fileservice;
 
 import java.io.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * A class used to read in, validate, and write out information to files on the file system.
+ *
+ * @param <T> The type of object that is supplied to the reader and writer interfaces.
+ */
 public class FileSync<T>
 {
     private static final Logger logger = LogManager.getLogger(FileSync.class.getCanonicalName());
 
-    enum FileBackupPolicy
+    // ============================================================
+    // Enums
+    // ============================================================
+
+    public enum FileBackupPolicy
     {
         SINGLE_BACKUP, TIMESTAMP_BACKUP, NO_BACKUP
     }
 
-    enum InvalidFilePolicy
+    public enum InvalidFilePolicy
     {
         markBadAndContinue, thowError,
     }
 
-    enum MissingFilePolicy
+    public enum MissingFilePolicy
     {
         createNew, thowError,
     }
+
+    // ============================================================
+    // Fields
+    // ============================================================
 
     private FileWriterInterface<T> fileWriter;
     private FileReaderInterface<T> fileReader;
     private File file;
     private T obj;
+
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     public FileSync(FileWriterInterface fileWriter, FileReaderInterface fileReader, File file)
     {
@@ -35,24 +52,52 @@ public class FileSync<T>
         this.file = file;
     }
 
+    // ============================================================
+    // Public methods
+    // ============================================================
+
+    /**
+     * Get the file that will be written or read
+     *
+     * @return The file referenced by this FileSync object.
+     */
     public File getFile()
     {
         return file;
     }
+
+    /**
+     * Set the file that will be written or read
+     */
     public void setFile(File file)
     {
         this.file = file;
     }
+
+    /**
+     * Gets the object parsed if the parser creates it's own result object. If not it needs to be supplied
+     * with an object to fill with data using the injectParsingObject method.
+     *
+     * @return The parsed object.
+     */
     public T getObject()
     {
         return obj;
     }
 
+    /**
+     * @param obj An object to fill when parsed if the parser doesn't create it's own object.
+     */
     public void injectParsingObject(T obj)
     {
         fileReader.setObject(obj);
     }
 
+    /**
+     * Writes the file to disk using the supplied writer.
+     *
+     * @throws Exception
+     */
     public void writeToDisk()
         throws Exception
     {
@@ -95,13 +140,18 @@ public class FileSync<T>
         }
     }
 
+    /**
+     * Reads a file from disk using the supplied parser
+     *
+     * @throws Exception
+     */
     public void readFromDisk()
         throws Exception
     {
 
         if (file.exists())
         {
-            if (file.length()==0)
+            if (file.length() == 0)
             {// Write initial xml if file contains nothing
                 FileOutputStream fout = new FileOutputStream(file);
                 try
@@ -196,10 +246,34 @@ public class FileSync<T>
         }
     }
 
+    public FileWriterInterface<T> getFileWriter()
+    {
+        return fileWriter;
+    }
+
+    public void setFileWriter(FileWriterInterface<T> fileWriter)
+    {
+        this.fileWriter = fileWriter;
+    }
+
+    public FileReaderInterface<T> getFileReader()
+    {
+        return fileReader;
+    }
+
+    public void setFileReader(FileReaderInterface<T> fileReader)
+    {
+        this.fileReader = fileReader;
+    }
+
+    // ============================================================
+    // Private methods
+    // ============================================================
+
     private void handleBackup(File fileToBackup, FileBackupPolicy policy)
         throws IOException
     {
-        if (policy==FileBackupPolicy.SINGLE_BACKUP)
+        if (policy == FileBackupPolicy.SINGLE_BACKUP)
         {
             File backup = singleBackup(fileToBackup);
             if (backup != null)

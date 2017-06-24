@@ -2,7 +2,7 @@ package com.bookmarkanator.util;
 
 /**
  * Detects which OS we are running on.
- *
+ * <p>
  * Note: This code copied from https://stackoverflow.com/questions/7024031/java-open-a-file-windows-mac
  */
 public class OSDetector
@@ -19,7 +19,18 @@ public class OSDetector
         isMac = os.contains("mac");
     }
 
-    public static boolean isWindows() { return isWindows; }
-    public static boolean isLinux() { return isLinux; }
-    public static boolean isMac() { return isMac; }
+    public static boolean isWindows()
+    {
+        return isWindows;
+    }
+
+    public static boolean isLinux()
+    {
+        return isLinux;
+    }
+
+    public static boolean isMac()
+    {
+        return isMac;
+    }
 }

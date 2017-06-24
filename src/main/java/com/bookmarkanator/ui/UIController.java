@@ -85,11 +85,10 @@ public class UIController implements UIControllerInterface
         assert searchInterface != null;
         assert menuInterface != null;
         assert quickPanelInterface != null;
-        assert newBookmarkSelectionInterface !=null;
+        assert newBookmarkSelectionInterface != null;
 
         newBookmarkSelectionInterface.setTypes(allAvailableBKTypes);
         this.searchInterface.setSearchOptions(this.searchOptions);//Set this so that the search checkboxes get populated.
-
 
         updateUI();
     }
@@ -234,7 +233,7 @@ public class UIController implements UIControllerInterface
         List<String> tmpList = new ArrayList<>(tagsToHighlightBorders);
         tmpList.addAll(highlightTags);
 
-        return new SimilarItemIterator(closeSearchTerm,tmpList);
+        return new SimilarItemIterator(closeSearchTerm, tmpList);
     }
 
     @Override
@@ -415,7 +414,7 @@ public class UIController implements UIControllerInterface
                 AbstractBookmark abs = ModuleLoader.use().loadClass(bookmarkClass.getCanonicalName(), AbstractBookmark.class);
                 if (abs.getTypeName() == null || abs.getTypeName().trim().isEmpty())
                 {
-//                    MLog.warn("Bookmark " + abs.getClass().getCanonicalName() + " has no type string.");
+                    //                    MLog.warn("Bookmark " + abs.getClass().getCanonicalName() + " has no type string.");
                 }
                 else
                 {

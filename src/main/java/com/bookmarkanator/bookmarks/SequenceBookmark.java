@@ -22,16 +22,18 @@ public class SequenceBookmark extends AbstractBookmark
         items = new ArrayList<>();
         errorItems = new ArrayList<>();
     }
+
     @Override
     public boolean setSecretKey(String secretKey)
     {
-        if (SequenceBookmark.secretKey == null && secretKey!=null)
+        if (SequenceBookmark.secretKey == null && secretKey != null)
         {
             SequenceBookmark.secretKey = secretKey;
             return true;
         }
         return false;
     }
+
     @Override
     public Set<String> getSearchWords()
     {
@@ -70,13 +72,13 @@ public class SequenceBookmark extends AbstractBookmark
     {
         boolean error = false;
         StringBuilder sb = new StringBuilder();
-        for (UUID uuid: items)
+        for (UUID uuid : items)
         {
             AbstractBookmark abs = Bootstrap.context().getBookmark(uuid);
-            if (abs==null)
+            if (abs == null)
             {
                 errorItems.add(uuid);
-                sb.append("[Error finding id \""+uuid+"\"]");
+                sb.append("[Error finding id \"" + uuid + "\"]");
                 error = true;
             }
             else
@@ -130,17 +132,18 @@ public class SequenceBookmark extends AbstractBookmark
     {
         return null;
     }
+
     @Override
     public String getContent()
     {
         StringBuilder sb = new StringBuilder();
 
-        for (int c=0;c<items.size();c++)
+        for (int c = 0; c < items.size(); c++)
         {
             UUID bk = items.get(c);
             sb.append(bk.toString());
 
-            if (c!=items.size()-1)
+            if (c != items.size() - 1)
             {//don't add comma at last item.
                 sb.append(",");
             }
@@ -154,7 +157,7 @@ public class SequenceBookmark extends AbstractBookmark
     {
         String[] strings = content.split(",");
 
-        for (String s: strings)
+        for (String s : strings)
         {
             s = s.trim();
             if (!s.isEmpty())

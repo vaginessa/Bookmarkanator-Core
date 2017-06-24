@@ -33,9 +33,9 @@ public class Util
 
     /**
      * This method splits a word up into all substrings that it contains.
-     *
+     * <p>
      * For example the text "ABCD" split into all substrings would become the list:
-     *
+     * <p>
      * ABCD
      * ABC
      * AB
@@ -63,11 +63,11 @@ public class Util
     /**
      * This method gets a list of all strings that would be present if the characters were rotated and any that would fall of the end were
      * placed at the beginning. For example:
-     *
+     * <p>
      * Text "ABCD"
-     *
+     * <p>
      * Fully rotated strings would look like:
-     *
+     * <p>
      * ABCD
      * DABC
      * CDAB
@@ -90,13 +90,13 @@ public class Util
 
     /**
      * Rotates a string so many characters, placing any characters that fall of the end at the beginning.
-     *
+     * <p>
      * For example:
-     *
+     * <p>
      * Text "ABCD"
-     *
+     * <p>
      * Rotated 2 spaces would look like
-     *
+     * <p>
      * CDAB
      *
      * @param theString
@@ -147,6 +147,5 @@ public class Util
 
         return file;
     }
-
 
 }

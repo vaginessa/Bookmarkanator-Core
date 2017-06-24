@@ -31,6 +31,7 @@ public interface UIControllerInterface
         throws Exception;
 
     SearchOptions getSearchOptions();
+
     void setSearchOptions(SearchOptions searchOptions)
         throws Exception;
 
@@ -39,16 +40,20 @@ public interface UIControllerInterface
     //Available Bookmark Types Methods
     void toggleShowType(AbstractUIBookmark abstractUIBookmark)
         throws Exception;
+
     void showAllTypes()
         throws Exception;
+
     void hideAllTypes()
         throws Exception;
 
     //Selected Tags Methods
     void clearAllSelectedTagGroups()
         throws Exception;
+
     void setTagModeForCurrentGroup(String tagModeForCurrentGroup)
         throws Exception;
+
     void setCurrentGroup(SearchOptions.TagsInfo currentGroup)
         throws Exception;
 
@@ -56,8 +61,10 @@ public interface UIControllerInterface
 
     void addTagGroup()
         throws Exception;
+
     void removeTagGroup(SearchOptions.TagsInfo tagGroup)
         throws Exception;
+
     void removeTagFromGroup(SearchOptions.TagsInfo tagGroup, String tag)
         throws Exception;
 

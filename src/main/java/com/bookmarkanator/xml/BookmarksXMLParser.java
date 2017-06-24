@@ -6,6 +6,7 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
+import com.bookmarkanator.fileservice.*;
 import com.bookmarkanator.io.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
@@ -80,7 +81,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
                     break;
                 case BookmarksXMLParser.TEXT_TAG:
                     // Set text as content when parsing files in from now on.
-//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
+                    //                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
                     abstractBookmark.setContent(n.getTextContent());
                     break;
                 case BookmarksXMLParser.TAGS_TAG:
@@ -93,7 +94,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
                     abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
                     break;
                 case BookmarksXMLParser.CONTENT_TAG:
-//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
+                    //                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
                     abstractBookmark.setContent(n.getTextContent());
                     break;
                 default:

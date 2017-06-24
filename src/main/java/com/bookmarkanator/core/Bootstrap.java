@@ -33,7 +33,7 @@ public class Bootstrap
     {
         // Get settings file
         File currentDir = new File(".");
-        logger.info("Current directory "+currentDir.getCanonicalPath());
+        logger.info("Current directory " + currentDir.getCanonicalPath());
         logger.info("Locating settings file...");
         settingsFile = locateSettingsDirectory();
 
@@ -64,7 +64,7 @@ public class Bootstrap
 
         // Give bookmarks access to the message board
         MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs: this.bkioInterface.getContext().getBookmarks())
+        for (AbstractBookmark abs : this.bkioInterface.getContext().getBookmarks())
         {
             messageBoard.setSecretKey(abs);
         }
@@ -110,7 +110,7 @@ public class Bootstrap
         {//Iterate through bkio classes found, selecting the correct one based on settings.
             try
             {
-                logger.trace("Attempting to load bookmark io interface \""+clazz.getCanonicalName()+"\"");
+                logger.trace("Attempting to load bookmark io interface \"" + clazz.getCanonicalName() + "\"");
                 //Attempting to load the config setting for this class
                 SettingItem configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
                 String config = null;
@@ -126,7 +126,8 @@ public class Bootstrap
 
                 BKIOInterface bkio2 = ModuleLoader.use().loadClass(clazz.getCanonicalName(), BKIOInterface.class);
 
-                logger.info("Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty()?"[no config found]":config) + "\"");
+                logger.info(
+                    "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
                 logger.info("Calling init()...");
                 bkio2.init(config);
                 logger.info("Done.");
@@ -155,10 +156,10 @@ public class Bootstrap
     {
         Settings res = new Settings();
 
-//        SettingItem settingItem = new SettingItem(FileIO.class.getCanonicalName());
-//        settingItem.setValue(getDefaultBookmarkFile());
-//        settingItem.setType(Bootstrap.BKIO_CONFIGS);
-//        res.putSetting(settingItem);
+        //        SettingItem settingItem = new SettingItem(FileIO.class.getCanonicalName());
+        //        settingItem.setValue(getDefaultBookmarkFile());
+        //        settingItem.setType(Bootstrap.BKIO_CONFIGS);
+        //        res.putSetting(settingItem);
 
         return res;
     }
@@ -171,7 +172,7 @@ public class Bootstrap
 
         if (file.exists())
         {
-            logger.info("Using settings file at "+file.getCanonicalPath());
+            logger.info("Using settings file at " + file.getCanonicalPath());
             return file;
         }
 
@@ -180,7 +181,7 @@ public class Bootstrap
 
         if (file.exists())
         {
-            logger.info("Using settings file at "+file.getCanonicalPath());
+            logger.info("Using settings file at " + file.getCanonicalPath());
             return file;
         }
 
@@ -189,7 +190,7 @@ public class Bootstrap
 
         if (file.exists())
         {
-            logger.info("Using settings file at "+file.getCanonicalPath());
+            logger.info("Using settings file at " + file.getCanonicalPath());
             return file;
         }
 
@@ -198,13 +199,13 @@ public class Bootstrap
 
         if (file.exists())
         {
-            logger.info("Using settings file at "+file.getCanonicalPath());
+            logger.info("Using settings file at " + file.getCanonicalPath());
             return file;
         }
 
         // Default to [user home]/Bookmark-anator/Settings.xml and let the settings engine handle creating the file if necessary.
         file = new File(getDefaultHomeDirSettingsFileInBKFolder());
-        logger.info("No settings files exist at this time. Defaulting to "+file.getCanonicalPath());
+        logger.info("No settings files exist at this time. Defaulting to " + file.getCanonicalPath());
 
         return file;
     }
@@ -224,7 +225,7 @@ public class Bootstrap
     private String getDefaultHomeDirSettingsFile()
     {
         String directory = System.getProperty("user.home");
-        return directory + File.separatorChar + "settings"+File.separatorChar+ Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+        return directory + File.separatorChar + "settings" + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
 
     private String getDefaultHomeDirSettingsFileInBKFolder()

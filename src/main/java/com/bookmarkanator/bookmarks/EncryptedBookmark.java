@@ -3,7 +3,8 @@ package com.bookmarkanator.bookmarks;
 import java.util.*;
 import org.apache.logging.log4j.*;
 
-public class EncryptedBookmark extends AbstractBookmark{
+public class EncryptedBookmark extends AbstractBookmark
+{
     private static final Logger logger = LogManager.getLogger(EncryptedBookmark.class.getCanonicalName());
     private static String secretKey;
     private String passwordHash;
@@ -39,14 +40,15 @@ public class EncryptedBookmark extends AbstractBookmark{
      */
 
     @Override
-    public String getTypeName() {
+    public String getTypeName()
+    {
         return "Encrypted";
     }
 
     @Override
     public boolean setSecretKey(String secretKey)
     {
-        if (EncryptedBookmark.secretKey == null && secretKey!=null)
+        if (EncryptedBookmark.secretKey == null && secretKey != null)
         {
             EncryptedBookmark.secretKey = secretKey;
             return true;
@@ -55,8 +57,10 @@ public class EncryptedBookmark extends AbstractBookmark{
     }
 
     @Override
-    public String runAction(String actionString) throws Exception {
-return null;
+    public String runAction(String actionString)
+        throws Exception
+    {
+        return null;
     }
 
     @Override
@@ -100,12 +104,14 @@ return null;
     }
 
     @Override
-    public String getContent() {
+    public String getContent()
+    {
         return null;
     }
 
     @Override
-    public void setContent(String content) {
+    public void setContent(String content)
+    {
 
     }
 

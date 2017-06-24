@@ -38,12 +38,13 @@ public class MenuUI implements MenuInterface
     }
 
     public MenuBar getMenuBar()
-{
-    javafx.scene.control.MenuBar menuBar = new MenuBar();
+    {
+        javafx.scene.control.MenuBar menuBar = new MenuBar();
 
-    menuBar.getMenus().addAll(getFileMenu(), getEditMenu(), getViewMenu(), getHelpMenu());
-    return menuBar;
-}
+        menuBar.getMenus().addAll(getFileMenu(), getEditMenu(), getViewMenu(), getHelpMenu());
+        return menuBar;
+    }
+
     private Menu getFileMenu()
     {
         Menu menuFile = new Menu("File");

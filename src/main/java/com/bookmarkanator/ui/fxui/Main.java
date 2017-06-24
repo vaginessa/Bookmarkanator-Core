@@ -59,7 +59,7 @@ public class Main extends Application
         VBox tagsBox = new VBox();
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI(controller);
         selectedTagsUI.setPrefHeight(bestWindowSize.getHeight() * .35);
-        selectedTagsUI.setPrefWidth(bestWindowSize.getWidth()*.4);
+        selectedTagsUI.setPrefWidth(bestWindowSize.getWidth() * .4);
         controller.setSelectedTagsUI(selectedTagsUI);
         tagsBox.getChildren().add(selectedTagsUI);
         VBox.setVgrow(selectedTagsUI, Priority.ALWAYS);
@@ -114,18 +114,18 @@ public class Main extends Application
         launch(args);
     }
 
-//    public Dimension getBestWindowSize()
-//    {
-//        if (bestWindowSize==null)
-//        {
-//            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//            int width = gd.getDisplayMode().getWidth();
-//            int height = gd.getDisplayMode().getHeight();
-//
-//            bestWindowSize = new Dimension((int) (width * .65), (int) (height * .5));
-//        }
-//       return bestWindowSize;
-//    }
+    //    public Dimension getBestWindowSize()
+    //    {
+    //        if (bestWindowSize==null)
+    //        {
+    //            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    //            int width = gd.getDisplayMode().getWidth();
+    //            int height = gd.getDisplayMode().getHeight();
+    //
+    //            bestWindowSize = new Dimension((int) (width * .65), (int) (height * .5));
+    //        }
+    //       return bestWindowSize;
+    //    }
 
     private Settings getDefaultSettings()
         throws Exception
