@@ -150,6 +150,12 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     }
 
     @Override
+    public void setObject(Settings obj)
+    {
+        this.settings = obj;
+    }
+
+    @Override
     public void validate(InputStream inputStream) throws Exception{
         // TODO fix schema so it can validate the settings file.
 //        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");

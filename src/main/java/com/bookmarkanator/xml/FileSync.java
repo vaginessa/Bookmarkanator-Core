@@ -48,6 +48,11 @@ public class FileSync<T>
         return obj;
     }
 
+    public void injectParsingObject(T obj)
+    {
+        fileReader.setObject(obj);
+    }
+
     public void writeToDisk()
         throws Exception
     {
@@ -147,8 +152,25 @@ public class FileSync<T>
                 }
                 finally
                 {
-                    fout.flush();
-                    fout.close();
+                    if (fout.getChannel().isOpen())
+                    {
+                        fout.flush();
+                        fout.close();
+                    }
+                }
+
+                FileInputStream fin = new FileInputStream(file);
+
+                try
+                {
+                    obj = fileReader.parse(fin);
+                }
+                finally
+                {
+                    if (fin.getChannel().isOpen())
+                    {
+                        fin.close();
+                    }
                 }
             }
             else

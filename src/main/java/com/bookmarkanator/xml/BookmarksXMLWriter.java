@@ -11,38 +11,10 @@ import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLWriter
+public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
 {
     private AbstractContext abstractContext;
     private OutputStream out;
-
-    public BookmarksXMLWriter(AbstractContext abstractContext, OutputStream outputStream)
-    {
-        this.abstractContext = abstractContext;
-        this.out = outputStream;
-    }
-
-    public void write()throws Exception
-    {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
-        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
-
-        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
-
-        addBlocks(rootElement, doc, abstractContext);
-
-        doc.appendChild(rootElement);
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-
-
-        StreamResult result = new StreamResult(new OutputStreamWriter(out));
-        transformer.transform(source, result);
-    }
 
     private void addBlocks(Element element,Document document, AbstractContext abstractContext)
         throws Exception
@@ -127,5 +99,56 @@ public class BookmarksXMLWriter
     {
         SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
         return formatter.format(date);
+    }
+
+    @Override
+    public void write(AbstractContext context, OutputStream out)
+        throws Exception
+    {
+        this.out = out;
+        this.abstractContext = context;
+
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
+
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
+
+        addBlocks(rootElement, doc, abstractContext);
+
+        doc.appendChild(rootElement);
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StreamResult result = new StreamResult(new OutputStreamWriter(out));
+        transformer.transform(source, result);
+    }
+
+    @Override
+    public void writeInitial(OutputStream outputStream)
+        throws Exception
+    {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
+
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
+        doc.appendChild(rootElement);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StreamResult result = new StreamResult(new OutputStreamWriter(outputStream));
+        transformer.transform(source, result);
+    }
+
+    @Override
+    public FileSync.FileBackupPolicy getFileBackupPolicy()
+    {
+        return FileSync.FileBackupPolicy.SINGLE_BACKUP;
     }
 }

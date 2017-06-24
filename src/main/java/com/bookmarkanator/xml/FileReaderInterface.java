@@ -1,12 +1,12 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
-import javax.xml.parsers.*;
 
 public interface FileReaderInterface <T>
 {
 
-    T parse(InputStream inputStream) throws ParserConfigurationException, Exception;
+    T parse(InputStream inputStream) throws Exception;
+    void setObject(T obj);
     void validate(InputStream inputStream) throws Exception;
 
     FileSync.InvalidFilePolicy getInvalidFilePolicy();
