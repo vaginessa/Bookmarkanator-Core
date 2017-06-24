@@ -1,18 +1,35 @@
 package com.bookmarkanator.xml;
 
 import java.io.*;
+import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
-public class FileSync <T>
+public class FileSync<T>
 {
     private static final Logger logger = LogManager.getLogger(FileSync.class.getCanonicalName());
+
+    enum FileBackupPolicy
+    {
+        SINGLE_BACKUP, TIMESTAMP_BACKUP, NO_BACKUP
+    }
+
+    enum InvalidFilePolicy
+    {
+        markBadAndContinue, thowError,
+    }
+
+    enum MissingFilePolicy
+    {
+        createNew, thowError,
+    }
 
     private FileWriterInterface<T> fileWriter;
     private FileReaderInterface<T> fileReader;
     private File file;
     private T obj;
 
-    public FileSync(FileWriterInterface fileWriter, FileReaderInterface fileReader, File file) {
+    public FileSync(FileWriterInterface fileWriter, FileReaderInterface fileReader, File file)
+    {
         this.fileWriter = fileWriter;
         this.fileReader = fileReader;
         this.file = file;
@@ -29,13 +46,50 @@ public class FileSync <T>
     }
 
     public void writeToDisk()
+        throws Exception
     {
-        //save file
-        //handle any backups
+        FileOutputStream fout;
 
+        if (!file.exists())
+        {
+            file.createNewFile();
+            fout = new FileOutputStream(file);
+
+            try
+            {
+                fileWriter.writeInitial(fout);
+            }
+            finally
+            {
+                if (fout.getChannel().isOpen())
+                {
+                    fout.flush();
+                    fout.close();
+                }
+            }
+        }
+
+        handleBackup(file, fileWriter.getFileBackupPolicy().name());
+
+        fout = new FileOutputStream(file);
+
+        try
+        {
+            fileWriter.write(obj, fout);
+        }
+        finally
+        {
+            if (fout.getChannel().isOpen())
+            {
+                fout.flush();
+                fout.close();
+            }
+        }
     }
 
-    public void readFromDisk() throws Exception {
+    public void readFromDisk()
+        throws Exception
+    {
 
         if (file.exists())
         {
@@ -46,10 +100,7 @@ public class FileSync <T>
                 fileReader.validate(fin);
                 fin.close();
 
-                if (fileReader.getFileBackupPolicy().equals(FileReaderInterface.FileBackupPolicy.singleBackupOnRead))
-                {
-
-                }
+                handleBackup(file, fileReader.getFileBackupPolicy().name());
 
                 fin = new FileInputStream(file);
                 obj = fileReader.parse(fin);
@@ -57,10 +108,13 @@ public class FileSync <T>
             }
             catch (Exception e)
             {
-                if (fileReader.getInvalidFilePolicy()== FileReaderInterface.InvalidFilePolicy.markBadAndContinue)
+                if (fileReader.getInvalidFilePolicy().equals(InvalidFilePolicy.markBadAndContinue))
                 {
-                    File newFile = new File(file.getPath()+File.separatorChar+file.getName()+".bad");
-                    file.renameTo(newFile);
+                    File newFile = new File(file.getPath() + File.separatorChar + file.getName() + ".bad");
+                    if (!file.renameTo(newFile))
+                    {
+                        logger.error("Couldn't rename bad file. " + file.getCanonicalPath());
+                    }
                 }
                 else
                 {
@@ -77,8 +131,8 @@ public class FileSync <T>
         }
         else
         {
-            logger.info("File "+file.getCanonicalPath()+" doesn't exist.");
-            if (fileReader.getMissingFilePolicy()== FileReaderInterface.MissingFilePolicy.createNew)
+            logger.info("File " + file.getCanonicalPath() + " doesn't exist.");
+            if (fileReader.getMissingFilePolicy() == MissingFilePolicy.createNew)
             {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
@@ -101,8 +155,72 @@ public class FileSync <T>
         }
     }
 
+    private void handleBackup(File fileToBackup, String policy)
+        throws IOException
+    {
+        if (policy.equals(FileBackupPolicy.SINGLE_BACKUP))
+        {
+            File backup = singleBackup(fileToBackup);
+            if (backup != null)
+            {
+                logger.info("Backed up file to " + backup.getCanonicalPath());
+            }
+            else
+            {
+                logger.error("A backup file could not be created.");
+            }
+        }
+        else if (policy.equals(FileBackupPolicy.TIMESTAMP_BACKUP))
+        {
+            File backup = timeBackup(fileToBackup);
+            if (backup != null)
+            {
+                logger.info("Backed up file to " + backup.getCanonicalPath());
+            }
+            else
+            {
+                logger.error("A backup file could not be created.");
+            }
+        }
+    }
+
+    private File singleBackup(File fileToBackup)
+        throws IOException
+    {
+        File tmp = new File(fileToBackup.getCanonicalPath() + ".backup");
+        if (!tmp.exists())
+        {
+            tmp.createNewFile();
+        }
+
+        FileUtils.copyFile(fileToBackup, tmp);
+        return tmp;
+    }
+
+    private File timeBackup(File fileToBackup)
+        throws IOException
+    {
+        String ext = FilenameUtils.getExtension(fileToBackup.getCanonicalPath());
+        String name = FilenameUtils.getBaseName(fileToBackup.getCanonicalPath());
+        String path = fileToBackup.getPath();
+
+        File tmp = new File(path + File.separatorChar + name + "-" + System.currentTimeMillis() + ext + ".backup");
+        if (!tmp.exists())
+        {
+            tmp.createNewFile();
+        }
+
+        FileUtils.copyFile(fileToBackup, tmp);
+        return tmp;
+    }
+
     public T getParsedObject()
     {
         return obj;
+    }
+
+    public void setObjectToWrite(T obj)
+    {
+        this.obj = obj;
     }
 }
