@@ -101,6 +101,22 @@ public class FileSync<T>
 
         if (file.exists())
         {
+            if (file.length()==0)
+            {// Write initial xml if file contains nothing
+                FileOutputStream fout = new FileOutputStream(file);
+                try
+                {
+                    fileWriter.writeInitial(fout);
+                }
+                finally
+                {
+                    if (fout.getChannel().isOpen())
+                    {
+                        fout.close();
+                    }
+                }
+            }
+
             FileInputStream fin = new FileInputStream(file);
 
             try
