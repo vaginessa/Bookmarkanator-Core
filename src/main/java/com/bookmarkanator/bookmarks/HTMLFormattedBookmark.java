@@ -123,6 +123,7 @@ public class HTMLFormattedBookmark extends AbstractBookmark
 
     }
 
+
     @Override
     public int compareTo(AbstractBookmark o)
     {

@@ -48,6 +48,11 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
+    public HandleData canHandle(String content) {
+        return null;
+    }
+
+    @Override
     public String getTypeName()
     {
         return "Text";
@@ -63,12 +68,6 @@ public class TextBookmark extends AbstractBookmark
     public void notifyAfterAction(AbstractBookmark source, String actionString)
     {
 
-    }
-
-    @Override
-    public HandleData canHandle(String content)
-    {
-        return null;
     }
 
     @Override
