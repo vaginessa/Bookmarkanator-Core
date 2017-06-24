@@ -149,6 +149,6 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
     @Override
     public FileSync.FileBackupPolicy getFileBackupPolicy()
     {
-        return FileSync.FileBackupPolicy.SINGLE_BACKUP;
+        return FileSync.FileBackupPolicy.NO_BACKUP;
     }
 }

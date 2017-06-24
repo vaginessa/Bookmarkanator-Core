@@ -77,7 +77,7 @@ public class FileSync<T>
             }
         }
 
-        handleBackup(file, fileWriter.getFileBackupPolicy().name());
+        handleBackup(file, fileWriter.getFileBackupPolicy());
 
         fout = new FileOutputStream(file);
 
@@ -124,7 +124,7 @@ public class FileSync<T>
                 fileReader.validate(fin);
                 fin.close();
 
-                handleBackup(file, fileReader.getFileBackupPolicy().name());
+                handleBackup(file, fileReader.getFileBackupPolicy());
 
                 fin = new FileInputStream(file);
                 obj = fileReader.parse(fin);
@@ -196,10 +196,10 @@ public class FileSync<T>
         }
     }
 
-    private void handleBackup(File fileToBackup, String policy)
+    private void handleBackup(File fileToBackup, FileBackupPolicy policy)
         throws IOException
     {
-        if (policy.equals(FileBackupPolicy.SINGLE_BACKUP))
+        if (policy==FileBackupPolicy.SINGLE_BACKUP)
         {
             File backup = singleBackup(fileToBackup);
             if (backup != null)
@@ -222,6 +222,10 @@ public class FileSync<T>
             {
                 logger.error("A backup file could not be created.");
             }
+        }
+        else
+        {
+            logger.warn("No backup policy matched.");
         }
     }
 
