@@ -12,7 +12,6 @@ public class SettingItem
     protected String key;
     protected String type;
     protected String value;
-    protected boolean allowDuplicates;//Specifies if more than one of these settings is allowed.
 
     public SettingItem(String key)
     {
@@ -50,16 +49,6 @@ public class SettingItem
     public void setType(String type)
     {
         this.type = type;
-    }
-
-    public boolean isAllowDuplicates()
-    {
-        return allowDuplicates;
-    }
-
-    public void setAllowDuplicates(boolean allowDuplicates)
-    {
-        this.allowDuplicates = allowDuplicates;
     }
 
     @Override

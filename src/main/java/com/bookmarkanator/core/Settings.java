@@ -1,8 +1,6 @@
 package com.bookmarkanator.core;
 
-import java.io.*;
 import java.util.*;
-import com.bookmarkanator.xml.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -163,44 +161,4 @@ public class Settings
 
         return res;
     }
-
-    public static Settings parseSettings(InputStream in)
-        throws Exception
-    {
-        SettingsXMLParser parser = new SettingsXMLParser();
-        return parser.parse(in);
-    }
-
-    public static String settingsToString(Settings globalSettings)
-        throws Exception
-    {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        Settings.writeSettings(globalSettings, bout);
-        return bout.toString();
-    }
-
-    public static void writeSettings(Settings globalSettings, OutputStream out)
-        throws Exception
-    {
-        SettingsXMLWriter writer = new SettingsXMLWriter();
-        writer.write(globalSettings, out);
-        out.flush();
-        out.close();
-    }
-
-    /**
-     * Saves specific settings to a specific directory (with the default setting file name)
-     * @param settings  The settings to save
-     * @param directory  The directory to place the settings file.
-     * @throws Exception
-     */
-    public void saveSettingsFile(Settings settings, File directory)
-        throws Exception
-    {
-        FileOutputStream fout = new FileOutputStream(directory);
-        Settings.writeSettings(settings, fout);
-    }
-
-
-
 }
