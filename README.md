@@ -51,12 +51,7 @@ to locate that information again.
 
 Download link:
 
-https://github.com/flightx31/Bookmarkanator/blob/master/download/bookmarkanator-0.5.0-1.jar
-
-
-
-
-
+https://github.com/flightx31/Bookmarkanator/raw/master/download/bookmarkanator-0.5.0-1.jar
 
 
 
