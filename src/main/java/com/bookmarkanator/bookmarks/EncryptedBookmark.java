@@ -1,19 +1,13 @@
 package com.bookmarkanator.bookmarks;
 
+import java.security.*;
+import java.security.spec.*;
+import java.util.*;
+import javax.crypto.*;
+import javax.crypto.spec.*;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.security.AlgorithmParameters;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.List;
-import java.util.Set;
-
-public class EncryptedBookmark extends AbstractBookmark {
+public class EncryptedBookmark extends AbstractBookmark
+{
 
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
     private String secretKey;
@@ -26,31 +20,37 @@ public class EncryptedBookmark extends AbstractBookmark {
     private SecretKey secret;
 
     //Needed for serialization
-    EncryptedBookmark() {
+    EncryptedBookmark()
+    {
         supportedActions.add("Encrypt");
         supportedActions.add("Decrypt");
     }
 
-    public EncryptedBookmark(String encryptionKey) {
+    public EncryptedBookmark(String encryptionKey)
+    {
         supportedActions.add("Encrypt");
         supportedActions.add("Decrypt");
         this.encryptionKey = encryptionKey;
         this.salt = SecureRandom.getSeed(8);
 
-        try {
+        try
+        {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             KeySpec spec = new PBEKeySpec(encryptionKey.toCharArray(), salt, 65536, 128);
             SecretKey tmp = factory.generateSecret(spec);
             secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-
     @Override
-    public boolean setSecretKey(final String secretKey) {
-        if (this.secretKey == null && secretKey != null) {
+    public boolean setSecretKey(final String secretKey)
+    {
+        if (this.secretKey == null && secretKey != null)
+        {
             this.secretKey = secretKey;
             return true;
         }
@@ -58,18 +58,23 @@ public class EncryptedBookmark extends AbstractBookmark {
     }
 
     @Override
-    public void notifyBeforeAction(final AbstractBookmark source, final String actionString) {
+    public void notifyBeforeAction(Object source, String actionString)
+    {
 
     }
 
     @Override
-    public void notifyAfterAction(final AbstractBookmark source, final String actionString) {
+    public void notifyAfterAction(Object source, String actionString)
+    {
 
     }
 
     @Override
-    protected String runAction(final String action) throws Exception {
-        switch (action) {
+    protected String runAction(final String action)
+        throws Exception
+    {
+        switch (action)
+        {
             case "Encrypt":
                 encryptText();
                 break;
@@ -83,62 +88,95 @@ public class EncryptedBookmark extends AbstractBookmark {
     }
 
     @Override
-    public String getTypeName() {
+    public String getTypeName()
+    {
         return "Encrypted";
     }
 
     @Override
-    public List<String> getTypeLocation() {
+    public List<String> getTypeLocation()
+    {
         return null;
     }
 
     @Override
-    public void destroy() throws Exception {
-
+    public void destroy()
+        throws Exception
+    {
+        // Do nothing
     }
 
     @Override
-    public AbstractBookmark getNew() {
+    public AbstractBookmark getNew()
+    {
         return null;
     }
 
     @Override
-    public String getContent() throws Exception {
+    public String getContent()
+        throws Exception
+    {
         return content;
     }
 
     @Override
-    public void setContent(final String content) throws Exception {
+    public void setContent(final String content)
+        throws Exception
+    {
         this.content = content;
     }
 
     @Override
-    public Set<String> getSearchWords() throws Exception {
+    public Set<String> getSearchWords()
+        throws Exception
+    {
+        Set<String> strings = new HashSet<>();
+        if (!encrypted)
+        {
+            String content = getContent();
+            if (content != null)
+            {
+                for (String s : getContent().split("[\\s\\\\\"'\\./-]"))
+                {
+                    strings.add(s);
+                }
+            }
+        }
+
+        return strings;
+    }
+
+    @Override
+    public void systemInit()
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+        if (!encrypted)
+        {
+            encryptText();
+        }
+    }
+
+    @Override
+    public HandleData canHandle(final String content)
+    {
         return null;
     }
 
     @Override
-    public void systemInit() {
-
-    }
-
-    @Override
-    public void systemShuttingDown() {
-
-    }
-
-    @Override
-    public HandleData canHandle(final String content) {
-        return null;
-    }
-
-    @Override
-    public int compareTo(final AbstractBookmark o) {
+    public int compareTo(final AbstractBookmark o)
+    {
         return 0;
     }
 
-    private void encryptText() {
-        try {
+    private void encryptText()
+    {
+        try
+        {
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.ENCRYPT_MODE, secret);
             AlgorithmParameters params = cipher.getParameters();
@@ -146,73 +184,92 @@ public class EncryptedBookmark extends AbstractBookmark {
             contentAsBytes = cipher.doFinal(content.getBytes("UTF-8"));
             content = new String(contentAsBytes);
             encrypted = true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private void decryptText() {
-        try  {
+    private void decryptText()
+    {
+        try
+        {
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
             content = new String(cipher.doFinal(contentAsBytes), "UTF-8");
             encrypted = false;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
     // Getters and setters for serialization
 
-    public String getSecretKey() {
-        return secretKey;
-    }
+    // ** There should be no public access to the secret key **
+    //    public String getSecretKey() {
+    //        return secretKey;
+    //    }
 
-    public byte[] getContentAsBytes() {
+    public byte[] getContentAsBytes()
+    {
         return contentAsBytes;
     }
 
-    public void setContentAsBytes(final byte[] contentAsBytes) {
+    public void setContentAsBytes(final byte[] contentAsBytes)
+    {
         this.contentAsBytes = contentAsBytes;
     }
 
-    public byte[] getSalt() {
+    public byte[] getSalt()
+    {
         return salt;
     }
 
-    public void setSalt(final byte[] salt) {
+    public void setSalt(final byte[] salt)
+    {
         this.salt = salt;
     }
 
-    public byte[] getIv() {
+    public byte[] getIv()
+    {
         return iv;
     }
 
-    public void setIv(final byte[] iv) {
+    public void setIv(final byte[] iv)
+    {
         this.iv = iv;
     }
 
-    public String getEncryptionKey() {
+    public String getEncryptionKey()
+    {
         return encryptionKey;
     }
 
-    public void setEncryptionKey(final String encryptionKey) {
+    public void setEncryptionKey(final String encryptionKey)
+    {
         this.encryptionKey = encryptionKey;
     }
 
-    public boolean isEncrypted() {
+    public boolean isEncrypted()
+    {
         return encrypted;
     }
 
-    public void setEncrypted(final boolean encrypted) {
+    public void setEncrypted(final boolean encrypted)
+    {
         this.encrypted = encrypted;
     }
 
-    public SecretKey getSecret() {
+    public SecretKey getSecret()
+    {
         return secret;
     }
 
-    public void setSecret(final SecretKey secret) {
+    public void setSecret(final SecretKey secret)
+    {
         this.secret = secret;
     }
 }

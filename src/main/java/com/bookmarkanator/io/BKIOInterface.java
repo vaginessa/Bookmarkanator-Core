@@ -9,6 +9,14 @@ import com.bookmarkanator.core.*;
 public interface BKIOInterface
 {
 
+    enum Actions
+    {
+        SAVING,
+        LOADING,
+        DELETING,
+        COMPLETE;
+    }
+
     /**
      * Set up the data source with a specific configuration string.
      *

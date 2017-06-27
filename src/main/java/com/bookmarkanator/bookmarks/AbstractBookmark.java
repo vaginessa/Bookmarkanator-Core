@@ -131,7 +131,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public String runAction()
         throws Exception
     {
-        return runAction("");
+        return runAction(null);
     }
 
     public void addBeforeListener(AbstractBookmark abstractBookmark, String actionString)
@@ -210,9 +210,21 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     // Abstract Methods
     // ============================================================
 
-    public abstract void notifyBeforeAction(AbstractBookmark source, String actionString);
+    /**
+     * Notify this bookmark prior to an action being taken. This enables the bookmark to perform any actions it needs to do
+     * before this event is initiated.
+     * @param source  The object initiating the action
+     * @param actionString  The thing the object is doing.
+     */
+    public abstract void notifyBeforeAction(Object source, String actionString);
 
-    public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
+    /**
+     * Notify this bookmark after an action has been completed. This enables the bookmark to take a related action.
+     *
+     * @param source  The object initiating the action
+     * @param actionString  The thing the object is doing.
+     */
+    public abstract void notifyAfterAction(Object source, String actionString);
 
     /**
      * Run specified action

@@ -72,6 +72,12 @@ public class FileIO implements BKIOInterface
     public void save()
         throws Exception
     {
+        // Put bookmarks in a state to be written out
+        for (AbstractBookmark bk: getContext().getBookmarks())
+        {
+            bk.notifyBeforeAction(this, Actions.SAVING.toString());
+        }
+
         FileSync<AbstractContext> fileSync = FileService.use().getFile(FILE_IO_KEY);
         fileSync.setObjectToWrite(context);
         fileSync.writeToDisk();
@@ -79,12 +85,24 @@ public class FileIO implements BKIOInterface
         FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+
+        // Put bookmarks in a state where they can be read back in, in case it is a save only and not a system shutdown.
+        for (AbstractBookmark bk: getContext().getBookmarks())
+        {
+            bk.notifyAfterAction(this, Actions.COMPLETE.toString());
+        }
     }
 
     @Override
     public void save(String filePath)
         throws Exception
     {
+        // Put bookmarks in a state to be written out
+        for (AbstractBookmark bk: getContext().getBookmarks())
+        {
+            bk.notifyBeforeAction(this, Actions.SAVING.toString());
+        }
+
         FileSync<AbstractContext> fileSync = FileService.use().getFile(FILE_IO_KEY);
         File file = new File(filePath);
         fileSync.setFile(file);
@@ -97,12 +115,22 @@ public class FileIO implements BKIOInterface
         fileSync2.setFile(settingsFile);
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+
+        // Put bookmarks in a state where they can be read back in, in case it is a save only and not a system shutdown.
+        for (AbstractBookmark bk: getContext().getBookmarks())
+        {
+            bk.notifyAfterAction(this, Actions.COMPLETE.toString());
+        }
     }
 
     @Override
     public void close()
+        throws Exception
     {
-        //close any open file sources.
+        for (AbstractBookmark bk: getContext().getBookmarks())
+        {
+            bk.systemShuttingDown();
+        }
     }
 
     @Override

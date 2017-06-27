@@ -1,13 +1,11 @@
 package com.bookmarkanator.bookmarks;
 
-import com.bookmarkanator.util.OSDetector;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.awt.Desktop;
-import java.io.File;
+import java.awt.*;
+import java.io.*;
 import java.util.List;
-import java.util.Set;
+import java.util.*;
+import com.bookmarkanator.util.*;
+import org.apache.logging.log4j.*;
 
 public class FileBookmark extends AbstractBookmark
 {
@@ -60,18 +58,6 @@ public class FileBookmark extends AbstractBookmark
     }
 
     @Override
-    public void notifyBeforeAction(AbstractBookmark source, String actionString)
-    {
-
-    }
-
-    @Override
-    public void notifyAfterAction(AbstractBookmark source, String actionString)
-    {
-
-    }
-
-    @Override
     public boolean setSecretKey(String secretKey)
     {
         if (FileBookmark.secretKey == null && secretKey != null)
@@ -80,6 +66,18 @@ public class FileBookmark extends AbstractBookmark
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void notifyBeforeAction(Object source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(Object source, String actionString)
+    {
+
     }
 
     @Override

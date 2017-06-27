@@ -15,8 +15,10 @@ public class EncryptedBookmarkTest {
 
         encryptedBookmark.runAction("Encrypt");
         assertNotEquals(testString, encryptedBookmark.getContent());
+        System.out.println(encryptedBookmark.getContent());
 
         encryptedBookmark.runAction("Decrypt");
         assertEquals(testString, encryptedBookmark.getContent());
+        System.out.println(encryptedBookmark.getContent());
     }
 }

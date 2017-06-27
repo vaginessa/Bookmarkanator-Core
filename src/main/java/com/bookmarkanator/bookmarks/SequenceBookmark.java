@@ -1,14 +1,8 @@
 package com.bookmarkanator.bookmarks;
 
-import com.bookmarkanator.core.Bootstrap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import com.bookmarkanator.core.*;
+import org.apache.logging.log4j.*;
 
 /**
  * A SequenceBookmark is a bookmark that contains a sequence of references to other bookmarks. It is merely an ordered container for other bookmarks.
@@ -38,6 +32,18 @@ public class SequenceBookmark extends AbstractBookmark
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void notifyBeforeAction(Object source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(Object source, String actionString)
+    {
+
     }
 
     @Override
@@ -104,18 +110,6 @@ public class SequenceBookmark extends AbstractBookmark
             throw new Exception("One or more referenced bookmarks couldn't be found. Please check error bookmarks list for bookmark Id's.");
         }
         return sb.toString();
-    }
-
-    @Override
-    public void notifyBeforeAction(AbstractBookmark source, String actionString)
-    {
-
-    }
-
-    @Override
-    public void notifyAfterAction(AbstractBookmark source, String actionString)
-    {
-
     }
 
     @Override

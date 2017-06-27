@@ -1,12 +1,7 @@
 package com.bookmarkanator.bookmarks;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import org.apache.logging.log4j.*;
 
 public class TextBookmark extends AbstractBookmark
 {
@@ -23,6 +18,18 @@ public class TextBookmark extends AbstractBookmark
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void notifyBeforeAction(Object source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(Object source, String actionString)
+    {
+
     }
 
     @Override
@@ -61,18 +68,6 @@ public class TextBookmark extends AbstractBookmark
     public String getTypeName()
     {
         return "Text";
-    }
-
-    @Override
-    public void notifyBeforeAction(AbstractBookmark source, String actionString)
-    {
-
-    }
-
-    @Override
-    public void notifyAfterAction(AbstractBookmark source, String actionString)
-    {
-
     }
 
     @Override

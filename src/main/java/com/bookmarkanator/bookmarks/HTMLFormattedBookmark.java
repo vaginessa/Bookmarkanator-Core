@@ -1,13 +1,8 @@
 package com.bookmarkanator.bookmarks;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import org.apache.logging.log4j.*;
+import org.jsoup.*;
 
 public class HTMLFormattedBookmark extends AbstractBookmark
 {
@@ -49,7 +44,13 @@ public class HTMLFormattedBookmark extends AbstractBookmark
     }
 
     @Override
-    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    public void notifyBeforeAction(Object source, String actionString)
+    {
+
+    }
+
+    @Override
+    public void notifyAfterAction(Object source, String actionString)
     {
 
     }
@@ -58,12 +59,6 @@ public class HTMLFormattedBookmark extends AbstractBookmark
     public HandleData canHandle(String content)
     {
         return null;
-    }
-
-    @Override
-    public void notifyAfterAction(AbstractBookmark source, String actionString)
-    {
-
     }
 
     @Override
