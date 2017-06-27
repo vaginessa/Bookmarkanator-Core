@@ -20,7 +20,7 @@ public class EncryptedBookmark extends AbstractBookmark
     private SecretKey secret;
 
     //Needed for serialization
-    EncryptedBookmark()
+    public EncryptedBookmark()
     {
         supportedActions.add("Encrypt");
         supportedActions.add("Decrypt");
@@ -204,72 +204,5 @@ public class EncryptedBookmark extends AbstractBookmark
         {
             e.printStackTrace();
         }
-    }
-
-    // Getters and setters for serialization
-
-    // ** There should be no public access to the secret key **
-    //    public String getSecretKey() {
-    //        return secretKey;
-    //    }
-
-    public byte[] getContentAsBytes()
-    {
-        return contentAsBytes;
-    }
-
-    public void setContentAsBytes(final byte[] contentAsBytes)
-    {
-        this.contentAsBytes = contentAsBytes;
-    }
-
-    public byte[] getSalt()
-    {
-        return salt;
-    }
-
-    public void setSalt(final byte[] salt)
-    {
-        this.salt = salt;
-    }
-
-    public byte[] getIv()
-    {
-        return iv;
-    }
-
-    public void setIv(final byte[] iv)
-    {
-        this.iv = iv;
-    }
-
-    public String getEncryptionKey()
-    {
-        return encryptionKey;
-    }
-
-    public void setEncryptionKey(final String encryptionKey)
-    {
-        this.encryptionKey = encryptionKey;
-    }
-
-    public boolean isEncrypted()
-    {
-        return encrypted;
-    }
-
-    public void setEncrypted(final boolean encrypted)
-    {
-        this.encrypted = encrypted;
-    }
-
-    public SecretKey getSecret()
-    {
-        return secret;
-    }
-
-    public void setSecret(final SecretKey secret)
-    {
-        this.secret = secret;
     }
 }
