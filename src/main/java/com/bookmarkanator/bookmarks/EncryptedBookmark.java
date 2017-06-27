@@ -5,6 +5,7 @@ import java.security.spec.*;
 import java.util.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
+import com.bookmarkanator.io.*;
 
 public class EncryptedBookmark extends AbstractBookmark
 {
@@ -60,13 +61,19 @@ public class EncryptedBookmark extends AbstractBookmark
     @Override
     public void notifyBeforeAction(Object source, String actionString)
     {
-
+        if (source instanceof BKIOInterface && actionString.equals(BKIOInterface.Actions.SAVING) && !encrypted)
+        {
+            this.encryptText();
+        }
     }
 
     @Override
     public void notifyAfterAction(Object source, String actionString)
     {
-
+        if (source instanceof BKIOInterface && actionString.equals(BKIOInterface.Actions.COMPLETE) && encrypted)
+        {
+            this.decryptText();
+        }
     }
 
     @Override
