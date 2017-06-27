@@ -178,6 +178,7 @@ public class FileIO implements BKIOInterface
         Set<AbstractBookmark> bks = context.getBookmarks();
         for (AbstractBookmark abs : bks)
         {
+            // TODO Should this actually be notify action of type save instead of load? Or would load always and only be called on startup?
             abs.systemInit();
         }
         logger.trace("Done.");
