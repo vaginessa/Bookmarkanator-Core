@@ -70,12 +70,13 @@
             <version>2.5</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-crypto -->
+        <!-- https://mvnrepository.com/artifact/com.fasterxml/jackson-xml-databind -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-crypto</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>jackson-xml-databind</artifactId>
+            <version>0.6.2</version>
         </dependency>
+
 
 
         <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->

@@ -1,12 +1,22 @@
 package com.bookmarkanator.bookmarks;
 
-import java.security.*;
-import java.security.spec.*;
-import java.util.*;
-import javax.crypto.*;
-import javax.crypto.spec.*;
-import com.bookmarkanator.io.*;
+import com.bookmarkanator.io.BKIOInterface;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.AlgorithmParameters;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EncryptedBookmark extends AbstractBookmark
 {
 
