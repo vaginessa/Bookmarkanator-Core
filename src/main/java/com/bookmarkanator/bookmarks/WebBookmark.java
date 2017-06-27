@@ -1,10 +1,15 @@
 package com.bookmarkanator.bookmarks;
 
-import java.awt.*;
-import java.net.*;
-import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.Desktop;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import org.apache.logging.log4j.*;
+import java.util.Set;
 
 /**
  * The text of this bookmark would represent a web address.
@@ -65,13 +70,6 @@ public class WebBookmark extends AbstractBookmark
     public void notifyAfterAction(AbstractBookmark source, String actionString)
     {
 
-    }
-
-    @Override
-    protected String runTheAction(String action)
-        throws Exception
-    {
-        return null;
     }
 
     @Override

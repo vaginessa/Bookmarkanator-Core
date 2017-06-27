@@ -1,7 +1,12 @@
 package com.bookmarkanator.bookmarks;
 
-import java.util.*;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TextBookmark extends AbstractBookmark
 {
@@ -71,7 +76,7 @@ public class TextBookmark extends AbstractBookmark
     }
 
     @Override
-    protected String runTheAction(String action)
+    protected String runAction(String action)
         throws Exception
     {
         return null;

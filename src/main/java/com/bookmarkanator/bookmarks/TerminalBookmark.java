@@ -1,10 +1,15 @@
 package com.bookmarkanator.bookmarks;
 
-import java.io.*;
-import java.util.*;
-import org.apache.commons.exec.*;
-import org.apache.logging.log4j.*;
-import org.zeroturnaround.exec.*;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.LogOutputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.zeroturnaround.exec.ProcessExecutor;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Set;
 
 public class TerminalBookmark extends AbstractBookmark
 {
@@ -119,13 +124,6 @@ public class TerminalBookmark extends AbstractBookmark
     public void notifyAfterAction(AbstractBookmark source, String actionString)
     {
 
-    }
-
-    @Override
-    protected String runTheAction(String action)
-        throws Exception
-    {
-        return null;
     }
 
     @Override

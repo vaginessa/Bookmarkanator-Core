@@ -40,6 +40,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         supportedActions = new HashSet<>();
         beforeListeners = new HashMap<>();
         afterListeners = new HashMap<>();
+        Runtime.getRuntime().addShutdownHook(new Thread(this::systemShuttingDown));
     }
 
     public String getName()
@@ -133,18 +134,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         return runAction("");
     }
 
-    /**
-     * Run whatever default action this bookmark has.
-     *
-     * @return The result string for the action
-     * @throws Exception
-     */
-    public String runAction(String actionString)
-        throws Exception
-    {
-        return runTheAction(actionString);
-    }
-
     public void addBeforeListener(AbstractBookmark abstractBookmark, String actionString)
     {
         Set<AbstractBookmark> items = beforeListeners.get(actionString);
@@ -232,7 +221,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * @return The result string for the action
      * @throws Exception
      */
-    protected abstract String runTheAction(String action)
+    protected abstract String runAction(String action)
         throws Exception;
 
     /**

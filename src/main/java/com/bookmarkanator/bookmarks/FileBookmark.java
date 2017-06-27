@@ -1,11 +1,13 @@
 package com.bookmarkanator.bookmarks;
 
-import java.awt.*;
-import java.io.*;
+import com.bookmarkanator.util.OSDetector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.Desktop;
+import java.io.File;
 import java.util.List;
-import java.util.*;
-import com.bookmarkanator.util.*;
-import org.apache.logging.log4j.*;
+import java.util.Set;
 
 public class FileBookmark extends AbstractBookmark
 {
@@ -78,13 +80,6 @@ public class FileBookmark extends AbstractBookmark
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected String runTheAction(String action)
-        throws Exception
-    {
-        return null;
     }
 
     @Override
