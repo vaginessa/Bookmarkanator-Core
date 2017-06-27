@@ -34,13 +34,11 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         tags = new HashSet<>();
         id = UUID.randomUUID();
         name = "";
-        //        text = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
         supportedActions = new HashSet<>();
         beforeListeners = new HashMap<>();
         afterListeners = new HashMap<>();
-        Runtime.getRuntime().addShutdownHook(new Thread(this::systemShuttingDown));
     }
 
     public String getName()
