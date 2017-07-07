@@ -226,7 +226,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
 
     /**
-     * Run specified action
+     * Run specified action. This is the method that will be called by the runAction method of this abstract class, on the class that extends it.
      *
      * @param action The action to run
      * @return The result string for the action
