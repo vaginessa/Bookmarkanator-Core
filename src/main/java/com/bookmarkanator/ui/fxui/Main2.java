@@ -12,7 +12,7 @@ public class Main2 extends Application
     public void start(Stage stage)
         throws Exception
     {
-        HBox root = (HBox) FXMLLoader.load(this.getClass().getResource("/com.bookmarkanator.ui.fxui/testUI.fxml"));
+        VBox root = (VBox) FXMLLoader.load(this.getClass().getResource("/com.bookmarkanator.ui.fxui/testUI.fxml"));
 
         Scene scene = new Scene(root, 300, 275);
 
