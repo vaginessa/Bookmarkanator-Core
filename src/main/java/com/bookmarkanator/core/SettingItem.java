@@ -12,7 +12,6 @@ public class SettingItem
     protected String key;
     protected String type;
     protected String value;
-    protected boolean allowDuplicates;//Specifies if more than one of these settings is allowed.
 
     public SettingItem(String key)
     {
@@ -52,20 +51,10 @@ public class SettingItem
         this.type = type;
     }
 
-    public boolean isAllowDuplicates()
-    {
-        return allowDuplicates;
-    }
-
-    public void setAllowDuplicates(boolean allowDuplicates)
-    {
-        this.allowDuplicates = allowDuplicates;
-    }
-
     @Override
     public int hashCode()
     {
-            return key.hashCode();
+        return key.hashCode();
     }
 
     @Override
@@ -73,7 +62,7 @@ public class SettingItem
     {
         if (obj instanceof SettingItem)
         {
-            SettingItem item = (SettingItem)obj;
+            SettingItem item = (SettingItem) obj;
             return this.getKey().equals(item.getKey());
         }
 
@@ -83,6 +72,6 @@ public class SettingItem
     @Override
     public String toString()
     {
-        return "Key: "+this.getKey()+", type: "+this.getType();
+        return "Key: " + this.getKey() + ", type: " + this.getType();
     }
 }

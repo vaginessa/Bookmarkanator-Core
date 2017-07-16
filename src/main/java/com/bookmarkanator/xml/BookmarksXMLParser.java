@@ -6,11 +6,14 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
+import com.bookmarkanator.fileservice.*;
 import com.bookmarkanator.io.*;
+import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLParser
+public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
 {
+    private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
     public static final String BOOKMARKS_TAG = "bookmarks";
     public static final String BLOCK_TAG = "block";
@@ -41,13 +44,95 @@ public class BookmarksXMLParser
     private Document document;
     private String xmlVerison;
 
-    public BookmarksXMLParser(AbstractContext abstractContext, InputStream xmlIn)
+    private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
+        throws Exception
     {
-        this.abstractContext = abstractContext;
-        this.inputStream = xmlIn;//The calling program must close the stream.
+        NodeList nl = node.getChildNodes();
+        AbstractBookmark abs;
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            if (!n.getNodeName().startsWith("#"))
+            {
+                abs = abstractBookmark.getNew();
+                parseBookmarkDetails(n, abs);
+                abstractContext.addBookmark(abs);
+            }
+        }
     }
 
-    public void parse()
+    private void parseBookmarkDetails(Node node, AbstractBookmark abstractBookmark)
+        throws Exception
+    {
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+
+            switch (n.getNodeName())
+            {
+                case BookmarksXMLParser.NAME_TAG:
+                    abstractBookmark.setName(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.ID_TAG:
+                    abstractBookmark.setId(UUID.fromString(n.getTextContent()));
+                    break;
+                case BookmarksXMLParser.TEXT_TAG:
+                    // Set text as content when parsing files in from now on.
+                    //                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
+                    abstractBookmark.setContent(n.getTextContent());
+                    break;
+                case BookmarksXMLParser.TAGS_TAG:
+                    abstractBookmark.setTags(getTags(n));
+                    break;
+                case BookmarksXMLParser.CREATION_DATE_TAG:
+                    abstractBookmark.setCreationDate(getDate(n.getTextContent()));
+                    break;
+                case BookmarksXMLParser.LAST_ACCESSED_DATE_TAG:
+                    abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
+                    break;
+                case BookmarksXMLParser.CONTENT_TAG:
+                    //                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
+                    abstractBookmark.setContent(n.getTextContent());
+                    break;
+                default:
+                    if (!n.getNodeName().startsWith("#"))
+                    {
+                        throw new Exception("Unexpected element encountered \"" + n.getNodeName() + "\"");
+                    }
+            }
+        }
+        //load all the basic bookmark information
+    }
+
+    private Date getDate(String dateString)
+        throws Exception
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
+        return formatter.parse(dateString);
+    }
+
+    private Set<String> getTags(Node node)
+    {
+        Set<String> results = new HashSet<>();
+
+        NodeList nl = node.getChildNodes();
+
+        for (int c = 0; c < nl.getLength(); c++)
+        {
+            Node n = nl.item(c);
+            if (n.getNodeName().equals(BookmarksXMLParser.TAG_TAG))
+            {
+                results.add(n.getTextContent());
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public AbstractContext parse(InputStream inputStream)
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -128,92 +213,39 @@ public class BookmarksXMLParser
         }
 
         abstractContext.setClean();
+        return abstractContext;
     }
 
-    private void parseBookmark(Node node, AbstractBookmark abstractBookmark)
+    @Override
+    public void setObject(AbstractContext obj)
+    {
+        this.abstractContext = obj;
+    }
+
+    @Override
+    public void validate(InputStream inputStream)
         throws Exception
     {
-        NodeList nl = node.getChildNodes();
-        AbstractBookmark abs;
-
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-            if (!n.getNodeName().startsWith("#"))
-            {
-                abs = abstractBookmark.getNew();
-                parseBookmarkDetails(n, abs);
-                abstractContext.addBookmark(abs);
-            }
-        }
+        logger.trace("Validating xml");
+        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/BookmarksStructure.xsd");
+        XMLValidator.validate(inputStream, xsd);
     }
 
-    private void parseBookmarkDetails(Node node, AbstractBookmark abstractBookmark)
-        throws Exception
+    @Override
+    public FileSync.InvalidFilePolicy getInvalidFilePolicy()
     {
-        NodeList nl = node.getChildNodes();
-
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-
-            switch (n.getNodeName())
-            {
-                case BookmarksXMLParser.NAME_TAG:
-                    abstractBookmark.setName(n.getTextContent());
-                    break;
-                case BookmarksXMLParser.ID_TAG:
-                    abstractBookmark.setId(UUID.fromString(n.getTextContent()));
-                    break;
-                case BookmarksXMLParser.TEXT_TAG:
-                    // Set text as content when parsing files in from now on.
-//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
-                    abstractBookmark.setContent(n.getTextContent());
-                    break;
-                case BookmarksXMLParser.TAGS_TAG:
-                    abstractBookmark.setTags(getTags(n));
-                    break;
-                case BookmarksXMLParser.CREATION_DATE_TAG:
-                    abstractBookmark.setCreationDate(getDate(n.getTextContent()));
-                    break;
-                case BookmarksXMLParser.LAST_ACCESSED_DATE_TAG:
-                    abstractBookmark.setLastAccessedDate(getDate(n.getTextContent()));
-                    break;
-                case BookmarksXMLParser.CONTENT_TAG:
-//                    abstractBookmark.setContent(URLDecoder.decode(n.getTextContent(),"UTF-8"));
-                    abstractBookmark.setContent(n.getTextContent());
-                    break;
-                default:
-                    if (!n.getNodeName().startsWith("#"))
-                    {
-                        throw new Exception("Unexpected element encountered \"" + n.getNodeName() + "\"");
-                    }
-            }
-        }
-        //load all the basic bookmark information
+        return FileSync.InvalidFilePolicy.markBadAndContinue;
     }
 
-    private Date getDate(String dateString)
-        throws Exception
+    @Override
+    public FileSync.MissingFilePolicy getMissingFilePolicy()
     {
-        SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
-        return formatter.parse(dateString);
+        return FileSync.MissingFilePolicy.createNew;
     }
 
-    private Set<String> getTags(Node node)
+    @Override
+    public FileSync.FileBackupPolicy getFileBackupPolicy()
     {
-        Set<String> results = new HashSet<>();
-
-        NodeList nl = node.getChildNodes();
-
-        for (int c = 0; c < nl.getLength(); c++)
-        {
-            Node n = nl.item(c);
-            if (n.getNodeName().equals(BookmarksXMLParser.TAG_TAG))
-            {
-                results.add(n.getTextContent());
-            }
-        }
-        return results;
+        return FileSync.FileBackupPolicy.SINGLE_BACKUP;
     }
 }

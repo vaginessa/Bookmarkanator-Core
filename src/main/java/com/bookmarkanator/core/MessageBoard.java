@@ -8,7 +8,7 @@ public class MessageBoard
 {
     private static final Logger logger = LogManager.getLogger(MessageBoard.class.getCanonicalName());
     private static MessageBoard messageBoard;
-    private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, Map<message key, message object> >
+    private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, Map<message key, message object>>
     // secret key assigned after bookmarks are loaded, and is used to restrict write access to the message board.
     private Map<String, String> messageBoardKeyMap;//<bookmark class name, secret key>
 

@@ -1,6 +1,5 @@
 package com.bookmarkanator.util;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -19,7 +18,7 @@ public class Util
     {
         Set<String> words = new HashSet<>();
 
-        //simple white space split
+        // simple white space split
         for (String s : theString.split(" "))
         {
             s = s.trim();
@@ -149,5 +148,25 @@ public class Util
         return file;
     }
 
+    public static String compressString(String string, int length)
+    {
+        if (string.length()<=length)
+        {
+            return string;
+        }
+
+        int borders = (length/2)-3;
+
+        if (borders<=0)
+        {
+            borders = 1;
+        }
+
+        String res = string.substring(0, borders);
+        res = res.concat("...");
+        res = res.concat(string.substring(string.length()-1-borders, string.length()));
+
+        return res;
+    }
 
 }

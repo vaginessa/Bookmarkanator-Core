@@ -8,54 +8,27 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import com.bookmarkanator.bookmarks.*;
+import com.bookmarkanator.fileservice.*;
 import com.bookmarkanator.io.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLWriter
+public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
 {
     private AbstractContext abstractContext;
     private OutputStream out;
 
-    public BookmarksXMLWriter(AbstractContext abstractContext, OutputStream outputStream)
-    {
-        this.abstractContext = abstractContext;
-        this.out = outputStream;
-    }
-
-    public void write()throws Exception
-    {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
-        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
-
-        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE,BookmarksXMLParser.CURRENT_VERSION);
-
-        addBlocks(rootElement, doc, abstractContext);
-
-        doc.appendChild(rootElement);
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-
-
-        StreamResult result = new StreamResult(new OutputStreamWriter(out));
-        transformer.transform(source, result);
-    }
-
-    private void addBlocks(Element element,Document document, AbstractContext abstractContext)
+    private void addBlocks(Element element, Document document, AbstractContext abstractContext)
         throws Exception
     {
         Map<String, Element> blocks = new HashMap<>();
 
         Set<AbstractBookmark> bookmarks = abstractContext.getBookmarks();
 
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             Element e = blocks.get(bookmark.getClass().getCanonicalName());
 
-            if (e==null)
+            if (e == null)
             {
                 e = document.createElement(BookmarksXMLParser.BLOCK_TAG);
                 e.setAttribute(BookmarksXMLParser.CLASS_ATTRIBUTE, bookmark.getClass().getCanonicalName());
@@ -65,7 +38,7 @@ public class BookmarksXMLWriter
             appendBookmarkElement(e, document, bookmark);
         }
 
-        for (String s: blocks.keySet())
+        for (String s : blocks.keySet())
         {
             element.appendChild(blocks.get(s));
         }
@@ -84,9 +57,9 @@ public class BookmarksXMLWriter
         bookmarkId.setTextContent(bookmark.getId().toString());
         bookmarkNode.appendChild(bookmarkId);
 
-//        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
-//        bookmarkText.setTextContent(bookmark.getContent());
-//        bookmarkNode.appendChild(bookmarkText);
+        //        Element bookmarkText = document.createElement(BookmarksXMLParser.TEXT_TAG);
+        //        bookmarkText.setTextContent(bookmark.getContent());
+        //        bookmarkNode.appendChild(bookmarkText);
 
         Element bookmarkCreationDate = document.createElement(BookmarksXMLParser.CREATION_DATE_TAG);
         bookmarkCreationDate.setTextContent(getDateString(bookmark.getCreationDate()));
@@ -102,10 +75,10 @@ public class BookmarksXMLWriter
         bookmarkNode.appendChild(bookmarTags);
 
         String content = bookmark.getContent();
-        if (content!=null)
+        if (content != null)
         {
             Element contentTag = document.createElement(BookmarksXMLParser.CONTENT_TAG);
-//            contentTag.setTextContent(URLEncoder.encode(bookmark.getContent(), "UTF-8"));
+            //            contentTag.setTextContent(URLEncoder.encode(bookmark.getContent(), "UTF-8"));
             contentTag.setTextContent(bookmark.getContent());
             bookmarkNode.appendChild(contentTag);
         }
@@ -115,7 +88,7 @@ public class BookmarksXMLWriter
 
     private void appendBookmarkTagsElements(Element bookmarkTagsElement, Document document, AbstractBookmark bookmark)
     {
-        for (String tag: bookmark.getTags())
+        for (String tag : bookmark.getTags())
         {
             Element tagElement = document.createElement(BookmarksXMLParser.TAG_TAG);
             tagElement.setTextContent(tag);
@@ -127,5 +100,56 @@ public class BookmarksXMLWriter
     {
         SimpleDateFormat formatter = new SimpleDateFormat(BookmarksXMLParser.DATE_FORMAT_STRING);
         return formatter.format(date);
+    }
+
+    @Override
+    public void write(AbstractContext context, OutputStream out)
+        throws Exception
+    {
+        this.out = out;
+        this.abstractContext = context;
+
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
+
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
+
+        addBlocks(rootElement, doc, abstractContext);
+
+        doc.appendChild(rootElement);
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StreamResult result = new StreamResult(new OutputStreamWriter(out));
+        transformer.transform(source, result);
+    }
+
+    @Override
+    public void writeInitial(OutputStream outputStream)
+        throws Exception
+    {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement(BookmarksXMLParser.BOOKMARKS_TAG);
+
+        rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
+        doc.appendChild(rootElement);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StreamResult result = new StreamResult(new OutputStreamWriter(outputStream));
+        transformer.transform(source, result);
+    }
+
+    @Override
+    public FileSync.FileBackupPolicy getFileBackupPolicy()
+    {
+        return FileSync.FileBackupPolicy.NO_BACKUP;
     }
 }

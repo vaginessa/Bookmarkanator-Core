@@ -5,7 +5,7 @@ import org.apache.logging.log4j.*;
 
 /**
  * This class associates words with id's, enabling the ability to look up an item by word, or Id.
- *
+ * <p>
  * For example you could have a set of UUID's that that are associated with strings that represent tags.
  * You could get a list of all strings associated with a particular Id, or a list of Id's associated with a particular
  * string.
@@ -64,7 +64,7 @@ public class TextAssociator<T>
      */
     public void remove(T itemId, String word)
     {
-        logger.trace("Un-associating item \"" + itemId.toString() + "\" from \""+word + "\"");
+        logger.trace("Un-associating item \"" + itemId.toString() + "\" from \"" + word + "\"");
         Set<String> items = itemToText.get(itemId);
 
         if (items != null)
@@ -93,7 +93,7 @@ public class TextAssociator<T>
      */
     public void remove(String word)
     {
-        logger.trace("Removing \""+word+"\" from all associations.");
+        logger.trace("Removing \"" + word + "\" from all associations.");
         words.remove(word);
 
         Set<T> items = textToItem.get(word);
@@ -123,14 +123,14 @@ public class TextAssociator<T>
     {
         logger.trace("Removing this item \"" + itemId.toString() + "\" and all associated words it had.");
 
-        if (itemId==null)
+        if (itemId == null)
         {
             return;
         }
 
         Set<String> itemWords = itemToText.get(itemId);
 
-        if (itemWords==null)
+        if (itemWords == null)
         {
             return;
         }
@@ -151,7 +151,7 @@ public class TextAssociator<T>
             }
         }
 
-        for (String s: wordsToRemove)
+        for (String s : wordsToRemove)
         {
             words.remove(s);
         }

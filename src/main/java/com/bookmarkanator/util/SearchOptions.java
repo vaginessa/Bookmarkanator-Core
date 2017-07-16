@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * This is a class used to encapsulate all the search options that are possible. Encapsulating them here allows the saving of search
- * recipes, and a simplifies the search interface.
+ * recipes, and it simplifies the search interface.
  */
 public class SearchOptions
 {
@@ -109,7 +109,7 @@ public class SearchOptions
 
     public Set<String> getFirst(String operation)
     {
-        for (TagsInfo tagsInfo: tagsInfoList)
+        for (TagsInfo tagsInfo : tagsInfoList)
         {
             if (tagsInfo.getOperation().equalsIgnoreCase(operation))
             {
@@ -124,7 +124,7 @@ public class SearchOptions
     {
         Set<String> res = null;
 
-        for (TagsInfo tagsInfo: tagsInfoList)
+        for (TagsInfo tagsInfo : tagsInfoList)
         {
             if (tagsInfo.getOperation().equalsIgnoreCase(operation))
             {
@@ -142,9 +142,9 @@ public class SearchOptions
 
     public Set<String> getTagsFromAllGroups()
     {
-     Set<String> res = new HashSet<>();
+        Set<String> res = new HashSet<>();
 
-        for (TagsInfo tagsInfo: tagsInfoList)
+        for (TagsInfo tagsInfo : tagsInfoList)
         {
             res.addAll(tagsInfo.getTags());
         }
@@ -239,12 +239,12 @@ public class SearchOptions
         {
             if (o instanceof TagsInfo)
             {
-                TagsInfo tmp = (TagsInfo)o;
+                TagsInfo tmp = (TagsInfo) o;
                 id.compareTo(tmp.getId());
             }
             if (o instanceof UUID)
             {
-                return id.compareTo((UUID)o);
+                return id.compareTo((UUID) o);
             }
             return 1;
         }

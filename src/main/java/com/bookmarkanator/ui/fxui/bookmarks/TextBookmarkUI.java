@@ -35,13 +35,14 @@ public class TextBookmarkUI extends AbstractUIBookmark
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
 
-        if (stage==null)
+        if (stage == null)
         {
 
             Pane vbox = getbookmarkView(this.getBookmark());
             Platform.runLater(() -> textArea.requestFocus());
             Dimension bestWindowSize = UIUtil.use().getBestWindowSizeMap().get(0);
-            Scene dialog = new Scene(vbox,bestWindowSize.getWidth()*.6, bestWindowSize.getHeight()*.75, javafx.scene.paint.Paint.valueOf("white"));
+            Scene dialog = new Scene(vbox, bestWindowSize.getWidth() * .6, bestWindowSize.getHeight() * .75,
+                javafx.scene.paint.Paint.valueOf("white"));
             stage = new Stage();
 
             //Add this stage to the stages map so that it will not open multiple windows per bookmark.
@@ -57,9 +58,12 @@ public class TextBookmarkUI extends AbstractUIBookmark
             {
                 public void handle(WindowEvent we)
                 {
-                    try {
+                    try
+                    {
                         getBookmark().setContent(textArea.getText());
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                     getBookmark().setName(name.getText());
@@ -77,7 +81,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
 
-        if (stage!=null)
+        if (stage != null)
         {
             stage.close();
         }
@@ -90,7 +94,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         Stage stage = openStagesMap.get(this.getBookmark().getId());
-        if (stage!=null)
+        if (stage != null)
         {
             stage.close();
         }
@@ -110,7 +114,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         throws Exception
     {
         Dialog<String> dialog = new Dialog<>();
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             dialog.setTitle("Edit Web Bookmark");
         }
@@ -120,9 +124,9 @@ public class TextBookmarkUI extends AbstractUIBookmark
         }
 
         // Set the button types.
-        ButtonType delete = new ButtonType("Delete",ButtonBar.ButtonData.APPLY);
+        ButtonType delete = new ButtonType("Delete", ButtonBar.ButtonData.APPLY);
 
-        if (bookmark==null)
+        if (bookmark == null)
         {
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         }
@@ -143,7 +147,8 @@ public class TextBookmarkUI extends AbstractUIBookmark
 
         dialog.getDialogPane().setContent(container);
 
-        dialog.setResultConverter(dialogButton -> {
+        dialog.setResultConverter(dialogButton ->
+        {
             if (dialogButton == ButtonType.OK)
             {
                 return textArea.getText();
@@ -167,7 +172,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         if (res.isPresent() && res.get() != null)
         {
             AbstractBookmark abstractBookmark;
-            if (bookmark==null)
+            if (bookmark == null)
             {
                 abstractBookmark = new TextBookmark();
                 abstractBookmark.setName(name.getText());
@@ -193,7 +198,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         VBox vBox = new VBox();
         NameBoxPanel nameBoxPanel;
 
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             nameBoxPanel = new NameBoxPanel(bookmark.getName());
         }
@@ -220,7 +225,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
     {
         TagPanel tagPanel;
 
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             tagPanel = TagPanel.getNew(bookmark.getTags());
         }
@@ -234,8 +239,6 @@ public class TextBookmarkUI extends AbstractUIBookmark
         return tagPanel;
     }
 
-
-
     private TextArea getTextArea(AbstractBookmark bookmark)
         throws Exception
     {
@@ -243,7 +246,7 @@ public class TextBookmarkUI extends AbstractUIBookmark
         textArea = new TextArea();
         textArea.setPrefWidth(600);
         textArea.setPrefHeight(400);
-        if (bookmark!=null)
+        if (bookmark != null)
         {
             textArea.setText(bookmark.getContent());
         }

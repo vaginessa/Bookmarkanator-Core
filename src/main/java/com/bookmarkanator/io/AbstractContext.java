@@ -36,7 +36,7 @@ public abstract class AbstractContext
         throws Exception;
 
     public abstract void addBookmark(AbstractBookmark bookmark)
-            throws Exception;
+        throws Exception;
 
     public abstract AbstractBookmark delete(UUID bookmarkID);
 
@@ -63,6 +63,7 @@ public abstract class AbstractContext
     /**
      * Sets the number of search results it is trying to obtain on each search. It could match this number early (for instance on bookmark
      * name search), or it might need to try searching all sorts of things to fill this quantity of results.
+     *
      * @param numSearchResults
      */
     public void setNumSearchResults(int numSearchResults)
@@ -72,7 +73,8 @@ public abstract class AbstractContext
 
     /**
      * Searches bookmark names, tags, type names, and text words.
-     * @param text  The text to search for.
+     *
+     * @param text The text to search for.
      * @return
      */
     public abstract List<AbstractBookmark> searchAll(String text);
@@ -107,26 +109,32 @@ public abstract class AbstractContext
 
     /**
      * Searches for and renames all oldTag's with newTag
-     * @param newTag  The tag to replace oldTag with
-     * @param oldTag  The tag that will be replaced
+     *
+     * @param newTag The tag to replace oldTag with
+     * @param oldTag The tag that will be replaced
      */
-    public abstract void renameTag(String newTag, String oldTag );
+    public abstract void renameTag(String newTag, String oldTag);
 
     /**
      * Replaces all tags in the tagsToMerge list with a single tag.
-     * @param resultingTag  The single tag to replace the list of tags with.
+     *
+     * @param resultingTag The single tag to replace the list of tags with.
      * @param tagsToMerge  The list of tags to replace with a single tag.
      */
     public abstract void mergeTags(String resultingTag, Set<String> tagsToMerge);
 
     /**
      * Deletes all matching tags.
-     * @param tagsToDelete  A set of tags to delete.
+     *
+     * @param tagsToDelete A set of tags to delete.
      */
     public abstract void deleteTags(Set<String> tagsToDelete);
 
     public abstract Set<String> getAllTags();
+
     public abstract Set<String> getTagsFromBookmarks(Collection<AbstractBookmark> bookmarks);
+
     public abstract Set<String> getTypes(Set<AbstractBookmark> bookmarks);
+
     public abstract Set<String> getTypesClassNames(Set<AbstractBookmark> bookmarks);
 }

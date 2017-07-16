@@ -16,8 +16,8 @@ public class FileContext extends AbstractContext
     private Map<UUID, AbstractBookmark> bookmarks;
     private Search<UUID> bookmarkNames;
     private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
-//    private Search<UUID> bookmarkText;//The text the bookmark contains.
-    private Map<String,Set<UUID> > fullTextSearchMap;//The map used to search only words of the bookmarks.
+    //    private Search<UUID> bookmarkText;//The text the bookmark contains.
+    private Map<String, Set<UUID>> fullTextSearchMap;//The map used to search only words of the bookmarks.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
     private BKIOInterface bkioInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
@@ -27,7 +27,7 @@ public class FileContext extends AbstractContext
         bookmarks = new HashMap<>();
         bookmarkNames = new Search<>();
         bookmarkTypeNames = new Search<>();
-//        bookmarkText = new Search<>();
+        //        bookmarkText = new Search<>();
         bookmarkTags = new Search<>();
         fullTextSearchMap = new HashMap<>();
         numSearchResults = 20;
@@ -157,7 +157,7 @@ public class FileContext extends AbstractContext
         // Adding the text of bookmarks.
         Set<String> strings = bookmark.getSearchWords();
 
-        if (strings!=null)
+        if (strings != null)
         {
             for (String s : strings)
             {
@@ -199,7 +199,7 @@ public class FileContext extends AbstractContext
             bookmarks.remove(id);
             bookmarkNames.remove(id);
             bookmarkTypeNames.remove(id);
-//            bookmarkText.remove(id);
+            //            bookmarkText.remove(id);
             bookmarkTags.remove(id);
 
             setDirty();
@@ -307,11 +307,11 @@ public class FileContext extends AbstractContext
             uuids.addAll(bookmarkTypeNames.searchFullTextOnly(text));
         }
 
-//        if (uuids.size() < getNumSearchResults())
-//        {
-//            //If text matches the full text returned by a bookmark.
-//            uuids.addAll(bookmarkText.searchFullTextOnly(text));
-//        }
+        //        if (uuids.size() < getNumSearchResults())
+        //        {
+        //            //If text matches the full text returned by a bookmark.
+        //            uuids.addAll(bookmarkText.searchFullTextOnly(text));
+        //        }
 
         if (uuids.size() < getNumSearchResults())
         {
@@ -349,11 +349,11 @@ public class FileContext extends AbstractContext
             uuids.addAll(bookmarkTags.searchSubstringsOfRotatedWordsOnly(text));
         }
 
-//        if (uuids.size() < getNumSearchResults())
-//        {
-//            //If text matches a substring of one of the bookmark text words rotated.
-//            uuids.addAll(bookmarkText.searchSubstringsOfRotatedWordsOnly(text));
-//        }
+        //        if (uuids.size() < getNumSearchResults())
+        //        {
+        //            //If text matches a substring of one of the bookmark text words rotated.
+        //            uuids.addAll(bookmarkText.searchSubstringsOfRotatedWordsOnly(text));
+        //        }
 
         if (uuids.size() < getNumSearchResults())
         {
@@ -379,17 +379,16 @@ public class FileContext extends AbstractContext
             uuids.addAll(bookmarkTypeNames.searchAll(text, getNumSearchResults()));
         }
 
-//        if (uuids.size() < getNumSearchResults())
-//        {
-//            //General search because nothing has enough results yet.
-//            uuids.addAll(bookmarkText.searchAll(text, getNumSearchResults()));
-//        }
-        if (uuids.size()<getNumSearchResults())
+        //        if (uuids.size() < getNumSearchResults())
+        //        {
+        //            //General search because nothing has enough results yet.
+        //            uuids.addAll(bookmarkText.searchAll(text, getNumSearchResults()));
+        //        }
+        if (uuids.size() < getNumSearchResults())
         {
             // Search bookmarks text because not enough is found yet.
             res.addAll(searchBookmarkText(text));
         }
-
 
         res.addAll(getBookmarks(uuids));
 
@@ -511,9 +510,9 @@ public class FileContext extends AbstractContext
         text = text.toLowerCase();
         List<AbstractBookmark> res = new ArrayList<>();
 
-        Set<UUID>  ids = fullTextSearchMap.get(text);
+        Set<UUID> ids = fullTextSearchMap.get(text);
 
-        if (ids!=null)
+        if (ids != null)
         {
             res.addAll(getBookmarks(ids));
         }

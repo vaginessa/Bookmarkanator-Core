@@ -12,19 +12,20 @@ public class TextBookmark extends AbstractBookmark
     @Override
     public boolean setSecretKey(String secretKey)
     {
-        if (TextBookmark.secretKey == null && secretKey!=null)
+        if (TextBookmark.secretKey == null && secretKey != null)
         {
             TextBookmark.secretKey = secretKey;
             return true;
         }
         return false;
     }
+
     @Override
     public Set<String> getSearchWords()
     {
         Set<String> strings = new HashSet<>();
         String content = getContent();
-        if (content!=null)
+        if (content != null)
         {
             for (String s : getContent().split("[\\s\\\\\"'\\./-]"))
             {
@@ -44,6 +45,11 @@ public class TextBookmark extends AbstractBookmark
     public void systemShuttingDown()
     {
 
+    }
+
+    @Override
+    public HandleData canHandle(String content) {
+        return null;
     }
 
     @Override

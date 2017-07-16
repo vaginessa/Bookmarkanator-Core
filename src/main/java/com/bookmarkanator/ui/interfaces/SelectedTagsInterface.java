@@ -5,5 +5,6 @@ import com.bookmarkanator.util.*;
 
 public interface SelectedTagsInterface extends UIItemInterface
 {
-    void setSelectedTags(List<SearchOptions.TagsInfo> selectedTagGroups, Set<String> tagsToHighlight, Set<SearchOptions.TagsInfo> groupsToHighlight, Set<String> tagsToHighlightBorder);
+    void setSelectedTags(List<SearchOptions.TagsInfo> selectedTagGroups, Set<String> tagsToHighlight, Set<SearchOptions.TagsInfo> groupsToHighlight,
+        Set<String> tagsToHighlightBorder);
 }

@@ -76,7 +76,8 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         final ComboBox<String> comboBox = new ComboBox<>(options);
         comboBox.setStyle("-fx-background-radius:15");
         comboBox.getSelectionModel().select(SearchOptions.INCLUDE_BOOKMARKS_WITH_ALL_TAGS);
-        comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) -> {
+        comboBox.getSelectionModel().selectedItemProperty().addListener((options1, oldValue, newValue) ->
+        {
             try
             {
                 controller.setTagModeForCurrentGroup(newValue);
@@ -128,7 +129,8 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
         }
     }
 
-    private Pane getTagGroupPanel(SearchOptions.TagsInfo tagsInfo, Set<String> highlightTags,boolean highlight, Set<String> tagsToHighlightBorder,  boolean showDeleteButton)
+    private Pane getTagGroupPanel(SearchOptions.TagsInfo tagsInfo, Set<String> highlightTags, boolean highlight, Set<String> tagsToHighlightBorder,
+        boolean showDeleteButton)
     {
         VBox groupPanelVBox = new VBox();
 
@@ -224,7 +226,6 @@ public class SelectedTagsUI extends ScrollPane implements SelectedTagsInterface
                     }
                 }
             });
-
 
             if (highlightTags.contains(string))
             {

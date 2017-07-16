@@ -5,5 +5,6 @@ import com.bookmarkanator.util.*;
 public interface SearchInterface extends UIItemInterface
 {
     void setSearchOptions(SearchOptions searchOptions);
+
     void highlightSearchTerm(boolean highlight);
 }

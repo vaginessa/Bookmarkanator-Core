@@ -168,13 +168,13 @@ public class ModuleLoader
         logger.trace("Locating tracked classes");
         for (String s : classesToTrackMap.keySet())
         {
-            logger.trace("Adding classes of type \""+s+"\"");
+            logger.trace("Adding classes of type \"" + s + "\"");
             Class clazz = classLoader.loadClass(s);
             Set<Class> classes = reflections.getSubTypesOf(clazz);
 
-            for (Class tmpClass:classes)
+            for (Class tmpClass : classes)
             {
-                logger.trace("Found class \""+tmpClass.getCanonicalName()+"\"");
+                logger.trace("Found class \"" + tmpClass.getCanonicalName() + "\"");
             }
 
             classesToTrackMap.put(s, classes);

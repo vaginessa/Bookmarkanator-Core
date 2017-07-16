@@ -57,7 +57,7 @@ public class Filter
 
     public Filter keepWithAnyTag(Set<String> tags)
     {
-        if (tags==null || tags.isEmpty())
+        if (tags == null || tags.isEmpty())
         {
             return this;
         }
@@ -80,17 +80,17 @@ public class Filter
 
     public Filter keepWithAllTags(Set<String> tags)
     {
-        if (tags==null || tags.isEmpty())
+        if (tags == null || tags.isEmpty())
         {
             return this;
         }
 
         for (AbstractBookmark bk : this.bookmarkList)
         {
-                if (bk.getTags().containsAll(tags))
-                {
-                    tempList.add(bk);
-                }
+            if (bk.getTags().containsAll(tags))
+            {
+                tempList.add(bk);
+            }
         }
 
         tempToMainList();
@@ -134,7 +134,7 @@ public class Filter
      * @return A list of date range fildtered bookmarks.
      */
 
-    public Filter keepWithinDateRange( Date includeIfAfter, Date includeIfBefore)
+    public Filter keepWithinDateRange(Date includeIfAfter, Date includeIfBefore)
     {
 
         for (AbstractBookmark bk : this.results())
@@ -174,30 +174,30 @@ public class Filter
         return this;
     }
 
-//    /**
-//     * Excludes bookmarks that have any of the specified exclusion strings in the bookmark text.
-//     *
-//     * @param exclusions
-//     * @return
-//     */
-//    public Filter excludeTextThatContains(Set<String> exclusions)
-//    {
-//        continueA:
-//        for (AbstractBookmark bk : this.results())
-//        {
-//            for (String s : exclusions)
-//            {
-//                if (bk.getText().contains(s))
-//                {
-//                    continue continueA;
-//                }
-//            }
-//            tempList.add(bk);
-//        }
-//
-//        tempToMainList();
-//        return this;
-//    }
+    //    /**
+    //     * Excludes bookmarks that have any of the specified exclusion strings in the bookmark text.
+    //     *
+    //     * @param exclusions
+    //     * @return
+    //     */
+    //    public Filter excludeTextThatContains(Set<String> exclusions)
+    //    {
+    //        continueA:
+    //        for (AbstractBookmark bk : this.results())
+    //        {
+    //            for (String s : exclusions)
+    //            {
+    //                if (bk.getText().contains(s))
+    //                {
+    //                    continue continueA;
+    //                }
+    //            }
+    //            tempList.add(bk);
+    //        }
+    //
+    //        tempToMainList();
+    //        return this;
+    //    }
 
     /**
      * Excludes bookmarks that have any of the specified exclusion strings in the bookmark tags.
@@ -286,7 +286,7 @@ public class Filter
         this.keepBookmarkTypesByClassName(searchOptions.getSelectedTypes());
 
         //Remove all that don't fit within the date range.
-        if (searchOptions.getStartDate()!=null || searchOptions.getEndDate()!=null)
+        if (searchOptions.getStartDate() != null || searchOptions.getEndDate() != null)
         {
             Date start;
 
@@ -310,7 +310,7 @@ public class Filter
             {
                 end = new Date();
                 // Adjusting end date to be the current day at 11:59pm.
-//                end.setTime(end.getTime()+(MILISECONDS_PER_SECOND * SECONDS_PER_DAY)-1000);
+                //                end.setTime(end.getTime()+(MILISECONDS_PER_SECOND * SECONDS_PER_DAY)-1000);
             }
 
             this.keepWithinDateRange(start, end);

@@ -1,17 +1,34 @@
 package com.bookmarkanator.ui.fxui;
 
-import java.awt.*;
-import com.bookmarkanator.bookmarks.*;
-import com.bookmarkanator.core.*;
-import com.bookmarkanator.ui.*;
-import com.bookmarkanator.ui.fxui.bookmarks.*;
-import com.bookmarkanator.ui.interfaces.*;
-import javafx.application.*;
-import javafx.event.*;
-import javafx.scene.*;
+import com.bookmarkanator.bookmarks.EncryptedBookmark;
+import com.bookmarkanator.bookmarks.FileBookmark;
+import com.bookmarkanator.bookmarks.SequenceBookmark;
+import com.bookmarkanator.bookmarks.TerminalBookmark;
+import com.bookmarkanator.bookmarks.TextBookmark;
+import com.bookmarkanator.bookmarks.WebBookmark;
+import com.bookmarkanator.core.Bootstrap;
+import com.bookmarkanator.core.SettingItem;
+import com.bookmarkanator.core.Settings;
+import com.bookmarkanator.ui.UIController;
+import com.bookmarkanator.ui.fxui.bookmarks.EncryptedBookmarkUI;
+import com.bookmarkanator.ui.fxui.bookmarks.FileBookmarkUI;
+import com.bookmarkanator.ui.fxui.bookmarks.SequenceBookmarkUI;
+import com.bookmarkanator.ui.fxui.bookmarks.TerminalBookmarkUI;
+import com.bookmarkanator.ui.fxui.bookmarks.TextBookmarkUI;
+import com.bookmarkanator.ui.fxui.bookmarks.WebBookmarkUI;
+import com.bookmarkanator.ui.interfaces.UIControllerInterface;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
-import javafx.scene.layout.*;
-import javafx.stage.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.awt.Dimension;
 
 public class Main extends Application
 {
@@ -59,7 +76,7 @@ public class Main extends Application
         VBox tagsBox = new VBox();
         SelectedTagsUI selectedTagsUI = new SelectedTagsUI(controller);
         selectedTagsUI.setPrefHeight(bestWindowSize.getHeight() * .35);
-        selectedTagsUI.setPrefWidth(bestWindowSize.getWidth()*.4);
+        selectedTagsUI.setPrefWidth(bestWindowSize.getWidth() * .4);
         controller.setSelectedTagsUI(selectedTagsUI);
         tagsBox.getChildren().add(selectedTagsUI);
         VBox.setVgrow(selectedTagsUI, Priority.ALWAYS);
@@ -83,6 +100,8 @@ public class Main extends Application
 
         NewBookmarkSelectorUI newBookmarkSelectorUI = new NewBookmarkSelectorUI(controller);
         controller.setNewBookmarkSelectorUI(newBookmarkSelectorUI);
+
+        primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getResourceAsStream("icon.png"), 48, 48, true, true));
 
         primaryStage.setScene(scene);
 
@@ -109,27 +128,25 @@ public class Main extends Application
         });
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 
-//    public Dimension getBestWindowSize()
-//    {
-//        if (bestWindowSize==null)
-//        {
-//            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//            int width = gd.getDisplayMode().getWidth();
-//            int height = gd.getDisplayMode().getHeight();
-//
-//            bestWindowSize = new Dimension((int) (width * .65), (int) (height * .5));
-//        }
-//       return bestWindowSize;
-//    }
+    //    public Dimension getBestWindowSize()
+    //    {
+    //        if (bestWindowSize==null)
+    //        {
+    //            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    //            int width = gd.getDisplayMode().getWidth();
+    //            int height = gd.getDisplayMode().getHeight();
+    //
+    //            bestWindowSize = new Dimension((int) (width * .65), (int) (height * .5));
+    //        }
+    //       return bestWindowSize;
+    //    }
 
     private Settings getDefaultSettings()
-        throws Exception
-    {
+            throws Exception {
         Settings settings = new Settings();
 
         SettingItem item = new SettingItem(Main.getUIClassString() + EncryptedBookmark.class.getCanonicalName());
