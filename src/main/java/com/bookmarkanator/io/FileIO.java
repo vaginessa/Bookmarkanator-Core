@@ -1,6 +1,7 @@
 package com.bookmarkanator.io;
 
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 import com.bookmarkanator.bookmarks.*;
 import com.bookmarkanator.core.*;
@@ -66,6 +67,10 @@ public class FileIO implements BKIOInterface
 
         // Load both files in.
         load();
+
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        Connection conn = DriverManager.getConnection("jdbc:derby:bookstore;create=true");
+        System.out.println();
     }
 
     @Override
