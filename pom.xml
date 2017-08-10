@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bookmarking</groupId>
-    <artifactId>bookmarkanator</artifactId>
-    <version>0.5.0-2</version>
+    <artifactId>core</artifactId>
+    <version>0.0.1-1</version>
     <packaging>jar</packaging>
-    <name>bookmarkanator</name>
+    <name>Bookmarkanator Core</name>
     <url></url>
 
     <developers>
@@ -47,7 +47,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.bookmarkanator.ui.fxui.Main</mainClass>
+                                    <mainClass>com.bookmarking.bookmarks.ui.fxui.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
