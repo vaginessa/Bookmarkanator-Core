@@ -47,7 +47,6 @@ public class Bootstrap
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
-        ModuleLoader.use().addClassToTrack(AbstractContext.class);
 
         Set<SettingItem> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
 
@@ -64,7 +63,7 @@ public class Bootstrap
 
         // Give bookmark access to the message board
         MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs : this.IOInterface.getContext().getBookmarks())
+        for (AbstractBookmark abs : this.IOInterface.getAllBookmarks())
         {
             messageBoard.setSecretKey(abs);
         }
@@ -243,10 +242,10 @@ public class Bootstrap
         return Bootstrap.use().IOInterface;
     }
 
-    public static AbstractContext context()
+    public static IOInterface context()
         throws Exception
     {
-        return Bootstrap.use().IOInterface.getContext();
+        return Bootstrap.use().IOInterface;
     }
 
     public static Bootstrap use()

@@ -11,7 +11,7 @@ import com.bookmarking.io.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
+public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
 {
     private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
@@ -39,7 +39,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
     public static final String BASE_VERSION = "0.1";
 
     //Variables
-    private AbstractContext abstractContext;
+    private IOInterface ioInterface;
     private InputStream inputStream;
     private Document document;
     private String xmlVerison;
@@ -57,7 +57,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
             {
                 abs = abstractBookmark.getNew();
                 parseBookmarkDetails(n, abs);
-                abstractContext.addBookmark(abs);
+                ioInterface.addBookmark(abs);
             }
         }
     }
@@ -132,7 +132,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
     }
 
     @Override
-    public AbstractContext parse(InputStream inputStream)
+    public IOInterface parse(InputStream inputStream)
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -212,14 +212,14 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
             }
         }
 
-        abstractContext.setClean();
-        return abstractContext;
+//        ioInterface.setClean();
+        return ioInterface;
     }
 
     @Override
-    public void setObject(AbstractContext obj)
+    public void setObject(IOInterface obj)
     {
-        this.abstractContext = obj;
+        this.ioInterface = obj;
     }
 
     @Override
