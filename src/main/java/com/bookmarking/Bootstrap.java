@@ -47,7 +47,6 @@ public class Bootstrap
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
-        ModuleLoader.use().addClassToTrack(AbstractContext.class);
 
         Set<SettingItem> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
 
@@ -60,11 +59,11 @@ public class Bootstrap
             ModuleLoader.use().addModulesToClasspath();
         }
 
-        this.IOInterface = loadBKIOInterface();
+        this.IOInterface = loadIOInterface();
 
         // Give bookmark access to the message board
         MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs : this.IOInterface.getContext().getBookmarks())
+        for (AbstractBookmark abs : this.IOInterface.getAllBookmarks())
         {
             messageBoard.setSecretKey(abs);
         }
@@ -77,6 +76,11 @@ public class Bootstrap
     public Settings getSettings()
     {
         return GlobalSettings.use().getSettings();
+    }
+
+    public IOInterface getIOInterface()
+    {
+        return this.IOInterface;
     }
 
     public void saveSettingsFile()
@@ -101,7 +105,7 @@ public class Bootstrap
      * @return A BKIOInterface class that was loaded.
      * @throws Exception
      */
-    private IOInterface loadBKIOInterface()
+    private IOInterface loadIOInterface()
         throws Exception
     {
         Set<Class> classes = ModuleLoader.use().getClassesLoaded(IOInterface.class);
@@ -241,12 +245,6 @@ public class Bootstrap
     public static IOInterface IOInterface()
     {
         return Bootstrap.use().IOInterface;
-    }
-
-    public static AbstractContext context()
-        throws Exception
-    {
-        return Bootstrap.use().IOInterface.getContext();
     }
 
     public static Bootstrap use()

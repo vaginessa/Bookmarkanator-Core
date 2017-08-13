@@ -100,6 +100,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * This is a secret key that has only a setter with no getter. It is intended to be set by the message board
      * as the key that this bookmark can use to post to the message board.
      *
+     * This must remain an abstract method because the key needs to be specific to each class, and that has to
+     * be implemented in the extending class.
+     *
      * @param messageBoardKey The secret key to use when modifying message board messages.
      * @return True if it was set.
      */

@@ -1,6 +1,7 @@
 package com.bookmarking.io;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
@@ -14,7 +15,7 @@ public class FileIO implements IOInterface
     // Static fields
     private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
     private static final String FILE_IO_KEY = "FILE_IO";
-    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmark.xml";
+    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
     private static final String FILE_IO_SETTINGS_KEY = "FILE_IO_SETTINGS";
     private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
 
@@ -420,14 +421,22 @@ public class FileIO implements IOInterface
 
     @Override
     public List<AbstractBookmark> applySearchOptions(SearchOptions options)
+        throws ParseException
     {
-        return null;
+        Filter filter = Filter.use(getAllBookmarks());
+        filter.filterBySearchOptions(options);
+
+        return filter.results();
     }
 
     @Override
     public List<AbstractBookmark> applySearchOptions(Collection<AbstractBookmark> bookmarks, SearchOptions options)
+        throws ParseException
     {
-        return null;
+        Filter filter = Filter.use(bookmarks);
+        filter.filterBySearchOptions(options);
+
+        return filter.results();
     }
 
     // ----------

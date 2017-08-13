@@ -12,17 +12,17 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
+public class BookmarksXMLWriter implements FileWriterInterface<IOInterface>
 {
-    private AbstractContext abstractContext;
+    private IOInterface ioInterface;
     private OutputStream out;
 
-    private void addBlocks(Element element, Document document, AbstractContext abstractContext)
+    private void addBlocks(Element element, Document document,IOInterface abstractContext)
         throws Exception
     {
         Map<String, Element> blocks = new HashMap<>();
 
-        Set<AbstractBookmark> bookmarks = abstractContext.getBookmarks();
+        Set<AbstractBookmark> bookmarks = abstractContext.getAllBookmarks();
 
         for (AbstractBookmark bookmark : bookmarks)
         {
@@ -103,11 +103,11 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
     }
 
     @Override
-    public void write(AbstractContext context, OutputStream out)
+    public void write(IOInterface context, OutputStream out)
         throws Exception
     {
         this.out = out;
-        this.abstractContext = context;
+        this.ioInterface = context;
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -116,7 +116,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<AbstractContext>
 
         rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
 
-        addBlocks(rootElement, doc, abstractContext);
+        addBlocks(rootElement, doc, ioInterface);
 
         doc.appendChild(rootElement);
 

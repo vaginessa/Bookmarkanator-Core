@@ -182,6 +182,7 @@ public class FileSync<T>
             }
             catch (Exception e)
             {
+                logger.error(e);
                 if (fileReader.getInvalidFilePolicy().equals(InvalidFilePolicy.markBadAndContinue))
                 {
                     File newFile = new File(file.getPath() + File.separatorChar + file.getName() + ".bad");

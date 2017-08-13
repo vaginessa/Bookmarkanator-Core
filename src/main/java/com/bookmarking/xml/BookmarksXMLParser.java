@@ -11,11 +11,11 @@ import com.bookmarking.io.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
+public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
 {
     private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
-    public static final String BOOKMARKS_TAG = "bookmark";
+    public static final String BOOKMARKS_TAG = "bookmarks";
     public static final String BLOCK_TAG = "block";
     public static final String BOOKMARK_TAG = "bookmark";
     public static final String NAME_TAG = "name";
@@ -39,7 +39,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
     public static final String BASE_VERSION = "0.1";
 
     //Variables
-    private AbstractContext abstractContext;
+    private IOInterface ioInterface;
     private InputStream inputStream;
     private Document document;
     private String xmlVerison;
@@ -57,7 +57,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
             {
                 abs = abstractBookmark.getNew();
                 parseBookmarkDetails(n, abs);
-                abstractContext.addBookmark(abs);
+                ioInterface.addBookmark(abs);
             }
         }
     }
@@ -132,7 +132,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
     }
 
     @Override
-    public AbstractContext parse(InputStream inputStream)
+    public IOInterface parse(InputStream inputStream)
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -171,8 +171,6 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
 
             if (n.getNodeName().equals(BookmarksXMLParser.BLOCK_TAG))
             {
-                try
-                {
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
@@ -198,28 +196,25 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
                     AbstractBookmark abs = null;
                     if (clazz == null)
                     {
+
+                        //TODO HANDLE WHEN A BOOKMARK CLASS IS NOT FOUND...
+                        //TODO Possibly have a base class, or error class that can load the data, and then save to the xml again on exit.
                         abs = ModuleLoader.use().loadClass(className, AbstractBookmark.class);
                         loadedClasses.put(className, abs.getClass());
                     }
 
-                    //add all bookmark of this type
+                    //add all bookmarks of this type
                     parseBookmark(n, abs);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
             }
         }
 
-        abstractContext.setClean();
-        return abstractContext;
+        return ioInterface;
     }
 
     @Override
-    public void setObject(AbstractContext obj)
+    public void setObject(IOInterface obj)
     {
-        this.abstractContext = obj;
+        this.ioInterface = obj;
     }
 
     @Override
