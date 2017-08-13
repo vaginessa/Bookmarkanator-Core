@@ -3,39 +3,50 @@ package com.bookmarking.io;
 import java.io.*;
 import java.util.*;
 import com.bookmarking.*;
-import com.bookmarking.bookmarks.*;
+import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.search.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
-/**
- * This class is used solely for reading and writing bookmark files to a file system.
- */
-public class FileIO implements BKIOInterface
+public class FileIO implements IOInterface
 {
     // Static fields
     private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
     private static final String FILE_IO_KEY = "FILE_IO";
-    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
+    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmark.xml";
     private static final String FILE_IO_SETTINGS_KEY = "FILE_IO_SETTINGS";
     private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
 
     // Fields
-    private AbstractContext context;
     private File file;
     private Settings settings;
+    private Map<UUID, AbstractBookmark> bookmarks;
+    private Search<UUID> bookmarkNames;
+    private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
+    //    private Search<UUID> bookmarkText;//The text the bookmark contains.
+    private Map<String, Set<UUID>> fullTextSearchMap;//The map used to search only words of the bookmark.
+    private Search<UUID> bookmarkTags;
+    private int numSearchResults;//How many search results to return.
+    private IOInterface IOInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
 
-    // ============================================================
-    // Methods
-    // ============================================================
+    public FileIO()
+    {
+        bookmarks = new HashMap<>();
+        bookmarkNames = new Search<>();
+        bookmarkTypeNames = new Search<>();
+        //        bookmarkText = new Search<>();
+        bookmarkTags = new Search<>();
+        fullTextSearchMap = new HashMap<>();
+        numSearchResults = 20;
+    }
 
     @Override
     public void init(String config)
         throws Exception
     {
         logger.trace("Entering init method with config \"" + config + "\"");
-        //TODO Figure out what to do about the bookmarks.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
-        this.context = this.getContext();
+        //TODO Figure out what to do about the bookmark.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
         this.settings = this.getSettings();
 
         if (config == null || config.trim().isEmpty())
@@ -55,8 +66,8 @@ public class FileIO implements BKIOInterface
             file = new File(config);
         }
 
-        // Create bookmarks file
-        FileSync<AbstractContext> fileSync = new FileSync<>(new BookmarksXMLWriter(), new BookmarksXMLParser(), file);
+        // Create bookmark file
+        FileSync<IOInterface> fileSync = new FileSync<>(new BookmarksXMLWriter(), new BookmarksXMLParser(), file);
         FileService.use().addFile(fileSync, FILE_IO_KEY);
 
         // Create file io settings file
@@ -72,8 +83,8 @@ public class FileIO implements BKIOInterface
     public void save()
         throws Exception
     {
-        FileSync<AbstractContext> fileSync = FileService.use().getFile(FILE_IO_KEY);
-        fileSync.setObjectToWrite(context);
+        FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        fileSync.setObjectToWrite(this);
         fileSync.writeToDisk();
 
         FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
@@ -82,13 +93,13 @@ public class FileIO implements BKIOInterface
     }
 
     @Override
-    public void save(String filePath)
+    public void save(String config)
         throws Exception
     {
-        FileSync<AbstractContext> fileSync = FileService.use().getFile(FILE_IO_KEY);
-        File file = new File(filePath);
+        FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        File file = new File(config);
         fileSync.setFile(file);
-        fileSync.setObjectToWrite(context);
+        fileSync.setObjectToWrite(this);
         fileSync.writeToDisk();
 
         // Get settings file from current file location
@@ -101,20 +112,33 @@ public class FileIO implements BKIOInterface
 
     @Override
     public void close()
+        throws Exception
     {
-        //close any open file sources.
+
     }
 
     @Override
-    public AbstractContext getContext()
+    public AbstractBookmark getBookmark(String params, Object... obj)
     {
-        if (this.context == null)
-        {
-            this.context = new FileContext();
-            this.context.setBKIOInterface(this);
-        }
+        throw new UnsupportedOperationException("Not supported at this time");
+    }
 
-        return context;
+    @Override
+    public List<AbstractBookmark> getBookmarkList(String params, Object... obj)
+    {
+        throw new UnsupportedOperationException("Not supported at this time");
+    }
+
+    @Override
+    public String getOther(String params, Object... obj)
+    {
+        throw new UnsupportedOperationException("Not supported at this time");
+    }
+
+    @Override
+    public List<String> getOtherList(String params, Object... obj)
+    {
+        throw new UnsupportedOperationException("Not supported at this time");
     }
 
     @Override
@@ -128,26 +152,298 @@ public class FileIO implements BKIOInterface
     }
 
     @Override
+    public AbstractBookmark getBookmark(UUID bookmarkId)
+    {
+        return bookmarks.get(bookmarkId);
+    }
+
+    @Override
+    public Set<String> getTags(Collection<UUID> bookmarkIds)
+    {
+        Set<String> res = new HashSet<>();
+        for (UUID uuid: bookmarkIds)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            Objects.requireNonNull(bookmark);
+            res.addAll(bookmark.getTags());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<String> getSearchWords(Collection<UUID> bookmarkIds)
+        throws Exception
+    {
+        Set<String> res = new HashSet<>();
+        for (UUID uuid: bookmarkIds)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            Objects.requireNonNull(bookmark);
+            res.addAll(bookmark.getSearchWords());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<String> getTypeNames(Collection<UUID> bookmarkIds)
+    {
+        Set<String> res = new HashSet<>();
+        for (UUID uuid: bookmarkIds)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            Objects.requireNonNull(bookmark);
+            res.add(bookmark.getTypeName());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<String> getBookmarkNames(Collection<UUID> bookmarkIds)
+    {
+        Set<String> res = new HashSet<>();
+        for (UUID uuid: bookmarkIds)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            Objects.requireNonNull(bookmark);
+            res.add(bookmark.getName());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<String> getClassNames(Collection<UUID> bookmarkIds)
+    {
+        Set<String> res = new HashSet<>();
+        for (UUID uuid: bookmarkIds)
+        {
+            AbstractBookmark bookmark = getBookmark(uuid);
+            Objects.requireNonNull(bookmark);
+            res.add(bookmark.getClass().getCanonicalName());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<AbstractBookmark> getWithinDateRange(Date includeIfAfter, Date includeIfBefore)
+    {
+        Set<AbstractBookmark> res = new HashSet<>();
+
+        for (AbstractBookmark bk : getAllBookmarks())
+        {
+            if (bk.getCreationDate().after(includeIfAfter) && bk.getCreationDate().before(includeIfBefore))
+            {
+                res.add(bk);
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<AbstractBookmark> getWithinLastAccessedDateRange(Date includeIfAfter, Date includeIfBefore)
+    {
+        Set<AbstractBookmark> res = new HashSet<>();
+
+        for (AbstractBookmark bk : getAllBookmarks())
+        {
+            if (bk.getLastAccessedDate().after(includeIfAfter) && bk.getLastAccessedDate().before(includeIfBefore))
+            {
+                res.add(bk);
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<AbstractBookmark> getAllBookmarks()
+    {
+        return new HashSet<>(bookmarks.values());
+    }
+
+    @Override
+    public Set<String> getAllTags()
+    {
+       return getTags(bookmarks.keySet());
+    }
+
+    @Override
+    public Set<String> getAllSearchWords()
+        throws Exception
+    {
+        return getSearchWords(bookmarks.keySet());
+    }
+
+    @Override
+    public Set<String> getAllTypeNames()
+    {
+        return getTypeNames(bookmarks.keySet());
+    }
+
+    @Override
+    public Set<String> getAllBookmarkNames()
+    {
+        return getBookmarkNames(bookmarks.keySet());
+    }
+
+    @Override
+    public Set<String> getAllClassNames()
+    {
+        return getClassNames(bookmarks.keySet());
+    }
+
+    @Override
     public void setSettings(Settings settings)
     {
         this.settings = settings;
     }
 
-    // ============================================================
-    // Private Methods
-    // ============================================================
+    @Override
+    public void addBookmark(AbstractBookmark bookmark)
+        throws Exception
+    {
+        //TODO Add/update to search methods
+        Objects.requireNonNull(bookmark);
+
+        if (bookmarks.containsKey(bookmark.getId()))
+        {
+            throw new Exception("Duplicate bookmark present");
+        }
+
+        bookmarks.put(bookmark.getId(), bookmark);
+    }
+
+    @Override
+    public void addAllBookmarks(Collection<AbstractBookmark> bookmarks)
+        throws Exception
+    {
+        //TODO Add/update to search methods
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            addBookmark(bookmark);
+        }
+    }
+
+    @Override
+    public void updateBookmark(AbstractBookmark bookmark)
+        throws Exception
+    {
+        //TODO Add/update to search methods
+        Objects.requireNonNull(bookmark);
+        if (!bookmarks.containsKey(bookmark.getId()))
+        {
+            throw new Exception("Bookmark "+bookmark.getId()+" not found.");
+        }
+    }
+
+    @Override
+    public void updateAll(Collection<AbstractBookmark> bookmarks)
+        throws Exception
+    {
+        //TODO Add/update to search methods
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            updateBookmark(bookmark);
+        }
+    }
+
+    @Override
+    public List<AbstractBookmark> renameTag(String originalTagName, String newTagName)throws Exception
+    {
+        //TODO Add/update to search methods
+        SearchOptions searchOptions = new SearchOptions();
+        Set<String> tags = new HashSet<>();
+        tags.add(originalTagName);
+        searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG,tags);
+        List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
+
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            bookmark.removeTag(originalTagName);
+            bookmark.addTag(newTagName);
+            updateBookmark(bookmark);
+        }
+
+        return bookmarks;
+    }
+
+    @Override
+    public List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)throws Exception
+    {
+        //TODO Add/update to search methods
+        SearchOptions searchOptions = new SearchOptions();
+        searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG,tagsToReplace);
+        List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
+
+        for (AbstractBookmark bookmark: bookmarks)
+        {
+            bookmark.getTags().removeAll(tagsToReplace);
+            bookmark.addTag(replacement);
+            updateBookmark(bookmark);
+        }
+
+        return bookmarks;
+    }
+
+    @Override
+    public AbstractBookmark deleteBookmark(UUID bookmarkId)
+    {
+        //TODO Add/update to search methods
+        return null;
+    }
+
+    @Override
+    public AbstractBookmark deleteBookmark(AbstractBookmark bookmark)
+    {
+        //TODO Add/update to search methods
+        return null;
+    }
+
+    @Override
+    public Set<AbstractBookmark> deleteTag(String tagToDelete)
+    {
+        //TODO Add/update to search methods
+        return null;
+    }
+
+    @Override
+    public Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete)
+    {
+        //TODO Add/update to search methods
+        return null;
+    }
+
+    @Override
+    public List<AbstractBookmark> applySearchOptions(SearchOptions options)
+    {
+        return null;
+    }
+
+    @Override
+    public List<AbstractBookmark> applySearchOptions(Collection<AbstractBookmark> bookmarks, SearchOptions options)
+    {
+        return null;
+    }
+
+    // ----------
+    // private
+    // ----------
 
     private void load()
         throws Exception
     {
-        // Load bookmarks
-        FileSync<AbstractContext> fileSync = FileService.use().getFile(FILE_IO_KEY);
-        fileSync.injectParsingObject(this.context);
+        // Load bookmark
+        FileSync<FileIO> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        fileSync.injectParsingObject(this);
         fileSync.readFromDisk();
-        this.context = fileSync.getParsedObject();
 
-        logger.info("Calling systemInit() on the bookmarks.");
-        Set<AbstractBookmark> bks = context.getBookmarks();
+        logger.info("Calling systemInit() on the bookmark.");
+        Set<AbstractBookmark> bks = getAllBookmarks();
         for (AbstractBookmark abs : bks)
         {
             abs.systemInit();
@@ -165,4 +461,5 @@ public class FileIO implements BKIOInterface
         String path = input.getParent();
         return new File(path + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME);
     }
+
 }

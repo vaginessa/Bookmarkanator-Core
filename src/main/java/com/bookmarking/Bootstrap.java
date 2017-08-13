@@ -2,7 +2,7 @@ package com.bookmarking;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarking.bookmarks.*;
+import com.bookmarking.bookmark.*;
 import com.bookmarking.io.*;
 import org.apache.logging.log4j.*;
 
@@ -25,7 +25,7 @@ public class Bootstrap
     public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
 
     // Fields
-    private BKIOInterface bkioInterface;
+    private IOInterface IOInterface;
     private File settingsFile;
 
     public Bootstrap()
@@ -46,7 +46,7 @@ public class Bootstrap
 
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
-        ModuleLoader.use().addClassToTrack(BKIOInterface.class);
+        ModuleLoader.use().addClassToTrack(IOInterface.class);
         ModuleLoader.use().addClassToTrack(AbstractContext.class);
 
         Set<SettingItem> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
@@ -60,11 +60,11 @@ public class Bootstrap
             ModuleLoader.use().addModulesToClasspath();
         }
 
-        this.bkioInterface = loadBKIOInterface();
+        this.IOInterface = loadBKIOInterface();
 
-        // Give bookmarks access to the message board
+        // Give bookmark access to the message board
         MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs : this.bkioInterface.getContext().getBookmarks())
+        for (AbstractBookmark abs : this.IOInterface.getContext().getBookmarks())
         {
             messageBoard.setSecretKey(abs);
         }
@@ -101,10 +101,10 @@ public class Bootstrap
      * @return A BKIOInterface class that was loaded.
      * @throws Exception
      */
-    private BKIOInterface loadBKIOInterface()
+    private IOInterface loadBKIOInterface()
         throws Exception
     {
-        Set<Class> classes = ModuleLoader.use().getClassesLoaded(BKIOInterface.class);
+        Set<Class> classes = ModuleLoader.use().getClassesLoaded(IOInterface.class);
 
         for (Class clazz : classes)
         {//Iterate through bkio classes found, selecting the correct one based on settings.
@@ -124,7 +124,7 @@ public class Bootstrap
                     config = "";
                 }
 
-                BKIOInterface bkio2 = ModuleLoader.use().loadClass(clazz.getCanonicalName(), BKIOInterface.class);
+                IOInterface bkio2 = ModuleLoader.use().loadClass(clazz.getCanonicalName(), IOInterface.class);
 
                 logger.info(
                     "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
@@ -238,15 +238,15 @@ public class Bootstrap
     // Static Methods
     // ============================================================
 
-    public static BKIOInterface IOInterface()
+    public static IOInterface IOInterface()
     {
-        return Bootstrap.use().bkioInterface;
+        return Bootstrap.use().IOInterface;
     }
 
     public static AbstractContext context()
         throws Exception
     {
-        return Bootstrap.use().bkioInterface.getContext();
+        return Bootstrap.use().IOInterface.getContext();
     }
 
     public static Bootstrap use()

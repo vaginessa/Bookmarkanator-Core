@@ -2,49 +2,49 @@
 <root>
     <settings type="mainUI">
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.HTMLTextBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.TextBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.HTMLTextBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.TerminalBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.TerminalBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.TerminalBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.TerminalBookmarkUI
         </setting>
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.SequenceBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.SequenceBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.SequenceBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.SequenceBookmarkUI
         </setting>
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.FileBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.FileBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.FileBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.FileBookmarkUI
         </setting>
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.WebBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.WebBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.WebBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.WebBookmarkUI
         </setting>
         <setting class="com.bookmarking.SettingItem"
-                 operation="com.bookmarking.bookmarks.ui.fxui.Main-class-com.bookmarking.bookmarks.EncryptedBookmark">
-            com.bookmarking.bookmarks.ui.fxui.bookmarks.EncryptedBookmarkUI
+                 operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.EncryptedBookmark">
+            com.bookmarking.desktop.ui.fxui.bookmarks.EncryptedBookmarkUI
         </setting>
     </settings>
     <settings type="bootstrap">
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.bookmarks.TerminalBookmark">
-            com.bookmarking.bookmarks.TerminalBookmark
+        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.TerminalBookmark">
+            com.bookmarking.desktop.bookmark.TerminalBookmark
         </setting>
         <setting class="com.bookmarking.core.SettingsItemList" operation="module-locations">/Users/lloyd1/Bookmark-anator</setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.bookmarks.SequenceBookmark">
-            com.bookmarking.bookmarks.SequenceBookmark
+        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.SequenceBookmark">
+            com.bookmarking.desktop.bookmark.SequenceBookmark
         </setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.bookmarks.EncryptedBookmark">
-            com.bookmarking.bookmarks.EncryptedBookmark
+        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.EncryptedBookmark">
+            com.bookmarking.desktop.bookmark.EncryptedBookmark
         </setting>
         <setting class="com.bookmarking.core.SettingsItemList" operation="bookmark-io-config">/Users/lloyd1/Bookmark-anator/bookmarks.xml</setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.bookmarks.TextBookmark">
-            com.bookmarking.bookmarks.TextBookmark
+        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.TextBookmark">
+            com.bookmarking.desktop.bookmark.TextBookmark
         </setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.bookmarks.WebBookmark">
-            com.bookmarking.bookmarks.WebBookmark
+        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.WebBookmark">
+            com.bookmarking.desktop.bookmark.WebBookmark
         </setting>
-        <setting class="com.bookmarking.core.SettingsItemList" operation="bookmark-io-class">com.bookmarking.io.FileIO</setting>
+        <setting class="com.bookmarking.core.SettingsItemList" operation="bookmark-io-class">com.bookmarking.desktop.FileIO</setting>
     </settings>
 </root>
 

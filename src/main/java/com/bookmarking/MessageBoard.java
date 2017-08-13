@@ -1,15 +1,19 @@
 package com.bookmarking;
 
 import java.util.*;
-import com.bookmarking.bookmarks.*;
+import com.bookmarking.bookmark.*;
 import org.apache.logging.log4j.*;
 
+/**
+ *  A message board is a place where bookmarks can write on a virtual message board. They all have read access, but can only write
+ *  the messages for their class.
+ */
 public class MessageBoard
 {
     private static final Logger logger = LogManager.getLogger(MessageBoard.class.getCanonicalName());
     private static MessageBoard messageBoard;
     private Map<String, Map<String, Object>> messagesMap;//<bookmark class name, Map<message key, message object>>
-    // secret key assigned after bookmarks are loaded, and is used to restrict write access to the message board.
+    // secret key assigned after bookmark are loaded, and is used to restrict write access to the message board.
     private Map<String, String> messageBoardKeyMap;//<bookmark class name, secret key>
 
     private MessageBoard()
@@ -56,7 +60,7 @@ public class MessageBoard
 
         if (str == null)
         {
-            if (bookmark.setSecretKey(secretKey))
+            if (bookmark.setMessageBoardKey(secretKey))
             {
                 messageBoardKeyMap.put(bookmark.getClass().getCanonicalName(), secretKey);
             }

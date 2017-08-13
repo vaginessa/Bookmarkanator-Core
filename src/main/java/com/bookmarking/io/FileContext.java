@@ -1,54 +1,17 @@
 package com.bookmarking.io;
 
 import java.util.*;
-import com.bookmarking.bookmarks.*;
-import com.bookmarking.util.*;
+import com.bookmarking.bookmark.*;
+import com.bookmarking.search.*;
 import org.apache.logging.log4j.*;
 
 /**
- * This class represents the main interface for interacting with bookmarks that are loaded/saved to/from the file system.
- * When loading/laving the bookmarks will be written/read in xml format. Each bookmark has a section of text within the xml
+ * This class represents the main interface for interacting with bookmark that are loaded/saved to/from the file system.
+ * When loading/laving the bookmark will be written/read in xml format. Each bookmark has a section of text within the xml
  * that it can save to (in any format), but is also responsible for parsing when the bookmark is loaded.
  */
-public class FileContext extends AbstractContext
+public class FileContext
 {
-    private static final Logger logger = LogManager.getLogger(FileContext.class.getCanonicalName());
-    private Map<UUID, AbstractBookmark> bookmarks;
-    private Search<UUID> bookmarkNames;
-    private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
-    //    private Search<UUID> bookmarkText;//The text the bookmark contains.
-    private Map<String, Set<UUID>> fullTextSearchMap;//The map used to search only words of the bookmarks.
-    private Search<UUID> bookmarkTags;
-    private int numSearchResults;//How many search results to return.
-    private BKIOInterface bkioInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
-
-    public FileContext()
-    {
-        bookmarks = new HashMap<>();
-        bookmarkNames = new Search<>();
-        bookmarkTypeNames = new Search<>();
-        //        bookmarkText = new Search<>();
-        bookmarkTags = new Search<>();
-        fullTextSearchMap = new HashMap<>();
-        numSearchResults = 20;
-    }
-
-    // ============================================================
-    // Bookmark Methods
-    // ============================================================
-
-    @Override
-    public void setBKIOInterface(BKIOInterface bkioInterface)
-    {
-        this.bkioInterface = bkioInterface;
-    }
-
-    @Override
-    public BKIOInterface getBKIOInterface()
-    {
-        return this.bkioInterface;
-    }
-
     @Override
     public Set<UUID> getBookmarkIDs()
     {
@@ -80,10 +43,10 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Gets a set of bookmarks that match the supplied bookmark Id's
+     * Gets a set of bookmark that match the supplied bookmark Id's
      *
      * @param bookmarkIds A set of bookmark Id's
-     * @return A list of bookmarks (Note: returning a list in case a linkedhashset is used that preserves insertion order. In this case it will return a
+     * @return A list of bookmark (Note: returning a list in case a linkedhashset is used that preserves insertion order. In this case it will return a
      * list with the supplied order preserved).
      */
     @Override
@@ -109,7 +72,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Add the list of bookmarks to this list of bookmarks.
+     * Add the list of bookmark to this list of bookmark.
      *
      * @param bookmarks The list to add.
      * @throws Exception if a bookmark Id is null, or it already exists.
@@ -125,7 +88,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Adds a bookmark to the list of bookmarks.
+     * Adds a bookmark to the list of bookmark.
      *
      * @param bookmark The bookmark to add.
      * @throws Exception if a bookmark Id is null, or it already exists.
@@ -154,7 +117,7 @@ public class FileContext extends AbstractContext
         bookmarkTypeNames.add(id, bookmark.getTypeName());
         bookmarkTags.add(id, bookmark.getTags());
 
-        // Adding the text of bookmarks.
+        // Adding the text of bookmark.
         Set<String> strings = bookmark.getSearchWords();
 
         if (strings != null)
@@ -182,7 +145,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Remove a bookmark. This removes the bookmark from the list of bookmarks and all searching methods.
+     * Remove a bookmark. This removes the bookmark from the list of bookmark and all searching methods.
      *
      * @param bookmarkID The Id of the bookmark to remove.
      * @return The removed bookmark.
@@ -386,7 +349,7 @@ public class FileContext extends AbstractContext
         //        }
         if (uuids.size() < getNumSearchResults())
         {
-            // Search bookmarks text because not enough is found yet.
+            // Search bookmark text because not enough is found yet.
             res.addAll(searchBookmarkText(text));
         }
 
@@ -396,7 +359,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Search the names of bookmarks (and all there derivations)
+     * Search the names of bookmark (and all there derivations)
      *
      * @param text The text to search for.
      * @return The results of the search.
@@ -411,7 +374,7 @@ public class FileContext extends AbstractContext
      * This method searches the bookmark tags for any tags containing the text (or a derivation of the text).
      *
      * @param text The text to do a general tag search for
-     * @return A list of bookmarks that contain the text in their tags.
+     * @return A list of bookmark that contain the text in their tags.
      */
     @Override
     public List<AbstractBookmark> searchTagsLoosly(String text)
@@ -420,7 +383,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Find all bookmarks that have one of the supplied tags matching exactly one of the bookmark tags.
+     * Find all bookmark that have one of the supplied tags matching exactly one of the bookmark tags.
      *
      * @param tags The tags to match at least one of.
      * @return A list of Bookmarks that contain at least one of the supplied tags.
@@ -432,7 +395,7 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * This method locates the Id's of any bookmarks that have tags that match any of the supplied tags. If a bookmark as at least one of the
+     * This method locates the Id's of any bookmark that have tags that match any of the supplied tags. If a bookmark as at least one of the
      * supplied tags it will be added to the results.
      *
      * @param tags The tags to search for.
@@ -455,11 +418,11 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Locates all bookmarks that have the whole set of supplied tags. If a bookmark doesnt' have all the tags sent in it will not make it in the list
+     * Locates all bookmark that have the whole set of supplied tags. If a bookmark doesnt' have all the tags sent in it will not make it in the list
      * of search results.
      *
-     * @param tags The list of tags to use to find bookmarks.
-     * @return A list of bookmarks that contain all the supplied tags.
+     * @param tags The list of tags to use to find bookmark.
+     * @return A list of bookmark that contain all the supplied tags.
      */
     @Override
     public List<AbstractBookmark> searchTagsFullMatch(Set<String> tags)
@@ -474,7 +437,7 @@ public class FileContext extends AbstractContext
 
             if (abs == null)
             {
-                throw new Exception("A bookmark was found in a tag search but is not in the list of bookmarks.");
+                throw new Exception("A bookmark was found in a tag search but is not in the list of bookmark.");
             }
 
             if (abs.getTags() != null && !abs.getTags().isEmpty() && abs.getTags().containsAll(tags))
@@ -499,10 +462,10 @@ public class FileContext extends AbstractContext
     }
 
     /**
-     * Loosely searches all the text of the bookmarks to locate any bookmark that contains the supplied text.
+     * Loosely searches all the text of the bookmark to locate any bookmark that contains the supplied text.
      *
      * @param text The text to search for.
-     * @return A list of bookmarks that contain the supplied text.
+     * @return A list of bookmark that contain the supplied text.
      */
     @Override
     public List<AbstractBookmark> searchBookmarkText(String text)

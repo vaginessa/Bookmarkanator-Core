@@ -7,7 +7,7 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-import com.bookmarking.bookmarks.*;
+import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import org.w3c.dom.*;

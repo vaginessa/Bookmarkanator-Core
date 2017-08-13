@@ -9,6 +9,9 @@ import org.apache.logging.log4j.*;
 import org.reflections.*;
 import org.reflections.util.*;
 
+/**
+ * The module loader loads jars from specific directories, tracks classes, and instantiates classes.
+ */
 public class ModuleLoader
 {
     // Static fields

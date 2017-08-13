@@ -5,7 +5,7 @@ import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
-import com.bookmarking.bookmarks.*;
+import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import org.apache.logging.log4j.*;
@@ -15,7 +15,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
 {
     private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
-    public static final String BOOKMARKS_TAG = "bookmarks";
+    public static final String BOOKMARKS_TAG = "bookmark";
     public static final String BLOCK_TAG = "block";
     public static final String BOOKMARK_TAG = "bookmark";
     public static final String NAME_TAG = "name";
@@ -190,7 +190,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
                         }
                     }
 
-                    //TODO Somethings not right with the settings loading. It should not be overriding bookmarks with the same bookmark class name.
+                    //TODO Somethings not right with the settings loading. It should not be overriding bookmark with the same bookmark class name.
 
                     className = className.trim();
 
@@ -202,7 +202,7 @@ public class BookmarksXMLParser implements FileReaderInterface<AbstractContext>
                         loadedClasses.put(className, abs.getClass());
                     }
 
-                    //add all bookmarks of this type
+                    //add all bookmark of this type
                     parseBookmark(n, abs);
                 }
                 catch (Exception e)

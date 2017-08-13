@@ -1,0 +1,105 @@
+package com.bookmarking.io;
+
+import java.util.*;
+import com.bookmarking.*;
+import com.bookmarking.bookmark.*;
+import com.bookmarking.search.*;
+
+/**
+ * This is the interface that other classes will use to load and save bookmark. It could point to files on the file system as FileIo does,
+ * or it could point to a database, web service, ftp server, etc...
+ */
+public interface IOInterface
+{
+
+    void init(String config)
+        throws Exception;
+
+    void save()
+        throws Exception;
+
+    void save(String config)
+        throws Exception;
+
+    void close()
+        throws Exception;
+
+    AbstractBookmark getBookmark(String params, Object... obj);
+
+    List<AbstractBookmark> getBookmarkList(String params, Object... obj);
+
+    String getOther(String params, Object... obj);
+
+    List<String> getOtherList(String params, Object... obj);
+
+    // Getting
+
+    Settings getSettings();
+
+    AbstractBookmark getBookmark(UUID bookmarkId);
+
+    Set<String> getTags(Collection<UUID> bookmarkIds);
+
+    Set<String> getSearchWords(Collection<UUID> bookmarkIds)
+        throws Exception;
+
+    Set<String> getTypeNames(Collection<UUID> bookmarkIds);
+
+    Set<String> getBookmarkNames(Collection<UUID> bookmarkIds);
+
+    Set<String> getClassNames(Collection<UUID> bookmarkIds);
+
+    Set<AbstractBookmark> getWithinDateRange(Date includeIfAfter, Date includeIfBefore);
+
+    Set<AbstractBookmark> getWithinLastAccessedDateRange(Date includeIfAfter, Date includeIfBefore);
+
+    Set<AbstractBookmark> getAllBookmarks();
+
+    Set<String> getAllTags();
+
+    Set<String> getAllSearchWords()
+        throws Exception;
+
+    Set<String> getAllTypeNames();
+
+    Set<String> getAllBookmarkNames();
+
+    Set<String> getAllClassNames();
+
+    // Setting/adding
+
+    void setSettings(Settings settings);
+
+    void addBookmark(AbstractBookmark bookmark)
+        throws Exception;
+
+    void addAllBookmarks(Collection<AbstractBookmark> bookmarks)
+        throws Exception;
+
+    // Updating
+
+    void updateBookmark(AbstractBookmark bookmark)
+        throws Exception;
+
+    void updateAll(Collection<AbstractBookmark> bookmarks)
+        throws Exception;
+
+    List<AbstractBookmark> renameTag(String originalTagName, String newTagName)throws Exception;
+
+    List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)throws Exception;
+
+    // Deleting
+
+    AbstractBookmark deleteBookmark(UUID bookmarkId);
+
+    AbstractBookmark deleteBookmark(AbstractBookmark bookmark);
+
+    Set<AbstractBookmark> deleteTag(String tagToDelete);
+
+    Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete);
+
+    // Searching
+
+    List<AbstractBookmark> applySearchOptions(SearchOptions options);
+    List<AbstractBookmark> applySearchOptions(Collection<AbstractBookmark> bookmarks,SearchOptions options);
+}
