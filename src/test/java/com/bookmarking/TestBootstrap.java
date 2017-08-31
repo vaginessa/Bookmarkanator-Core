@@ -6,6 +6,7 @@ import org.junit.*;
 
 public class TestBootstrap
 {
+    @Ignore
     @Test
     public void testBootstrap()
         throws Exception
