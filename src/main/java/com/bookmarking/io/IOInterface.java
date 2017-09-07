@@ -2,7 +2,6 @@ package com.bookmarking.io;
 
 import java.text.*;
 import java.util.*;
-import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.search.*;
 
@@ -10,7 +9,7 @@ import com.bookmarking.search.*;
  * This is the interface that other classes will use to load and save bookmark. It could point to files on the file system as FileIo does,
  * or it could point to a database, web service, ftp server, etc...
  */
-public interface IOInterface
+public interface IOInterface extends SettingsServiceInterface
 {
 
     void init(String config)
@@ -34,8 +33,6 @@ public interface IOInterface
     List<String> getOtherList(String params, Object... obj);
 
     // Getting
-
-    Settings getSettings();
 
     AbstractBookmark getBookmark(UUID bookmarkId);
 
@@ -68,8 +65,6 @@ public interface IOInterface
     Set<String> getAllClassNames();
 
     // Setting/adding
-
-    void setSettings(Settings settings);
 
     void addBookmark(AbstractBookmark bookmark)
         throws Exception;

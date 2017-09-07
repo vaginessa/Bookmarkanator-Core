@@ -9,7 +9,7 @@ import org.apache.logging.log4j.*;
 /**
  * This class is responsible for doing the initial settings, and class loading.
  */
-public class Bootstrap
+public class Bootstrap implements SettingsServiceInterface
 {
     // Static fields
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
@@ -31,6 +31,7 @@ public class Bootstrap
     public Bootstrap()
         throws Exception
     {
+        Bootstrap.bootstrap = this;
         // Get settings file
         File currentDir = new File(".");
         logger.info("Current directory " + currentDir.getCanonicalPath());
@@ -76,6 +77,12 @@ public class Bootstrap
     public Settings getSettings()
     {
         return GlobalSettings.use().getSettings();
+    }
+
+    @Override
+    public void setSettings(Settings settings)
+    {
+        GlobalSettings.use().setSettings(settings);
     }
 
     public IOInterface getIOInterface()

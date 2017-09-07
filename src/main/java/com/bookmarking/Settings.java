@@ -34,6 +34,10 @@ public class Settings
 
     public void putSetting(SettingItem itemInterface)
     {
+        Objects.requireNonNull(itemInterface);
+        Objects.requireNonNull(itemInterface.type);
+        Objects.requireNonNull(itemInterface.key);
+
         map.put(itemInterface.getKey(), itemInterface);
 
         Set<SettingItem> tmp = typesMap.get(itemInterface.getType());
@@ -78,6 +82,26 @@ public class Settings
     public Map<String, Set<SettingItem>> getSettingsTypesMap()
     {
         return Collections.unmodifiableMap(typesMap);
+    }
+
+    public void renameType(String original, String newName)
+    {
+
+    }
+
+    public void deleteType(String type)
+    {
+
+    }
+
+    public void renameKey(String type, String key)
+    {
+
+    }
+
+    public void deleteKeyValuePair(String type, String key)
+    {
+
     }
 
     /**

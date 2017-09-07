@@ -9,8 +9,8 @@ import org.apache.logging.log4j.*;
 public class SettingItem
 {
     private static final Logger logger = LogManager.getLogger(SettingItem.class.getCanonicalName());
-    protected String key;
     protected String type;
+    protected String key;
     protected String value;
 
     public SettingItem(String key)
@@ -23,10 +23,10 @@ public class SettingItem
         }
 
         this.key = key;
+        this.type = "";
     }
 
     public void setValue(String settingString)
-        throws Exception
     {
         this.value = settingString;
     }
@@ -39,6 +39,12 @@ public class SettingItem
     public String getKey()
     {
         return key;
+    }
+
+    public void setKey(String key)
+    {
+        Objects.requireNonNull(key,"Key cannot be null.");
+        this.key = key;
     }
 
     public String getType()
