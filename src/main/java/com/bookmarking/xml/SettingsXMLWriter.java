@@ -19,11 +19,11 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
         Document doc = getDocument();
 
         Element rootElement = doc.createElement(SettingsXMLParser.ROOT_TAG);
-        Map<String, Set<SettingItem>> typesMap = settings.getSettingsTypesMap();
+        Map<String, Map<String, SettingItem>> typesMap = settings.getSettingsTypesMap();
 
         for (String s : typesMap.keySet())
         {
-            Set<SettingItem> items = typesMap.get(s);
+            Map<String, SettingItem> items = typesMap.get(s);
             if (items != null)
             {//Only add a setting tag if it has values.
                 appendSettings(doc, rootElement, s, items);
@@ -52,17 +52,18 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
         return FileSync.FileBackupPolicy.NO_BACKUP;
     }
 
-    public void appendSettings(Document doc, Element rootElement, String type, Set<SettingItem> items)
+    public void appendSettings(Document doc, Element rootElement, String type, Map<String, SettingItem> items)
         throws Exception
     {
         Element settings = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
         settings.setAttribute(SettingsXMLParser.TYPE_ATTRIBUTE, type);
 
-        for (SettingItem item : items)
+        for (String key : items.keySet())
         {
+            SettingItem settingItem = items.get(key);
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
-            setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, item.getKey());
-            setting.setTextContent(item.getValue());
+            setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, settingItem.getKey());
+            setting.setTextContent(settingItem.getValue());
             settings.appendChild(setting);
         }
 

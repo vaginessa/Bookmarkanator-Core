@@ -13,6 +13,10 @@ public class SettingItem
     protected String key;
     protected String value;
 
+    public SettingItem()
+    {
+    }
+
     public SettingItem(String key)
     {
         Objects.requireNonNull(key, "Key must not be null.");

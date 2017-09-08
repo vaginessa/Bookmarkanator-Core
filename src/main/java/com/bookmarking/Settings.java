@@ -1,6 +1,7 @@
 package com.bookmarking;
 
 import java.util.*;
+import com.bookmarking.exception.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -10,12 +11,12 @@ import org.apache.logging.log4j.*;
 public class Settings
 {
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
-    private Map<String, SettingItem> map;
-    private Map<String, Set<SettingItem>> typesMap;
+
+    // <Type, Map<Key, SettingItem>
+    private Map<String, Map<String, SettingItem>> typesMap;
 
     public Settings()
     {
-        map = new HashMap<>();
         typesMap = new HashMap<>();
     }
 
@@ -32,76 +33,107 @@ public class Settings
         }
     }
 
-    public void putSetting(SettingItem itemInterface)
+    public void putSetting(SettingItem setting)
     {
-        Objects.requireNonNull(itemInterface);
-        Objects.requireNonNull(itemInterface.type);
-        Objects.requireNonNull(itemInterface.key);
+        Objects.requireNonNull(setting);
+        Objects.requireNonNull(setting.type);
+        Objects.requireNonNull(setting.key);
 
-        map.put(itemInterface.getKey(), itemInterface);
-
-        Set<SettingItem> tmp = typesMap.get(itemInterface.getType());
+        Map<String, SettingItem> tmp = typesMap.get(setting.getType());
         if (tmp == null)
         {
-            tmp = new HashSet<>();
-            typesMap.put(itemInterface.getType(), tmp);
+            tmp = new HashMap<>();
+            typesMap.put(setting.getType(), tmp);
         }
 
-        tmp.add(itemInterface);
+        tmp.put(setting.getKey(), setting);
     }
 
     public Set<SettingItem> getByType(String type)
     {
-        return typesMap.get(type);
+        Map<String, SettingItem> res = typesMap.get(type);
+
+        if (res == null)
+        {
+            return null;
+        }
+
+        return new HashSet<>(res.values());
     }
 
     public SettingItem getSetting(String type, String key)
     {
-        Set<SettingItem> settingItems = typesMap.get(type);
+        Map<String, SettingItem> settingItems = typesMap.get(type);
 
         if (settingItems == null)
         {
             return null;
         }
 
-        for (SettingItem settingItem : settingItems)
-        {
-            if (settingItem.getKey().equals(key))
-            {
-                return settingItem;
-            }
-        }
-        return null;
+        return settingItems.get(key);
     }
 
-    public Map<String, SettingItem> getSettingsMap()
-    {
-        return Collections.unmodifiableMap(map);
-    }
-
-    public Map<String, Set<SettingItem>> getSettingsTypesMap()
+    public Map<String, Map<String, SettingItem>> getSettingsTypesMap()
     {
         return Collections.unmodifiableMap(typesMap);
     }
 
     public void renameType(String original, String newName)
     {
+        Map<String, SettingItem> settingItems = typesMap.get(original);
 
+        if (settingItems != null)
+        {
+            typesMap.remove(original);
+
+            for (SettingItem settingItem : settingItems.values())
+            {
+                settingItem.setType(newName);
+                this.putSetting(settingItem);
+            }
+        }
     }
 
     public void deleteType(String type)
     {
-
+        typesMap.remove(type);
     }
 
-    public void renameKey(String type, String key)
+    public void renameKey(String type, String key, String newKey)
+        throws DuplicateKeyException
     {
+        if (key.trim().equals(newKey.trim()))
+        {
+            return;
+        }
 
+        Map<String, SettingItem> settingsMap = typesMap.get(type);
+
+        if (settingsMap != null)
+        {
+            if (settingsMap.containsKey(newKey))
+            {
+                throw new DuplicateKeyException("Key \"" + newKey + "\" is already present in this settings object for type \"" + type + "\"");
+            }
+
+            SettingItem settingItem = settingsMap.remove(key);
+
+            if (settingItem != null)
+            {
+                settingItem.setKey(newKey);
+                settingsMap.put(newKey, settingItem);
+            }
+        }
     }
 
     public void deleteKeyValuePair(String type, String key)
     {
+        Map<String, SettingItem> settingsMap = typesMap.get(type);
 
+        if (settingsMap != null)
+        {
+            settingsMap.remove(key);
+        }
     }
 
     /**
@@ -133,22 +165,33 @@ public class Settings
      * <p>
      * If a setting is present in this settings object it leaves it alone, if it is missing it adds it.
      *
-     * @param settings The settings to diff into this settings object.
+     * @param other The settings to diff into this settings object.
      */
-    public boolean importSettings(Settings settings)
+    public boolean importSettings(Settings other)
     {
         boolean hasChanged = false;
-        Map<String, SettingItem> tmpMap = settings.getSettingsMap();
+        Map<String, Map<String, SettingItem>> otherTypes = other.getSettingsTypesMap();
 
-        for (String key : tmpMap.keySet())
-        {//ensure default settings are in place if other settings are missing.
-            SettingItem item = tmpMap.get(key);
-            SettingItem original = this.getSettingsMap().get(key);
+        for (String key : otherTypes.keySet())
+        {
+            Map<String, SettingItem> otherTypeMap = other.getSettingsTypesMap().get(key);
+            Map<String, SettingItem> thisTypeMap = this.getSettingsTypesMap().get(key);
 
-            if (original == null)
+            // Add the type if it is not present.
+            if (thisTypeMap == null)
             {
-                this.putSetting(item);
+                thisTypeMap = new HashMap<>();
+                this.getSettingsTypesMap().put(key, thisTypeMap);
                 hasChanged = true;
+            }
+
+            // Add values not present in the type
+            for (String otherKey : otherTypeMap.keySet())
+            {
+                if (!thisTypeMap.containsKey(otherKey))
+                {
+                    thisTypeMap.put(otherKey, otherTypeMap.get(otherKey));
+                }
             }
         }
         return hasChanged;
