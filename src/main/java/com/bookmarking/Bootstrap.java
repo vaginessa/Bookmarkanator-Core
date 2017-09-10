@@ -178,7 +178,7 @@ public class Bootstrap implements SettingsServiceInterface
 
         //        SettingItem settingItem = new SettingItem(FileIO.class.getCanonicalName());
         //        settingItem.setValue(getDefaultBookmarkFile());
-        //        settingItem.setType(Bootstrap.BKIO_CONFIGS);
+        //        settingItem.setGroup(Bootstrap.BKIO_CONFIGS);
         //        res.putSetting(settingItem);
 
         return res;

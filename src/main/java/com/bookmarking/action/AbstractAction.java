@@ -9,7 +9,7 @@ import com.bookmarking.ui.*;
  *
  * For example:
  *
- * A one might have many of one type of bookmark, each one with it's own data, and tagging. When that bookmark is ran it will
+ * A one might have many of one group of bookmark, each one with it's own data, and tagging. When that bookmark is ran it will
  * operate using the specific data for that bookmark.
  *
  * With an action the data it has must be saved in the settings for the main program (and thus should be small), and cannot be tagged.

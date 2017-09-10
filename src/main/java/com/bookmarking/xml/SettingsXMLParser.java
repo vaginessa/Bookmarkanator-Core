@@ -16,7 +16,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     public static final String SETTING_TAG = "setting";
     public static final String VALUE_TAG = "value";
 
-    public static final String TYPE_ATTRIBUTE = "type";
+    public static final String TYPE_ATTRIBUTE = "group";
     public static final String KEY_ATTRIBUTE = "key";
     //    public static final String CLASS_ATTRIBUTE = "class";
 
@@ -55,7 +55,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
             {
                 continue;
             }
-            item.setType(typeString);
+            item.setGroup(typeString);
             settings.putSetting(item);
         }
     }

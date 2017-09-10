@@ -171,7 +171,7 @@ public class ModuleLoader
         logger.trace("Locating tracked classes");
         for (String s : classesToTrackMap.keySet())
         {
-            logger.trace("Adding classes of type \"" + s + "\"");
+            logger.trace("Adding classes of group \"" + s + "\"");
             Class clazz = classLoader.loadClass(s);
             Set<Class> classes = reflections.getSubTypesOf(clazz);
 

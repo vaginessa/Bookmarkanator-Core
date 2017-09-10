@@ -100,7 +100,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * This is a secret key that has only a setter with no getter. It is intended to be set by the message board
+     * This is a secret key that is intended to be set by the message board
      * as the key that this bookmark can use to post to the message board.
      *
      * This must remain an abstract method because the key needs to be specific to each class, and that has to
@@ -191,6 +191,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private void notifyBeforeListeners(String actionString)
     {
         Set<AbstractBookmark> items = beforeListeners.get(actionString);
+        items.remove(this);
 
         if (items != null)
         {
@@ -204,6 +205,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private void notifyAfterListeners(String actionString)
     {
         Set<AbstractBookmark> items = afterListeners.get(actionString);
+        items.remove(this);
 
         if (items != null)
         {
@@ -222,16 +224,16 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
 
     /**
-     * This is the human readable name for this bookmark type.
+     * This is the human readable name for this bookmark group.
      *
-     * @return Text of the name of the type of this bookmark.
+     * @return Text of the name of the group of this bookmark.
      */
     public abstract String getTypeName();
 
     /**
-     * The type location is used to organize bookmark by their own defined categories.
+     * The group location is used to organize bookmark by their own defined categories.
      *
-     * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark type string (UI's could do this in any way of course).
+     * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark group string (UI's could do this in any way of course).
      */
     public abstract List<String> getTypeLocation();
 
@@ -242,7 +244,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         throws Exception;
 
     /**
-     * Gets a new instance of this type of bookmark;
+     * Gets a new instance of this group of bookmark;
      *
      * @return A new instance of this class of bookmark.
      */

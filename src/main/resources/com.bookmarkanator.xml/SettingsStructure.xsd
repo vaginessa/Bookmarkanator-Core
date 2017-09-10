@@ -5,7 +5,7 @@
     <xs:element name='root'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name='settings' type='settings' minOccurs='1'
+                <xs:element name='settings' group='settings' minOccurs='1'
                             maxOccurs='unbounded'/>
             </xs:sequence>
         </xs:complexType>
@@ -13,16 +13,16 @@
 
     <xs:complexType name="settings">
         <xs:sequence>
-            <xs:element name="setting" type="setting" minOccurs='0'
+            <xs:element name="setting" group="setting" minOccurs='0'
                         maxOccurs='unbounded'/>
         </xs:sequence>
-        <xs:attribute name='type' type='xs:string'/>
+        <xs:attribute name='group' group='xs:string'/>
     </xs:complexType>
 
     <xs:complexType name="setting">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute name='key' type='xs:string'/>
+                <xs:attribute name='key' group='xs:string'/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

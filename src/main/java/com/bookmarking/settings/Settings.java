@@ -36,14 +36,14 @@ public class Settings
     public void putSetting(Setting setting)
     {
         Objects.requireNonNull(setting);
-        Objects.requireNonNull(setting.type);
+        Objects.requireNonNull(setting.group);
         Objects.requireNonNull(setting.key);
 
-        Map<String, Setting> tmp = typesMap.get(setting.getType());
+        Map<String, Setting> tmp = typesMap.get(setting.getGroup());
         if (tmp == null)
         {
             tmp = new HashMap<>();
-            typesMap.put(setting.getType(), tmp);
+            typesMap.put(setting.getGroup(), tmp);
         }
 
         tmp.put(setting.getKey(), setting);
@@ -88,7 +88,7 @@ public class Settings
 
             for (Setting setting : settingItems.values())
             {
-                setting.setType(newName);
+                setting.setGroup(newName);
                 this.putSetting(setting);
             }
         }
@@ -113,7 +113,7 @@ public class Settings
         {
             if (settingsMap.containsKey(newKey))
             {
-                throw new DuplicateKeyException("Key \"" + newKey + "\" is already present in this settings object for type \"" + type + "\"");
+                throw new DuplicateKeyException("Key \"" + newKey + "\" is already present in this settings object for group \"" + type + "\"");
             }
 
             Setting setting = settingsMap.remove(key);
@@ -177,7 +177,7 @@ public class Settings
             Map<String, Setting> otherTypeMap = other.getSettingsTypesMap().get(key);
             Map<String, Setting> thisTypeMap = this.getSettingsTypesMap().get(key);
 
-            // Add the type if it is not present.
+            // Add the group if it is not present.
             if (thisTypeMap == null)
             {
                 thisTypeMap = new HashMap<>();
@@ -185,7 +185,7 @@ public class Settings
                 hasChanged = true;
             }
 
-            // Add values not present in the type
+            // Add values not present in the group
             for (String otherKey : otherTypeMap.keySet())
             {
                 if (!thisTypeMap.containsKey(otherKey))

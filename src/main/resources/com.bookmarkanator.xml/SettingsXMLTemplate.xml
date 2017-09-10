@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
-    <settings type="mainUI">
+    <settings group="mainUI">
         <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.HTMLTextBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.TextBookmarkUI
@@ -26,7 +26,7 @@
             com.bookmarking.desktop.ui.fxui.bookmarks.EncryptedBookmarkUI
         </setting>
     </settings>
-    <settings type="bootstrap">
+    <settings group="bootstrap">
         <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.TerminalBookmark">
             com.bookmarking.desktop.bookmark.TerminalBookmark
         </setting>

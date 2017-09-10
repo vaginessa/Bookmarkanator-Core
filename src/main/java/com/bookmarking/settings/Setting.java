@@ -9,6 +9,7 @@ import org.apache.logging.log4j.*;
 public class Setting
 {
     private static final Logger logger = LogManager.getLogger(Setting.class.getCanonicalName());
+    protected String group;
     protected String type;
     protected String key;
     protected String value;
@@ -27,7 +28,7 @@ public class Setting
         }
 
         this.key = key;
-        this.type = "";
+        this.group = "";
     }
 
     public void setValue(String settingString)
@@ -51,6 +52,16 @@ public class Setting
         this.key = key;
     }
 
+    public String getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(String group)
+    {
+        this.group = group;
+    }
+
     public String getType()
     {
         return type;
@@ -64,7 +75,7 @@ public class Setting
     @Override
     public int hashCode()
     {
-        return key.hashCode();
+        return key.hashCode()+group.hashCode();
     }
 
     @Override
@@ -73,7 +84,10 @@ public class Setting
         if (obj instanceof Setting)
         {
             Setting item = (Setting) obj;
-            return this.getKey().equals(item.getKey());
+            if (this.getGroup().equals(item.getGroup())&& this.getKey().equals(item.getKey()))
+            {
+                return true;
+            }
         }
 
         return false;
@@ -82,6 +96,6 @@ public class Setting
     @Override
     public String toString()
     {
-        return "Key: " + this.getKey() + ", type: " + this.getType();
+        return "Group: "+getGroup()+", Type: "+getType()+", Key: "+getKey()+", Value: "+getValue();
     }
 }
