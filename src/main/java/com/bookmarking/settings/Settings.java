@@ -1,4 +1,4 @@
-package com.bookmarking;
+package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.exception.*;
@@ -13,33 +13,33 @@ public class Settings
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
 
     // <Type, Map<Key, SettingItem>
-    private Map<String, Map<String, SettingItem>> typesMap;
+    private Map<String, Map<String, Setting>> typesMap;
 
     public Settings()
     {
         typesMap = new HashMap<>();
     }
 
-    public void putSettings(List<SettingItem> list)
+    public void putSettings(List<Setting> list)
     {
         if (list == null || list.isEmpty())
         {
             return;
         }
 
-        for (SettingItem itemInterface : list)
+        for (Setting itemInterface : list)
         {
             putSetting(itemInterface);
         }
     }
 
-    public void putSetting(SettingItem setting)
+    public void putSetting(Setting setting)
     {
         Objects.requireNonNull(setting);
         Objects.requireNonNull(setting.type);
         Objects.requireNonNull(setting.key);
 
-        Map<String, SettingItem> tmp = typesMap.get(setting.getType());
+        Map<String, Setting> tmp = typesMap.get(setting.getType());
         if (tmp == null)
         {
             tmp = new HashMap<>();
@@ -49,9 +49,9 @@ public class Settings
         tmp.put(setting.getKey(), setting);
     }
 
-    public Set<SettingItem> getByType(String type)
+    public Set<Setting> getByType(String type)
     {
-        Map<String, SettingItem> res = typesMap.get(type);
+        Map<String, Setting> res = typesMap.get(type);
 
         if (res == null)
         {
@@ -61,9 +61,9 @@ public class Settings
         return new HashSet<>(res.values());
     }
 
-    public SettingItem getSetting(String type, String key)
+    public Setting getSetting(String type, String key)
     {
-        Map<String, SettingItem> settingItems = typesMap.get(type);
+        Map<String, Setting> settingItems = typesMap.get(type);
 
         if (settingItems == null)
         {
@@ -73,23 +73,23 @@ public class Settings
         return settingItems.get(key);
     }
 
-    public Map<String, Map<String, SettingItem>> getSettingsTypesMap()
+    public Map<String, Map<String, Setting>> getSettingsTypesMap()
     {
         return Collections.unmodifiableMap(typesMap);
     }
 
     public void renameType(String original, String newName)
     {
-        Map<String, SettingItem> settingItems = typesMap.get(original);
+        Map<String, Setting> settingItems = typesMap.get(original);
 
         if (settingItems != null)
         {
             typesMap.remove(original);
 
-            for (SettingItem settingItem : settingItems.values())
+            for (Setting setting : settingItems.values())
             {
-                settingItem.setType(newName);
-                this.putSetting(settingItem);
+                setting.setType(newName);
+                this.putSetting(setting);
             }
         }
     }
@@ -107,7 +107,7 @@ public class Settings
             return;
         }
 
-        Map<String, SettingItem> settingsMap = typesMap.get(type);
+        Map<String, Setting> settingsMap = typesMap.get(type);
 
         if (settingsMap != null)
         {
@@ -116,19 +116,19 @@ public class Settings
                 throw new DuplicateKeyException("Key \"" + newKey + "\" is already present in this settings object for type \"" + type + "\"");
             }
 
-            SettingItem settingItem = settingsMap.remove(key);
+            Setting setting = settingsMap.remove(key);
 
-            if (settingItem != null)
+            if (setting != null)
             {
-                settingItem.setKey(newKey);
-                settingsMap.put(newKey, settingItem);
+                setting.setKey(newKey);
+                settingsMap.put(newKey, setting);
             }
         }
     }
 
     public void deleteKeyValuePair(String type, String key)
     {
-        Map<String, SettingItem> settingsMap = typesMap.get(type);
+        Map<String, Setting> settingsMap = typesMap.get(type);
 
         if (settingsMap != null)
         {
@@ -170,12 +170,12 @@ public class Settings
     public boolean importSettings(Settings other)
     {
         boolean hasChanged = false;
-        Map<String, Map<String, SettingItem>> otherTypes = other.getSettingsTypesMap();
+        Map<String, Map<String, Setting>> otherTypes = other.getSettingsTypesMap();
 
         for (String key : otherTypes.keySet())
         {
-            Map<String, SettingItem> otherTypeMap = other.getSettingsTypesMap().get(key);
-            Map<String, SettingItem> thisTypeMap = this.getSettingsTypesMap().get(key);
+            Map<String, Setting> otherTypeMap = other.getSettingsTypesMap().get(key);
+            Map<String, Setting> thisTypeMap = this.getSettingsTypesMap().get(key);
 
             // Add the type if it is not present.
             if (thisTypeMap == null)
@@ -201,29 +201,29 @@ public class Settings
     // Static Methods
     // ============================================================
 
-    public static Collection<String> extractKeys(Collection<SettingItem> settingItems)
+    public static Collection<String> extractKeys(Collection<Setting> settings)
     {
-        Objects.requireNonNull(settingItems);
+        Objects.requireNonNull(settings);
 
         Collection<String> res = new HashSet<>();
 
-        for (SettingItem settingItem : settingItems)
+        for (Setting setting : settings)
         {
-            res.add(settingItem.getKey());
+            res.add(setting.getKey());
         }
 
         return res;
     }
 
-    public static Collection<String> extractValues(Collection<SettingItem> settingItems)
+    public static Collection<String> extractValues(Collection<Setting> settings)
     {
-        Objects.requireNonNull(settingItems);
+        Objects.requireNonNull(settings);
 
         Collection<String> res = new HashSet<>();
 
-        for (SettingItem settingItem : settingItems)
+        for (Setting setting : settings)
         {
-            res.add(settingItem.getValue());
+            res.add(setting.getValue());
         }
 
         return res;

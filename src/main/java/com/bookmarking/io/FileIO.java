@@ -7,11 +7,15 @@ import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.search.*;
+import com.bookmarking.settings.*;
+import com.bookmarking.ui.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
 public class FileIO implements IOInterface
 {
+
+
     // Static fields
     private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
     private static final String FILE_IO_KEY = "FILE_IO";
@@ -20,6 +24,8 @@ public class FileIO implements IOInterface
     private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
 
     // Fields
+
+    private IOUIInterface uiInterface;
     private File file;
     private Settings settings;
     private Map<UUID, AbstractBookmark> bookmarks;
@@ -437,6 +443,25 @@ public class FileIO implements IOInterface
         filter.filterBySearchOptions(options);
 
         return filter.results();
+    }
+
+    @Override
+    public IOUIInterface getUIInterface()
+    {
+        return uiInterface;
+    }
+
+    @Override
+    public void setUIInterface(IOUIInterface uiInterface)
+    {
+        this.uiInterface = uiInterface;
+    }
+
+    @Override
+    public Set<String> getSettingsKeys()
+    {
+        //TODO Implement
+        return null;
     }
 
     // ----------

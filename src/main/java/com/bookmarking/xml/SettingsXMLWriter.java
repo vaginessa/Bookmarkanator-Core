@@ -6,8 +6,8 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.settings.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLWriter implements FileWriterInterface<Settings>
@@ -19,11 +19,11 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
         Document doc = getDocument();
 
         Element rootElement = doc.createElement(SettingsXMLParser.ROOT_TAG);
-        Map<String, Map<String, SettingItem>> typesMap = settings.getSettingsTypesMap();
+        Map<String, Map<String, Setting>> typesMap = settings.getSettingsTypesMap();
 
         for (String s : typesMap.keySet())
         {
-            Map<String, SettingItem> items = typesMap.get(s);
+            Map<String, Setting> items = typesMap.get(s);
             if (items != null)
             {//Only add a setting tag if it has values.
                 appendSettings(doc, rootElement, s, items);
@@ -52,7 +52,7 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
         return FileSync.FileBackupPolicy.NO_BACKUP;
     }
 
-    public void appendSettings(Document doc, Element rootElement, String type, Map<String, SettingItem> items)
+    public void appendSettings(Document doc, Element rootElement, String type, Map<String, Setting> items)
         throws Exception
     {
         Element settings = doc.createElement(SettingsXMLParser.SETTINGS_TAG);
@@ -60,7 +60,7 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
 
         for (String key : items.keySet())
         {
-            SettingItem settingItem = items.get(key);
+            Setting settingItem = items.get(key);
             Element setting = doc.createElement(SettingsXMLParser.SETTING_TAG);
             setting.setAttribute(SettingsXMLParser.KEY_ATTRIBUTE, settingItem.getKey());
             setting.setTextContent(settingItem.getValue());

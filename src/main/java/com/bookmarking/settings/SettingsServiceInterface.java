@@ -1,7 +1,8 @@
-package com.bookmarking.io;
+package com.bookmarking.settings;
 
-import com.bookmarking.*;
-
+/**
+ * An interface to force exposing of the settings methods.
+ */
 public interface SettingsServiceInterface
 {
     Settings getSettings();

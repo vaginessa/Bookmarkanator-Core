@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
     <settings type="mainUI">
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.HTMLTextBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.TextBookmarkUI
         </setting>
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.TerminalBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.TerminalBookmarkUI
         </setting>
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.SequenceBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.SequenceBookmarkUI
         </setting>
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.FileBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.FileBookmarkUI
         </setting>
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.WebBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.WebBookmarkUI
         </setting>
-        <setting class="com.bookmarking.SettingItem"
+        <setting class="com.bookmarking.settings.Setting"
                  operation="com.bookmarking.desktop.ui.fxui.Main-class-com.bookmarking.desktop.bookmark.EncryptedBookmark">
             com.bookmarking.desktop.ui.fxui.bookmarks.EncryptedBookmarkUI
         </setting>
     </settings>
     <settings type="bootstrap">
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.TerminalBookmark">
+        <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.TerminalBookmark">
             com.bookmarking.desktop.bookmark.TerminalBookmark
         </setting>
         <setting class="com.bookmarking.core.SettingsItemList" operation="module-locations">/Users/lloyd1/Bookmark-anator</setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.SequenceBookmark">
+        <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.SequenceBookmark">
             com.bookmarking.desktop.bookmark.SequenceBookmark
         </setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.EncryptedBookmark">
+        <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.EncryptedBookmark">
             com.bookmarking.desktop.bookmark.EncryptedBookmark
         </setting>
         <setting class="com.bookmarking.core.SettingsItemList" operation="bookmark-io-config">/Users/lloyd1/Bookmark-anator/bookmarks.xml</setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.TextBookmark">
+        <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.TextBookmark">
             com.bookmarking.desktop.bookmark.TextBookmark
         </setting>
-        <setting class="com.bookmarking.SettingItem" operation="com.bookmarking.desktop.bookmark.WebBookmark">
+        <setting class="com.bookmarking.settings.Setting" operation="com.bookmarking.desktop.bookmark.WebBookmark">
             com.bookmarking.desktop.bookmark.WebBookmark
         </setting>
         <setting class="com.bookmarking.core.SettingsItemList" operation="bookmark-io-class">com.bookmarking.desktop.FileIO</setting>

@@ -1,6 +1,7 @@
 package com.bookmarking.action;
 
 import com.bookmarking.*;
+import com.bookmarking.ui.*;
 
 /**
  * The ActionInterface is used to have a function, much like a bookmark, but one that is not tied to tagging, and doesn't
@@ -16,6 +17,7 @@ import com.bookmarking.*;
 public abstract class AbstractAction
 {
     private Bootstrap bootstrap;
+    private ActionUIInterface uiInterface;
 
     // Needed to give the action access to the whole system (bootstrap settings, IOInterface, etc...)
     void setBootstrap(Bootstrap bootstrap)
@@ -44,4 +46,14 @@ public abstract class AbstractAction
      */
      abstract String runAction(String actionString)
         throws Exception;
+
+    public UIInterface getUiInterface()
+    {
+        return uiInterface;
+    }
+
+    public void setUiInterface(ActionUIInterface uiInterface)
+    {
+        this.uiInterface = uiInterface;
+    }
 }

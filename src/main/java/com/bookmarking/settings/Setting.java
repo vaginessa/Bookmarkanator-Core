@@ -1,4 +1,4 @@
-package com.bookmarking;
+package com.bookmarking.settings;
 
 import java.util.*;
 import org.apache.logging.log4j.*;
@@ -6,18 +6,18 @@ import org.apache.logging.log4j.*;
 /**
  * This class represents a single setting item.
  */
-public class SettingItem
+public class Setting
 {
-    private static final Logger logger = LogManager.getLogger(SettingItem.class.getCanonicalName());
+    private static final Logger logger = LogManager.getLogger(Setting.class.getCanonicalName());
     protected String type;
     protected String key;
     protected String value;
 
-    public SettingItem()
+    public Setting()
     {
     }
 
-    public SettingItem(String key)
+    public Setting(String key)
     {
         Objects.requireNonNull(key, "Key must not be null.");
 
@@ -70,9 +70,9 @@ public class SettingItem
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof SettingItem)
+        if (obj instanceof Setting)
         {
-            SettingItem item = (SettingItem) obj;
+            Setting item = (Setting) obj;
             return this.getKey().equals(item.getKey());
         }
 

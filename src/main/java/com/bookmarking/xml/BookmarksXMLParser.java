@@ -8,6 +8,7 @@ import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
+import com.bookmarking.settings.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
@@ -174,11 +175,11 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    SettingItem settingItem = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
+                    Setting setting = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
 
-                    if (settingItem != null)
+                    if (setting != null)
                     {//Override class name specified in bookmark file with one specified in the settings file.
-                        String replacementClassName = settingItem.getValue();
+                        String replacementClassName = setting.getValue();
 
                         if (replacementClassName != null && !replacementClassName.isEmpty())
                         {

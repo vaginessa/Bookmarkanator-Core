@@ -3,8 +3,8 @@ package com.bookmarking.xml;
 import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;
-import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.settings.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
 
@@ -50,7 +50,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                 continue;
             }
 
-            SettingItem item = getSetting(n);
+            Setting item = getSetting(n);
             if (item == null)
             {
                 continue;
@@ -60,7 +60,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         }
     }
 
-    private SettingItem getSetting(Node node)
+    private Setting getSetting(Node node)
         throws Exception
     {
         Node key = node.getAttributes().getNamedItem(SettingsXMLParser.KEY_ATTRIBUTE);
@@ -69,10 +69,10 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         String keyText = key.getTextContent();
         Objects.requireNonNull(keyText);
 
-        SettingItem settingItem = new SettingItem(keyText);
-        settingItem.setValue(getContent(node));
+        Setting setting = new Setting(keyText);
+        setting.setValue(getContent(node));
 
-        return settingItem;
+        return setting;
     }
 
     //    private Class loadSettingClass(String className)

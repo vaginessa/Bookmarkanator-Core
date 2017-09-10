@@ -4,6 +4,8 @@ import java.text.*;
 import java.util.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.search.*;
+import com.bookmarking.settings.*;
+import com.bookmarking.ui.*;
 
 /**
  * This is the interface that other classes will use to load and save bookmark. It could point to files on the file system as FileIo does,
@@ -111,4 +113,13 @@ public interface IOInterface extends SettingsServiceInterface
         }
         return res;
     }
+
+    IOUIInterface getUIInterface();
+    void setUIInterface(IOUIInterface uiInterface);
+
+    /**
+     * The settings keys are what bootstrap will use to locate configuration settings for this class from it's settings.
+     * @return
+     */
+    Set<String> getSettingsKeys();
 }

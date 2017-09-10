@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.io.*;
+import com.bookmarking.settings.*;
+import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -11,6 +13,8 @@ import org.apache.logging.log4j.*;
  */
 public class Bootstrap implements SettingsServiceInterface
 {
+    private BootstrapUIInterface uiInterface;
+
     // Static fields
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
     private static Bootstrap bootstrap;
@@ -50,7 +54,7 @@ public class Bootstrap implements SettingsServiceInterface
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
 
-        Set<SettingItem> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
+        Set<Setting> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
 
         if (moduleLocations != null)
         {// Add jars and then locate tracked classes
@@ -118,13 +122,16 @@ public class Bootstrap implements SettingsServiceInterface
     {
         Set<Class> classes = ModuleLoader.use().getClassesLoaded(IOInterface.class);
 
+        //TODO do this if there is no default, or if the default is not found.
+
+
         for (Class clazz : classes)
         {//Iterate through bkio classes found, selecting the correct one based on settings.
             try
             {
                 logger.trace("Attempting to load bookmark io interface \"" + clazz.getCanonicalName() + "\"");
                 //Attempting to load the config setting for this class
-                SettingItem configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
+                Setting configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
                 String config = null;
 
                 if (configSetting != null)
@@ -141,6 +148,7 @@ public class Bootstrap implements SettingsServiceInterface
                 logger.info(
                     "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
                 logger.info("Calling init()...");
+                bkio2.setUIInterface(uiInterface.getIOUIInterface());
                 bkio2.init(config);
                 logger.info("Done.");
 
@@ -269,5 +277,15 @@ public class Bootstrap implements SettingsServiceInterface
             }
         }
         return bootstrap;
+    }
+
+    public BootstrapUIInterface getUiInterface()
+    {
+        return uiInterface;
+    }
+
+    public void setUiInterface(BootstrapUIInterface uiInterface)
+    {
+        this.uiInterface = uiInterface;
     }
 }

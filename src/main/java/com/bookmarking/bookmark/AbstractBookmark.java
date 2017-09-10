@@ -1,9 +1,12 @@
 package com.bookmarking.bookmark;
 
 import java.util.*;
+import com.bookmarking.ui.*;
 
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
+
+    private BookmarkUIInterface uiInterface;
 
     //The user visible name
     protected String name;
@@ -284,4 +287,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      */
     public abstract void systemShuttingDown();
 
+    public BookmarkUIInterface getUiInterface()
+    {
+        return uiInterface;
+    }
+
+    public void setUiInterface(BookmarkUIInterface uiInterface)
+    {
+        this.uiInterface = uiInterface;
+    }
 }
