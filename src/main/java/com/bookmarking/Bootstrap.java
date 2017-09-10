@@ -31,6 +31,7 @@ public class Bootstrap implements SettingsServiceInterface
     public Bootstrap()
         throws Exception
     {
+        System.out.println(System.getProperty("java.version"));
         Bootstrap.bootstrap = this;
         // Get settings file
         File currentDir = new File(".");
