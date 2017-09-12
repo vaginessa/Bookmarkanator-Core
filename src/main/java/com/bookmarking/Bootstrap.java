@@ -54,11 +54,17 @@ public class Bootstrap implements SettingsServiceInterface
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
 
-        Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
+        Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_KEY, File.class);
+
+        Set<File> jarLocations = new HashSet<>();
+        for (AbstractSetting abstractSetting: moduleLocations)
+        {
+            jarLocations.add((File)abstractSetting.getValue());
+        }
 
         if (moduleLocations != null)
         {// Add jars and then locate tracked classes
-            ModuleLoader.use().addModulesToClasspath(Settings.extractValues(moduleLocations));
+            ModuleLoader.use().addModulesToClasspath(jarLocations);
         }
         else
         {// Locate the tracked classes
@@ -148,7 +154,10 @@ public class Bootstrap implements SettingsServiceInterface
                 logger.info(
                     "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
                 logger.info("Calling init()...");
-                bkio2.setUIInterface(uiInterface.getIOUIInterface());
+                if (uiInterface!=null)
+                {
+                    bkio2.setUIInterface(uiInterface.getIOUIInterface());
+                }
                 bkio2.init(config);
                 logger.info("Done.");
 

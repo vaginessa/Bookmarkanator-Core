@@ -70,6 +70,30 @@ public class ModuleLoader
         return this.addJarsToClassloader();
     }
 
+    public ClassLoader addModulesToClasspath(Set<File> jarLocations)
+        throws Exception
+    {
+        if (jarLocations != null && !jarLocations.isEmpty())
+        {
+            logger.trace("Begin loading modules...");
+            for (File f : jarLocations)
+            {
+                logger.info("Attempting to load modules directory \'" + f.getCanonicalPath() + "\"");
+
+                if (f.exists() || f.canRead())
+                {
+                    this.addDirectory(f);
+                    logger.info("Success.");
+                }
+                else
+                {
+                    logger.warn("Failed to load. The file either doesn't exist or cannot be read.");
+                }
+            }
+        }
+        return this.addJarsToClassloader();
+    }
+
     public void addClassToTrack(String classname)
     {
         if (classname == null)

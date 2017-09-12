@@ -79,7 +79,7 @@ public class FileIO implements IOInterface
 
         // Create file io settings file
         File settingsFile = createSettingsFile(file);
-        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
+        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter2(), new SettingsXMLParser2(), settingsFile);
         FileService.use().addFile(fileSync2, FILE_IO_SETTINGS_KEY);
 
         // Load both files in.
@@ -95,6 +95,8 @@ public class FileIO implements IOInterface
         fileSync.writeToDisk();
 
         FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
+
+//       TODO figure out why the settings are null.....
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
     }
