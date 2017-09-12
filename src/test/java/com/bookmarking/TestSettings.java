@@ -21,6 +21,11 @@ public class TestSettings
         bout.flush();
         bout.close();
 
+        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
+        InputStream xml = new ByteArrayInputStream(bout.toByteArray());
+
+        XMLValidator.validate(xml, xsd);
+
         SettingsXMLParser2 parser = new SettingsXMLParser2();
         ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
         Settings settings2 = parser.parse(bin);

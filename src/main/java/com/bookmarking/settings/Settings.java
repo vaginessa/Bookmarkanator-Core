@@ -32,18 +32,19 @@ public class Settings
         this.groups = groups;
     }
 
-    //    public void putSettings(List<AbstractSetting> list)
-//    {
-//        if (list == null || list.isEmpty())
-//        {
-//            return;
-//        }
-//
-//        for (AbstractSetting itemInterface : list)
-//        {
-//            putSetting(itemInterface);
-//        }
-//    }
+        public void putSettings(List<AbstractSetting> list)
+            throws Exception
+        {
+        if (list == null || list.isEmpty())
+        {
+            return;
+        }
+
+        for (AbstractSetting itemInterface : list)
+        {
+            putSetting(itemInterface);
+        }
+    }
 
     public void putSetting(AbstractSetting setting)
         throws Exception
@@ -75,94 +76,119 @@ public class Settings
         group.getSettings().put(setting.getKey(), setting);
     }
 
-    public Set<AbstractSetting> getByType(String type)
+    public Set<AbstractSetting> getByType(Class typeClass)
     {
-//        Map<String, Setting> res = groups.get(type);
-//
-//        if (res == null)
-//        {
-//            return null;
-//        }
-//
-//        return new HashSet<>(res.values());
-        return null;
-    }
+        Set<AbstractSetting>  res = new HashSet<>();
 
-    public AbstractSetting getSetting(String type, String key)
-    {
-//        Map<String, Setting> settingItems = groups.get(type);
-//
-//        if (settingItems == null)
-//        {
-//            return null;
-//        }
-//
-//        return settingItems.get(key);
-        return null;
-    }
-
-    public Map<String, Map<String, AbstractSetting>> getSettingsTypesMap()
-    {
-//        return Collections.unmodifiableMap(groups);
-        return null;
-    }
-
-    public void renameType(String original, String newName)
-    {
-//        Map<String, Setting> settingItems = groups.get(original);
-//
-//        if (settingItems != null)
-//        {
-//            groups.remove(original);
-//
-//            for (Setting setting : settingItems.values())
-//            {
-//                setting.setGroup(newName);
-//                this.putSetting(setting);
-//            }
-//        }
-    }
-
-    public void deleteType(String type)
-    {
-        groups.remove(type);
-    }
-
-    public void renameKey(String type, String key, String newKey)
-        throws DuplicateKeyException
-    {
-        if (key.trim().equals(newKey.trim()))
+        for (String s: getGroups().keySet())
         {
-            return;
+            SettingsGroup group = getGroups().get(s);
+
+            for (AbstractSetting abstractSetting: group.getSettings().values())
+            {
+                if (abstractSetting.getValue().getClass().equals(typeClass))
+                {
+                    res.add(abstractSetting);
+                }
+            }
         }
 
-//        Map<String, Setting> settingsMap = groups.get(type);
-//
-//        if (settingsMap != null)
-//        {
-//            if (settingsMap.containsKey(newKey))
-//            {
-//                throw new DuplicateKeyException("Key \"" + newKey + "\" is already present in this settings object for groups \"" + type + "\"");
-//            }
-//
-//            Setting setting = settingsMap.remove(key);
-//
-//            if (setting != null)
-//            {
-//                setting.setKey(newKey);
-//                settingsMap.put(newKey, setting);
-//            }
-//        }
+        return res;
     }
 
-    public void deleteKeyValuePair(String type, String key)
+    public Set<AbstractSetting> getByGroup(String group)
     {
-//        Map<String, Setting> settingsMap = groups.get(type);
-//
-//        if (settingsMap != null)
-//        {
-//            settingsMap.remove(key);
-//        }
+        Set<AbstractSetting> res = new HashSet<>();
+        SettingsGroup settingsGroup = getGroups().get(group);
+        if (settingsGroup==null)
+        {
+            return res;
+        }
+
+        res.addAll(settingsGroup.getSettings().values());
+
+        return res;
+
+    }
+
+    public Set<AbstractSetting> getByGroupAndtype(String group, Class typeClass)
+    {
+        Set<AbstractSetting> res = new HashSet<>();
+        SettingsGroup settingsGroup = getGroups().get(group);
+        if (settingsGroup==null)
+        {
+            return res;
+        }
+
+        for (AbstractSetting abstractSetting: settingsGroup.getSettings().values())
+        {
+            if (abstractSetting.getValue().getClass().equals(typeClass))
+            {
+                res.add(abstractSetting);
+            }
+        }
+
+        return res;
+
+    }
+
+    public AbstractSetting getSetting(String group, String key)
+    {
+        SettingsGroup settingsGroup = getGroups().get(group);
+        if (settingsGroup==null)
+        {return null;}
+
+        return settingsGroup.getSettings().get(key);
+    }
+
+    public void renameGroup(String original, String newName)
+        throws DuplicateKeyException
+    {
+        if (getGroups().containsKey(newName))
+        {
+            throw new DuplicateKeyException("Duplicate key "+newName);
+        }
+        SettingsGroup settingsGroup = getGroups().get(original);
+        getGroups().remove(original);
+        getGroups().put(newName, settingsGroup);
+    }
+
+    public void deleteGroup(String groupName)
+    {
+        groups.remove(groupName);
+    }
+
+    public void renameKey(String group, String key, String newKey)
+        throws Exception
+    {
+        SettingsGroup settingsGroup = getGroups().get(group);
+        if (settingsGroup==null)
+        {
+            throw new Exception("Group "+group+" not found.");
+        }
+
+        AbstractSetting abstractSetting = settingsGroup.getSettings().get(key);
+        if (abstractSetting==null)
+        {
+            throw new Exception("Key "+key+" not found.");
+        }
+
+        settingsGroup.getSettings().remove(key);
+
+        abstractSetting.setKey(newKey);
+        settingsGroup.getSettings().put(key, abstractSetting);
+    }
+
+    public boolean deleteKeyValuePair(String group, String key)
+    {
+        SettingsGroup settingsGroup = getGroups().get(group);
+
+        if (settingsGroup!=null)
+        {
+            return settingsGroup.getSettings().remove(key)!=null;
+        }
+
+        return false;
     }
 
     /**
@@ -197,66 +223,44 @@ public class Settings
      * @param other The settings to diff into this settings object.
      */
     public boolean importSettings(Settings other)
+        throws Exception
     {
         boolean hasChanged = false;
-        Map<String, Map<String, AbstractSetting>> otherTypes = other.getSettingsTypesMap();
 
-        for (String key : otherTypes.keySet())
+        for (String s: other.getGroups().keySet())
         {
-            Map<String, AbstractSetting> otherTypeMap = other.getSettingsTypesMap().get(key);
-            Map<String, AbstractSetting> thisTypeMap = this.getSettingsTypesMap().get(key);
+            SettingsGroup otherGroup = other.getGroups().get(s);
+            SettingsGroup thisGroup = this.getGroups().get(s);
 
-            // Add the groups if it is not present.
-            if (thisTypeMap == null)
+            if (thisGroup==null)
             {
-                thisTypeMap = new HashMap<>();
-                this.getSettingsTypesMap().put(key, thisTypeMap);
-                hasChanged = true;
-            }
-
-            // Add values not present in the groups
-            for (String otherKey : otherTypeMap.keySet())
-            {
-                if (!thisTypeMap.containsKey(otherKey))
+                // Group not present. Add all settings.
+                for (AbstractSetting abstractSetting: otherGroup.getSettings().values())
                 {
-                    thisTypeMap.put(otherKey, otherTypeMap.get(otherKey));
+                    this.putSetting(abstractSetting);
+                    hasChanged = true;
+                }
+            }
+            else
+            {
+                // Group present. Selectively add settings.
+                for (AbstractSetting abstractSetting: otherGroup.getSettings().values())
+                {
+                    if (!thisGroup.getSettings().containsKey(abstractSetting.getKey()))
+                    {
+                        this.putSetting(abstractSetting);
+                        hasChanged = true;
+                    }
                 }
             }
         }
+
         return hasChanged;
     }
 
     // ============================================================
     // Static Methods
     // ============================================================
-
-    public static Collection<String> extractKeys(Collection<AbstractSetting> settings)
-    {
-        Objects.requireNonNull(settings);
-
-        Collection<String> res = new HashSet<>();
-
-        for (AbstractSetting setting : settings)
-        {
-            res.add(setting.getKey());
-        }
-
-        return res;
-    }
-
-    public static Collection<String> extractValues(Collection<AbstractSetting> settings)
-    {
-        Objects.requireNonNull(settings);
-
-        Collection<String> res = new HashSet<>();
-
-        for (AbstractSetting setting : settings)
-        {
-//            res.add(setting.getValue());
-        }
-
-        return res;
-    }
 
     @Override
     public int hashCode()

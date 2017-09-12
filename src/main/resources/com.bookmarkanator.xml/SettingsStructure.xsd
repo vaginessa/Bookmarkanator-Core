@@ -2,28 +2,67 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:element name='root'>
+    <xs:element name='settings'>
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name='settings' group='settings' minOccurs='1'
-                            maxOccurs='unbounded'/>
-            </xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="group" type="group" maxOccurs="unbounded"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="settings">
+    <xs:complexType name='group'>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="string" type="string" maxOccurs="unbounded"/>
+            <xs:element name="file" type="file" maxOccurs="unbounded"/>
+            <xs:element name="boolean" type="boolean" maxOccurs="unbounded"/>
+            <xs:element name="class" type="class" maxOccurs="unbounded"/>
+            <xs:element name="float" type="float" maxOccurs="unbounded"/>
+            <xs:element name="integer" type="integer" maxOccurs="unbounded"/>
+        </xs:choice>
+        <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="string">
         <xs:sequence>
-            <xs:element name="setting" group="setting" minOccurs='0'
-                        maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
         </xs:sequence>
-        <xs:attribute name='group' group='xs:string'/>
+    </xs:complexType>
+
+    <xs:complexType name="file">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="boolean">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="class">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="float">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="integer">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="setting">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name='key' group='xs:string'/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="key" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:choice>
     </xs:complexType>
+
 </xs:schema>
