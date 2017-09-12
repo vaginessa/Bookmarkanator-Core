@@ -50,7 +50,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                 continue;
             }
 
-            Setting item = getSetting(n);
+            AbstractSetting item = getSetting(n);
             if (item == null)
             {
                 continue;
@@ -60,7 +60,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         }
     }
 
-    private Setting getSetting(Node node)
+    private AbstractSetting getSetting(Node node)
         throws Exception
     {
         Node key = node.getAttributes().getNamedItem(SettingsXMLParser.KEY_ATTRIBUTE);
@@ -69,10 +69,12 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         String keyText = key.getTextContent();
         Objects.requireNonNull(keyText);
 
-        Setting setting = new Setting(keyText);
-        setting.setValue(getContent(node));
+        return null;
 
-        return setting;
+//        AbstractSetting setting = new AbstractSetting(keyText);
+//        setting.setValue(getContent(node));
+//
+//        return setting;
     }
 
     //    private Class loadSettingClass(String className)
@@ -134,7 +136,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         document = builder.parse(inputStream);
 
-        Node docNodeRoot = document.getDocumentElement();//reportRunParameters tag
+        Node docNodeRoot = document.getDocumentElement();
         if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.ROOT_TAG))
         {
             throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");

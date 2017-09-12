@@ -1,13 +1,14 @@
 package com.bookmarking.ui;
 
 import java.util.*;
+import com.bookmarking.settings.*;
 
-public class MultiListInputOption<T> extends AbstractInputOption
+public class MultiListInputOption<T extends AbstractSetting>  extends AbstractInputOption
 {
-    private List<T> availableOptions;
-    private List<T> selectedOptions;
+    private List<? extends T> availableOptions;
+    private List<? extends T> selectedOptions;
 
-    public List<T> getAvailableOptions()
+    public List<? extends T> getAvailableOptions()
     {
         return availableOptions;
     }
@@ -17,12 +18,12 @@ public class MultiListInputOption<T> extends AbstractInputOption
         this.availableOptions = availableOptions;
     }
 
-    public List<T> getSelectedOptions()
+    public List<? extends T> getSelectedOptions()
     {
         return selectedOptions;
     }
 
-    public void setSelectedOptions(List<T> selectedOptions)
+    public void setSelectedOptions(List<? extends T> selectedOptions)
     {
         this.selectedOptions = selectedOptions;
     }

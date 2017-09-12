@@ -54,7 +54,7 @@ public class Bootstrap implements SettingsServiceInterface
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
 
-        Set<Setting> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
+        Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByType(Bootstrap.MODULE_LOCATIONS_KEY);
 
         if (moduleLocations != null)
         {// Add jars and then locate tracked classes
@@ -131,12 +131,12 @@ public class Bootstrap implements SettingsServiceInterface
             {
                 logger.trace("Attempting to load bookmark io interface \"" + clazz.getCanonicalName() + "\"");
                 //Attempting to load the config setting for this class
-                Setting configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
+                AbstractSetting configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
                 String config = null;
 
                 if (configSetting != null)
                 {
-                    config = configSetting.getValue();
+//                    config = configSetting.getValue();
                 }
                 else
                 {

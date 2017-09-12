@@ -176,18 +176,18 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    Setting setting = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
+                    AbstractSetting setting = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
 
                     if (setting != null)
                     {//Override class name specified in bookmark file with one specified in the settings file.
-                        String replacementClassName = setting.getValue();
+//                        String replacementClassName = setting.getValue();
 
-                        if (replacementClassName != null && !replacementClassName.isEmpty())
-                        {
-                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
-                                "\" from the settings file.");
-                            className = replacementClassName;
-                        }
+//                        if (replacementClassName != null && !replacementClassName.isEmpty())
+//                        {
+//                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
+//                                "\" from the settings file.");
+//                            className = replacementClassName;
+//                        }
                     }
 
                     //TODO Somethings not right with the settings loading. It should not be overriding bookmark with the same bookmark class name.

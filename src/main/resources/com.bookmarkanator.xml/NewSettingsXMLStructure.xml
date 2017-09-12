@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+    <group name="boot">
+        <file>
+            <setting>
+                <key>MODULES_LOCATION</key>
+                <value>file://Desktop/blah</value>
+            </setting>
+        </file>
+        <class>
+            <setting>
+                <key>x.y.z.interface</key>
+                <value>a.b.c.d.realClass</value>
+            </setting>
+            <setting>
+                <key>x.y.z.s.interface</key>
+                <value>a.b.c.d.realClasss</value>
+            </setting>
+        </class>
+        <boolean>
+            <setting>
+                <key>constantSave</key>
+                <value>true</value>
+            </setting>
+        </boolean>
+    </group>
+    <group name="FILEIO_SETTINGS">
+        <file>
+            <setting>
+                <key>BOOKMARK_FILE_STORAGE</key>
+                <value>file://Desktop/blah</value>
+            </setting>
+            <setting>
+                <key>BACKUP_POLICY</key>
+                <value>ALWAYS</value>
+            </setting>
+        </file>
+        <float>
+            <setting>
+                <key>percent value</key>
+                <value>27.569</value>
+            </setting>
+        </float>
+    </group>
+    <group name="DATABASEIO_SETTINGS">
+        <string>
+            <setting>
+                <key>database</key>
+                <value>mainDB</value>
+            </setting>
+            <setting>
+                <key>user</key>
+                <value>Bob</value>
+            </setting>
+            <setting>
+                <key>dbDriver</key>
+                <value>org.postgresql.Driver</value>
+            </setting>
+            <setting>
+                <key>server</key>
+                <value>localhost</value>
+            </setting>
+            <setting>
+                <key>password</key>
+                <value>xxxxx</value>
+            </setting>
+        </string>
+        <integer>
+            <setting>
+                <key>port</key>
+                <value>5432</value>
+            </setting>
+        </integer>
+    </group>
+</settings>
