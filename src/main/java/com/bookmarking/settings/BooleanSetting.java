@@ -15,4 +15,5 @@ public class BooleanSetting extends AbstractSetting<Boolean>
     {
         super(group, key, value);
     }
+
 }

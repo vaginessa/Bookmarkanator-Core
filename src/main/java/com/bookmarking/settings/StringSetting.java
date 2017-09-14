@@ -18,4 +18,5 @@ public class StringSetting extends AbstractSetting<String>
     {
         super(group, key, value);
     }
+
 }

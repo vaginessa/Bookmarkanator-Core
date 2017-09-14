@@ -18,4 +18,6 @@ public class FloatSetting extends AbstractSetting<Float>
     {
         super(group, key, value);
     }
+
+
 }

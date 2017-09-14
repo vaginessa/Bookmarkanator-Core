@@ -15,4 +15,5 @@ public class IntegerSetting extends AbstractSetting<Integer>
     {
         super(group, key, value);
     }
+
 }

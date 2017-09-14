@@ -65,6 +65,7 @@ public class Settings
         if (group==null)
         {
             group = new SettingsGroup();
+            group.setGroupName(setting.getGroup());
             this.groups.put(setting.getGroup(), group);
         }
 

@@ -15,4 +15,5 @@ public class ClassSetting extends AbstractSetting<Class>
     {
         super(group, key, value);
     }
+
 }

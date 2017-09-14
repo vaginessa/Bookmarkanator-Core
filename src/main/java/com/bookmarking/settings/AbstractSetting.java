@@ -3,7 +3,7 @@ package com.bookmarking.settings;
 import java.util.*;
 import org.apache.logging.log4j.*;
 
-public abstract class AbstractSetting<T>
+public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
 {
     private static final Logger logger = LogManager.getLogger(AbstractSetting.class.getCanonicalName());
     protected String group;
@@ -16,7 +16,7 @@ public abstract class AbstractSetting<T>
 
     public AbstractSetting(String key)
     {
-      this.key = key;
+        this.key = key;
     }
 
     public AbstractSetting(String group, String key, T value)
@@ -43,7 +43,7 @@ public abstract class AbstractSetting<T>
 
     public void setKey(String key)
     {
-        Objects.requireNonNull(key,"Key cannot be null.");
+        Objects.requireNonNull(key, "Key cannot be null.");
         this.key = key;
     }
 
@@ -57,14 +57,13 @@ public abstract class AbstractSetting<T>
         this.group = group;
     }
 
-
     @Override
     public boolean equals(Object obj)
     {
         if (obj instanceof AbstractSetting)
         {
             AbstractSetting item = (AbstractSetting) obj;
-            if (this.getGroup().equals(item.getGroup())&& this.getKey().equals(item.getKey()))
+            if (this.getGroup().equals(item.getGroup()) && this.getKey().equals(item.getKey()))
             {
                 return true;
             }
@@ -76,6 +75,12 @@ public abstract class AbstractSetting<T>
     @Override
     public String toString()
     {
-        return "Group: "+getGroup()+",  Key: "+getKey()+", Value: "+getValue();
+        return "Group: " + getGroup() + ",  Key: " + getKey() + ", Value: " + getValue();
+    }
+
+    @Override
+    public int compareTo(AbstractSetting o)
+    {
+        return this.getKey().compareTo(o.getKey());
     }
 }
