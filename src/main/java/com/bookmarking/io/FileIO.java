@@ -167,7 +167,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getTags(Collection<UUID> bookmarkIds)
+    public Set<String> extractTags(Collection<UUID> bookmarkIds)
     {
         Set<String> res = new HashSet<>();
         for (UUID uuid: bookmarkIds)
@@ -196,7 +196,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getTypeNames(Collection<UUID> bookmarkIds)
+    public Set<String> extractTypeNames(Collection<UUID> bookmarkIds)
     {
         Set<String> res = new HashSet<>();
         for (UUID uuid: bookmarkIds)
@@ -238,38 +238,6 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<AbstractBookmark> getWithinDateRange(Date includeIfAfter, Date includeIfBefore)
-    {
-        Set<AbstractBookmark> res = new HashSet<>();
-
-        for (AbstractBookmark bk : getAllBookmarks())
-        {
-            if (bk.getCreationDate().after(includeIfAfter) && bk.getCreationDate().before(includeIfBefore))
-            {
-                res.add(bk);
-            }
-        }
-
-        return res;
-    }
-
-    @Override
-    public Set<AbstractBookmark> getWithinLastAccessedDateRange(Date includeIfAfter, Date includeIfBefore)
-    {
-        Set<AbstractBookmark> res = new HashSet<>();
-
-        for (AbstractBookmark bk : getAllBookmarks())
-        {
-            if (bk.getLastAccessedDate().after(includeIfAfter) && bk.getLastAccessedDate().before(includeIfBefore))
-            {
-                res.add(bk);
-            }
-        }
-
-        return res;
-    }
-
-    @Override
     public Set<AbstractBookmark> getAllBookmarks()
     {
         return new HashSet<>(bookmarks.values());
@@ -278,7 +246,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<String> getAllTags()
     {
-       return getTags(bookmarks.keySet());
+       return extractTags(bookmarks.keySet());
     }
 
     @Override
@@ -291,7 +259,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<String> getAllTypeNames()
     {
-        return getTypeNames(bookmarks.keySet());
+        return extractTypeNames(bookmarks.keySet());
     }
 
     @Override
@@ -301,7 +269,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getAllClassNames()
+    public Set<String> getAllBookmarkClassNames()
     {
         return getClassNames(bookmarks.keySet());
     }
@@ -460,7 +428,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getSettingsKeys()
+    public Set<AbstractSetting> getSettingsKeys()
     {
         //TODO Implement
         return null;
