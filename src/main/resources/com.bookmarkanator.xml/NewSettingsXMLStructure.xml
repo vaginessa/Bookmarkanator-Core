@@ -3,61 +3,61 @@
     <group name="A">
         <boolean>
             <setting>
-                <key>BB</key>
+                <key>Boolean setting A</key>
                 <value>true</value>
             </setting>
             <setting>
-                <key>BBB</key>
+                <key>Boolean setting B</key>
                 <value>false</value>
             </setting>
         </boolean>
         <class>
             <setting>
-                <key>CC</key>
+                <key>Class setting A</key>
                 <value>java.lang.String</value>
             </setting>
             <setting>
-                <key>CCC</key>
+                <key>Class setting B</key>
                 <value>java.io.File</value>
             </setting>
         </class>
         <file>
             <setting>
-                <key>AA</key>
+                <key>File setting A</key>
                 <value>File!</value>
             </setting>
             <setting>
-                <key>AAA</key>
+                <key>File setting B</key>
                 <value>Another file!</value>
             </setting>
         </file>
         <double>
             <setting>
-                <key>DD</key>
+                <key>Double setting A</key>
                 <value>25.678</value>
             </setting>
             <setting>
-                <key>DDD</key>
+                <key>Double setting B</key>
                 <value>55555.91</value>
             </setting>
         </double>
         <integer>
             <setting>
-                <key>EE</key>
+                <key>Integer setting A</key>
                 <value>75</value>
             </setting>
             <setting>
-                <key>EEE</key>
+                <key>Integer setting B</key>
                 <value>750</value>
             </setting>
         </integer>
         <string>
             <setting>
-                <key>FF</key>
+                <key>String setting A</key>
                 <value>Hello World</value>
             </setting>
             <setting>
-                <key>FFF</key>
+                <key>String setting B</key>
                 <value>Hello World Again</value>
             </setting>
         </string>
@@ -65,7 +65,7 @@
     <group name="B">
         <file>
             <setting>
-                <key>AA</key>
+                <key>File setting (Blank)</key>
             </setting>
         </file>
     </group>

@@ -29,7 +29,7 @@ public class ModuleLoader
 
     public ModuleLoader()
     {
-        this.jarDirectories = new HashSet<>();
+        jarDirectories = new HashSet<>();
         classesToTrackMap = new HashMap<>();
         classLoader = this.getClass().getClassLoader();
     }
@@ -147,6 +147,11 @@ public class ModuleLoader
         Class<T> sub = clazz.asSubclass(toCast);
 
         return sub.newInstance();
+    }
+
+    public Set<String> getTrackedClasses()
+    {
+        return classesToTrackMap.keySet();
     }
 
     // ============================================================
