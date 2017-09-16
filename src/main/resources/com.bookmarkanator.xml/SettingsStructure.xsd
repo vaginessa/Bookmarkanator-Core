@@ -5,7 +5,7 @@
     <xs:element name='settings'>
         <xs:complexType>
             <xs:choice maxOccurs="unbounded">
-                <xs:element name="group" type="group" maxOccurs="unbounded"/>
+                <xs:element name="group" type="group" minOccurs="0" maxOccurs="unbounded"/>
             </xs:choice>
         </xs:complexType>
     </xs:element>

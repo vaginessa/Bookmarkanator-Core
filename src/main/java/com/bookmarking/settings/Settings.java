@@ -192,6 +192,22 @@ public class Settings
         return false;
     }
 
+    public boolean deleteSetting(AbstractSetting setting)
+    {
+        Objects.requireNonNull(setting);
+        Objects.requireNonNull(setting.getGroup());
+        Objects.requireNonNull(setting.getKey());
+
+        SettingsGroup settingsGroup = getGroups().get(setting.getGroup());
+
+        if (settingsGroup!=null)
+        {
+            return settingsGroup.getSettings().remove(setting.getKey())!=null;
+        }
+
+        return false;
+    }
+
     /**
      * This method imports settings from another settings object.
      * <p>
