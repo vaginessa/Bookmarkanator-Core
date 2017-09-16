@@ -73,9 +73,9 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
             {
                 type = SettingsXMLParser2.CLASS_ELEMENT;
             }
-            else if (settingItem instanceof FloatSetting)
+            else if (settingItem instanceof DoubleSetting)
             {
-                type = SettingsXMLParser2.FLOAT_ELEMENT;
+                type = SettingsXMLParser2.DOUBLE_ELEMENT;
             }
             else if (settingItem instanceof IntegerSetting)
             {

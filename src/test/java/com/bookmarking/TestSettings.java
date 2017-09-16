@@ -86,11 +86,11 @@ public class TestSettings
         classSetting = new ClassSetting("A", "CCC", File.class);
         settings.putSetting(classSetting);
 
-        FloatSetting floatSetting = new FloatSetting("A", "DD", 25.678f);
-        settings.putSetting(floatSetting);
+        DoubleSetting doubleSetting = new DoubleSetting("A", "DD", 25.678d);
+        settings.putSetting(doubleSetting);
 
-        floatSetting = new FloatSetting("A", "DDD", 55555.9087f);
-        settings.putSetting(floatSetting);
+        doubleSetting = new DoubleSetting("A", "DDD", 55555.9087d);
+        settings.putSetting(doubleSetting);
 
         IntegerSetting integerSetting = new IntegerSetting("A", "EE", 75);
         settings.putSetting(integerSetting);

@@ -31,7 +31,7 @@
                 <value>Another file!</value>
             </setting>
         </file>
-        <float>
+        <double>
             <setting>
                 <key>DD</key>
                 <value>25.678</value>
@@ -40,7 +40,7 @@
                 <key>DDD</key>
                 <value>55555.91</value>
             </setting>
-        </float>
+        </double>
         <integer>
             <setting>
                 <key>EE</key>

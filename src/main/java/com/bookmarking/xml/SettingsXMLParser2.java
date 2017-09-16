@@ -14,7 +14,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
     public static final String FILE_ELEMENT = "file";
     public static final String CLASS_ELEMENT = "class";
     public static final String STRING_ELEMENT = "string";
-    public static final String FLOAT_ELEMENT = "float";
+    public static final String DOUBLE_ELEMENT = "double";
     public static final String INTEGER_ELEMENT = "integer";
     public static final String BOOLEAN_ELEMENT = "boolean";
     public static final String SETTING_ELEMENT = "setting";
@@ -158,8 +158,8 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
             case CLASS_ELEMENT:
                 res = getKeyValue(node, new ClassSetting(), typeString);
                 break;
-            case FLOAT_ELEMENT:
-                res = getKeyValue(node, new FloatSetting(), typeString);
+            case DOUBLE_ELEMENT:
+                res = getKeyValue(node, new DoubleSetting(), typeString);
                 break;
             case INTEGER_ELEMENT:
                 res = getKeyValue(node, new IntegerSetting(), typeString);
@@ -210,8 +210,8 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
                         case CLASS_ELEMENT:
                             abstractSetting.setValue(Class.forName(n.getTextContent()));
                             break;
-                        case FLOAT_ELEMENT:
-                            abstractSetting.setValue(Float.parseFloat(n.getTextContent()));
+                        case DOUBLE_ELEMENT:
+                            abstractSetting.setValue(Double.parseDouble(n.getTextContent()));
                             break;
                         case INTEGER_ELEMENT:
                             abstractSetting.setValue(Integer.parseInt(n.getTextContent()));
