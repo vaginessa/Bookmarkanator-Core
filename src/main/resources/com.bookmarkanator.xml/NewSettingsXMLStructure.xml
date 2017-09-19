@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <settings>
+    <group name="default-classes">
+        <class>
+            <setting>
+                <key>com.bookmarking.io.IOInterface</key>
+                <value>java.lang.String</value>
+            </setting>
+        </class>
+    </group>
     <group name="A">
         <boolean>
             <setting>

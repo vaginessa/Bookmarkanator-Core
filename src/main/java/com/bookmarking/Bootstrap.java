@@ -26,6 +26,7 @@ public class Bootstrap implements SettingsServiceInterface
     // Settings field keys
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
     public static final String OVERRIDDEN_CLASSES = "overridden-classes";
+    public static final String DEFAULT_CLASSES_GROUP_NAME = "default-classes";
     public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
 
     // Fields
