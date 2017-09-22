@@ -194,9 +194,10 @@ public class Settings
 
     public boolean deleteSetting(AbstractSetting setting)
     {
-        Objects.requireNonNull(setting);
-        Objects.requireNonNull(setting.getGroup());
-        Objects.requireNonNull(setting.getKey());
+        if (setting==null)
+        {
+            return false;
+        }
 
         SettingsGroup settingsGroup = getGroups().get(setting.getGroup());
 
