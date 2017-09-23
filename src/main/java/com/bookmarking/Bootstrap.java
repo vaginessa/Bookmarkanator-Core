@@ -13,6 +13,7 @@ import org.apache.logging.log4j.*;
  */
 public class Bootstrap implements SettingsServiceInterface
 {
+    // The user interface that this class can interact with to show status and post messages.
     private BootstrapUIInterface uiInterface;
 
     // Static fields
@@ -34,9 +35,13 @@ public class Bootstrap implements SettingsServiceInterface
     private File settingsFile;
 
     public Bootstrap()
+    {
+
+    }
+
+    public void init()
         throws Exception
     {
-        System.out.println(System.getProperty("java.version"));
         Bootstrap.bootstrap = this;
         // Get settings file
         File currentDir = new File(".");
@@ -264,30 +269,6 @@ public class Bootstrap implements SettingsServiceInterface
         return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
 
-    // ============================================================
-    // Static Methods
-    // ============================================================
-
-    public static IOInterface IOInterface()
-    {
-        return Bootstrap.use().IOInterface;
-    }
-
-    public static Bootstrap use()
-    {
-        if (bootstrap == null)
-        {
-            try
-            {
-                bootstrap = new Bootstrap();
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-        return bootstrap;
-    }
 
     public BootstrapUIInterface getUiInterface()
     {
@@ -297,5 +278,49 @@ public class Bootstrap implements SettingsServiceInterface
     public void setUiInterface(BootstrapUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;
+    }
+
+    // ============================================================
+    // Static Methods
+    // ============================================================
+
+    public static IOInterface IOInterface()
+    {
+        return Bootstrap.use().IOInterface;
+    }
+
+    public static Bootstrap use(BootstrapUIInterface uiInterface)
+    {
+        if (bootstrap == null)
+        {
+            try
+            {
+                bootstrap = new Bootstrap();
+                bootstrap.setUiInterface(uiInterface);
+                bootstrap.init();
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return bootstrap;
+    }
+
+    public static Bootstrap use()
+    {
+        if (bootstrap == null)
+        {
+            try
+            {
+                bootstrap = new Bootstrap();
+                bootstrap.init();
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return bootstrap;
     }
 }
