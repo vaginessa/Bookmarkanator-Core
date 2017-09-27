@@ -6,6 +6,7 @@ public enum UIStateEnum
     WARNING,
     ERROR,
     SUCCESS,
+    BUSY,
     FAILURE,
     ALERT,
     NEEDS_INFO,

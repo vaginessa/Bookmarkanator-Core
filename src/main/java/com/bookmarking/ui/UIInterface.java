@@ -12,7 +12,7 @@ public interface UIInterface
      * Tell the ui to show a notification message (e.g. in a dialog, or box, or however the UI does it)
      * @param message
      */
-    void notify(String message);
+    void notifyUI(String message);
 
     /**
      * The text of this UI element. For bookmark it might be bookmark name, for IO interface it might be the common name.
@@ -51,6 +51,4 @@ public interface UIInterface
      * @return  The selected value populated into the BasicInputOption
      */
     List<AbstractInputOption> requestUserInput(List<AbstractInputOption> inputOption);
-
-
 }

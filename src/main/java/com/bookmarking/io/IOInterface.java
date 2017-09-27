@@ -40,7 +40,7 @@ public interface IOInterface extends SettingsServiceInterface
      * The settings this class needs to properly initiate.
      *
      * It will return a set of AbstractSetting's objects with the group and key filled in. The calling class can then locate the value that matches
-     * the supplied setting and pass it into the init method.
+     * the supplied setting and pass it into the use method.
      *
      * @return Set of AbstractSetting objects with their group name(s), and key(s) populated.
      */

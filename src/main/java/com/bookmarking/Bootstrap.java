@@ -2,7 +2,9 @@ package com.bookmarking;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.action.*;
 import com.bookmarking.bookmark.*;
+import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.ui.*;
@@ -22,7 +24,7 @@ public class Bootstrap implements SettingsServiceInterface
 
     // Default names
     private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
-    private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmark-anator";
+    private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmarkanator";
 
     // Settings field keys
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
@@ -33,11 +35,7 @@ public class Bootstrap implements SettingsServiceInterface
     // Fields
     private IOInterface IOInterface;
     private File settingsFile;
-
-    public Bootstrap()
-    {
-
-    }
+    private Saver saver;
 
     public void init()
         throws Exception
@@ -59,6 +57,9 @@ public class Bootstrap implements SettingsServiceInterface
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
+        ModuleLoader.use().addClassToTrack(AbstractAction.class);
+        ModuleLoader.use().addClassToTrack(FileReaderInterface.class);
+        ModuleLoader.use().addClassToTrack(FileWriterInterface.class);
 
         Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_KEY, File.class);
 
@@ -85,6 +86,18 @@ public class Bootstrap implements SettingsServiceInterface
         {
             messageBoard.setSecretKey(abs);
         }
+
+
+
+
+        System.out.println("Begin saving thread.");
+        saver = Saver.use(this);
+        saver.start();
+    }
+
+    public void exit()
+    {
+        saver.quit();
     }
 
     // ============================================================
@@ -107,7 +120,7 @@ public class Bootstrap implements SettingsServiceInterface
         return this.IOInterface;
     }
 
-    public void saveSettingsFile()
+    synchronized public void saveSettingsFile()
         throws Exception
     {
         GlobalSettings.use().writeToDisk();
@@ -148,9 +161,13 @@ public class Bootstrap implements SettingsServiceInterface
 
                 if (configSetting != null)
                 {
-//                    config = configSetting.getValue();
+                    if (configSetting.getValue()instanceof String)
+                    {
+                        config = (String)configSetting.getValue();
+                    }
                 }
-                else
+
+                if (config==null)
                 {
                     config = "";
                 }
@@ -159,7 +176,7 @@ public class Bootstrap implements SettingsServiceInterface
 
                 logger.info(
                     "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
-                logger.info("Calling init()...");
+                logger.info("Calling use()...");
                 if (uiInterface!=null)
                 {
                     bkio2.setUIInterface(uiInterface.getIOUIInterface());
@@ -220,7 +237,7 @@ public class Bootstrap implements SettingsServiceInterface
             return file;
         }
 
-        // Try [user home]/Bookmark-anator/Settings.xml
+        // Try [user home]/Bookmarkanator/Settings.xml
         file = new File(getDefaultHomeDirSettingsFileInBKFolder());
 
         if (file.exists())
@@ -229,14 +246,14 @@ public class Bootstrap implements SettingsServiceInterface
             return file;
         }
 
-        // Try [user home]/settings/Settings.xml
-        file = new File(getDefaultHomeDirSettingsFile());
-
-        if (file.exists())
-        {
-            logger.info("Using settings file at " + file.getCanonicalPath());
-            return file;
-        }
+//        // Try [user home]/settings/Settings.xml
+//        file = new File(getDefaultHomeDirSettingsFile());
+//
+//        if (file.exists())
+//        {
+//            logger.info("Using settings file at " + file.getCanonicalPath());
+//            return file;
+//        }
 
         // Default to [user home]/Bookmark-anator/Settings.xml and let the settings engine handle creating the file if necessary.
         file = new File(getDefaultHomeDirSettingsFileInBKFolder());
@@ -323,4 +340,5 @@ public class Bootstrap implements SettingsServiceInterface
         }
         return bootstrap;
     }
+
 }

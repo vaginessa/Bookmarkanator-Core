@@ -100,7 +100,7 @@ public class TestBookmark extends AbstractBookmark
     @Override
     public void systemInit()
     {
-        logger.info("System init");
+        logger.info("System use");
     }
 
     @Override

@@ -57,7 +57,7 @@ public class GlobalSettings
         this.settings = settings;
     }
 
-    public void writeToDisk()
+    synchronized public void writeToDisk()
         throws Exception
     {
         FileSync<Settings> fileSync = FileService.use().getFile(GLOBAL_SETTINGS_KEY);

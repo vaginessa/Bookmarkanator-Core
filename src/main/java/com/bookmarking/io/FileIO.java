@@ -52,7 +52,7 @@ public class FileIO implements IOInterface
     public void init(String config)
         throws Exception
     {
-        logger.trace("Entering init method with config \"" + config + "\"");
+        logger.trace("Entering use method with config \"" + config + "\"");
         //TODO Figure out what to do about the bookmark.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
         this.settings = this.getSettings();
 
@@ -87,7 +87,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public void save()
+    public synchronized void save()
         throws Exception
     {
         FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);
@@ -102,7 +102,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public void save(String config)
+    public synchronized void save(String config)
         throws Exception
     {
         FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);

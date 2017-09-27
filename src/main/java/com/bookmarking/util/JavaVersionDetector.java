@@ -16,7 +16,7 @@ public class JavaVersionDetector
         JavaVersionDetector.JavaVersion requiredVersion = JavaVersionDetector.parseJavaVersion(lowestVersion);
         System.out.println("Required Java Version: " + requiredVersion);
 
-        if (requiredVersion.compareTo(systemVersion) >= 0)
+        if (requiredVersion.compareTo(systemVersion) > 0)
         {
             JDialog dialog = new JDialog();
             dialog.setLayout(new BorderLayout());
