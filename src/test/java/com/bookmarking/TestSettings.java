@@ -15,7 +15,7 @@ public class TestSettings
     {
         Settings settings = genSettings();
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        SettingsXMLWriter2 writer = new SettingsXMLWriter2();
+        SettingsXMLWriter writer = new SettingsXMLWriter();
         writer.write(settings, bout);
         System.out.println(bout.toString());
         bout.flush();
@@ -26,13 +26,13 @@ public class TestSettings
 
         XMLValidator.validate(xml, xsd);
 
-        SettingsXMLParser2 parser = new SettingsXMLParser2();
+        SettingsXMLParser parser = new SettingsXMLParser();
         ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
         Settings settings2 = parser.parse(bin);
         bin.close();
 
         bout = new ByteArrayOutputStream();
-        writer = new SettingsXMLWriter2();
+        writer = new SettingsXMLWriter();
         writer.write(settings2, bout);
         System.out.println(bout.toString());
         bout.flush();

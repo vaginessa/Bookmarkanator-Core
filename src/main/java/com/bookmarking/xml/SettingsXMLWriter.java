@@ -10,7 +10,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
 import org.w3c.dom.*;
 
-public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
+public class SettingsXMLWriter implements FileWriterInterface<Settings>
 {
     @Override
     public void write(Settings settings, OutputStream outputStream)
@@ -18,7 +18,7 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
     {
         Document doc = getDocument();
 
-        Element rootElement = doc.createElement(SettingsXMLParser2.SETTINGS_ELEMENT);
+        Element rootElement = doc.createElement(SettingsXMLParser.SETTINGS_ELEMENT);
         doc.appendChild(rootElement);
 
         // <Group name, SettingsGroup>
@@ -39,7 +39,7 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
     {
         Document doc = getDocument();
 
-        Element rootElement = doc.createElement(SettingsXMLParser2.SETTINGS_ELEMENT);
+        Element rootElement = doc.createElement(SettingsXMLParser.SETTINGS_ELEMENT);
         doc.appendChild(rootElement);
 
         writeOut(doc, outputStream);
@@ -54,8 +54,8 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
     public void writeGroup(Document doc, Element rootElement, SettingsGroup group, String groupName)
         throws Exception
     {
-        Element groupElement = doc.createElement(SettingsXMLParser2.GROUP_ELEMENT);
-        groupElement.setAttribute(SettingsXMLParser2.GROUP_NAME_ATTRIBUTE, groupName);
+        Element groupElement = doc.createElement(SettingsXMLParser.GROUP_ELEMENT);
+        groupElement.setAttribute(SettingsXMLParser.GROUP_NAME_ATTRIBUTE, groupName);
 
         Map<String, AbstractSetting> settingMap = group.getSettings();
         Map<String, Map<String, AbstractSetting>> typesMap = new HashMap<>();
@@ -67,27 +67,27 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
 
             if (settingItem instanceof FileSetting)
             {
-                type = SettingsXMLParser2.FILE_ELEMENT;
+                type = SettingsXMLParser.FILE_ELEMENT;
             }
             else if (settingItem instanceof ClassSetting)
             {
-                type = SettingsXMLParser2.CLASS_ELEMENT;
+                type = SettingsXMLParser.CLASS_ELEMENT;
             }
             else if (settingItem instanceof DoubleSetting)
             {
-                type = SettingsXMLParser2.DOUBLE_ELEMENT;
+                type = SettingsXMLParser.DOUBLE_ELEMENT;
             }
             else if (settingItem instanceof IntegerSetting)
             {
-                type = SettingsXMLParser2.INTEGER_ELEMENT;
+                type = SettingsXMLParser.INTEGER_ELEMENT;
             }
             else if (settingItem instanceof StringSetting)
             {
-                type = SettingsXMLParser2.STRING_ELEMENT;
+                type = SettingsXMLParser.STRING_ELEMENT;
             }
             else if (settingItem instanceof BooleanSetting)
             {
-                type = SettingsXMLParser2.BOOLEAN_ELEMENT;
+                type = SettingsXMLParser.BOOLEAN_ELEMENT;
             }
             else
             {
@@ -131,16 +131,16 @@ public class SettingsXMLWriter2 implements FileWriterInterface<Settings>
 
     private void appendSetting(Document doc, Element element, AbstractSetting abstractSetting)
     {
-        Element setting = doc.createElement(SettingsXMLParser2.SETTING_ELEMENT);
+        Element setting = doc.createElement(SettingsXMLParser.SETTING_ELEMENT);
         element.appendChild(setting);
 
-        Element key = doc.createElement(SettingsXMLParser2.KEY_ELEMENT);
+        Element key = doc.createElement(SettingsXMLParser.KEY_ELEMENT);
         key.setTextContent(abstractSetting.getKey());
         setting.appendChild(key);
 
         if (abstractSetting.getValue()!=null && !abstractSetting.getValue().toString().trim().isEmpty())
         {
-            Element value = doc.createElement(SettingsXMLParser2.VALUE_ELEMENT);
+            Element value = doc.createElement(SettingsXMLParser.VALUE_ELEMENT);
 
             if (abstractSetting.getValue() instanceof Class)
             {

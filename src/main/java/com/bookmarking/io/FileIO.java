@@ -3,7 +3,6 @@ package com.bookmarking.io;
 import java.io.*;
 import java.text.*;
 import java.util.*;
-import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.search.*;
@@ -14,8 +13,6 @@ import org.apache.logging.log4j.*;
 
 public class FileIO implements IOInterface
 {
-
-
     // Static fields
     private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
     private static final String FILE_IO_KEY = "FILE_IO";
@@ -24,7 +21,6 @@ public class FileIO implements IOInterface
     private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
 
     // Fields
-
     private IOUIInterface uiInterface;
     private File file;
     private Settings settings;
@@ -35,7 +31,7 @@ public class FileIO implements IOInterface
     private Map<String, Set<UUID>> fullTextSearchMap;//The map used to search only words of the bookmark.
     private Search<UUID> bookmarkTags;
     private int numSearchResults;//How many search results to return.
-    private IOInterface IOInterface;// Currently this is FileIo, but it could be any interface. For instance it could point to a database, or web service.
+    private boolean isDirty;
 
     public FileIO()
     {
@@ -46,6 +42,16 @@ public class FileIO implements IOInterface
         bookmarkTags = new Search<>();
         fullTextSearchMap = new HashMap<>();
         numSearchResults = 20;
+    }
+
+    public boolean isDirty()
+    {
+        return isDirty;
+    }
+
+    public void setDirty(boolean dirty)
+    {
+        isDirty = dirty;
     }
 
     @Override
@@ -79,7 +85,7 @@ public class FileIO implements IOInterface
 
         // Create file io settings file
         File settingsFile = createSettingsFile(file);
-        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter2(), new SettingsXMLParser2(), settingsFile);
+        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
         FileService.use().addFile(fileSync2, FILE_IO_SETTINGS_KEY);
 
         // Load both files in.
@@ -99,6 +105,7 @@ public class FileIO implements IOInterface
 //       TODO figure out why the settings are null.....
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+        setDirty(false);
     }
 
     @Override
@@ -117,6 +124,7 @@ public class FileIO implements IOInterface
         fileSync2.setFile(settingsFile);
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+        setDirty(false);
     }
 
     @Override
@@ -127,25 +135,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public AbstractBookmark getBookmark(String params, Object... obj)
-    {
-        throw new UnsupportedOperationException("Not supported at this time");
-    }
-
-    @Override
-    public List<AbstractBookmark> getBookmarkList(String params, Object... obj)
-    {
-        throw new UnsupportedOperationException("Not supported at this time");
-    }
-
-    @Override
-    public String getOther(String params, Object... obj)
-    {
-        throw new UnsupportedOperationException("Not supported at this time");
-    }
-
-    @Override
-    public List<String> getOtherList(String params, Object... obj)
+    public List<AbstractBookmark> getBookmarkList(SearchOptions searchOptions)
     {
         throw new UnsupportedOperationException("Not supported at this time");
     }
@@ -278,6 +268,7 @@ public class FileIO implements IOInterface
     public void setSettings(Settings settings)
     {
         this.settings = settings;
+        setDirty(true);
     }
 
     @Override
@@ -293,6 +284,7 @@ public class FileIO implements IOInterface
         }
 
         bookmarks.put(bookmark.getId(), bookmark);
+        setDirty(true);
     }
 
     @Override
@@ -304,6 +296,7 @@ public class FileIO implements IOInterface
         {
             addBookmark(bookmark);
         }
+        setDirty(true);
     }
 
     @Override
@@ -316,6 +309,7 @@ public class FileIO implements IOInterface
         {
             throw new Exception("Bookmark "+bookmark.getId()+" not found.");
         }
+        setDirty(true);
     }
 
     @Override
@@ -327,6 +321,7 @@ public class FileIO implements IOInterface
         {
             updateBookmark(bookmark);
         }
+        setDirty(true);
     }
 
     @Override
@@ -346,6 +341,8 @@ public class FileIO implements IOInterface
             updateBookmark(bookmark);
         }
 
+        setDirty(true);
+
         return bookmarks;
     }
 
@@ -364,6 +361,8 @@ public class FileIO implements IOInterface
             updateBookmark(bookmark);
         }
 
+        setDirty(true);
+
         return bookmarks;
     }
 
@@ -371,6 +370,9 @@ public class FileIO implements IOInterface
     public AbstractBookmark deleteBookmark(UUID bookmarkId)
     {
         //TODO Add/update to search methods
+
+        setDirty(true);
+
         return null;
     }
 
@@ -378,6 +380,9 @@ public class FileIO implements IOInterface
     public AbstractBookmark deleteBookmark(AbstractBookmark bookmark)
     {
         //TODO Add/update to search methods
+
+        setDirty(true);
+
         return null;
     }
 
@@ -385,6 +390,9 @@ public class FileIO implements IOInterface
     public Set<AbstractBookmark> deleteTag(String tagToDelete)
     {
         //TODO Add/update to search methods
+
+        setDirty(true);
+
         return null;
     }
 
@@ -392,6 +400,9 @@ public class FileIO implements IOInterface
     public Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete)
     {
         //TODO Add/update to search methods
+
+        setDirty(true);
+
         return null;
     }
 

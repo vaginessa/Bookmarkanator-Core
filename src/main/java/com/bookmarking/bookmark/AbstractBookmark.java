@@ -2,10 +2,16 @@ package com.bookmarking.bookmark;
 
 import java.util.*;
 import com.bookmarking.ui.*;
+import org.apache.logging.log4j.*;
 
+/**
+ * The base class for all bookmarks.
+ */
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
+    private static final Logger logger = LogManager.getLogger(AbstractBookmark.class.getCanonicalName());
 
+    // The UI class that represents this bookmark
     private BookmarkUIInterface uiInterface;
 
     //The user visible name
@@ -18,7 +24,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     protected Set<String> tags;
     protected Date creationDate;
     protected Date lastAccessedDate;
-    protected Set<String> supportedActions;// The list of actions this bookmark supports
+
+    // The list of actions this bookmark supports or understands
+    protected Set<String> supportedActions;
     protected Map<String, Set<AbstractBookmark>> beforeListeners;
     protected Map<String, Set<AbstractBookmark>> afterListeners;
 
@@ -31,13 +39,16 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         tags = new HashSet<>();
         id = UUID.randomUUID();
         name = "";
-        //        text = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
         supportedActions = new HashSet<>();
         beforeListeners = new HashMap<>();
         afterListeners = new HashMap<>();
     }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     public String getName()
     {
@@ -102,7 +113,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     /**
      * This is a secret key that is intended to be set by the message board
      * as the key that this bookmark can use to post to the message board.
-     *
+     * <p>
      * This must remain an abstract method because the key needs to be specific to each class, and that has to
      * be implemented in the extending class.
      *
@@ -122,7 +133,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * Run specified action.
+     * Run whatever default action this bookmark has.
      *
      * @return The result string for the action
      * @throws Exception
@@ -134,7 +145,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * Run whatever default action this bookmark has.
+     * Run specified action.
      *
      * @return The result string for the action
      * @throws Exception
@@ -142,8 +153,20 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract String runAction(String actionString)
         throws Exception;
 
+    /**
+     * Before listeners will be called prior to this bookmark calling it's runActionCode
+     *
+     * @param abstractBookmark The bookmark that is listening
+     * @param actionString     The action string it is waiting for.
+     */
     public void addBeforeListener(AbstractBookmark abstractBookmark, String actionString)
     {
+        if (abstractBookmark == this)
+        {
+            logger.warn("Bookmark tried to add itself as a listener to itself");
+            return;
+        }
+
         Set<AbstractBookmark> items = beforeListeners.get(actionString);
 
         if (items == null)
@@ -165,8 +188,20 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         }
     }
 
+    /**
+     * After listeners will be called after this bookmark calls it's runActionCode
+     *
+     * @param abstractBookmark The bookmark that is listening
+     * @param actionString     The action string it is waiting for.
+     */
     public void addAfterListener(AbstractBookmark abstractBookmark, String actionString)
     {
+        if (abstractBookmark == this)
+        {
+            logger.warn("Bookmark tried to add itself as a listener to itself");
+            return;
+        }
+
         Set<AbstractBookmark> items = afterListeners.get(actionString);
 
         if (items == null)
@@ -191,6 +226,8 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private void notifyBeforeListeners(String actionString)
     {
         Set<AbstractBookmark> items = beforeListeners.get(actionString);
+
+        // Remove this bookmark from the action list just in case.
         items.remove(this);
 
         if (items != null)
@@ -205,6 +242,8 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private void notifyAfterListeners(String actionString)
     {
         Set<AbstractBookmark> items = afterListeners.get(actionString);
+
+        // Remove this bookmark from the action list just in case.
         items.remove(this);
 
         if (items != null)
@@ -221,6 +260,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     // ============================================================
 
     public abstract void notifyBeforeAction(AbstractBookmark source, String actionString);
+
     public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
 
     /**
@@ -289,11 +329,18 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      */
     public abstract void systemShuttingDown();
 
+    /**
+     * @return  The UI element that this bookmark is able to communicate with.
+     */
     public BookmarkUIInterface getUiInterface()
     {
         return uiInterface;
     }
 
+    /**
+     * The class that represents this bookmark to the user.
+     * @param uiInterface  The UI element that this bookmark is able to communicate with.
+     */
     public void setUiInterface(BookmarkUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;

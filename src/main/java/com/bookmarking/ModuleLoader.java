@@ -20,7 +20,7 @@ public class ModuleLoader
 
     // Fields
     private Set<File> jarDirectories;
-    private Map<String, Set<Class>> classesToTrackMap;
+    private Map<Class, Set<Class>> classesToTrackMap;
     private ClassLoader classLoader;
 
     // ============================================================
@@ -94,23 +94,6 @@ public class ModuleLoader
         return this.addJarsToClassloader();
     }
 
-    public void addClassToTrack(String classname)
-    {
-        if (classname == null)
-        {
-            return;
-        }
-
-        logger.info("Tracking class \"" + classname + "\"");
-
-        Set<Class> classes = classesToTrackMap.get(classname);
-
-        if (classes == null)
-        {
-            classesToTrackMap.put(classname, new HashSet<>());
-        }
-    }
-
     public void addClassToTrack(Class clazz)
     {
         if (clazz == null)
@@ -124,7 +107,7 @@ public class ModuleLoader
 
         if (classes == null)
         {
-            classesToTrackMap.put(clazz.getCanonicalName(), new HashSet<>());
+            classesToTrackMap.put(clazz, new HashSet<>());
         }
     }
 
@@ -149,10 +132,11 @@ public class ModuleLoader
         return sub.newInstance();
     }
 
-    public Set<String> getTrackedClasses()
+    public Set<Class> getTrackedClasses()
     {
         return classesToTrackMap.keySet();
     }
+
 
     // ============================================================
     // Private Methods
@@ -198,10 +182,10 @@ public class ModuleLoader
         Reflections reflections = new Reflections(ConfigurationBuilder.build().addClassLoader(classLoader));
 
         logger.trace("Locating tracked classes");
-        for (String s : classesToTrackMap.keySet())
+        for (Class classToLoad : classesToTrackMap.keySet())
         {
-            logger.trace("Adding classes of group \"" + s + "\"");
-            Class clazz = classLoader.loadClass(s);
+            logger.trace("Adding classes of group \"" + classToLoad + "\"");
+            Class clazz = classLoader.loadClass(classToLoad.getCanonicalName());
             Set<Class> classes = reflections.getSubTypesOf(clazz);
 
             for (Class tmpClass : classes)
@@ -209,7 +193,7 @@ public class ModuleLoader
                 logger.trace("Found class \"" + tmpClass.getCanonicalName() + "\"");
             }
 
-            classesToTrackMap.put(s, classes);
+            classesToTrackMap.put(classToLoad, classes);
         }
 
         return this.classLoader;

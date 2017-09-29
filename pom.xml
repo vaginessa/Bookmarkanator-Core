@@ -96,12 +96,12 @@
             <version>1.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.zeroturnaround/zt-exec -->
-        <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
-            <version>1.9</version>
-        </dependency>
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.zeroturnaround/zt-exec &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.zeroturnaround</groupId>-->
+            <!--<artifactId>zt-exec</artifactId>-->
+            <!--<version>1.9</version>-->
+        <!--</dependency>-->
 
 
         <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->

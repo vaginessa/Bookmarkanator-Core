@@ -10,7 +10,7 @@ import com.bookmarking.ui.*;
 /**
  * This is the interface that other classes will use to load, save, and search bookmarks and their data.
  */
-public interface IOInterface extends SettingsServiceInterface
+public interface IOInterface
 {
 
     //------------------------------------
@@ -34,11 +34,12 @@ public interface IOInterface extends SettingsServiceInterface
     //------------------------------------
 
     IOUIInterface getUIInterface();
+
     void setUIInterface(IOUIInterface uiInterface);
 
     /**
      * The settings this class needs to properly initiate.
-     *
+     * <p>
      * It will return a set of AbstractSetting's objects with the group and key filled in. The calling class can then locate the value that matches
      * the supplied setting and pass it into the use method.
      *
@@ -49,11 +50,13 @@ public interface IOInterface extends SettingsServiceInterface
     Set<String> getSearchWords(Collection<UUID> bookmarkIds)
         throws Exception;
 
-    Set<String> getAllSearchWords()throws Exception;
+    Set<String> getAllSearchWords()
+        throws Exception;
 
     List<AbstractBookmark> applySearchOptions(SearchOptions options)
         throws ParseException;
-    List<AbstractBookmark> applySearchOptions(Collection<AbstractBookmark> bookmarks,SearchOptions options)
+
+    List<AbstractBookmark> applySearchOptions(Collection<AbstractBookmark> bookmarks, SearchOptions options)
         throws ParseException;
 
     //------------------------------------
@@ -61,12 +64,14 @@ public interface IOInterface extends SettingsServiceInterface
     //------------------------------------
 
     Set<AbstractBookmark> getAllBookmarks();
+
     Set<String> getAllBookmarkNames();
+
     Set<String> getAllBookmarkClassNames();
 
     AbstractBookmark getBookmark(UUID bookmarkId);
 
-    List<AbstractBookmark> getBookmarkList(String params, Object... obj);
+    List<AbstractBookmark> getBookmarkList(SearchOptions searchOptions);
 
     Set<String> getBookmarkNames(Collection<UUID> bookmarkIds);
 
@@ -98,7 +103,7 @@ public interface IOInterface extends SettingsServiceInterface
     {
         Set<String> res = new HashSet<>();
 
-        for(AbstractBookmark abs: bookmarks)
+        for (AbstractBookmark abs : bookmarks)
         {
             res.addAll(abs.getTags());
         }
@@ -107,9 +112,11 @@ public interface IOInterface extends SettingsServiceInterface
 
     Set<String> getAllTags();
 
-    List<AbstractBookmark> renameTag(String originalTagName, String newTagName)throws Exception;
+    List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
+        throws Exception;
 
-    List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)throws Exception;
+    List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)
+        throws Exception;
 
     Set<AbstractBookmark> deleteTag(String tagToDelete);
 
@@ -123,11 +130,12 @@ public interface IOInterface extends SettingsServiceInterface
 
     Set<String> getAllTypeNames();
 
+    //------------------------------------
+    // Settings Type methods
+    //------------------------------------
 
-    // Not sure if we want to keep these:
+    Settings getSettings();
 
-    String getOther(String params, Object... obj);
+    void setSettings(Settings settings);
 
-    List<String> getOtherList(String params, Object... obj);
-    AbstractBookmark getBookmark(String params, Object... obj);
 }

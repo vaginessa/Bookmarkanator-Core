@@ -1,6 +1,7 @@
 package com.bookmarking.fileservice;
 
 import java.io.*;
+import java.util.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
@@ -45,8 +46,12 @@ public class FileSync<T>
     // Constructors
     // ============================================================
 
-    public FileSync(FileWriterInterface fileWriter, FileReaderInterface fileReader, File file)
+    public FileSync(FileWriterInterface<T> fileWriter, FileReaderInterface<T> fileReader, File file)
     {
+        Objects.requireNonNull(fileWriter);
+        Objects.requireNonNull(fileReader);
+        Objects.requireNonNull(file);
+
         this.fileWriter = fileWriter;
         this.fileReader = fileReader;
         this.file = file;
@@ -105,20 +110,17 @@ public class FileSync<T>
 
         if (!file.exists())
         {
-            file.createNewFile();
-            fout = new FileOutputStream(file);
+            boolean fileCreated = file.createNewFile();
 
-            try
+            if (fileCreated)
             {
-                fileWriter.writeInitial(fout);
+                fout = new FileOutputStream(file);
+
+                writeInitial(fout);
             }
-            finally
+            else
             {
-                if (fout.getChannel().isOpen())
-                {
-                    fout.flush();
-                    fout.close();
-                }
+                logger.error("Could not create file.");
             }
         }
 
@@ -209,35 +211,35 @@ public class FileSync<T>
             logger.info("File " + file.getCanonicalPath() + " doesn't exist.");
             if (fileReader.getMissingFilePolicy() == MissingFilePolicy.createNew)
             {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-                FileOutputStream fout = new FileOutputStream(file);
+                boolean madeDirectory = file.getParentFile().mkdirs();
+                if (madeDirectory)
+                {
+                    boolean fileCreated = file.createNewFile();
 
-                try
-                {
-                    fileWriter.writeInitial(fout);
-                }
-                finally
-                {
-                    if (fout.getChannel().isOpen())
+                    if (fileCreated)
                     {
-                        fout.flush();
-                        fout.close();
+                        FileOutputStream fout = new FileOutputStream(file);
+
+                        writeInitial(fout);
+
+                        FileInputStream fin = new FileInputStream(file);
+
+                        try
+                        {
+                            obj = fileReader.parse(fin);
+                        }
+                        finally
+                        {
+                            if (fin.getChannel().isOpen())
+                            {
+                                fin.close();
+                            }
+                        }
                     }
                 }
-
-                FileInputStream fin = new FileInputStream(file);
-
-                try
+                else
                 {
-                    obj = fileReader.parse(fin);
-                }
-                finally
-                {
-                    if (fin.getChannel().isOpen())
-                    {
-                        fin.close();
-                    }
+                    logger.error("Couldn't make directory "+file.getCanonicalPath());
                 }
             }
             else
@@ -270,6 +272,23 @@ public class FileSync<T>
     // ============================================================
     // Private methods
     // ============================================================
+
+    private void writeInitial(FileOutputStream fout)
+        throws Exception
+    {
+        try
+        {
+            fileWriter.writeInitial(fout);
+        }
+        finally
+        {
+            if (fout.getChannel().isOpen())
+            {
+                fout.flush();
+                fout.close();
+            }
+        }
+    }
 
     private void handleBackup(File fileToBackup, FileBackupPolicy policy)
         throws IOException

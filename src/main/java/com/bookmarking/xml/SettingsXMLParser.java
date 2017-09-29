@@ -6,7 +6,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
 import org.w3c.dom.*;
 
-public class SettingsXMLParser2 implements FileReaderInterface<Settings>
+public class SettingsXMLParser implements FileReaderInterface<Settings>
 {
     // Tags
     public static final String SETTINGS_ELEMENT = "settings";
@@ -28,7 +28,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
     private Document document;
     private Settings settings;
 
-    public SettingsXMLParser2()
+    public SettingsXMLParser()
     {
         this.settings = new Settings();
     }
@@ -43,7 +43,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
 
         // Settings element
         Node docNodeRoot = document.getDocumentElement();
-        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser2.SETTINGS_ELEMENT))
+        if (!docNodeRoot.getNodeName().equals(SettingsXMLParser.SETTINGS_ELEMENT))
         {
             throw new Exception("Unexpected element encountered as root node \"" + docNodeRoot.getNodeName() + "\"");
         }
@@ -54,7 +54,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
         {
             Node n = nl.item(c);
 
-            if (n.getNodeName().equals(SettingsXMLParser2.GROUP_ELEMENT))
+            if (n.getNodeName().equals(SettingsXMLParser.GROUP_ELEMENT))
             {
                 getGroup(n);
             }
@@ -100,7 +100,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
         throws Exception
     {
         NodeList nl = groupNode.getChildNodes();
-        Node groupName = groupNode.getAttributes().getNamedItem(SettingsXMLParser2.GROUP_NAME_ATTRIBUTE);
+        Node groupName = groupNode.getAttributes().getNamedItem(SettingsXMLParser.GROUP_NAME_ATTRIBUTE);
 
         String group;
 
@@ -110,7 +110,7 @@ public class SettingsXMLParser2 implements FileReaderInterface<Settings>
         }
         else
         {
-            group = SettingsXMLParser2.DEFAULT_GROUP_ATTRIBUTE;
+            group = SettingsXMLParser.DEFAULT_GROUP_ATTRIBUTE;
         }
 
         for (int c = 0; c < nl.getLength(); c++)

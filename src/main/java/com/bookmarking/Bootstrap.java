@@ -13,7 +13,7 @@ import org.apache.logging.log4j.*;
 /**
  * This class is responsible for doing the initial settings, and class loading.
  */
-public class Bootstrap implements SettingsServiceInterface
+public class Bootstrap
 {
     // The user interface that this class can interact with to show status and post messages.
     private BootstrapUIInterface uiInterface;
@@ -31,6 +31,7 @@ public class Bootstrap implements SettingsServiceInterface
     public static final String OVERRIDDEN_CLASSES = "overridden-classes";
     public static final String DEFAULT_CLASSES_GROUP_NAME = "default-classes";
     public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
+    public static String IO_INTERFACE_KEY = IOInterface().getClass().getCanonicalName();
 
     // Fields
     private IOInterface IOInterface;
@@ -64,9 +65,9 @@ public class Bootstrap implements SettingsServiceInterface
         Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_KEY, File.class);
 
         Set<File> jarLocations = new HashSet<>();
-        for (AbstractSetting abstractSetting: moduleLocations)
+        for (AbstractSetting abstractSetting : moduleLocations)
         {
-            jarLocations.add((File)abstractSetting.getValue());
+            jarLocations.add((File) abstractSetting.getValue());
         }
 
         if (moduleLocations != null)
@@ -87,9 +88,6 @@ public class Bootstrap implements SettingsServiceInterface
             messageBoard.setSecretKey(abs);
         }
 
-
-
-
         System.out.println("Begin saving thread.");
         saver = Saver.use(this);
         saver.start();
@@ -104,15 +102,18 @@ public class Bootstrap implements SettingsServiceInterface
     // Methods
     // ============================================================
 
-    public Settings getSettings()
+    public BootstrapSettings getSettings()
     {
-        return GlobalSettings.use().getSettings();
+        BootstrapSettings res = new BootstrapSettings();
+        res.setMainSettings(GlobalSettings.use().getSettings());
+        res.setIoSettings(this.getIOInterface().getSettings());
+        return res;
     }
 
-    @Override
-    public void setSettings(Settings settings)
+    public void setSettings(BootstrapSettings bootstrapSettings)
     {
-        GlobalSettings.use().setSettings(settings);
+        GlobalSettings.use().setSettings(bootstrapSettings.getMainSettings());
+        getIOInterface().setSettings(bootstrapSettings.getIoSettings());
     }
 
     public IOInterface getIOInterface()
@@ -149,7 +150,6 @@ public class Bootstrap implements SettingsServiceInterface
 
         //TODO do this if there is no default, or if the default is not found.
 
-
         for (Class clazz : classes)
         {//Iterate through bkio classes found, selecting the correct one based on settings.
             try
@@ -161,13 +161,13 @@ public class Bootstrap implements SettingsServiceInterface
 
                 if (configSetting != null)
                 {
-                    if (configSetting.getValue()instanceof String)
+                    if (configSetting.getValue() instanceof String)
                     {
-                        config = (String)configSetting.getValue();
+                        config = (String) configSetting.getValue();
                     }
                 }
 
-                if (config==null)
+                if (config == null)
                 {
                     config = "";
                 }
@@ -177,7 +177,7 @@ public class Bootstrap implements SettingsServiceInterface
                 logger.info(
                     "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
                 logger.info("Calling use()...");
-                if (uiInterface!=null)
+                if (uiInterface != null)
                 {
                     bkio2.setUIInterface(uiInterface.getIOUIInterface());
                 }
@@ -246,14 +246,14 @@ public class Bootstrap implements SettingsServiceInterface
             return file;
         }
 
-//        // Try [user home]/settings/Settings.xml
-//        file = new File(getDefaultHomeDirSettingsFile());
-//
-//        if (file.exists())
-//        {
-//            logger.info("Using settings file at " + file.getCanonicalPath());
-//            return file;
-//        }
+        //        // Try [user home]/settings/Settings.xml
+        //        file = new File(getDefaultHomeDirSettingsFile());
+        //
+        //        if (file.exists())
+        //        {
+        //            logger.info("Using settings file at " + file.getCanonicalPath());
+        //            return file;
+        //        }
 
         // Default to [user home]/Bookmark-anator/Settings.xml and let the settings engine handle creating the file if necessary.
         file = new File(getDefaultHomeDirSettingsFileInBKFolder());
@@ -285,7 +285,6 @@ public class Bootstrap implements SettingsServiceInterface
         String directory = System.getProperty("user.home");
         return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
-
 
     public BootstrapUIInterface getUiInterface()
     {

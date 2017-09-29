@@ -27,6 +27,7 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
     }
 
     public void setValue(T value)
+        throws ClassNotFoundException
     {
         this.value = value;
     }
@@ -42,6 +43,7 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
     }
 
     public void setKey(String key)
+        throws Exception
     {
         Objects.requireNonNull(key, "Key cannot be null.");
         this.key = key;
@@ -53,6 +55,7 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
     }
 
     public void setGroup(String group)
+        throws Exception
     {
         this.group = group;
     }

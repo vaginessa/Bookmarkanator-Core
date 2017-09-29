@@ -1,8 +1,7 @@
-package com.bookmarking;
+package com.bookmarking.settings;
 
 import java.io.*;
 import com.bookmarking.fileservice.*;
-import com.bookmarking.settings.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
@@ -27,7 +26,7 @@ public class GlobalSettings
         String defaultSettingsLocation =
             System.getProperty("user.home") + File.separatorChar + DEFAULT_SETTINGS_DIRECTORY_NAME + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME;
         File file = new File(defaultSettingsLocation);
-        FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter2(), new SettingsXMLParser2(), file);
+        FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), file);
         FileService.use().addFile(fileSync, GLOBAL_SETTINGS_KEY);
         logger.trace("Default settings file: \"" + defaultSettingsLocation + "\"");
         settings = new Settings();
