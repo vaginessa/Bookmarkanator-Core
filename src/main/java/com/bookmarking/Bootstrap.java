@@ -31,7 +31,7 @@ public class Bootstrap
     public static final String OVERRIDDEN_CLASSES = "overridden-classes";
     public static final String DEFAULT_CLASSES_GROUP_NAME = "default-classes";
     public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
-    public static String IO_INTERFACE_KEY = IOInterface().getClass().getCanonicalName();
+    public static String IO_INTERFACE_KEY = IOInterface.class.getCanonicalName();
 
     // Fields
     private IOInterface IOInterface;

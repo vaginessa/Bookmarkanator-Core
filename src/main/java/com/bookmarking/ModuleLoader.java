@@ -118,7 +118,7 @@ public class ModuleLoader
 
     public Set<Class> getClassesLoaded(Class clazz)
     {
-        return classesToTrackMap.get(clazz.getCanonicalName());
+        return classesToTrackMap.get(clazz);
     }
 
     public <T> T loadClass(String className, Class<T> toCast)
