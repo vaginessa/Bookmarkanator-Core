@@ -1,5 +1,6 @@
-package com.bookmarking;
+package com.bookmarking.util;
 
+import com.bookmarking.*;
 import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
@@ -23,7 +24,7 @@ public class Saver implements Runnable
     public Saver(Object obj)
     {
         this.obj = obj;
-        saveTime = 10000;
+        saveTime = 50000;
         saverState = SaverState.PAUSE;
     }
 

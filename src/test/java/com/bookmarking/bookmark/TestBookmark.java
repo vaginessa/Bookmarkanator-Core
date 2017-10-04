@@ -1,6 +1,7 @@
 package com.bookmarking.bookmark;
 
 import java.util.*;
+import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 public class TestBookmark extends AbstractBookmark
@@ -107,6 +108,12 @@ public class TestBookmark extends AbstractBookmark
     public void systemShuttingDown()
     {
         logger.info("System shutting down.");
+    }
+
+    @Override
+    public boolean canConsume(String data)
+    {
+        return false;
     }
 
     @Override

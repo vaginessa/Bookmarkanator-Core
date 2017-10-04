@@ -8,6 +8,7 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLWriter implements FileWriterInterface<Settings>
@@ -57,7 +58,7 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
         Element groupElement = doc.createElement(SettingsXMLParser.GROUP_ELEMENT);
         groupElement.setAttribute(SettingsXMLParser.GROUP_NAME_ATTRIBUTE, groupName);
 
-        Map<String, AbstractSetting> settingMap = group.getSettings();
+        Map<String, AbstractSetting> settingMap = group.getSettingsMap();
         Map<String, Map<String, AbstractSetting>> typesMap = new HashMap<>();
 
         for (String key : settingMap.keySet())

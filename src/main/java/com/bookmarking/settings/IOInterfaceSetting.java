@@ -2,7 +2,8 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.*;
-import com.bookmarking.io.*;
+import com.bookmarking.structure.*;
+import com.bookmarking.util.*;
 
 /**
  * This is a custom setting that is only for use in selecting the IO interface to use.

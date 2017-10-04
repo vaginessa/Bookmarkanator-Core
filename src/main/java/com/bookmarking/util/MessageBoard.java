@@ -1,7 +1,7 @@
-package com.bookmarking;
+package com.bookmarking.util;
 
 import java.util.*;
-import com.bookmarking.bookmark.*;
+import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 /**

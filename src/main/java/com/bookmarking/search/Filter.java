@@ -2,15 +2,13 @@ package com.bookmarking.search;
 
 import java.text.*;
 import java.util.*;
-import com.bookmarking.bookmark.*;
+import com.bookmarking.structure.*;
 
 /**
- * This class is used to filter a list of bookmark.
+ * This class is used to filter a list of bookmarks.
  */
 public class Filter
 {
-    private static final long MILISECONDS_PER_SECOND = 1000;
-    private static final long SECONDS_PER_DAY = 86400;
     private static Filter filter;
 
     private List<AbstractBookmark> bookmarkList;

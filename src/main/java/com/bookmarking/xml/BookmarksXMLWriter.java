@@ -7,9 +7,8 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
-import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
-import com.bookmarking.io.*;
+import com.bookmarking.structure.*;
 import org.w3c.dom.*;
 
 public class BookmarksXMLWriter implements FileWriterInterface<IOInterface>

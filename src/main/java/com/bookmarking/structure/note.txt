@@ -1,0 +1,1 @@
+This package contains all the abstract classes and interfaces that represent the core api.

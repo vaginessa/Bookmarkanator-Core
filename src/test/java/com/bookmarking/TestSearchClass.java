@@ -1,7 +1,7 @@
 package com.bookmarking;
 
 import java.util.*;
-import com.bookmarking.search.*;
+import com.bookmarking.file.*;
 import org.junit.*;
 
 public class TestSearchClass

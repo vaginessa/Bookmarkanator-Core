@@ -2,6 +2,7 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.exception.*;
+import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -50,7 +51,7 @@ public class Settings
         throws Exception
     {
         Objects.requireNonNull(setting);
-        if (setting.getKey()==null && setting.value!=null)
+        if (setting.getKey()==null && setting.getValue()!=null)
         {
             throw new Exception("Value present without key");
         }
@@ -60,11 +61,12 @@ public class Settings
             setting.setGroup(DEFAULT_SETTINGS_GROUP);
         }
 
-        SettingsGroup group= this.groups.get(setting.getGroup());
+        SettingsGroup group = this.groups.get(setting.getGroup());
 
         if (group==null)
         {
             group = new SettingsGroup();
+            group.setSettingsContainer(this);
             group.setGroupName(setting.getGroup());
             this.groups.put(setting.getGroup(), group);
         }
@@ -74,7 +76,7 @@ public class Settings
             return;
         }
 
-        group.getSettings().put(setting.getKey(), setting);
+        group.getSettingsMap().put(setting.getKey(), setting);
     }
 
     public Set<AbstractSetting> getByType(Class typeClass)
@@ -85,7 +87,7 @@ public class Settings
         {
             SettingsGroup group = getGroups().get(s);
 
-            for (AbstractSetting abstractSetting: group.getSettings().values())
+            for (AbstractSetting abstractSetting: group.getSettingsMap().values())
             {
                 if (abstractSetting.getValue().getClass().equals(typeClass))
                 {
@@ -106,7 +108,7 @@ public class Settings
             return res;
         }
 
-        res.addAll(settingsGroup.getSettings().values());
+        res.addAll(settingsGroup.getSettingsMap().values());
 
         return res;
 
@@ -121,7 +123,7 @@ public class Settings
             return res;
         }
 
-        for (AbstractSetting abstractSetting: settingsGroup.getSettings().values())
+        for (AbstractSetting abstractSetting: settingsGroup.getSettingsMap().values())
         {
             if (abstractSetting.getValue().getClass().equals(typeClass))
             {
@@ -139,7 +141,7 @@ public class Settings
         if (settingsGroup==null)
         {return null;}
 
-        return settingsGroup.getSettings().get(key);
+        return settingsGroup.getSettingsMap().get(key);
     }
 
     public void renameGroup(String original, String newName)
@@ -168,16 +170,16 @@ public class Settings
             throw new Exception("Group "+group+" not found.");
         }
 
-        AbstractSetting abstractSetting = settingsGroup.getSettings().get(key);
+        AbstractSetting abstractSetting = settingsGroup.getSettingsMap().get(key);
         if (abstractSetting==null)
         {
             throw new Exception("Key "+key+" not found.");
         }
 
-        settingsGroup.getSettings().remove(key);
+        settingsGroup.getSettingsMap().remove(key);
 
         abstractSetting.setKey(newKey);
-        settingsGroup.getSettings().put(key, abstractSetting);
+        settingsGroup.getSettingsMap().put(key, abstractSetting);
     }
 
     public boolean deleteKeyValuePair(String group, String key)
@@ -186,7 +188,7 @@ public class Settings
 
         if (settingsGroup!=null)
         {
-            return settingsGroup.getSettings().remove(key)!=null;
+            return settingsGroup.getSettingsMap().remove(key)!=null;
         }
 
         return false;
@@ -203,7 +205,7 @@ public class Settings
 
         if (settingsGroup!=null)
         {
-            return settingsGroup.getSettings().remove(setting.getKey())!=null;
+            return settingsGroup.getSettingsMap().remove(setting.getKey())!=null;
         }
 
         return false;
@@ -253,7 +255,7 @@ public class Settings
             if (thisGroup==null)
             {
                 // Group not present. Add all settings.
-                for (AbstractSetting abstractSetting: otherGroup.getSettings().values())
+                for (AbstractSetting abstractSetting: otherGroup.getSettingsMap().values())
                 {
                     this.putSetting(abstractSetting);
                     hasChanged = true;
@@ -262,9 +264,9 @@ public class Settings
             else
             {
                 // Group present. Selectively add settings.
-                for (AbstractSetting abstractSetting: otherGroup.getSettings().values())
+                for (AbstractSetting abstractSetting: otherGroup.getSettingsMap().values())
                 {
-                    if (!thisGroup.getSettings().containsKey(abstractSetting.getKey()))
+                    if (!thisGroup.getSettingsMap().containsKey(abstractSetting.getKey()))
                     {
                         this.putSetting(abstractSetting);
                         hasChanged = true;

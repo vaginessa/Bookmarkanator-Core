@@ -1,7 +1,6 @@
-package com.bookmarking.bookmark;
+package com.bookmarking.structure;
 
 import java.util.*;
-import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -255,6 +254,23 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         }
     }
 
+    /**
+     * @return  The UI element that this bookmark is able to communicate with.
+     */
+    public BookmarkUIInterface getUiInterface()
+    {
+        return uiInterface;
+    }
+
+    /**
+     * The class that represents this bookmark to the user.
+     * @param uiInterface  The UI element that this bookmark is able to communicate with.
+     */
+    public void setUiInterface(BookmarkUIInterface uiInterface)
+    {
+        this.uiInterface = uiInterface;
+    }
+
     // ============================================================
     // Abstract Methods
     // ============================================================
@@ -330,19 +346,11 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract void systemShuttingDown();
 
     /**
-     * @return  The UI element that this bookmark is able to communicate with.
+     * This method is used to determine if this bookmark knows what to do with the string data supplied. For example if there were a drag and drop
+     * action on a bookmark, the data could be encoded in string form, and each bookmark could determine if they want to handle it or not.
+     * @param data  The data the should be consumed.
+     * @return  True if this bookmark can handle this form of data, false otherwise.
      */
-    public BookmarkUIInterface getUiInterface()
-    {
-        return uiInterface;
-    }
+    public abstract boolean canConsume(String data);
 
-    /**
-     * The class that represents this bookmark to the user.
-     * @param uiInterface  The UI element that this bookmark is able to communicate with.
-     */
-    public void setUiInterface(BookmarkUIInterface uiInterface)
-    {
-        this.uiInterface = uiInterface;
-    }
 }

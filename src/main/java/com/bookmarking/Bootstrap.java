@@ -2,12 +2,9 @@ package com.bookmarking;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarking.action.*;
-import com.bookmarking.bookmark.*;
-import com.bookmarking.fileservice.*;
-import com.bookmarking.io.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.ui.*;
+import com.bookmarking.structure.*;
+import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -31,7 +28,7 @@ public class Bootstrap
     public static final String OVERRIDDEN_CLASSES = "overridden-classes";
     public static final String DEFAULT_CLASSES_GROUP_NAME = "default-classes";
     public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
-    public static String IO_INTERFACE_KEY = IOInterface.class.getCanonicalName();
+    public static String IO_INTERFACE_KEY = com.bookmarking.structure.IOInterface.class.getCanonicalName();
 
     // Fields
     private IOInterface IOInterface;
@@ -41,6 +38,13 @@ public class Bootstrap
     public void init()
         throws Exception
     {
+
+        //TODO Settings needed to load:
+        // IO interface class - and it's settings.
+        // Overriding classes.
+        // Module locations directory.
+        // Auto save time and enable/disable.
+
         Bootstrap.bootstrap = this;
         // Get settings file
         File currentDir = new File(".");

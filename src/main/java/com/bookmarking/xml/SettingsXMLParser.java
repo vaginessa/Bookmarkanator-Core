@@ -4,6 +4,7 @@ import java.io.*;
 import javax.xml.parsers.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLParser implements FileReaderInterface<Settings>
@@ -63,9 +64,15 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     }
 
     @Override
-    public void setObject(Settings obj)
+    public void setObject(Settings settings)
     {
-        this.settings = obj;
+        this.settings = settings;
+    }
+
+    @Override
+    public Settings getObject()
+    {
+        return settings;
     }
 
     @Override

@@ -1,10 +1,9 @@
-package com.bookmarking;
+package com.bookmarking.util;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.zip.*;
-import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 import org.reflections.*;
 import org.reflections.util.*;

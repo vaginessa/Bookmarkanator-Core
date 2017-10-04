@@ -1,5 +1,7 @@
 package com.bookmarking.settings;
 
+import com.bookmarking.structure.*;
+
 public class ClassSetting extends AbstractSetting<Class>
 {
     public ClassSetting()

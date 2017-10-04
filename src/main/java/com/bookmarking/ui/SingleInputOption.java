@@ -1,7 +1,7 @@
 package com.bookmarking.ui;
 
 import java.util.*;
-import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
 
 /**
  * Represents a single input field, The value in the AbstractSetting would be initially empty, and

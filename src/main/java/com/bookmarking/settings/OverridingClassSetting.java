@@ -2,7 +2,8 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.*;
-import com.bookmarking.io.*;
+import com.bookmarking.structure.*;
+import com.bookmarking.util.*;
 
 public class OverridingClassSetting extends ClassSetting
 {

@@ -1,6 +1,7 @@
-package com.bookmarking.fileservice;
+package com.bookmarking.structure;
 
 import java.io.*;
+import com.bookmarking.fileservice.*;
 
 /**
  * Interface that needs to be implemented by things wishing to use FileSync objects.
@@ -14,6 +15,8 @@ public interface FileReaderInterface<T>
         throws Exception;
 
     void setObject(T obj);
+
+    T getObject();
 
     void validate(InputStream inputStream)
         throws Exception;

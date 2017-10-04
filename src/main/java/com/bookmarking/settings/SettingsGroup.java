@@ -1,26 +1,29 @@
 package com.bookmarking.settings;
 
 import java.util.*;
+import com.bookmarking.structure.*;
 
 public class SettingsGroup implements Comparable
 {
     // <Key, AbstractSetting>
-    private Map<String, AbstractSetting> settings;
+    private Map<String, AbstractSetting> settingsMap;
     private String groupName;
+    // A reference to the containing settings object.
+    private Settings settings;
 
     public SettingsGroup()
     {
-        settings = new HashMap<>();
+        settingsMap = new HashMap<>();
     }
 
-    public Map<String, AbstractSetting> getSettings()
+    public Map<String, AbstractSetting> getSettingsMap()
     {
-        return settings;
+        return settingsMap;
     }
 
-    public void setSettings(Map<String, AbstractSetting> settings)
+    public void setSettingsMap(Map<String, AbstractSetting> settings)
     {
-        this.settings = settings;
+        this.settingsMap = settings;
     }
 
     public String getGroupName()
@@ -31,6 +34,16 @@ public class SettingsGroup implements Comparable
     public void setGroupName(String groupName)
     {
         this.groupName = groupName;
+    }
+
+    public Settings getSettingsContainer()
+    {
+        return settings;
+    }
+
+    public void setSettingsContainer(Settings settingsContainer)
+    {
+        this.settings = settingsContainer;
     }
 
     @Override

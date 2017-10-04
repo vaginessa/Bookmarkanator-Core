@@ -2,6 +2,7 @@ package com.bookmarking.fileservice;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.structure.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
@@ -173,13 +174,14 @@ public class FileSync<T>
 
             try
             {
+                obj = fileReader.getObject();
                 fileReader.validate(fin);
                 fin.close();
 
                 handleBackup(file, fileReader.getFileBackupPolicy());
 
                 fin = new FileInputStream(file);
-                obj = fileReader.parse(fin);
+                fileReader.parse(fin);
                 fin.close();
             }
             catch (Exception e)

@@ -1,16 +1,18 @@
-package com.bookmarking.io;
+package com.bookmarking.file;
 
 import java.io.*;
 import java.text.*;
 import java.util.*;
-import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.ui.*;
+import com.bookmarking.structure.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * A file system implementation of the IOInterface. This implementation loads/saves only from the local file system.
+ */
 public class FileIO implements IOInterface
 {
     // Static fields

@@ -1,4 +1,4 @@
-package com.bookmarking.ui;
+package com.bookmarking.structure;
 
 public interface ActionUIInterface extends UIInterface
 {

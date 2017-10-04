@@ -1,9 +1,12 @@
 package com.bookmarking.settings;
 
 import java.util.*;
+import com.bookmarking.*;
 
 public class BootstrapSettings
 {
+    private static String CORE_SETTINGS = "Core Settings";
+
     private Settings mainSettings;
     private Settings ioSettings;
 
@@ -38,5 +41,32 @@ public class BootstrapSettings
         Objects.requireNonNull(ioSettings);
 
         this.ioSettings = ioSettings;
+    }
+
+    public List<SettingsGroup> getMainGroups()
+    {
+        List<SettingsGroup> settingsGroups = new ArrayList<>(mainSettings.getGroups().values());
+        Collections.sort(settingsGroups);
+        return settingsGroups;
+    }
+
+    public List<SettingsGroup> getIOGroups()
+    {
+        List<SettingsGroup> settingsGroups = new ArrayList<>(ioSettings.getGroups().values());
+        Collections.sort(settingsGroups);
+        return settingsGroups;
+    }
+
+    public String getIOInterfaceName()
+    {
+        String ioInterfaceName = Bootstrap.use().getIOInterface().getClass().getName();
+        ioInterfaceName = ioInterfaceName.substring(ioInterfaceName.lastIndexOf('.'), ioInterfaceName.length());
+        ioInterfaceName = ioInterfaceName.replaceAll("\\.","");
+        return ioInterfaceName;
+    }
+
+    public String getMainSettingsName()
+    {
+        return CORE_SETTINGS;
     }
 }

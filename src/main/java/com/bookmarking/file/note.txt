@@ -1,0 +1,2 @@
+This package is the default implementation for the IOInterface implementation. It contains the classes needed to support this implementation.
+Other implementations could be added but they would be external to this project.

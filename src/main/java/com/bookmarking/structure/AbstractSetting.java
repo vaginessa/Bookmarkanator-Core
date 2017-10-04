@@ -1,4 +1,4 @@
-package com.bookmarking.settings;
+package com.bookmarking.structure;
 
 import java.util.*;
 import org.apache.logging.log4j.*;

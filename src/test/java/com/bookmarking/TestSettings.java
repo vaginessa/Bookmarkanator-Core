@@ -3,6 +3,7 @@ package com.bookmarking;
 import java.io.*;
 import java.util.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
 import com.bookmarking.xml.*;
 import org.junit.*;
 
@@ -48,12 +49,12 @@ public class TestSettings
             SettingsGroup settingsGroup2 = settings2.getGroups().get(s);
             Assert.assertNotNull(settingsGroup2);
 
-            for (String ss: settingsGroup.getSettings().keySet())
+            for (String ss: settingsGroup.getSettingsMap().keySet())
             {
-                AbstractSetting abstractSetting = settingsGroup.getSettings().get(ss);
+                AbstractSetting abstractSetting = settingsGroup.getSettingsMap().get(ss);
                 Assert.assertNotNull(abstractSetting);
 
-                AbstractSetting abstractSetting2 = settingsGroup2.getSettings().get(ss);
+                AbstractSetting abstractSetting2 = settingsGroup2.getSettingsMap().get(ss);
                 Assert.assertNotNull(abstractSetting2);
 
                 Assert.assertEquals(abstractSetting.getGroup(), abstractSetting2.getGroup());

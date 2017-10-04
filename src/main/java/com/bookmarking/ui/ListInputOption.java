@@ -1,7 +1,7 @@
 package com.bookmarking.ui;
 
 import java.util.*;
-import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
 
 public class ListInputOption<T extends AbstractSetting> extends AbstractInputOption
 {

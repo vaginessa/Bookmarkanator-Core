@@ -5,10 +5,10 @@ import java.text.*;
 import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
-import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
-import com.bookmarking.io.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.structure.*;
+import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
@@ -217,6 +217,12 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
     public void setObject(IOInterface obj)
     {
         this.ioInterface = obj;
+    }
+
+    @Override
+    public IOInterface getObject()
+    {
+        return ioInterface;
     }
 
     @Override

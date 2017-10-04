@@ -3,7 +3,7 @@
     <group name="default-classes">
         <class>
             <setting>
-                <key>com.bookmarking.io.IOInterface</key>
+                <key>com.bookmarking.structure.IOInterface</key>
                 <value>java.lang.String</value>
             </setting>
         </class>
