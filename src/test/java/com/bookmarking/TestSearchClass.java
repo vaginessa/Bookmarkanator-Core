@@ -124,6 +124,7 @@ public class TestSearchClass
         Assert.assertFalse(ids.contains(2));
     }
 
+    @Ignore
     @Test
     public void testSearch()
     {

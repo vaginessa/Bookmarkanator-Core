@@ -37,12 +37,23 @@ public class ModuleLoader
     // Methods
     // ============================================================
 
+    /**
+     * Can be called to cause jar paths to be searched again, and jars loaded if found.
+     * @return  The classloader used to load these jars.
+     * @throws Exception
+     */
     public ClassLoader addModulesToClasspath()
         throws Exception
     {
         return this.addJarsToClassloader();
     }
 
+    /**
+     * Add and load jars from the supplied locations
+     * @param jarLocations  the locations (in string form) to look for jars to load.
+     * @return  The classloader used to load these jars.
+     * @throws Exception
+     */
     public ClassLoader addModulesToClasspath(Collection<String> jarLocations)
         throws Exception
     {
@@ -69,6 +80,12 @@ public class ModuleLoader
         return this.addJarsToClassloader();
     }
 
+    /**
+     * Add and load jars from the supplied locations
+     * @param jarLocations  the locations to look for jars to load.
+     * @return  The classloader used to load these jars.
+     * @throws Exception
+     */
     public ClassLoader addModulesToClasspath(Set<File> jarLocations)
         throws Exception
     {
@@ -93,6 +110,10 @@ public class ModuleLoader
         return this.addJarsToClassloader();
     }
 
+    /**
+     * Adds a class to track. It will track all instances of this class or interface.
+     * @param clazz  The class to track.
+     */
     public void addClassToTrack(Class clazz)
     {
         if (clazz == null)
@@ -110,9 +131,29 @@ public class ModuleLoader
         }
     }
 
+    /**
+     * Returns a set of classes loaded that are instances of the class name supplied.
+     * @param className  the class name to use for locating tracked classes.
+     * @return  A set of classes that are instances of the class represented by className.
+     */
     public Set<Class> getClassesLoaded(String className)
     {
-        return classesToTrackMap.get(className);
+        if (className==null || className.trim().isEmpty())
+        {
+            return null;
+        }
+
+        try
+        {
+            Class clazz = Class.forName(className);
+            return classesToTrackMap.get(clazz);
+        }
+        catch (ClassNotFoundException e)
+        {
+            logger.error(e);
+        }
+
+        return null;
     }
 
     public Set<Class> getClassesLoaded(Class clazz)
@@ -120,6 +161,14 @@ public class ModuleLoader
         return classesToTrackMap.get(clazz);
     }
 
+    /**
+     * Instantiates a class.
+     * @param className  The name of the class to instantiate.
+     * @param toCast  The class to return. Could be a super type, with the classname representing the specific implementation.
+     * @param <T>  The class type
+     * @return  an instance of className casted to toCast<T> type.
+     * @throws Exception
+     */
     public <T> T loadClass(String className, Class<T> toCast)
         throws Exception
     {
@@ -131,6 +180,10 @@ public class ModuleLoader
         return sub.newInstance();
     }
 
+    /**
+     * Gets all the classes this module loader is tracking (not the ones found)
+     * @return  A set of classes this module loader is looking for.
+     */
     public Set<Class> getTrackedClasses()
     {
         return classesToTrackMap.keySet();

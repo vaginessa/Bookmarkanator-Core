@@ -25,10 +25,10 @@ public class TestXMLValidator
         throws Exception
     {
         // TODO Modify example settings file to reflect settings changes.
-        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
-        InputStream xml = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsXMLTemplate.xml");
+//        InputStream xsd = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsStructure.xsd");
+//        InputStream xml = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/SettingsXMLTemplate.xml");
 
-        XMLValidator.validate(xml, xsd);
-        System.out.println();
+//        XMLValidator.validate(xml, xsd);
+//        System.out.println();
     }
 }

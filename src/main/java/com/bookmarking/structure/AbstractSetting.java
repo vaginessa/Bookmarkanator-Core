@@ -27,7 +27,7 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
     }
 
     public void setValue(T value)
-        throws ClassNotFoundException
+        throws ClassNotFoundException, Exception
     {
         this.value = value;
     }
