@@ -2,9 +2,12 @@ package com.bookmarking;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.file.*;
+import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
+import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -12,9 +15,6 @@ import org.apache.logging.log4j.*;
  */
 public class Bootstrap
 {
-    // The user interface that this class can interact with to show status and post messages.
-    private BootstrapUIInterface uiInterface;
-
     // Static fields
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
     private static Bootstrap bootstrap;
@@ -23,22 +23,34 @@ public class Bootstrap
     private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
     private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmarkanator";
 
-    // Settings field keys
+    // Settings keys
+    private static final String GLOBAL_SETTINGS_KEY = "GLOBAL_SETTINGS";
+
+    // Module loader keys
     private static final String MODULE_LOCATIONS_KEY = "module-locations";
+    private static final String TRACKED_CLASSES_KEY = "tracked-classes";
     public static final String OVERRIDDEN_CLASSES = "overridden-classes";
+
+    // General keys
     public static final String DEFAULT_CLASSES_GROUP_NAME = "default-classes";
-    public static final String BKIO_CONFIGS = "bookmark-io-interface-configs";
+    public static final String INIT_SETTING_KEY = "init-setting";
+
     public static String IO_INTERFACE_KEY = com.bookmarking.structure.IOInterface.class.getCanonicalName();
 
     // Fields
-    private IOInterface IOInterface;
+    private IOInterface ioInterface;
     private File settingsFile;
+    private Settings settings;
     private Saver saver;
+    // The user interface that this class can interact with to show status and post messages.
+    private BootstrapUIInterface uiInterface;
 
     public void init()
         throws Exception
     {
-
+        logger.info("-----------------------------------------------------------------");
+        logger.info("Init Bootstrap");
+        logger.info("-----------------------------------------------------------------");
         //TODO Settings needed to load:
         // IO interface class - and it's settings.
         // Overriding classes.
@@ -46,19 +58,58 @@ public class Bootstrap
         // Auto save time and enable/disable.
 
         Bootstrap.bootstrap = this;
+
+        // Search for and load settings file. This determines operating directory.
+        initSettings();
+
+        // Use module locations from settings to locate and load modules, as well as
+        // tracked classes.
+        initModules();
+
+        // Load IO interface specified in settings or the default IO interface.
+        initIOInterface();
+
+        System.out.println("Begin saving thread.");
+        saver = Saver.use(this);
+        saver.start();
+    }
+
+    public void exit()
+    {
+        saver.quit();
+    }
+
+    /**
+     * Locates and loads settings file. If none exists it will create one.
+     * This determines operating directory.
+     */
+    private void initSettings()
+        throws Exception
+    {
+        logger.trace("Obtaining Main Settings");
+
         // Get settings file
         File currentDir = new File(".");
         logger.info("Current directory " + currentDir.getCanonicalPath());
         logger.info("Locating settings file...");
         settingsFile = locateSettingsDirectory();
 
-        // Configure the global settings object
-        GlobalSettings.use().setFile(settingsFile);
-        GlobalSettings.use().readFromDisk();
+        FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
+        FileService.use().addFile(fileSync, GLOBAL_SETTINGS_KEY);
 
-        // Add default settings
-        GlobalSettings.use().getSettings().importSettings(getDefaultSettings());
+        fileSync.readFromDisk();
+        this.settings = fileSync.getParsedObject();
 
+        this.settings.importSettings(getDefaultSettings());
+    }
+
+    /**
+     * Obtains module locations, and tracked classes from the settings, and
+     * attempts to locate and load them.
+     */
+    private void initModules()
+        throws Exception
+    {
         // Track the classes that can be overridden externally...
         ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
         ModuleLoader.use().addClassToTrack(IOInterface.class);
@@ -66,7 +117,7 @@ public class Bootstrap
         ModuleLoader.use().addClassToTrack(FileReaderInterface.class);
         ModuleLoader.use().addClassToTrack(FileWriterInterface.class);
 
-        Set<AbstractSetting> moduleLocations = GlobalSettings.use().getSettings().getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_KEY, File.class);
+        Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_KEY, File.class);
 
         Set<File> jarLocations = new HashSet<>();
         for (AbstractSetting abstractSetting : moduleLocations)
@@ -82,24 +133,23 @@ public class Bootstrap
         {// Locate the tracked classes
             ModuleLoader.use().addModulesToClasspath();
         }
+    }
 
-        this.IOInterface = loadIOInterface();
+    /**
+     * Load IO interface based on settings entries, and if it cannot be found it loads the default
+     * FileIO interface.
+     */
+    private void initIOInterface()
+        throws Exception
+    {
+        this.ioInterface = loadIOInterface();
 
         // Give bookmark access to the message board
         MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs : this.IOInterface.getAllBookmarks())
+        for (AbstractBookmark abs : this.ioInterface.getAllBookmarks())
         {
             messageBoard.setSecretKey(abs);
         }
-
-        System.out.println("Begin saving thread.");
-        saver = Saver.use(this);
-        saver.start();
-    }
-
-    public void exit()
-    {
-        saver.quit();
     }
 
     // ============================================================
@@ -109,32 +159,34 @@ public class Bootstrap
     public BootstrapSettings getSettings()
     {
         BootstrapSettings res = new BootstrapSettings();
-        res.setMainSettings(GlobalSettings.use().getSettings());
+        res.setMainSettings(settings);
         res.setIoSettings(this.getIOInterface().getSettings());
         return res;
     }
 
     public void setSettings(BootstrapSettings bootstrapSettings)
     {
-        GlobalSettings.use().setSettings(bootstrapSettings.getMainSettings());
+        settings = bootstrapSettings.getMainSettings();
         getIOInterface().setSettings(bootstrapSettings.getIoSettings());
     }
 
     public IOInterface getIOInterface()
     {
-        return this.IOInterface;
+        return this.ioInterface;
     }
 
     synchronized public void saveSettingsFile()
         throws Exception
     {
-        GlobalSettings.use().writeToDisk();
+        FileSync<Settings> fileSync = FileService.use().getFile(GLOBAL_SETTINGS_KEY);
+        fileSync.setObjectToWrite(settings);
+        fileSync.writeToDisk();
     }
 
-    public String getSettingsFile()
+    public File getSettingsFile()
         throws IOException
     {
-        return settingsFile.getCanonicalPath();
+        return settingsFile;
     }
 
     // ============================================================
@@ -142,62 +194,69 @@ public class Bootstrap
     // ============================================================
 
     /**
-     * Loads the BKIOInterface class that is specified in the settings file, or the default setting added to the settings file.
+     * Loads the IOInterface class that is specified in the settings file, or the default FileIO implementation.
      *
-     * @return A BKIOInterface class that was loaded.
+     * @return A IOInterface class that was loaded.
      * @throws Exception
      */
     private IOInterface loadIOInterface()
         throws Exception
     {
-        Set<Class> classes = ModuleLoader.use().getClassesLoaded(IOInterface.class);
+        logger.trace("Searching for default IO interface setting");
+        String config = null;
+        AbstractSetting defaultIOInterface = settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP_NAME, IOInterface.class.getCanonicalName());
+        Class ioInterfaceFound = null;
 
-        //TODO do this if there is no default, or if the default is not found.
-
-        for (Class clazz : classes)
-        {//Iterate through bkio classes found, selecting the correct one based on settings.
-            try
+        if (defaultIOInterface!=null)
+        {
+            if (defaultIOInterface instanceof ClassSetting)
             {
-                logger.trace("Attempting to load bookmark io interface \"" + clazz.getCanonicalName() + "\"");
-                //Attempting to load the config setting for this class
-                AbstractSetting configSetting = GlobalSettings.use().getSettings().getSetting(Bootstrap.BKIO_CONFIGS, clazz.getCanonicalName());
-                String config = null;
-
-                if (configSetting != null)
-                {
-                    if (configSetting.getValue() instanceof String)
-                    {
-                        config = (String) configSetting.getValue();
-                    }
-                }
-
-                if (config == null)
-                {
-                    config = "";
-                }
-
-                IOInterface bkio2 = ModuleLoader.use().loadClass(clazz.getCanonicalName(), IOInterface.class);
-
-                logger.info(
-                    "Loaded BKIOInterface class: \"" + clazz + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
-                logger.info("Calling use()...");
-                if (uiInterface != null)
-                {
-                    bkio2.setUIInterface(uiInterface.getIOUIInterface());
-                }
-                bkio2.init(config);
-                logger.info("Done.");
-
-                return bkio2;
+                ioInterfaceFound = ((ClassSetting)defaultIOInterface).getValue();
             }
-            catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
+            else if (defaultIOInterface instanceof StringSetting)
             {
-                //Print the error and move on to try loading the next class.
-                e.printStackTrace();
+                ioInterfaceFound = Class.forName(((StringSetting) defaultIOInterface).getValue());
             }
         }
 
-        throw new Exception("No valid BKIOInterface classes could be loaded.");
+        if (ioInterfaceFound==null)
+        {// It is still null so load default FileIO interface
+            ioInterfaceFound = FileIO.class;
+        }
+
+        Objects.requireNonNull(ioInterfaceFound);
+
+        // Obtain the init setting for this particular IO interface implementation.
+        AbstractSetting configSetting = settings.getSetting(ioInterfaceFound.getCanonicalName(), INIT_SETTING_KEY);
+
+        if (configSetting!=null)
+        {
+            config = configSetting.getValue().toString();
+        }
+        else
+        {
+            config = "";
+        }
+
+        IOInterface bkio2 = ModuleLoader.use().loadClass(ioInterfaceFound.getCanonicalName(), IOInterface.class);
+
+        Objects.requireNonNull(bkio2);
+
+        logger.info("Loaded BKIOInterface class: \"" + ioInterfaceFound.getCanonicalName() + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
+
+        // Allow the IO interface to have access to the UI interface if present to send init messages/statuses
+        if (uiInterface != null)
+        {
+            bkio2.setUIInterface(uiInterface.getIOUIInterface());
+        }
+
+        logger.info("Calling init on IO interface...");
+
+        bkio2.init(config);
+
+        logger.info("Done.");
+
+        return bkio2;
     }
 
     /**
@@ -306,7 +365,7 @@ public class Bootstrap
 
     public static IOInterface IOInterface()
     {
-        return Bootstrap.use().IOInterface;
+        return Bootstrap.use().ioInterface;
     }
 
     public static Bootstrap use(BootstrapUIInterface uiInterface)

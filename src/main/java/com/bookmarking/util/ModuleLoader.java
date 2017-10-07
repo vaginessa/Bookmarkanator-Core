@@ -112,7 +112,22 @@ public class ModuleLoader
 
     public Set<Class> getClassesLoaded(String className)
     {
-        return classesToTrackMap.get(className);
+        if (className==null || className.trim().isEmpty())
+        {
+            return null;
+        }
+
+        try
+        {
+            Class clazz = Class.forName(className);
+            return classesToTrackMap.get(clazz);
+        }
+        catch (ClassNotFoundException e)
+        {
+            logger.error(e);
+        }
+
+        return null;
     }
 
     public Set<Class> getClassesLoaded(Class clazz)

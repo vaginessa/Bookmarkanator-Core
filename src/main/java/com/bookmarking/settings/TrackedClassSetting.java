@@ -5,23 +5,28 @@ import com.bookmarking.*;
 import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
 
-public class OverridingClassSetting extends ClassSetting
+/**
+ * This setting allows the overriding of tracked classes.
+ *
+ * The only valid values for this setting are classes that are tracked by the module loader.
+ */
+public class TrackedClassSetting extends ClassSetting
 {
-    public OverridingClassSetting()
+    public TrackedClassSetting()
         throws Exception
     {
         super();
         this.setGroup(Bootstrap.OVERRIDDEN_CLASSES);
     }
 
-    public OverridingClassSetting(String key)
+    public TrackedClassSetting(String key)
         throws Exception
     {
         this();
 
     }
 
-    public OverridingClassSetting(String group, String key, Class value)
+    public TrackedClassSetting(String group, String key, Class value)
         throws Exception
     {
         this();
@@ -78,8 +83,7 @@ public class OverridingClassSetting extends ClassSetting
     }
 
     /**
-     * The key must be a super class
-     * @return
+     * The only valid values for key are the classes tracked by module loader.
      */
     public List<Class> getKeyOptions()
     {

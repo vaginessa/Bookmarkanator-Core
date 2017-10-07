@@ -3,6 +3,7 @@ package com.bookmarking.file;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
@@ -67,7 +68,7 @@ public class FileIO implements IOInterface
         if (config == null || config.trim().isEmpty())
         {//
             logger.trace("No file location sent in. Inferring location from settings file used.");
-            File settingsFile = GlobalSettings.use().getFile();
+            File settingsFile = Bootstrap.use().getSettingsFile();
             Objects.requireNonNull(settingsFile, "Settings file is not set.");
 
             String parent = settingsFile.getParent();

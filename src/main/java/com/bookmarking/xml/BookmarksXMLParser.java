@@ -6,7 +6,6 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
-import com.bookmarking.settings.*;
 import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
@@ -176,7 +175,7 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    AbstractSetting setting = GlobalSettings.use().getSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
+                    AbstractSetting setting = Bootstrap.use().getSettings().getMainSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES, className);
 
                     if (setting != null)
                     {//Override class name specified in bookmark file with one specified in the settings file.
