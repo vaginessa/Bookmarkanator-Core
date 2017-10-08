@@ -2,6 +2,7 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.*;
+import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
 
 /**
@@ -11,6 +12,15 @@ import com.bookmarking.util.*;
  */
 public class TrackedClassSetting extends ClassSetting
 {
+
+    private static final Set<Class> whiteList;
+
+    static
+    {
+        whiteList = new HashSet<>();
+        whiteList.add(IOInterface.class);
+    }
+
     private static List<Class> trackedClasses;
     private static Map<Class, List<Class>> classesMap;
 
@@ -18,7 +28,7 @@ public class TrackedClassSetting extends ClassSetting
         throws Exception
     {
         super();
-        this.setGroup(Bootstrap.TRACKED_CLASSES_GROUP);
+        super.setGroup(Bootstrap.TRACKED_CLASSES_GROUP);
     }
 
     public TrackedClassSetting(String key)
@@ -93,7 +103,7 @@ public class TrackedClassSetting extends ClassSetting
             throw new Exception("Cannot accept class \""+key+"\" as it is not a tracked class");
         }
 
-        setKey(key);
+        super.setKey(key);
     }
 
     /**
@@ -106,9 +116,26 @@ public class TrackedClassSetting extends ClassSetting
     {
         if (trackedClasses == null)
         {
-            Set<Class> classes = ModuleLoader.use().getTrackedClasses();
-            List res = new ArrayList(classes);
-            Collections.sort(res);
+            Set<ComparableClass> comparableClasses = new HashSet<>();
+
+            for (Class clazz: ModuleLoader.use().getTrackedClasses())
+            {
+                if (whiteList.contains(clazz))
+                {
+                    comparableClasses.add(new ComparableClass(clazz));
+                }
+            }
+
+            List<ComparableClass> tmp = new ArrayList<>(comparableClasses);
+            Collections.sort(tmp);
+
+            List<Class> res = new ArrayList<>();
+
+            for (ComparableClass comparableClass: comparableClasses)
+            {
+                res.add(comparableClass.getClazz());
+            }
+
             trackedClasses = res;
         }
         return trackedClasses;
@@ -129,18 +156,43 @@ public class TrackedClassSetting extends ClassSetting
 
             for (Class clazz: getKeyOptions())
             {
-                Set<Class> classesSet = ModuleLoader.use().getClassesLoaded(clazz);
+                Set<ComparableClass> comparableClasses = new HashSet<>();
 
-                if (classesSet!=null)
+                for (Class c: ModuleLoader.use().getClassesLoaded(clazz))
                 {
-                    List res = new ArrayList(classesSet);
-                    Collections.sort(res);
+                    comparableClasses.add(new ComparableClass(c));
+                }
+
+                if (comparableClasses!=null)
+                {
+                    List<ComparableClass> tmp = new ArrayList<>(comparableClasses);
+                    Collections.sort(tmp);
+
+                    List<Class> res = new ArrayList<>();
+
+                    for (ComparableClass comparableClass: comparableClasses)
+                    {
+                        res.add(comparableClass.getClazz());
+                    }
+
                     classesMap.put(clazz, res);
                 }
                 else
                 {
                     classesMap.put(clazz, new ArrayList<>());
                 }
+            }
+        }
+
+        if (trackedClass==null && getKey() !=null)
+        {// Use key as the tracked class if present
+            try
+            {
+                trackedClass = Class.forName(getKey());
+            }
+            catch (ClassNotFoundException e)
+            {
+                e.printStackTrace();
             }
         }
 
@@ -152,5 +204,32 @@ public class TrackedClassSetting extends ClassSetting
         }
 
         return classesFound;
+    }
+
+    private class ComparableClass implements Comparable<ComparableClass>
+    {
+        private Class clazz;
+
+        public ComparableClass(Class clazz)
+        {
+            this.clazz = clazz;
+        }
+
+        public Class getClazz()
+        {
+            return clazz;
+        }
+
+        public void setClazz(Class clazz)
+        {
+            this.clazz = clazz;
+        }
+
+
+        @Override
+        public int compareTo(ComparableClass o)
+        {
+            return clazz.getCanonicalName().compareTo(o.getClazz().getCanonicalName());
+        }
     }
 }
