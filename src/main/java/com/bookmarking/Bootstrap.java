@@ -152,6 +152,7 @@ public class Bootstrap
         ModuleLoader.use().addClassToTrack(AbstractAction.class);
         ModuleLoader.use().addClassToTrack(FileReaderInterface.class);
         ModuleLoader.use().addClassToTrack(FileWriterInterface.class);
+        ModuleLoader.use().addClassToTrack(String.class);
 
         Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_GROUP, File.class);
 
