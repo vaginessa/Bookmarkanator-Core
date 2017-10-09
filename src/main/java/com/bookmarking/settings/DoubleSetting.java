@@ -20,5 +20,4 @@ public class DoubleSetting extends AbstractSetting<Double>
         super(group, key, value);
     }
 
-
 }

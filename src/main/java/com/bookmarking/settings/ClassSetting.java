@@ -26,11 +26,54 @@ public class ClassSetting extends AbstractSetting<Class>
         Class.forName(key);
     }
 
+    public Class keyAsClass()
+    {
+        try
+        {
+            return Class.forName(getKey());
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
     @Override
     public void setKey(String key)
         throws Exception
     {
         super.setKey(key);
         Class.forName(key);
+    }
+
+    @Override
+    public boolean isKeyValid(String key)
+    {
+        if (key==null)
+        {
+            return false;
+        }
+
+        try
+        {
+            Class.forName(key);
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isValueValid(Class value)
+    {
+        if (value==null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

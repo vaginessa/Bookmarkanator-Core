@@ -18,5 +18,4 @@ public class FileSetting extends AbstractSetting<File>
     {
         super(group, key, value);
     }
-
 }

@@ -199,4 +199,37 @@ public class OverridingClassSetting extends ClassSetting
 
         return classesFound;
     }
+
+    @Override
+    public boolean isKeyValid(String key)
+    {
+        if (key==null)
+        {
+            return false;
+        }
+
+        Class clazz;
+
+        try
+        {
+            clazz = Class.forName(key);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        if (!getKeyOptions().contains(clazz))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isValueValid(Class value)
+    {
+        return value!=null && getValueOptions(keyAsClass()).contains(value);
+    }
 }

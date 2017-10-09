@@ -4,14 +4,14 @@
 
     <xs:element name='settings'>
         <xs:complexType>
-            <xs:choice maxOccurs="unbounded">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="group" type="group" minOccurs="0" maxOccurs="unbounded"/>
             </xs:choice>
         </xs:complexType>
     </xs:element>
 
     <xs:complexType name='group'>
-        <xs:choice maxOccurs="unbounded">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="string" type="string" maxOccurs="unbounded"/>
             <xs:element name="file" type="file" maxOccurs="unbounded"/>
             <xs:element name="boolean" type="boolean" maxOccurs="unbounded"/>
@@ -24,37 +24,37 @@
 
     <xs:complexType name="string">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="file">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="boolean">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="class">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="double">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="integer">
         <xs:sequence>
-            <xs:element name="setting" type="setting" maxOccurs='unbounded'/>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
 

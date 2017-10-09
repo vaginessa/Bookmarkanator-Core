@@ -47,6 +47,18 @@ public class InterfaceSelectSetting extends ClassSetting
         return trackedClasses;
     }
 
+    public List<Class> getValueOptions(String trackedClassName)
+    {
+        try
+        {
+            return getValueOptions(Class.forName(trackedClassName));
+        }
+        catch (Exception e)
+        {
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * Returns a list of valid values this class can accept as the value. If any other option is selected for the value an
      * exception will be thrown.
@@ -110,5 +122,40 @@ public class InterfaceSelectSetting extends ClassSetting
         }
 
         return classesFound;
+    }
+
+    @Override
+    public boolean isKeyValid(String key)
+    {
+        if (key==null)
+        {
+            return false;
+        }
+
+        Class clazz;
+
+        try
+        {
+            clazz = Class.forName(key);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        Set<Class> options = new HashSet<>(getKeyOptions());
+
+        if (options.contains(clazz))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isValueValid(Class value)
+    {
+        return value!=null && getValueOptions(keyAsClass()).contains(value);
     }
 }

@@ -27,7 +27,7 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
     }
 
     public void setValue(T value)
-        throws ClassNotFoundException, Exception
+        throws Exception
     {
         this.value = value;
     }
@@ -58,6 +58,21 @@ public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
         throws Exception
     {
         this.group = group;
+    }
+
+    public boolean isKeyValid(String key)
+    {
+        if (key==null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isValueValid(T value)
+    {
+        return true;
     }
 
     @Override
