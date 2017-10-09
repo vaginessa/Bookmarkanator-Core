@@ -186,11 +186,25 @@ public class FileSync<T>
             }
             catch (Exception e)
             {
+                if (fin.getChannel().isOpen())
+                {
+                    fin.close();
+                }
+
                 logger.error(e);
                 if (fileReader.getInvalidFilePolicy().equals(InvalidFilePolicy.markBadAndContinue))
                 {
-                    File newFile = new File(file.getPath() + File.separatorChar + file.getName() + ".bad");
-                    if (!file.renameTo(newFile))
+                    File newFile = new File(file.getParentFile().getPath() + File.separatorChar + file.getName() + ".bad");
+
+                    // Keeping this here just in case we are unable to rename file on other operating systems.
+//                    Files.move(file.toPath(), newFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                    logger.info("Attempting to rename bad file... ");
+                    if (file.renameTo(newFile))
+                    {
+                        logger.info("Success! Renamed \""+file.getCanonicalPath()+"\" file to \""+newFile.getCanonicalPath()+"\"");
+                    }
+                    else
                     {
                         logger.error("Couldn't rename bad file. " + file.getCanonicalPath());
                     }
