@@ -6,6 +6,7 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.settings.*;
 import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
