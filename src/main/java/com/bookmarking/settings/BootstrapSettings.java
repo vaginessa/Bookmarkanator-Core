@@ -1,7 +1,7 @@
 package com.bookmarking.settings;
 
 import java.util.*;
-import com.bookmarking.*;
+import com.bookmarking.bootstrap.*;
 
 public class BootstrapSettings
 {

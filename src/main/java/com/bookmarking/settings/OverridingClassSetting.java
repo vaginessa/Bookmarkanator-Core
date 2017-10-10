@@ -2,13 +2,16 @@ package com.bookmarking.settings;
 
 import java.lang.reflect.*;
 import java.util.*;
-import com.bookmarking.*;
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.util.*;
 
 /**
- * This class allows one to select one class that overrides another class with tracked classes only.
+ * This class allows one to select one class that overrides another class.
  * The classes available for selection (key values) are the tracked classes, and the classes available for
  * value selection are classes assignable from the key class.
+ *
+ * For example if one had two implementations of the same bookmark, this setting could be used to substitute one
+ * implementation class for another.
  */
 public class OverridingClassSetting extends ClassSetting
 {
@@ -19,14 +22,7 @@ public class OverridingClassSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(Bootstrap.TRACKED_CLASSES_GROUP);
-    }
-
-    public OverridingClassSetting(String key)
-        throws Exception
-    {
-        this();
-
+        super.setGroup(Bootstrap.OVERRIDDEN_CLASSES_GROUP);
     }
 
     public OverridingClassSetting(String group, String key, Class value)
@@ -46,6 +42,7 @@ public class OverridingClassSetting extends ClassSetting
             this.key = key;
         }
 
+        //TODO verify this action is correct.
         if (ModuleLoader.use().getTrackedClasses().contains(value))
         {
             if (value.isAssignableFrom(clazz))

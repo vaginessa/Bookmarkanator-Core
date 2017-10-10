@@ -1,7 +1,7 @@
-package com.bookmarking.structure;
+package com.bookmarking.ui;
 
 import java.util.*;
-import com.bookmarking.ui.*;
+import com.bookmarking.settings.*;
 
 /**
  * This interface is the base interface for all UI Interfaces. These interfaces will be used by any UI elements
@@ -51,5 +51,5 @@ public interface UIInterface
      * @param inputOption The object defining the group and parameters of the input option.
      * @return  The selected value populated into the BasicInputOption
      */
-    List<AbstractInputOption> requestUserInput(List<AbstractInputOption> inputOption);
+    List<InputOption> requestUserInput(List<InputOption> inputOption);
 }

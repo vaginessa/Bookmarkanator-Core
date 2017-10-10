@@ -2,9 +2,9 @@ package com.bookmarking.xml;
 
 import java.io.*;
 import javax.xml.parsers.*;
+import com.bookmarking.file.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.structure.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLParser implements FileReaderInterface<Settings>

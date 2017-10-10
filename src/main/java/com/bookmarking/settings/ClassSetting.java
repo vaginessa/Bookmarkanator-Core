@@ -1,7 +1,5 @@
 package com.bookmarking.settings;
 
-import com.bookmarking.structure.*;
-
 /**
  * This setting links one class to another so that things like setting default classes, and overriding classes can be set.
  * It only stores valid classes as keys and values.

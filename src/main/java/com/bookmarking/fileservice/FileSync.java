@@ -2,7 +2,7 @@ package com.bookmarking.fileservice;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarking.structure.*;
+import com.bookmarking.file.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 

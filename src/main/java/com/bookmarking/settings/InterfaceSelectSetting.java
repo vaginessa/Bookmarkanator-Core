@@ -2,12 +2,26 @@ package com.bookmarking.settings;
 
 import java.lang.reflect.*;
 import java.util.*;
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.util.*;
 
+/**
+ * This class is used to allow one to select a particular implementation of an interface or abstract class. For instance
+ * one could select FileIO or another implementation of the IOInterface.
+ */
 public class InterfaceSelectSetting extends ClassSetting
 {
     private static List<Class> trackedClasses;
     private static Map<Class, List<Class>> classesMap;
+
+    public InterfaceSelectSetting()
+        throws Exception
+    {
+        super();
+        super.setGroup(Bootstrap.DEFAULT_CLASSES_GROUP);
+    }
+
+    // TODO implement proper overridden versions of all constructors.
 
     /**
      * This method should be used to obtain a list of possible key values. If any other value is selected for the key an
@@ -47,11 +61,17 @@ public class InterfaceSelectSetting extends ClassSetting
         return trackedClasses;
     }
 
-    public List<Class> getValueOptions(String trackedClassName)
+    /**
+     * This method returns a list of valid options given the input string as key.
+     * @param potentialKey  The key one intends to assign to this object as key but hasn't is not yet in that stage of the process.
+     * @return  A list of tracked classes for the supplied potentialKey converted into a class. The key must be in the list of
+     * tracked classes.
+     */
+    public List<Class> getValueOptions(String potentialKey)
     {
         try
         {
-            return getValueOptions(Class.forName(trackedClassName));
+            return getValueOptions(Class.forName(potentialKey));
         }
         catch (Exception e)
         {

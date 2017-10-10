@@ -1,7 +1,6 @@
 package com.bookmarking.bookmark;
 
 import java.util.*;
-import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 public class TestBookmark extends AbstractBookmark

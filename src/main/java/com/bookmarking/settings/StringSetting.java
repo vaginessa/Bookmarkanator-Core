@@ -1,7 +1,6 @@
 package com.bookmarking.settings;
 
 import javax.xml.bind.annotation.*;
-import com.bookmarking.structure.*;
 
 @XmlType
 public class StringSetting extends AbstractSetting<String>

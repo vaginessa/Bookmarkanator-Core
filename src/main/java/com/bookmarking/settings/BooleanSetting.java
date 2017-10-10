@@ -1,7 +1,5 @@
 package com.bookmarking.settings;
 
-import com.bookmarking.structure.*;
-
 public class BooleanSetting extends AbstractSetting<Boolean>
 {
     public BooleanSetting()

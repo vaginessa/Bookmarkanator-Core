@@ -1,6 +1,6 @@
-package com.bookmarking.util;
+package com.bookmarking.settings;
 
-import com.bookmarking.*;
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 

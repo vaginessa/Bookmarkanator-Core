@@ -1,7 +1,5 @@
 package com.bookmarking.settings;
 
-import com.bookmarking.structure.*;
-
 public class IntegerSetting extends AbstractSetting<Integer>
 {
     public IntegerSetting()

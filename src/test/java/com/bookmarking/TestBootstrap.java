@@ -2,7 +2,7 @@ package com.bookmarking;
 
 import java.util.*;
 import com.bookmarking.bookmark.*;
-import com.bookmarking.structure.*;
+import com.bookmarking.bootstrap.*;
 import org.junit.*;
 
 public class TestBootstrap

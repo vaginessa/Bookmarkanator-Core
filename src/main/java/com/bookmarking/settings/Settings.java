@@ -2,7 +2,6 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.exception.*;
-import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 /**

@@ -3,11 +3,13 @@ package com.bookmarking.file;
 import java.io.*;
 import java.text.*;
 import java.util.*;
-import com.bookmarking.*;
+import com.bookmarking.bookmark.*;
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.io.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.structure.*;
+import com.bookmarking.util.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
@@ -174,6 +176,19 @@ public class FileIO implements IOInterface
     }
 
     @Override
+    public Set<String> extractTags(List<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abstractBookmark: bookmarks)
+        {
+            res.addAll(abstractBookmark.getTags());
+        }
+
+        return res;
+    }
+
+    @Override
     public Set<String> getSearchWords(Collection<UUID> bookmarkIds)
         throws Exception
     {
@@ -217,14 +232,14 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getClassNames(Collection<UUID> bookmarkIds)
+    public Set<Class> getBookmarkClasses(Collection<UUID> bookmarkIds)
     {
-        Set<String> res = new HashSet<>();
+        Set<Class> res = new HashSet<>();
+
         for (UUID uuid: bookmarkIds)
         {
-            AbstractBookmark bookmark = getBookmark(uuid);
-            Objects.requireNonNull(bookmark);
-            res.add(bookmark.getClass().getCanonicalName());
+            AbstractBookmark bk = getBookmark(uuid);
+            res.add(bk.getClass());
         }
 
         return res;
@@ -262,9 +277,9 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getAllBookmarkClassNames()
+    public Set<Class> getAllBookmarkClasses()
     {
-        return getClassNames(bookmarks.keySet());
+        return ModuleLoader.use().getClassesLoaded(AbstractBookmark.class);
     }
 
     @Override
@@ -439,13 +454,6 @@ public class FileIO implements IOInterface
     public void setUIInterface(IOUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;
-    }
-
-    @Override
-    public Set<AbstractSetting> getSettingsKeys()
-    {
-        //TODO Implement
-        return null;
     }
 
     // ----------

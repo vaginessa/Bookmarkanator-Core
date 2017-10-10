@@ -2,7 +2,7 @@ package com.bookmarking.search;
 
 import java.text.*;
 import java.util.*;
-import com.bookmarking.structure.*;
+import com.bookmarking.bookmark.*;
 
 /**
  * This class is used to filter a list of bookmarks.

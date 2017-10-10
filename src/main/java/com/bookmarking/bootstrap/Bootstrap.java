@@ -1,11 +1,13 @@
-package com.bookmarking;
+package com.bookmarking.bootstrap;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.action.*;
+import com.bookmarking.bookmark.*;
 import com.bookmarking.file.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.io.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.structure.*;
 import com.bookmarking.util.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
@@ -35,7 +37,7 @@ public class Bootstrap
     public static final String DEFAULT_CLASSES_GROUP = "default-classes";
     public static final String INIT_SETTING_KEY = "init-setting";
 
-    public static String IO_INTERFACE_KEY = com.bookmarking.structure.IOInterface.class.getCanonicalName();
+    public static String IO_INTERFACE_KEY = IOInterface.class.getCanonicalName();
 
     // Fields
     private IOInterface ioInterface;
@@ -44,6 +46,19 @@ public class Bootstrap
     private Saver saver;
     // The user interface that this class can interact with to show status and post messages.
     private BootstrapUIInterface uiInterface;
+
+    public Bootstrap()
+    {
+    }
+
+    public Bootstrap(Settings settings)
+    {
+        this.settings = settings;
+    }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     public void init()
         throws Exception
@@ -70,8 +85,11 @@ public class Bootstrap
     }
 
     public void exit()
+        throws Exception
     {
         saver.quit();
+        this.saveSettingsFile();
+        this.getIOInterface().save();
     }
 
     // ============================================================
@@ -357,6 +375,23 @@ public class Bootstrap
     public static IOInterface IOInterface()
     {
         return Bootstrap.use().ioInterface;
+    }
+
+    public static Bootstrap use(Settings settings)
+    {
+        if (bootstrap == null)
+        {
+            try
+            {
+                bootstrap = new Bootstrap(settings);
+                bootstrap.init();
+            }
+            catch (Exception e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return bootstrap;
     }
 
     public static Bootstrap use(BootstrapUIInterface uiInterface)

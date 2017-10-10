@@ -6,9 +6,9 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
+import com.bookmarking.file.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.structure.*;
 import org.w3c.dom.*;
 
 public class SettingsXMLWriter implements FileWriterInterface<Settings>

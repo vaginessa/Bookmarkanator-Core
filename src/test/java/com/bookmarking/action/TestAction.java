@@ -1,6 +1,5 @@
 package com.bookmarking.action;
 
-import com.bookmarking.structure.*;
 import org.apache.logging.log4j.*;
 
 public class TestAction extends AbstractAction

@@ -1,4 +1,4 @@
-package com.bookmarking.structure;
+package com.bookmarking.file;
 
 import java.io.*;
 import com.bookmarking.fileservice.*;
