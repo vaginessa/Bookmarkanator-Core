@@ -244,7 +244,7 @@ public class LocalInstance implements BKInterface
         // Sort the actions and return them.
         List<ComparableClass> sort = new ArrayList<>();
 
-        for (Class clazz: ModuleLoader.use().getClassesLoaded(AbstractAction.class))
+        for (Class clazz: ModuleLoader.use().getClassesFound(AbstractAction.class))
         {
             sort.add(new ComparableClass(clazz));
         }

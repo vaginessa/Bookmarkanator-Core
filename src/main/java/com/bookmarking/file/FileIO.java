@@ -279,7 +279,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<Class> getAllBookmarkClasses()
     {
-        return ModuleLoader.use().getClassesLoaded(AbstractBookmark.class);
+        return ModuleLoader.use().getClassesFound(AbstractBookmark.class);
     }
 
     @Override

@@ -165,12 +165,12 @@ public class Bootstrap
         throws Exception
     {
         // Track the classes that can be overridden externally...
-        ModuleLoader.use().addClassToTrack(AbstractBookmark.class);
-        ModuleLoader.use().addClassToTrack(IOInterface.class);
-        ModuleLoader.use().addClassToTrack(AbstractAction.class);
-        ModuleLoader.use().addClassToTrack(FileReaderInterface.class);
-        ModuleLoader.use().addClassToTrack(FileWriterInterface.class);
-        ModuleLoader.use().addClassToTrack(String.class);
+        ModuleLoader.use().addClassToWatch(AbstractBookmark.class);
+        ModuleLoader.use().addClassToWatch(IOInterface.class);
+        ModuleLoader.use().addClassToWatch(AbstractAction.class);
+        ModuleLoader.use().addClassToWatch(FileReaderInterface.class);
+        ModuleLoader.use().addClassToWatch(FileWriterInterface.class);
+        ModuleLoader.use().addClassToWatch(String.class);
 
         Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_GROUP, File.class);
 
@@ -252,7 +252,7 @@ public class Bootstrap
             config = "";
         }
 
-        IOInterface bkio2 = ModuleLoader.use().loadClass(ioInterfaceFound.getCanonicalName(), IOInterface.class);
+        IOInterface bkio2 = ModuleLoader.use().instantiateClass(ioInterfaceFound.getCanonicalName(), IOInterface.class);
 
         Objects.requireNonNull(bkio2);
 

@@ -203,7 +203,7 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
 
                         //TODO HANDLE WHEN A BOOKMARK CLASS IS NOT FOUND...
                         //TODO Possibly have a base class, or error class that can load the data, and then save to the xml again on exit.
-                        abs = ModuleLoader.use().loadClass(className, AbstractBookmark.class);
+                        abs = ModuleLoader.use().instantiateClass(className, AbstractBookmark.class);
                         loadedClasses.put(className, abs.getClass());
                     }
 

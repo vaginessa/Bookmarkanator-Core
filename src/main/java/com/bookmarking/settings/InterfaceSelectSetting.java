@@ -35,7 +35,7 @@ public class InterfaceSelectSetting extends ClassSetting
         {
             Set<ComparableClass> comparableClasses = new HashSet<>();
 
-            for (Class clazz : ModuleLoader.use().getTrackedClasses())
+            for (Class clazz : ModuleLoader.use().getClassesBeingWatched())
             {
                 int modifier = clazz.getModifiers();
 
@@ -96,7 +96,7 @@ public class InterfaceSelectSetting extends ClassSetting
             {
                 Set<ComparableClass> comparableClasses = new HashSet<>();
 
-                for (Class c : ModuleLoader.use().getClassesLoaded(clazz))
+                for (Class c : ModuleLoader.use().getClassesFound(clazz))
                 {
                     comparableClasses.add(new ComparableClass(c));
                 }

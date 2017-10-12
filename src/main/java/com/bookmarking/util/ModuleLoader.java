@@ -114,7 +114,7 @@ public class ModuleLoader
      * Adds a class to track. It will track all instances of this class or interface.
      * @param clazz  The class to track.
      */
-    public void addClassToTrack(Class clazz)
+    public void addClassToWatch(Class clazz)
     {
         if (clazz == null)
         {
@@ -136,7 +136,7 @@ public class ModuleLoader
      * @param className  the class name to use for locating tracked classes.
      * @return  A set of classes that are instances of the class represented by className.
      */
-    public Set<Class> getClassesLoaded(String className)
+    public Set<Class> getClassesFound(String className)
     {
         if (className==null || className.trim().isEmpty())
         {
@@ -156,7 +156,7 @@ public class ModuleLoader
         return null;
     }
 
-    public Set<Class> getClassesLoaded(Class clazz)
+    public Set<Class> getClassesFound(Class clazz)
     {
         return classesToTrackMap.get(clazz);
     }
@@ -169,7 +169,7 @@ public class ModuleLoader
      * @return  an instance of className casted to toCast<T> type.
      * @throws Exception
      */
-    public <T> T loadClass(String className, Class<T> toCast)
+    public <T> T instantiateClass(String className, Class<T> toCast)
         throws Exception
     {
         logger.trace("Loading class \"" + className + "\"");
@@ -180,11 +180,17 @@ public class ModuleLoader
         return sub.newInstance();
     }
 
+    public Class<?> loadClass(Class<?> clazz)
+    {
+        Class<?> sub = clazz.asSubclass(clazz);
+        return sub;
+    }
+
     /**
      * Gets all the classes this module loader is tracking (not the ones found)
      * @return  A set of classes this module loader is looking for.
      */
-    public Set<Class> getTrackedClasses()
+    public Set<Class> getClassesBeingWatched()
     {
         return classesToTrackMap.keySet();
     }

@@ -43,7 +43,7 @@ public class OverridingClassSetting extends ClassSetting
         }
 
         //TODO verify this action is correct.
-        if (ModuleLoader.use().getTrackedClasses().contains(value))
+        if (ModuleLoader.use().getClassesBeingWatched().contains(value))
         {
             if (value.isAssignableFrom(clazz))
             {
@@ -68,7 +68,7 @@ public class OverridingClassSetting extends ClassSetting
 
         Class clazz = Class.forName(key);
 
-        if (ModuleLoader.use().getClassesLoaded(getKey()).contains(clazz))
+        if (ModuleLoader.use().getClassesFound(getKey()).contains(clazz))
         {
             setValue(clazz);
         }
@@ -106,7 +106,7 @@ public class OverridingClassSetting extends ClassSetting
         {
             Set<ComparableClass> comparableClasses = new HashSet<>();
 
-            for (Class clazz : ModuleLoader.use().getTrackedClasses())
+            for (Class clazz : ModuleLoader.use().getClassesBeingWatched())
             {
                 int modifier = clazz.getModifiers();
 
@@ -149,7 +149,7 @@ public class OverridingClassSetting extends ClassSetting
             {
                 Set<ComparableClass> comparableClasses = new HashSet<>();
 
-                for (Class c : ModuleLoader.use().getClassesLoaded(clazz))
+                for (Class c : ModuleLoader.use().getClassesFound(clazz))
                 {
                     comparableClasses.add(new ComparableClass(c));
                 }
