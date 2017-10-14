@@ -59,7 +59,10 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
             if (!n.getNodeName().startsWith("#"))
             {
                 abs = abstractBookmark.getNew();
-                abs.setUiInterface(ioInterface.getUIInterface().getBookmarkUIInterface());
+                if (ioInterface.getUIInterface()!=null)
+                {
+                    abs.setUiInterface(ioInterface.getUIInterface().getBookmarkUIInterface());
+                }
                 parseBookmarkDetails(n, abs);
                 ioInterface.addBookmark(abs);
             }
@@ -196,7 +199,7 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
 
                     className = className.trim();
 
-                    Class clazz = loadedClasses.get(classNameNode.getTextContent());
+                    Class clazz = loadedClasses.get(className);
                     AbstractBookmark abs = null;
                     if (clazz == null)
                     {

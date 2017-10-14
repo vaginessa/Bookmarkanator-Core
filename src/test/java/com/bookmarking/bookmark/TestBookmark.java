@@ -73,7 +73,6 @@ public class TestBookmark extends AbstractBookmark
 
     @Override
     public String getContent()
-        throws Exception
     {
         return content;
     }

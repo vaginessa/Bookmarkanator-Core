@@ -21,17 +21,21 @@ public class FileSync<T>
 
     public enum FileBackupPolicy
     {
-        SINGLE_BACKUP, TIMESTAMP_BACKUP, NO_BACKUP
+        SINGLE_BACKUP,
+        TIMESTAMP_BACKUP,
+        NO_BACKUP
     }
 
     public enum InvalidFilePolicy
     {
-        markBadAndContinue, thowError,
+        markBadAndContinue,
+        thowError,
     }
 
     public enum MissingFilePolicy
     {
-        createNew, thowError,
+        createNew,
+        thowError,
     }
 
     // ============================================================
@@ -156,6 +160,7 @@ public class FileSync<T>
         {
             if (file.length() == 0)
             {// Write initial xml if file contains nothing
+                logger.info("Writing initial file bytes... ");
                 FileOutputStream fout = new FileOutputStream(file);
                 try
                 {
@@ -168,6 +173,7 @@ public class FileSync<T>
                         fout.close();
                     }
                 }
+                logger.info("done.");
             }
 
             FileInputStream fin = new FileInputStream(file);
@@ -197,12 +203,12 @@ public class FileSync<T>
                     File newFile = new File(file.getParentFile().getPath() + File.separatorChar + file.getName() + ".bad");
 
                     // Keeping this here just in case we are unable to rename file on other operating systems.
-//                    Files.move(file.toPath(), newFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    //                    Files.move(file.toPath(), newFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
                     logger.info("Attempting to rename bad file... ");
                     if (file.renameTo(newFile))
                     {
-                        logger.info("Success! Renamed \""+file.getCanonicalPath()+"\" file to \""+newFile.getCanonicalPath()+"\"");
+                        logger.info("Success! Renamed \"" + file.getCanonicalPath() + "\" file to \"" + newFile.getCanonicalPath() + "\"");
                     }
                     else
                     {
@@ -227,35 +233,47 @@ public class FileSync<T>
             logger.info("File " + file.getCanonicalPath() + " doesn't exist.");
             if (fileReader.getMissingFilePolicy() == MissingFilePolicy.createNew)
             {
-                boolean madeDirectory = file.getParentFile().mkdirs();
-                if (madeDirectory)
+                File parent = file.getParentFile();
+
+                if (!parent.exists())
                 {
-                    boolean fileCreated = file.createNewFile();
-
-                    if (fileCreated)
+                    boolean madeDirectory = file.getParentFile().mkdirs();
+                    if (!madeDirectory)
                     {
-                        FileOutputStream fout = new FileOutputStream(file);
+                        logger.error("Couldn't make directory " + file.getParentFile());
+                    }
+                    else {
+                        logger.info("Created directory \""+parent.getCanonicalPath()+"\"");
+                    }
+                }
 
-                        writeInitial(fout);
+                // Try creating the file
+                boolean fileCreated = file.createNewFile();
 
-                        FileInputStream fin = new FileInputStream(file);
+                if (fileCreated)
+                {
+                    logger.info("Created file \""+file.getCanonicalPath()+"\"");
+                    FileOutputStream fout = new FileOutputStream(file);
 
-                        try
+                    writeInitial(fout);
+
+                    FileInputStream fin = new FileInputStream(file);
+
+                    try
+                    {
+                        obj = fileReader.parse(fin);
+                    }
+                    finally
+                    {
+                        if (fin.getChannel().isOpen())
                         {
-                            obj = fileReader.parse(fin);
-                        }
-                        finally
-                        {
-                            if (fin.getChannel().isOpen())
-                            {
-                                fin.close();
-                            }
+                            fin.close();
                         }
                     }
                 }
                 else
                 {
-                    logger.error("Couldn't make directory "+file.getCanonicalPath());
+                    logger.error("Couldn't create file \""+file.getCanonicalPath()+"\"");
                 }
             }
             else

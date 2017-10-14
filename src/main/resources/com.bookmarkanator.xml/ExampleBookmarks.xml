@@ -14,7 +14,7 @@
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
         </bookmark>
     </block>
-    <block class="com.bookmarking.desktop.bookmark.WebBookmark">
+    <block class="com.bookmarking.bookmark.WebBookmark">
         <bookmark>
             <name>Yahoo</name>
             <id>94219EF5-6C6E-4A55-8DA7-5107ED80D0A9</id>
@@ -41,7 +41,7 @@
             <lastAccessedDate>Wed, 4 Jul 2001 12:08:56 -0700</lastAccessedDate>
         </bookmark>
     </block>
-    <block class="com.bookmarking.desktop.bookmark.SequenceBookmark">
+    <block class="com.bookmarking.bookmark.SequenceBookmark">
         <bookmark>
             <name>Three bookmarks in sequence; failed to mail..., test text..., and yahoo.</name>
             <id>3AD60CF5-6257-404D-96CF-89CF99E26E85</id>

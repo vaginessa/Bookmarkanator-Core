@@ -21,6 +21,8 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     // Tags associated with this bookmark
     protected Set<String> tags;
+
+    // Dates
     protected Date creationDate;
     protected Date lastAccessedDate;
 
@@ -307,14 +309,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract AbstractBookmark getNew();
 
     /**
-     * The context is a string representation of configuration data that a particular bookmark requires.
+     * The content is a string representation of configuration data that a particular bookmark requires.
      * This field is intended for more structured data. It can be in any form, xml, csv, json, etc... The parser doesn't validate anything
      * in between the content tags. The bookmark is expected to know how to deal with the structure of the string parsed in.
      *
      * @return A string of configuration data for this bookmark.
      */
-    public abstract String getContent()
-        throws Exception;
+    public abstract String getContent();
 
     /**
      * This method will be called mostly by the xml parser. It reads everything between the two context tags without consideration

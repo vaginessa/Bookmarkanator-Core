@@ -100,7 +100,10 @@ public class Bootstrap
     {
         BootstrapSettings res = new BootstrapSettings();
         res.setMainSettings(settings);
-        res.setIoSettings(this.getIOInterface().getSettings());
+        if (this.getIOInterface()!=null)
+        {
+            res.setIoSettings(this.getIOInterface().getSettings());
+        }
         return res;
     }
 
@@ -197,7 +200,7 @@ public class Bootstrap
     private void initIOInterface()
         throws Exception
     {
-        this.ioInterface = loadIOInterface();
+        loadIOInterface();
 
         // Give bookmark access to the message board
         MessageBoard messageBoard = MessageBoard.use();
@@ -213,7 +216,7 @@ public class Bootstrap
      * @return A IOInterface class that was loaded.
      * @throws Exception
      */
-    private IOInterface loadIOInterface()
+    private void loadIOInterface()
         throws Exception
     {
         logger.trace("Searching for default IO interface setting");
@@ -221,11 +224,11 @@ public class Bootstrap
         AbstractSetting defaultIOInterface = settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
         Class ioInterfaceFound = null;
 
-        if (defaultIOInterface!=null)
+        if (defaultIOInterface != null)
         {
             if (defaultIOInterface instanceof ClassSetting)
             {
-                ioInterfaceFound = ((ClassSetting)defaultIOInterface).getValue();
+                ioInterfaceFound = ((ClassSetting) defaultIOInterface).getValue();
             }
             else if (defaultIOInterface instanceof StringSetting)
             {
@@ -233,7 +236,7 @@ public class Bootstrap
             }
         }
 
-        if (ioInterfaceFound==null)
+        if (ioInterfaceFound == null)
         {// It is still null so load default FileIO interface
             ioInterfaceFound = FileIO.class;
         }
@@ -243,7 +246,7 @@ public class Bootstrap
         // Obtain the init setting for this particular IO interface implementation.
         AbstractSetting configSetting = settings.getSetting(ioInterfaceFound.getCanonicalName(), INIT_SETTING_KEY);
 
-        if (configSetting!=null)
+        if (configSetting != null)
         {
             config = configSetting.getValue().toString();
         }
@@ -256,7 +259,8 @@ public class Bootstrap
 
         Objects.requireNonNull(bkio2);
 
-        logger.info("Loaded BKIOInterface class: \"" + ioInterfaceFound.getCanonicalName() + "\" with this config: \"" + (config.isEmpty() ? "[no config found]" : config) + "\"");
+        logger.info("Loaded BKIOInterface class: \"" + ioInterfaceFound.getCanonicalName() + "\" with this config: \"" +
+            (config.isEmpty() ? "[no config found]" : config) + "\"");
 
         // Allow the IO interface to have access to the UI interface if present to send init messages/statuses
         if (uiInterface != null)
@@ -266,11 +270,11 @@ public class Bootstrap
 
         logger.info("Calling init on IO interface...");
 
+        this.ioInterface = bkio2;
+
         bkio2.init(config);
 
         logger.info("Done.");
-
-        return bkio2;
     }
 
     /**

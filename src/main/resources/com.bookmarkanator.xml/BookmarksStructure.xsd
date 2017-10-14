@@ -5,31 +5,31 @@
     <xs:element name='bookmarks'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name='block' group='block' minOccurs='0'
+                <xs:element name='block' type='block' minOccurs='0'
                             maxOccurs='unbounded'/>
             </xs:sequence>
-            <xs:attribute name='xmlVersion' group='xs:string'/>
+            <xs:attribute name='xmlVersion' type='xs:string'/>
         </xs:complexType>
     </xs:element>
 
     <xs:complexType name="block">
         <xs:sequence>
-            <xs:element name="bookmark" group="bookmarkType" minOccurs='0'
+            <xs:element name="bookmark" type="bookmarkType" minOccurs='0'
                         maxOccurs='unbounded'/>
         </xs:sequence>
-        <xs:attribute name='class' group='xs:string'/>
+        <xs:attribute name='class' type='xs:string'/>
     </xs:complexType>
     <xs:complexType name="bookmarkType">
         <xs:all>
-            <xs:element name="name" group="xs:string"/>
-            <xs:element name="id" group="xs:string"/>
-            <xs:element name="text" group="xs:string" minOccurs='0'
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="text" type="xs:string" minOccurs='0'
                         maxOccurs='1'/>
-            <xs:element name="tags" group="tags" minOccurs='0'
+            <xs:element name="tags" type="tags" minOccurs='0'
                         maxOccurs='1'/>
-            <xs:element name="creationDate" group="xs:string"/>
-            <xs:element name="lastAccessedDate" group="xs:string"/>
-            <xs:element name="content" group="contentType" minOccurs='0'
+            <xs:element name="creationDate" type="xs:string"/>
+            <xs:element name="lastAccessedDate" type="xs:string"/>
+            <xs:element name="content" type="contentType" minOccurs='0'
                         maxOccurs='1'/>
         </xs:all>
     </xs:complexType>
@@ -40,7 +40,7 @@
     </xs:complexType>
     <xs:complexType name="tags">
         <xs:sequence>
-            <xs:element name="tag" group="xs:string" minOccurs='0'
+            <xs:element name="tag" type="xs:string" minOccurs='0'
                         maxOccurs='unbounded'/>
         </xs:sequence>
     </xs:complexType>
