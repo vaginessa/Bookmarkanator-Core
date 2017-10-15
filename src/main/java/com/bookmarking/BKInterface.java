@@ -153,6 +153,11 @@ public interface BKInterface
 
     Set<String> getAllTags();
 
+    default Map<Integer, Set<String>> getRecommendedTags(AbstractBookmark abstractBookmark, int numResults)
+    {
+        return getIOInterface().getRecommendedTags(abstractBookmark, numResults);
+    }
+
     List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
         throws Exception;
 

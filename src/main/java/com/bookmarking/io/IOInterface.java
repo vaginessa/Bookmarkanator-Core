@@ -159,6 +159,78 @@ public interface IOInterface
 
     Set<String> extractTags(Collection<UUID> bookmarkIds);
 
+    default Map<Integer, Set<String>> getRecommendedTags(AbstractBookmark abstractBookmark, int numResults)
+    {
+        if (abstractBookmark == null || abstractBookmark.getTags().isEmpty())
+        {
+            return new HashMap<>();
+        }
+        Map<Integer, Set<String>> intTagMap = new HashMap<>();
+
+        try
+        {
+            SearchOptions searchOptions = new SearchOptions();
+            searchOptions.addTags(TagsInfo.TagOptions.ALL_TAGS, abstractBookmark.getTags());
+            List<AbstractBookmark> bks = applySearchOptions(searchOptions);
+
+            Set<String> tags = extractTags(bks);
+            tags.removeAll(abstractBookmark.getTags());
+
+            Set<String> tmp = intTagMap.get(0);
+
+            if (tmp==null)
+            {
+                tmp = new HashSet<>();
+                intTagMap.put(0, tmp);
+            }
+
+            for (String tag: tags)
+            {
+                tmp.add(tag);
+                if (tmp.size()>=numResults)
+                {
+                    break;
+                }
+            }
+
+            if (tmp.size()<numResults)
+            {
+                Set<String> tmp2 = intTagMap.get(1);
+
+                if (tmp2==null)
+                {
+                    tmp2 = new HashSet<>();
+                    intTagMap.put(1, tmp2);
+                }
+
+                searchOptions = new SearchOptions();
+                searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG, abstractBookmark.getTags());
+                bks = applySearchOptions(searchOptions);
+
+                tags = extractTags(bks);
+                tags.removeAll(abstractBookmark.getTags());
+                tags.removeAll(intTagMap.get(0));
+
+                for (String tag: tags)
+                {
+                    tmp2.add(tag);
+                    if (tmp2.size()+tmp.size()>=numResults)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return intTagMap;
+    }
+
+
+
     default Set<String> extractTags(List<AbstractBookmark> bookmarks)
     {
         Set<String> res = new HashSet<>();

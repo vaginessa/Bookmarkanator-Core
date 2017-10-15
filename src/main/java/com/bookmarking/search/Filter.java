@@ -280,8 +280,11 @@ public class Filter
     public Filter filterBySearchOptions(SearchOptions searchOptions)
         throws ParseException
     {
-        //Remove non selected bookmark types
-        this.keepBookmarkTypesByClassName(searchOptions.getSelectedTypes());
+        if (searchOptions.getSelectedBKTypes()!=null)
+        {
+            //Remove non selected bookmark types
+            this.keepBookmarkTypesByClassName(searchOptions.getSelectedBKTypes());
+        }
 
         //Remove all that don't fit within the date range.
         if (searchOptions.getStartDate() != null || searchOptions.getEndDate() != null)

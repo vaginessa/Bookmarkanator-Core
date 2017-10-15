@@ -21,7 +21,6 @@ public class SearchOptions
     public SearchOptions()
     {
         tagsInfoList = new ArrayList<>();
-        selectedBookmarkTypes = new HashSet<>();
     }
 
     public String getSearchTerm()
@@ -122,28 +121,45 @@ public class SearchOptions
 
     public void setSelectedBKType(String bkType)
     {
+        initSelectedTypes();
         selectedBookmarkTypes.add(bkType);
     }
 
     public void setUnselectedBKType(String bkType)
     {
+        initSelectedTypes();
         selectedBookmarkTypes.remove(bkType);
     }
 
     public void setSelectAllBKTypes(Set<String> bkTypes)
     {
+        initSelectedTypes();
         selectedBookmarkTypes.clear();
         selectedBookmarkTypes.addAll(bkTypes);
     }
 
     public void setUnselectAllBKTypes()
     {
+        initSelectedTypes();
         selectedBookmarkTypes.clear();
     }
 
-    public Set<String> getSelectedTypes()
+    public Set<String> getSelectedBKTypes()
     {
+        if (selectedBookmarkTypes==null)
+        {
+            return null;
+        }
+
         return Collections.unmodifiableSet(selectedBookmarkTypes);
+    }
+
+    private void initSelectedTypes()
+    {
+        if (selectedBookmarkTypes==null)
+        {
+            selectedBookmarkTypes = new HashSet<>();
+        }
     }
 
 }
