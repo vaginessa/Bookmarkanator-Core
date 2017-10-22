@@ -107,7 +107,6 @@ public class FileIO implements IOInterface
 
         FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
 
-//       TODO figure out why the settings are null.....
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
         setDirty(false);

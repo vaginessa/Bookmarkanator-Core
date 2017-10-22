@@ -8,14 +8,31 @@ import java.util.*;
  */
 public class SearchOptions
 {
+    public enum DateType
+    {
+        CREATION_DATE,
+        ACCESSED_DATE
+    }
+
     private String searchTerm;
+
+    // Date range's to locate bookmarks in (inclusive) can be null.
     private Date startDate;
     private Date endDate;
+
+    // Which date type to use for filtering.
+    private DateType dateType;
+
+    // Aspects of bookmarks to search
     private boolean searchBookmarkText = true;
     private boolean searchBookmarkNames = true;
     private boolean searchBookmarkTypes = true;
     private boolean searchTags = true;
+
+    // List of tag search options along with type (all, any, none)
     private List<TagsInfo> tagsInfoList;
+
+    // Exclude all bookmark types not present, unless the list is null. If null include all.
     private Set<String> selectedBookmarkTypes;
 
     public SearchOptions()
@@ -162,4 +179,13 @@ public class SearchOptions
         }
     }
 
+    public DateType getDateType()
+    {
+        return dateType;
+    }
+
+    public void setDateType(DateType dateType)
+    {
+        this.dateType = dateType;
+    }
 }

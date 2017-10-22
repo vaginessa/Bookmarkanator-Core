@@ -125,6 +125,110 @@ public class Filter
     }
 
     /**
+     * Filters a list of bookmark by date range. If the bookmark date is null include it.
+     */
+    public Filter filterByCreatedDate(Date includeIfAfter, Date includeIfBefore)
+    {
+        for (AbstractBookmark bk : this.results())
+        {
+            boolean s1;
+            boolean s2;
+
+            if (includeIfBefore==null)
+            {
+                s1 = true;
+            }
+            else
+            {
+                if (bk.getCreationDate()==null)
+                {
+                    s1 = true;
+                }
+                else
+                {
+                    s1 = bk.getCreationDate().before(includeIfBefore);
+                }
+            }
+
+            if (includeIfAfter==null)
+            {
+                s2 = true;
+            }
+            else
+            {
+                if (bk.getCreationDate()==null)
+                {
+                    s2 = true;
+                }
+                else
+                {
+                    s2 = bk.getCreationDate().after(includeIfAfter);
+                }
+            }
+
+            if (s1 && s2)
+            {
+                tempList.add(bk);
+            }
+        }
+
+        tempToMainList();
+        return this;
+    }
+
+    /**
+     * Filters a list of bookmark by date range. If the bookmark date is null include it.
+     */
+    public Filter filterByLastAccessedDate(Date includeIfAfter, Date includeIfBefore)
+    {
+        for (AbstractBookmark bk : this.results())
+        {
+            boolean s1;
+            boolean s2;
+
+            if (includeIfBefore==null)
+            {
+                s1 = true;
+            }
+            else
+            {
+                if (bk.getCreationDate()==null)
+                {
+                    s1 = true;
+                }
+                else
+                {
+                    s1 = bk.getLastAccessedDate().before(includeIfBefore);
+                }
+            }
+
+            if (includeIfAfter==null)
+            {
+                s2 = true;
+            }
+            else
+            {
+                if (bk.getCreationDate()==null)
+                {
+                    s2 = true;
+                }
+                else
+                {
+                    s2 = bk.getLastAccessedDate().after(includeIfAfter);
+                }
+            }
+
+            if (s1 && s2)
+            {
+                tempList.add(bk);
+            }
+        }
+
+        tempToMainList();
+        return this;
+    }
+
+    /**
      * Filters a list of bookmark by date range.
      *
      * @param includeIfAfter  Include the bookmark if the date is equal to or after this date.
@@ -132,18 +236,17 @@ public class Filter
      * @return A list of date range fildtered bookmark.
      */
 
-    public Filter keepWithinDateRange(Date includeIfAfter, Date includeIfBefore)
+    public Filter keepWithinDateRange(Date includeIfAfter, Date includeIfBefore, SearchOptions.DateType dateType)
     {
-
-        for (AbstractBookmark bk : this.results())
+        if (dateType == SearchOptions.DateType.CREATION_DATE)
         {
-            if (bk.getCreationDate().after(includeIfAfter) && bk.getCreationDate().before(includeIfBefore))
-            {
-                tempList.add(bk);
-            }
+            filterByCreatedDate(includeIfAfter,includeIfBefore);
+        }
+        else
+        {
+            filterByLastAccessedDate(includeIfAfter, includeIfBefore);
         }
 
-        tempToMainList();
         return this;
     }
 
@@ -280,7 +383,7 @@ public class Filter
     public Filter filterBySearchOptions(SearchOptions searchOptions)
         throws ParseException
     {
-        if (searchOptions.getSelectedBKTypes()!=null)
+        if (searchOptions.getSelectedBKTypes() != null)
         {
             //Remove non selected bookmark types
             this.keepBookmarkTypesByClassName(searchOptions.getSelectedBKTypes());
@@ -297,8 +400,8 @@ public class Filter
             }
             else
             {
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                start = sdf.parse("01/01/1971");
+                // Super old date as beginning range.
+                start = new Date(Long.MIN_VALUE);
             }
 
             Date end;
@@ -312,7 +415,7 @@ public class Filter
                 end = new Date();
             }
 
-            this.keepWithinDateRange(start, end);
+            this.keepWithinDateRange(start, end, searchOptions.getDateType());
         }
 
         //Filter by selected tags blocks.
@@ -332,7 +435,7 @@ public class Filter
             }
         }
 
-        //Note: Cannot do search here. Must do search prior to calling this method. This is just a filter method not a search method.
+        // Note: Cannot do text search here. Must do search prior to calling this method. This is just a filter method not a search method.
         return this;
     }
 
