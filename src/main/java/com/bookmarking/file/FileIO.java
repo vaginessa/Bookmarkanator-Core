@@ -24,29 +24,21 @@ public class FileIO implements IOInterface
     private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
     private static final String FILE_IO_SETTINGS_KEY = "FILE_IO_SETTINGS";
     private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
+    private static final String FILE_SEARCH_SETTINGS_KEY = "FILE_SEARCH_SETTINGS";
+    private static final String DEFAULT_SEARCH_SETTINGS_FILE_NAME = "file-search-settings.xml";
 
     // Fields
     private IOUIInterface uiInterface;
     private File file;
     private Settings settings;
     private Map<UUID, AbstractBookmark> bookmarks;
-    private Search<UUID> bookmarkNames;
-    private Search<UUID> bookmarkTypeNames;//Such as text, web, terminal, mapping, whatever...
-    //    private Search<UUID> bookmarkText;//The text the bookmark contains.
-    private Map<String, Set<UUID>> fullTextSearchMap;//The map used to search only words of the bookmark.
-    private Search<UUID> bookmarkTags;
-    private int numSearchResults;//How many search results to return.
+    private SearchGroup searchGroup;
+
     private boolean isDirty;
 
     public FileIO()
     {
         bookmarks = new HashMap<>();
-        bookmarkNames = new Search<>();
-        bookmarkTypeNames = new Search<>();
-        //        bookmarkText = new Search<>();
-        bookmarkTags = new Search<>();
-        fullTextSearchMap = new HashMap<>();
-        numSearchResults = 20;
     }
 
     public boolean isDirty()
@@ -93,8 +85,19 @@ public class FileIO implements IOInterface
         FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
         FileService.use().addFile(fileSync2, FILE_IO_SETTINGS_KEY);
 
-        // Load both files in.
+//        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
+//        FileSync<SearchGroup> searchGroupFileSync = new FileSync<>(new SearchSettingsWriter(), new SearchSettingsReader(), searchSettingsFile);
+//        FileService.use().addFile(searchGroupFileSync,FILE_SEARCH_SETTINGS_KEY);
+
+        // Load files in.
         load();
+
+        searchGroup = new SearchGroup();
+
+        for (AbstractBookmark abstractBookmark: bookmarks.values())
+        {
+            searchGroup.addBookmark(abstractBookmark);
+        }
     }
 
     @Override
@@ -109,6 +112,11 @@ public class FileIO implements IOInterface
 
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        fileSync3.setObjectToWrite(searchGroup);
+//        fileSync3.writeToDisk();
+
         setDirty(false);
     }
 
@@ -128,6 +136,13 @@ public class FileIO implements IOInterface
         fileSync2.setFile(settingsFile);
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
+
+//        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        fileSync3.setFile(searchSettingsFile);
+//        fileSync3.setObjectToWrite(searchGroup);
+//        fileSync3.writeToDisk();
+        
         setDirty(false);
     }
 
@@ -136,12 +151,6 @@ public class FileIO implements IOInterface
         throws Exception
     {
 
-    }
-
-    @Override
-    public List<AbstractBookmark> getBookmarkList(SearchOptions searchOptions)
-    {
-        throw new UnsupportedOperationException("Not supported at this time");
     }
 
     @Override
@@ -161,28 +170,11 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> extractTags(Collection<UUID> bookmarkIds)
+    public Set<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds)
     {
-        Set<String> res = new HashSet<>();
-        for (UUID uuid: bookmarkIds)
-        {
-            AbstractBookmark bookmark = getBookmark(uuid);
-            Objects.requireNonNull(bookmark);
-            res.addAll(bookmark.getTags());
-        }
+        Set<AbstractBookmark> res = new HashSet<>();
 
-        return res;
-    }
-
-    @Override
-    public Set<String> extractTags(List<AbstractBookmark> bookmarks)
-    {
-        Set<String> res = new HashSet<>();
-
-        for (AbstractBookmark abstractBookmark: bookmarks)
-        {
-            res.addAll(abstractBookmark.getTags());
-        }
+        bookmarkIds.stream().forEach(id -> res.add(bookmarks.get(id)));
 
         return res;
     }
@@ -217,9 +209,9 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getBookmarkNames(Collection<UUID> bookmarkIds)
+    public List<String> getBookmarkNames(Collection<UUID> bookmarkIds)
     {
-        Set<String> res = new HashSet<>();
+        List<String> res = new ArrayList<>();
         for (UUID uuid: bookmarkIds)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
@@ -253,7 +245,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<String> getAllTags()
     {
-       return extractTags(bookmarks.keySet());
+       return extractTags(bookmarks.values());
     }
 
     @Override
@@ -270,7 +262,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public Set<String> getAllBookmarkNames()
+    public List<String> getAllBookmarkNames()
     {
         return getBookmarkNames(bookmarks.keySet());
     }
@@ -427,7 +419,21 @@ public class FileIO implements IOInterface
     public List<AbstractBookmark> applySearchOptions(SearchOptions options)
         throws ParseException
     {
-        Filter filter = Filter.use(getAllBookmarks());
+        Set<AbstractBookmark> bks;
+
+
+        if (options.getSearchTerm()==null || options.getSearchTerm().trim().isEmpty())
+        {
+            bks = new HashSet<>();
+            bks.addAll(bookmarks.values());
+        }
+        else
+        {
+            Set<UUID> bkIds = searchGroup.applySearchOptions(options);
+            bks = getBookmarks(bkIds);
+        }
+
+        Filter filter = Filter.use(bks);
         filter.filterBySearchOptions(options);
 
         return filter.results();
@@ -479,6 +485,11 @@ public class FileIO implements IOInterface
         FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
         fileSync2.readFromDisk();
         settings = fileSync2.getObject();
+
+        // Load search settings
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        fileSync3.readFromDisk();
+//        searchGroup = fileSync3.getObject();
     }
 
     private File createSettingsFile(File input)

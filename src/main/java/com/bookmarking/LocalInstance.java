@@ -54,6 +54,18 @@ public class LocalInstance implements BKInterface
     }
 
     @Override
+    public boolean undo()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean redo()
+    {
+        return false;
+    }
+
+    @Override
     public void setBootstrapUIInterface(BootstrapUIInterface bootstrapUIInterface)
     {
         Bootstrap.use().setUiInterface(bootstrapUIInterface);
@@ -66,7 +78,7 @@ public class LocalInstance implements BKInterface
     }
 
     @Override
-    public IOInterface getIOInterface()
+    public IOInterface _getIOInterface()
     {
         return Bootstrap.use().getIOInterface();
     }
@@ -131,7 +143,7 @@ public class LocalInstance implements BKInterface
     }
 
     @Override
-    public Set<String> getBookmarkNames(Collection<UUID> bookmarkIds)
+    public List<String> getBookmarkNames(Collection<UUID> bookmarkIds)
     {
         return Bootstrap.use().getIOInterface().getBookmarkNames(bookmarkIds);
     }
@@ -180,12 +192,6 @@ public class LocalInstance implements BKInterface
     public AbstractBookmark deleteBookmark(AbstractBookmark bookmark)
     {
         return Bootstrap.use().getIOInterface().deleteBookmark(bookmark);
-    }
-
-    @Override
-    public Set<String> extractTags(Collection<UUID> bookmarkIds)
-    {
-        return Bootstrap.use().getIOInterface().extractTags(bookmarkIds);
     }
 
     @Override

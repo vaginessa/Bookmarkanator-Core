@@ -351,6 +351,10 @@ public class FileSync<T>
                 logger.error("A backup file could not be created.");
             }
         }
+        else if (policy.equals(FileBackupPolicy.NO_BACKUP))
+        {
+            logger.debug("\"No Backup\" policy selected.");
+        }
         else
         {
             logger.warn("No backup policy matched.");

@@ -71,7 +71,7 @@ public class MessageBoard
     }
 
     /**
-     * Single message board object allowed.
+     * Singleton MessageBoard
      */
     public static MessageBoard use()
     {

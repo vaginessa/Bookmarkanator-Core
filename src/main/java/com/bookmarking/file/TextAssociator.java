@@ -1,6 +1,7 @@
 package com.bookmarking.file;
 
 import java.util.*;
+import javax.xml.bind.annotation.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -12,12 +13,16 @@ import org.apache.logging.log4j.*;
  *
  * @param <T> The object to associate with words.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TextAssociator<T>
 {
     private static final Logger logger = LogManager.getLogger(TextAssociator.class.getCanonicalName());
-    private Set<String> words;//All words present
-    private Map<T, Set<String>> itemToText;//<Id of item, set of text words associated with it>
-    private Map<String, Set<T>> textToItem;//<Word, set of id's that contain this word>
+    @XmlElement
+    private HashSet<String> words;//All words present
+    @XmlElement
+    private HashMap<T, HashSet<String>> itemToText;//<Id of item, set of text words associated with it>
+    @XmlElement
+    private HashMap<String, HashSet<T>> textToItem;//<Word, set of id's that contain this word>
 
     public TextAssociator()
     {
@@ -36,7 +41,7 @@ public class TextAssociator<T>
     {
         logger.trace("Associating item \"" + itemId.toString() + "\" with word \"" + word + "\"");
         words.add(word);
-        Set<String> items = itemToText.get(itemId);
+        HashSet<String> items = itemToText.get(itemId);
         if (items == null)
         {
             items = new HashSet<>();
@@ -45,7 +50,7 @@ public class TextAssociator<T>
 
         items.add(word);
 
-        Set<T> ids = textToItem.get(word);
+        HashSet<T> ids = textToItem.get(word);
 
         if (ids == null)
         {
@@ -157,6 +162,11 @@ public class TextAssociator<T>
         }
 
         itemToText.remove(itemId);
+    }
+
+    public boolean contains(T itemId)
+    {
+        return itemToText.containsKey(itemId);
     }
 
     /**

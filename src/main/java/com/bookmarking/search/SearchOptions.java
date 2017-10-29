@@ -70,7 +70,7 @@ public class SearchOptions
         this.endDate = endDate;
     }
 
-    public boolean isSearchBookmarkText()
+    public boolean getSearchBookmarkText()
     {
         return searchBookmarkText;
     }
@@ -80,7 +80,7 @@ public class SearchOptions
         this.searchBookmarkText = searchBookmarkText;
     }
 
-    public boolean isSearchBookmarkNames()
+    public boolean getSearchBookmarkNames()
     {
         return searchBookmarkNames;
     }
@@ -90,7 +90,7 @@ public class SearchOptions
         this.searchBookmarkNames = searchBookmarkNames;
     }
 
-    public boolean isSearchBookmarkTypes()
+    public boolean getSearchBookmarkTypes()
     {
         return searchBookmarkTypes;
     }
@@ -100,7 +100,7 @@ public class SearchOptions
         this.searchBookmarkTypes = searchBookmarkTypes;
     }
 
-    public boolean isSearchTags()
+    public boolean getSearchTags()
     {
         return searchTags;
     }

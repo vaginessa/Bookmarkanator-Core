@@ -64,6 +64,10 @@ public interface IOInterface
      */
     void setUIInterface(IOUIInterface uiInterface);
 
+    //------------------------------------
+    // Search methods
+    //------------------------------------
+
     /**
      * Gets a list of all search words present.
      *
@@ -123,19 +127,34 @@ public interface IOInterface
     Collection<String> getAllBookmarkNames();
 
     /**
-     * Get all bookmark class names present
+     * Extracts a list of bookmark names contained
+     * @param bookmarkIds
+     * @return
+     */
+    List<String> getBookmarkNames(Collection<UUID> bookmarkIds);
+
+    /**
+     * Get all bookmark classes present
      *
      * @return A set of all classnames present
      */
     Set<Class> getAllBookmarkClasses();
 
-    List<AbstractBookmark> getBookmarkList(SearchOptions searchOptions);
+    /**
+     * Extracts classes from Bookmarks with Id's in the supplied collection.
+     * @param bookmarkIds  A collection of bookmark Id's to return classes for.
+     * @return  A set of classes that represent all classes present in the list of bookmarks matched to supplied Id's.
+     */
+    Set<Class> getBookmarkClasses(Collection<UUID> bookmarkIds);
 
+    /**
+     * Obtains a single bookmark by bookmark Id
+     * @param bookmarkId  The Id of the bookmark to find
+     * @return  The bookmark with this Id or null.
+     */
     AbstractBookmark getBookmark(UUID bookmarkId);
 
-    Set<String> getBookmarkNames(Collection<UUID> bookmarkIds);
-
-    Set<Class> getBookmarkClasses(Collection<UUID> bookmarkIds);
+    Set<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds);
 
     void addBookmark(AbstractBookmark bookmark)
         throws Exception;
@@ -157,8 +176,14 @@ public interface IOInterface
     // Tag methods
     //------------------------------------
 
-    Set<String> extractTags(Collection<UUID> bookmarkIds);
-
+    /**
+     * Default method to extract recommended tags for a specific bookmark. This method simply uses .contains for each tag so it
+     * is not the fastest way of accomplishing this goal.
+     * @param abstractBookmark  the bookmark to get recomended tags for.
+     * @param numResults  How many recommended tags to try and get. Will truncate list to this number if to large.
+     * @return A map of recommended tags. Map<Level int, Set of tags> the Integer is the recommendation level of the associated list of
+     * tags. Zero is top recommendations, getting less recommended the higher the number gets.
+     */
     default Map<Integer, Set<String>> getRecommendedTags(AbstractBookmark abstractBookmark, int numResults)
     {
         if (abstractBookmark == null || abstractBookmark.getTags().isEmpty())
@@ -229,9 +254,12 @@ public interface IOInterface
         return intTagMap;
     }
 
-
-
-    default Set<String> extractTags(List<AbstractBookmark> bookmarks)
+    /**
+     * A convenience method to extract tags from a set of bookmarks supplied.
+     * @param bookmarks  The source of the tags.
+     * @return  A set of all tags contained in the supplied bookmarks.
+     */
+    default Set<String> extractTags(Collection<AbstractBookmark> bookmarks)
     {
         Set<String> res = new HashSet<>();
 
@@ -242,16 +270,44 @@ public interface IOInterface
         return res;
     }
 
+    /**
+     * Gets all tags from all bookmarks present.
+     * @return  A set of every tag present in all the bookmarks in the system.
+     */
     Set<String> getAllTags();
 
+    /**
+     * Renames a tag in the entire system.
+     * @param originalTagName  The tag to rename
+     * @param newTagName  The new tag name
+     * @return  A list of bookmarks affected.
+     * @throws Exception
+     */
     List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
         throws Exception;
 
+    /**
+     * Replaces several tags with a single tag everywhere in the system.
+     * @param replacement  the replacing tag.
+     * @param tagsToReplace  the set of tags to replace with the single tag.
+     * @return  A list of bookmarks affected
+     * @throws Exception
+     */
     List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)
         throws Exception;
 
+    /**
+     * Deletes a tag everywhere
+     * @param tagToDelete  The tag name to delete.
+     * @return  A list of bookmarks affected
+     */
     Set<AbstractBookmark> deleteTag(String tagToDelete);
 
+    /**
+     * Deletes the set of tags everywhere.
+     * @param tagsToDelete  The set of tags to remove from all bookmarks.
+     * @return  A list of bookmarks affected
+     */
     Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete);
 
     //------------------------------------

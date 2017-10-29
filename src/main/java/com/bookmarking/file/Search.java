@@ -1,6 +1,7 @@
 package com.bookmarking.file;
 
 import java.util.*;
+import javax.xml.bind.annotation.*;
 import com.bookmarking.util.*;
 
 /**
@@ -9,19 +10,25 @@ import com.bookmarking.util.*;
  *
  * @param <T> The Object to associate the strings with (for bookmark this is the bookmark Id's)
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Search<T>
 {
+    @XmlElement
     private TextAssociator<T> theFullText;
+    @XmlElement
     private TextAssociator<T> theFullTextRotated;
+    @XmlElement
     private TextAssociator<T> theFullTextRotatedSubstrings;
-    //    private TextAssociator<T> wordsInTheText;
+    @XmlElement
+    private TextAssociator<T> wordsInTheText;
 
     public Search()
     {
         theFullText = new TextAssociator<>();
         theFullTextRotated = new TextAssociator<>();
         theFullTextRotatedSubstrings = new TextAssociator<>();
-        //        wordsInTheText = new TextAssociator<>();
+        wordsInTheText = new TextAssociator<>();
     }
 
     /**
@@ -32,6 +39,12 @@ public class Search<T>
     public Set<String> getFullTextWords()
     {
         return theFullText.getAllWords();
+    }
+
+    public boolean contains(T item)
+    {
+        return (theFullText.contains(item) && theFullTextRotated.contains(item) && theFullTextRotatedSubstrings.contains(item) &&
+            wordsInTheText.contains(item));
     }
 
     /**
@@ -160,15 +173,15 @@ public class Search<T>
         {
             results.addAll(items);
         }
-        //
-        //        if (results.size()<numberOfResults)
-        //        {
-        //            items = wordsInTheText.getIDs(newString);
-        //            if (items!=null)
-        //            {
-        //                results.addAll(items);
-        //            }
-        //        }
+
+        if (results.size() < numberOfResults)
+        {
+            items = wordsInTheText.getIDs(newString);
+            if (items != null)
+            {
+                results.addAll(items);
+            }
+        }
 
         if (results.size() < numberOfResults)
         {
@@ -205,12 +218,11 @@ public class Search<T>
     public LinkedHashSet<T> searchWordsInTextOnly(String string)
     {
         LinkedHashSet<T> items = new LinkedHashSet<>();
-        //TODO implement full text rotations and substrings.
-        //        Set<T> res = wordsInTheText.getIDs(string.toLowerCase());
-        //        if (res!=null)
-        //        {
-        //            items.addAll(res);
-        //        }
+        Set<T> res = wordsInTheText.getIDs(string.toLowerCase());
+        if (res != null)
+        {
+            items.addAll(res);
+        }
         return items;
     }
 
