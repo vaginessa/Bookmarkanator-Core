@@ -79,15 +79,15 @@ public class Bootstrap
         // Load IO interface specified in settings or the default IO interface.
         initIOInterface();
 
-        System.out.println("Starting saver thread.");
-        saver = Saver.use(this);
-        saver.start();
+//        System.out.println("Starting saver thread.");
+//        saver = Saver.use(this);
+//        saver.start();
     }
 
     public void exit()
         throws Exception
     {
-        saver.quit();
+//        saver.quit();
         this.saveSettingsFile();
         this.getIOInterface().save();
     }
