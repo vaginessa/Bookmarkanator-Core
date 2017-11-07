@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import javax.swing.*;
+import com.bookmarking.error.*;
 
 public class JavaVersionDetector
 {
@@ -66,8 +67,7 @@ public class JavaVersionDetector
                     }
                     catch (Exception ex)
                     {
-                        //It looks like there's a problem
-                        ex.printStackTrace();
+                        ErrorHandler.handle(ex);
                     }
                 }
             });

@@ -1,9 +1,11 @@
-package com.bookmarking.util;
+package com.bookmarking.module;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.zip.*;
+import com.bookmarking.error.*;
+import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 import org.reflections.*;
 import org.reflections.util.*;
@@ -150,7 +152,7 @@ public class ModuleLoader
         }
         catch (ClassNotFoundException e)
         {
-            logger.error(e);
+            ErrorHandler.handle(e);
         }
 
         return null;

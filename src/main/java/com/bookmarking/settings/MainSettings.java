@@ -1,9 +1,9 @@
 package com.bookmarking.settings;
 
 import java.util.*;
-import com.bookmarking.bootstrap.*;
+import com.bookmarking.*;
 
-public class BootstrapSettings
+public class MainSettings
 {
     private static String CORE_SETTINGS = "Core Settings";
 
@@ -58,8 +58,9 @@ public class BootstrapSettings
     }
 
     public String getIOInterfaceName()
+        throws Exception
     {
-        String ioInterfaceName = Bootstrap.use().getIOInterface().getClass().getName();
+        String ioInterfaceName = LocalInstance.use().getIOInterface().getClass().getName();
         ioInterfaceName = ioInterfaceName.substring(ioInterfaceName.lastIndexOf('.'), ioInterfaceName.length());
         ioInterfaceName = ioInterfaceName.replaceAll("\\.","");
         return ioInterfaceName;

@@ -2,7 +2,7 @@ package com.bookmarking.fileservice;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarking.file.*;
+import com.bookmarking.error.*;
 import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
@@ -197,7 +197,7 @@ public class FileSync<T>
                     fin.close();
                 }
 
-                logger.error(e);
+                ErrorHandler.handle(e);
                 if (fileReader.getInvalidFilePolicy().equals(InvalidFilePolicy.markBadAndContinue))
                 {
                     File newFile = new File(file.getParentFile().getPath() + File.separatorChar + file.getName() + ".bad");

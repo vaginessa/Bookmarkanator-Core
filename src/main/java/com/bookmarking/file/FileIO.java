@@ -3,14 +3,13 @@ package com.bookmarking.file;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
-import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
+import com.bookmarking.module.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.util.*;
-import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -62,7 +61,7 @@ public class FileIO implements IOInterface
         if (config == null || config.trim().isEmpty())
         {//
             logger.trace("No file location sent in. Inferring location from settings file used.");
-            File settingsFile = Bootstrap.use().getSettingsFile();
+            File settingsFile = LocalInstance.use().getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT).getFile();
             Objects.requireNonNull(settingsFile, "Settings file is not set.");
 
             String parent = settingsFile.getParent();
@@ -104,16 +103,16 @@ public class FileIO implements IOInterface
     public synchronized void save()
         throws Exception
     {
-        FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        FileSync<IOInterface> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
         fileSync.setObjectToWrite(this);
         fileSync.writeToDisk();
 
-        FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
+        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
 
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
 
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
 //        fileSync3.setObjectToWrite(searchGroup);
 //        fileSync3.writeToDisk();
 
@@ -124,7 +123,7 @@ public class FileIO implements IOInterface
     public synchronized void save(String config)
         throws Exception
     {
-        FileSync<IOInterface> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        FileSync<IOInterface> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
         File file = new File(config);
         fileSync.setFile(file);
         fileSync.setObjectToWrite(this);
@@ -132,13 +131,13 @@ public class FileIO implements IOInterface
 
         // Get settings file from current file location
         File settingsFile = createSettingsFile(file);
-        FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
+        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
         fileSync2.setFile(settingsFile);
         fileSync2.setObjectToWrite(settings);
         fileSync2.writeToDisk();
 
 //        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
 //        fileSync3.setFile(searchSettingsFile);
 //        fileSync3.setObjectToWrite(searchGroup);
 //        fileSync3.writeToDisk();
@@ -469,7 +468,7 @@ public class FileIO implements IOInterface
         throws Exception
     {
         // Load bookmark
-        FileSync<FileIO> fileSync = FileService.use().getFile(FILE_IO_KEY);
+        FileSync<FileIO> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
         fileSync.injectParsingObject(this);
         fileSync.readFromDisk();
 
@@ -482,12 +481,12 @@ public class FileIO implements IOInterface
         logger.trace("Done.");
 
         // Load settings
-        FileSync<Settings> fileSync2 = FileService.use().getFile(FILE_IO_SETTINGS_KEY);
+        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
         fileSync2.readFromDisk();
         settings = fileSync2.getObject();
 
         // Load search settings
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFile(FILE_SEARCH_SETTINGS_KEY);
+//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
 //        fileSync3.readFromDisk();
 //        searchGroup = fileSync3.getObject();
     }

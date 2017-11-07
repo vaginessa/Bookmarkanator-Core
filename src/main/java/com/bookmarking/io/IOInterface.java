@@ -3,6 +3,7 @@ package com.bookmarking.io;
 import java.text.*;
 import java.util.*;
 import com.bookmarking.bookmark.*;
+import com.bookmarking.error.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
 
@@ -11,6 +12,8 @@ import com.bookmarking.settings.*;
  */
 public interface IOInterface
 {
+
+    String SETTINGS_FILE_CONTEXT = "ioSettings";
 
     //------------------------------------
     // Init and save methods
@@ -176,6 +179,42 @@ public interface IOInterface
     // Tag methods
     //------------------------------------
 
+    default Set<String> extractTags(List<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abs : bookmarks)
+        {
+            res.addAll(abs.getTags());
+        }
+        return res;
+    }
+
+
+    default Set<String> searchTags(String searchTerm)
+    {
+        Set<String> tags = getAllTags();
+        if (searchTerm == null || searchTerm.trim().isEmpty())
+        {
+            return tags;
+        }
+
+        searchTerm = searchTerm.toLowerCase().trim();
+
+        Set<String> res = new HashSet<>();
+
+        for (String tag : tags)
+        {
+            String s = tag.toLowerCase();
+            if (s.contains(searchTerm) || searchTerm.contains(s))
+            {
+                res.add(tag);
+            }
+        }
+
+        return res;
+    }
+
     /**
      * Default method to extract recommended tags for a specific bookmark. This method simply uses .contains for each tag so it
      * is not the fastest way of accomplishing this goal.
@@ -248,7 +287,7 @@ public interface IOInterface
         }
         catch (ParseException e)
         {
-            e.printStackTrace();
+            ErrorHandler.handle(e);
         }
 
         return intTagMap;

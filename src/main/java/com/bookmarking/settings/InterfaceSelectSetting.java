@@ -3,7 +3,8 @@ package com.bookmarking.settings;
 import java.lang.reflect.*;
 import java.util.*;
 import com.bookmarking.bootstrap.*;
-import com.bookmarking.util.*;
+import com.bookmarking.error.*;
+import com.bookmarking.module.*;
 
 /**
  * This class is used to allow one to select a particular implementation of an interface or abstract class. For instance
@@ -130,7 +131,7 @@ public class InterfaceSelectSetting extends ClassSetting
             }
             catch (ClassNotFoundException e)
             {
-                e.printStackTrace();
+                ErrorHandler.handle(e);
             }
         }
 

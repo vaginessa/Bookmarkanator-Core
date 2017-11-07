@@ -25,7 +25,7 @@ public class FileService
         return map.remove(context);
     }
 
-    public FileSync getFile(String context)
+    public FileSync getFileSync(String context)
     {
         return map.get(context);
     }

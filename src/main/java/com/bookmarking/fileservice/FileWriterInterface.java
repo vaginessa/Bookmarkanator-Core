@@ -1,7 +1,6 @@
-package com.bookmarking.file;
+package com.bookmarking.fileservice;
 
 import java.io.*;
-import com.bookmarking.fileservice.*;
 
 /**
  * Interface that needs to be implemented by things wishing to use FileSync objects.

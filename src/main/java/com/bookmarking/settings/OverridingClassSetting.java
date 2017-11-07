@@ -3,7 +3,8 @@ package com.bookmarking.settings;
 import java.lang.reflect.*;
 import java.util.*;
 import com.bookmarking.bootstrap.*;
-import com.bookmarking.util.*;
+import com.bookmarking.error.*;
+import com.bookmarking.module.*;
 
 /**
  * This class allows one to select one class that overrides another class.
@@ -183,7 +184,7 @@ public class OverridingClassSetting extends ClassSetting
             }
             catch (ClassNotFoundException e)
             {
-                e.printStackTrace();
+                ErrorHandler.handle(e);
             }
         }
 

@@ -2,24 +2,24 @@ package com.bookmarking.bootstrap;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.action.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.file.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
+import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
-import com.bookmarking.util.*;
-import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 
 /**
  * This class is responsible for doing the initial settings, and class loading.
  */
-public class Bootstrap
+public class Bootstrap implements InitInterface
 {
     // Static fields
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
-    private static Bootstrap bootstrap;
+//    private static Bootstrap bootstrap;
 
     // Default names
     private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
@@ -45,7 +45,7 @@ public class Bootstrap
     private Settings settings;
     private Saver saver;
     // The user interface that this class can interact with to show status and post messages.
-    private BootstrapUIInterface uiInterface;
+    private InitUIInterface uiInterface;
 
     public Bootstrap()
     {
@@ -60,6 +60,12 @@ public class Bootstrap
     // Methods
     // ============================================================
 
+    public void init(Settings settings) throws Exception
+    {
+        this.settings = settings;
+        init();
+    }
+
     public void init()
         throws Exception
     {
@@ -67,7 +73,7 @@ public class Bootstrap
         logger.info("Init Bootstrap");
         logger.info("-----------------------------------------------------------------");
 
-        Bootstrap.bootstrap = this;
+//        Bootstrap.bootstrap = this;
 
         // Search for and load settings file. This determines operating directory.
         initSettings();
@@ -92,13 +98,25 @@ public class Bootstrap
         this.getIOInterface().save();
     }
 
+    @Override
+    public void setInitUIInterface(InitUIInterface initUIInterface)
+    {
+
+    }
+
+    @Override
+    public InitUIInterface getInitUIInterface()
+    {
+        return null;
+    }
+
     // ============================================================
     // Methods
     // ============================================================
 
-    public BootstrapSettings getSettings()
+    protected MainSettings getSettings()
     {
-        BootstrapSettings res = new BootstrapSettings();
+        MainSettings res = new MainSettings();
         res.setMainSettings(settings);
         if (this.getIOInterface()!=null)
         {
@@ -107,10 +125,10 @@ public class Bootstrap
         return res;
     }
 
-    public void setSettings(BootstrapSettings bootstrapSettings)
+    protected void setSettings(MainSettings mainSettings)
     {
-        settings = bootstrapSettings.getMainSettings();
-        getIOInterface().setSettings(bootstrapSettings.getIoSettings());
+        settings = mainSettings.getMainSettings();
+        getIOInterface().setSettings(mainSettings.getIoSettings());
     }
 
     public IOInterface getIOInterface()
@@ -118,15 +136,15 @@ public class Bootstrap
         return this.ioInterface;
     }
 
-    synchronized public void saveSettingsFile()
+    protected void saveSettingsFile()
         throws Exception
     {
-        FileSync<Settings> fileSync = FileService.use().getFile(GLOBAL_SETTINGS_GROUP);
+        FileSync<Settings> fileSync = FileService.use().getFileSync(GLOBAL_SETTINGS_GROUP);
         fileSync.setObjectToWrite(settings);
         fileSync.writeToDisk();
     }
 
-    public File getSettingsFile()
+    protected File getSettingsFile()
         throws IOException
     {
         return settingsFile;
@@ -152,7 +170,7 @@ public class Bootstrap
         settingsFile = locateSettingsDirectory();
 
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
-        FileService.use().addFile(fileSync, GLOBAL_SETTINGS_GROUP);
+        FileService.use().addFile(fileSync, MainInterface.SETTINGS_FILE_CONTEXT);
 
         fileSync.readFromDisk();
         this.settings = fileSync.getParsedObject();
@@ -362,12 +380,12 @@ public class Bootstrap
         return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
     }
 
-    public BootstrapUIInterface getUiInterface()
+    public InitUIInterface getUiInterface()
     {
         return uiInterface;
     }
 
-    public void setUiInterface(BootstrapUIInterface uiInterface)
+    public void setUiInterface(InitUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;
     }
@@ -376,61 +394,61 @@ public class Bootstrap
     // Static Methods
     // ============================================================
 
-    public static IOInterface IOInterface()
-    {
-        return Bootstrap.use().ioInterface;
-    }
-
-    public static Bootstrap use(Settings settings)
-    {
-        if (bootstrap == null)
-        {
-            try
-            {
-                bootstrap = new Bootstrap(settings);
-                bootstrap.init();
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-        return bootstrap;
-    }
-
-    public static Bootstrap use(BootstrapUIInterface uiInterface)
-    {
-        if (bootstrap == null)
-        {
-            try
-            {
-                bootstrap = new Bootstrap();
-                bootstrap.setUiInterface(uiInterface);
-                bootstrap.init();
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-        return bootstrap;
-    }
-
-    public static Bootstrap use()
-    {
-        if (bootstrap == null)
-        {
-            try
-            {
-                bootstrap = new Bootstrap();
-                bootstrap.init();
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-        return bootstrap;
-    }
+//    public static IOInterface IOInterface()
+//    {
+//        return Bootstrap.use().ioInterface;
+//    }
+//
+//    public static Bootstrap use(Settings settings)
+//    {
+//        if (bootstrap == null)
+//        {
+//            try
+//            {
+//                bootstrap = new Bootstrap(settings);
+//                bootstrap.init();
+//            }
+//            catch (Exception e)
+//            {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return bootstrap;
+//    }
+//
+//    public static Bootstrap use(BootstrapUIInterface uiInterface)
+//    {
+//        if (bootstrap == null)
+//        {
+//            try
+//            {
+//                bootstrap = new Bootstrap();
+//                bootstrap.setUiInterface(uiInterface);
+//                bootstrap.init();
+//            }
+//            catch (Exception e)
+//            {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return bootstrap;
+//    }
+//
+//    public static Bootstrap use()
+//    {
+//        if (bootstrap == null)
+//        {
+//            try
+//            {
+//                bootstrap = new Bootstrap();
+//                bootstrap.init();
+//            }
+//            catch (Exception e)
+//            {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return bootstrap;
+//    }
 
 }

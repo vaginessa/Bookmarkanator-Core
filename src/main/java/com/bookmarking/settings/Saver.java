@@ -1,6 +1,7 @@
 package com.bookmarking.settings;
 
-import com.bookmarking.bootstrap.*;
+import com.bookmarking.*;
+import com.bookmarking.error.*;
 import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
@@ -102,26 +103,25 @@ public class Saver implements Runnable
 
                 logger.info("Saving");
 
-                if (Bootstrap.use().getUiInterface()!=null)
+                if (LocalInstance.use().getUIInterface()!=null)
                 {
-                    Bootstrap.use().getUiInterface().notifyUI("Saving");
-                    Bootstrap.use().getUiInterface().setUIState(UIStateEnum.BUSY);
+                    LocalInstance.use().getUIInterface().notifyUI("Saving");
+                    LocalInstance.use().getUIInterface().setUIState(UIStateEnum.BUSY);
                 }
 
-                Bootstrap.use().saveSettingsFile();
-                Bootstrap.use().getIOInterface().save();
+                LocalInstance.use().saveSettings();
 
-                if (Bootstrap.use().getUiInterface()!=null)
+                if (LocalInstance.use().getUIInterface()!=null)
                 {
-                    Bootstrap.use().getUiInterface().notifyUI("Done");
-                    Bootstrap.use().getUiInterface().setUIState(UIStateEnum.NEUTRAL);
-                    Bootstrap.use().getUiInterface().notifyUI("");
+                    LocalInstance.use().getUIInterface().notifyUI("Done");
+                    LocalInstance.use().getUIInterface().setUIState(UIStateEnum.NEUTRAL);
+                    LocalInstance.use().getUIInterface().notifyUI("");
                 }
 
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                ErrorHandler.handle(e);
             }
         }
     }
