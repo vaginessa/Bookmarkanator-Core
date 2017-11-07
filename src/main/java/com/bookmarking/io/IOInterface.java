@@ -16,7 +16,7 @@ public interface IOInterface
     String SETTINGS_FILE_CONTEXT = "ioSettings";
 
     //------------------------------------
-    // Init and save methods
+    // Init and save
     //------------------------------------
 
     /**
@@ -50,7 +50,7 @@ public interface IOInterface
         throws Exception;
 
     //------------------------------------
-    // Other methods
+    // UI
     //------------------------------------
 
     /**
@@ -68,7 +68,7 @@ public interface IOInterface
     void setUIInterface(IOUIInterface uiInterface);
 
     //------------------------------------
-    // Search methods
+    // Search
     //------------------------------------
 
     /**
@@ -112,7 +112,7 @@ public interface IOInterface
         throws ParseException;
 
     //------------------------------------
-    // Bookmark methods
+    // Bookmark
     //------------------------------------
 
     /**
@@ -176,7 +176,7 @@ public interface IOInterface
     AbstractBookmark deleteBookmark(AbstractBookmark bookmark);
 
     //------------------------------------
-    // Tag methods
+    // Tags
     //------------------------------------
 
     default Set<String> extractTags(List<AbstractBookmark> bookmarks)
@@ -350,7 +350,7 @@ public interface IOInterface
     Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete);
 
     //------------------------------------
-    // Bookmark Type methods
+    // Bookmark Types
     //------------------------------------
 
     Set<String> extractTypeNames(Collection<UUID> bookmarkIds);
@@ -358,11 +358,18 @@ public interface IOInterface
     Set<String> getAllTypeNames();
 
     //------------------------------------
-    // Settings Type methods
+    // Settings Types
     //------------------------------------
 
     Settings getSettings();
 
     void setSettings(Settings settings);
 
+    //------------------------------------
+    // Undo/Redo
+    //------------------------------------
+
+    void undo() throws Exception;
+    void redo() throws Exception;
+    void clearUndoRedoStack() throws Exception;
 }

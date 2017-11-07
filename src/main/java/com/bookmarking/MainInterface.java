@@ -71,4 +71,12 @@ public interface MainInterface
     // ----------------------------------------------
 
     UIInterface getUIInterface();
+
+    // ----------------------------------------------
+    // Undo/Redo
+    // ----------------------------------------------
+
+    void undo() throws Exception;
+    void redo() throws Exception;
+    void clearUndoRedoStack() throws Exception;
 }

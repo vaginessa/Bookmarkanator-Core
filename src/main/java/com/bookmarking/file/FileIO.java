@@ -460,6 +460,29 @@ public class FileIO implements IOInterface
         this.uiInterface = uiInterface;
     }
 
+    @Override
+    public void undo()
+        throws Exception
+    {
+        // TODO undo IOInterface
+        // TODO undo Main Settings changes.
+    }
+
+    @Override
+    public void redo()
+        throws Exception
+    {
+        // TODO redo IOInterface
+        // TODO redo Main Settings changes.
+    }
+
+    @Override
+    public void clearUndoRedoStack()
+        throws Exception
+    {
+        // TODO Implement stack clear.
+    }
+
     // ----------
     // private
     // ----------
@@ -496,5 +519,4 @@ public class FileIO implements IOInterface
         String path = input.getParent();
         return new File(path + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME);
     }
-
 }
