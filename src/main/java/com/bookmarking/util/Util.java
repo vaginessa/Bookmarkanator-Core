@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import org.apache.commons.io.*;
+import org.w3c.dom.*;
+import org.w3c.dom.ls.*;
 
 public class Util
 {
@@ -167,6 +169,27 @@ public class Util
         res = res.concat(string.substring(string.length()-1-borders, string.length()));
 
         return res;
+    }
+
+    public static String toXML(Node node) {
+        DOMImplementationLS lsImpl = (DOMImplementationLS)node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+        LSSerializer lsSerializer = lsImpl.createLSSerializer();
+        lsSerializer.getDomConfig().setParameter("xml-declaration", false);
+        return lsSerializer.writeToString(node);
+    }
+
+    // Gotten from:
+    // https://stackoverflow.com/questions/3300839/get-a-nodes-inner-xml-as-string-in-java-dom
+    public static String innerXml(Node node) {
+        DOMImplementationLS lsImpl = (DOMImplementationLS)node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+        LSSerializer lsSerializer = lsImpl.createLSSerializer();
+        lsSerializer.getDomConfig().setParameter("xml-declaration", false);
+        NodeList childNodes = node.getChildNodes();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            sb.append(lsSerializer.writeToString(childNodes.item(i)));
+        }
+        return sb.toString();
     }
 
 }

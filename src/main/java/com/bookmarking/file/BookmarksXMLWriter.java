@@ -12,9 +12,9 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLWriter implements FileWriterInterface<IOInterface>
+public class BookmarksXMLWriter implements FileWriterInterface<FileIO>
 {
-    private IOInterface ioInterface;
+    private FileIO ioInterface;
     private OutputStream out;
 
     private void addBlocks(Element element, Document document,IOInterface abstractContext)
@@ -103,7 +103,7 @@ public class BookmarksXMLWriter implements FileWriterInterface<IOInterface>
     }
 
     @Override
-    public void write(IOInterface context, OutputStream out)
+    public void write(FileIO context, OutputStream out)
         throws Exception
     {
         this.out = out;
@@ -116,6 +116,11 @@ public class BookmarksXMLWriter implements FileWriterInterface<IOInterface>
 
         rootElement.setAttribute(BookmarksXMLParser.XML_VERSION_ATTRIBUTE, BookmarksXMLParser.CURRENT_VERSION);
 
+        for (Node s: ioInterface.getParsedBookmarks().getErrorTexts())
+        {
+            Node n = doc.importNode(s, true);
+            rootElement.appendChild(n);
+        }
         addBlocks(rootElement, doc, ioInterface);
 
         doc.appendChild(rootElement);

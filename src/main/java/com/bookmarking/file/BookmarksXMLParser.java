@@ -8,14 +8,13 @@ import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
-import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
 
-public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
+public class BookmarksXMLParser implements FileReaderInterface<FileIO>
 {
     private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
@@ -43,7 +42,7 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
     public static final String BASE_VERSION = "0.1";
 
     //Variables
-    private IOInterface ioInterface;
+    private FileIO ioInterface;
     private InputStream inputStream;
     private Document document;
     private String xmlVerison;
@@ -140,7 +139,7 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
     }
 
     @Override
-    public IOInterface parse(InputStream inputStream)
+    public FileIO parse(InputStream inputStream)
         throws Exception
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -207,8 +206,18 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
 
                         //TODO HANDLE WHEN A BOOKMARK CLASS IS NOT FOUND...
                         //TODO Possibly have a base class, or error class that can load the data, and then save to the xml again on exit.
-                        abs = ModuleLoader.use().instantiateClass(className, AbstractBookmark.class);
-                        loadedClasses.put(className, abs.getClass());
+                        try
+                        {
+                            abs = ModuleLoader.use().instantiateClass(className, AbstractBookmark.class);
+                            loadedClasses.put(className, abs.getClass());
+                        }
+                        catch (Exception e)
+                        {
+                            System.out.println();
+                            ((FileIO)ioInterface).getParsedBookmarks().addErrorText(n);
+                            continue;
+                        }
+
                     }
 
                     //add all bookmarks of this group
@@ -220,13 +229,13 @@ public class BookmarksXMLParser implements FileReaderInterface<IOInterface>
     }
 
     @Override
-    public void setObject(IOInterface obj)
+    public void setObject(FileIO obj)
     {
         this.ioInterface = obj;
     }
 
     @Override
-    public IOInterface getObject()
+    public FileIO getObject()
     {
         return ioInterface;
     }

@@ -4,7 +4,7 @@ import java.util.*;
 import org.apache.logging.log4j.*;
 
 /**
- *  A message board is a place where bookmarks can write on a virtual message board. They all have read access, but can only write
+ *  The message board is a place where bookmarks can write on a virtual message board. They all have read access, but can only write
  *  the messages for their class.
  */
 public class MessageBoard

@@ -24,6 +24,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     // Dates
     protected Date creationDate;
+    protected Date modificationDate;
     protected Date lastAccessedDate;
 
     // The list of actions this bookmark supports or understands
@@ -99,6 +100,16 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public void setCreationDate(Date creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    public Date getModificationDate()
+    {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate)
+    {
+        this.modificationDate = modificationDate;
     }
 
     public Date getLastAccessedDate()

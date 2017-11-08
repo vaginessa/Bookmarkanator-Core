@@ -30,14 +30,15 @@ public class FileIO implements IOInterface
     private IOUIInterface uiInterface;
     private File file;
     private Settings settings;
-    private Map<UUID, AbstractBookmark> bookmarks;
+//    private Map<UUID, AbstractBookmark> bookmarks;
+    private ParsedBookmarks parsedBookmarks;
     private SearchGroup searchGroup;
 
     private boolean isDirty;
 
     public FileIO()
     {
-        bookmarks = new HashMap<>();
+        parsedBookmarks = new ParsedBookmarks();
     }
 
     public boolean isDirty()
@@ -76,7 +77,7 @@ public class FileIO implements IOInterface
         }
 
         // Create bookmark file
-        FileSync<IOInterface> fileSync = new FileSync<>(new BookmarksXMLWriter(), new BookmarksXMLParser(), file);
+        FileSync<FileIO> fileSync = new FileSync<>(new BookmarksXMLWriter(), new BookmarksXMLParser(), file);
         FileService.use().addFile(fileSync, FILE_IO_KEY);
 
         // Create file io settings file
@@ -93,10 +94,20 @@ public class FileIO implements IOInterface
 
         searchGroup = new SearchGroup();
 
-        for (AbstractBookmark abstractBookmark: bookmarks.values())
+        for (AbstractBookmark abstractBookmark: parsedBookmarks.getLoadedBookmarks())
         {
             searchGroup.addBookmark(abstractBookmark);
         }
+    }
+
+    public ParsedBookmarks getParsedBookmarks()
+    {
+        return parsedBookmarks;
+    }
+
+    public void setParsedBookmarks(ParsedBookmarks parsedBookmarks)
+    {
+        this.parsedBookmarks = parsedBookmarks;
     }
 
     @Override
@@ -165,7 +176,7 @@ public class FileIO implements IOInterface
     @Override
     public AbstractBookmark getBookmark(UUID bookmarkId)
     {
-        return bookmarks.get(bookmarkId);
+        return parsedBookmarks.getLoadedById(bookmarkId);
     }
 
     @Override
@@ -173,7 +184,7 @@ public class FileIO implements IOInterface
     {
         Set<AbstractBookmark> res = new HashSet<>();
 
-        bookmarkIds.stream().forEach(id -> res.add(bookmarks.get(id)));
+        bookmarkIds.stream().forEach(id -> res.add(parsedBookmarks.getLoadedById(id)));
 
         return res;
     }
@@ -238,32 +249,32 @@ public class FileIO implements IOInterface
     @Override
     public Set<AbstractBookmark> getAllBookmarks()
     {
-        return new HashSet<>(bookmarks.values());
+        return new HashSet<>(parsedBookmarks.getLoadedBookmarks());
     }
 
     @Override
     public Set<String> getAllTags()
     {
-       return extractTags(bookmarks.values());
+       return extractTags(parsedBookmarks.getLoadedBookmarks());
     }
 
     @Override
     public Set<String> getAllSearchWords()
         throws Exception
     {
-        return getSearchWords(bookmarks.keySet());
+        return getSearchWords(parsedBookmarks.getLoadedBookmarkIds());
     }
 
     @Override
     public Set<String> getAllTypeNames()
     {
-        return extractTypeNames(bookmarks.keySet());
+        return extractTypeNames(parsedBookmarks.getLoadedBookmarkIds());
     }
 
     @Override
     public List<String> getAllBookmarkNames()
     {
-        return getBookmarkNames(bookmarks.keySet());
+        return getBookmarkNames(parsedBookmarks.getLoadedBookmarkIds());
     }
 
     @Override
@@ -286,12 +297,12 @@ public class FileIO implements IOInterface
         //TODO Add/update to search methods
         Objects.requireNonNull(bookmark);
 
-        if (bookmarks.containsKey(bookmark.getId()))
+        if (parsedBookmarks.contains(bookmark.getId()))
         {
             throw new Exception("Duplicate bookmark present");
         }
 
-        bookmarks.put(bookmark.getId(), bookmark);
+        parsedBookmarks.addLoaded(bookmark);
         setDirty(true);
     }
 
@@ -313,7 +324,7 @@ public class FileIO implements IOInterface
     {
         //TODO Add/update to search methods
         Objects.requireNonNull(bookmark);
-        if (!bookmarks.containsKey(bookmark.getId()))
+        if (!parsedBookmarks.contains(bookmark.getId()))
         {
             throw new Exception("Bookmark "+bookmark.getId()+" not found.");
         }
@@ -424,7 +435,7 @@ public class FileIO implements IOInterface
         if (options.getSearchTerm()==null || options.getSearchTerm().trim().isEmpty())
         {
             bks = new HashSet<>();
-            bks.addAll(bookmarks.values());
+            bks.addAll(parsedBookmarks.getLoadedBookmarks());
         }
         else
         {
