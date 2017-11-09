@@ -23,7 +23,7 @@ public class OverridingClassSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(Bootstrap.OVERRIDDEN_CLASSES_GROUP);
+        super.setGroup(InitInterface.OVERRIDDEN_CLASSES_GROUP);
     }
 
     public OverridingClassSetting(String group, String key, Class value)

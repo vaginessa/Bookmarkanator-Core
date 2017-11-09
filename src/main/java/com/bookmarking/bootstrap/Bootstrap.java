@@ -10,6 +10,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -30,14 +31,10 @@ public class Bootstrap implements InitInterface
 
     // Module loader keys
     private static final String MODULE_LOCATIONS_GROUP = "module-locations";
-    public static final String TRACKED_CLASSES_GROUP = "tracked-classes";
-    public static final String OVERRIDDEN_CLASSES_GROUP = "overridden-classes";
 
     // General keys
     public static final String DEFAULT_CLASSES_GROUP = "default-classes";
     public static final String INIT_SETTING_KEY = "init-setting";
-
-    public static String IO_INTERFACE_KEY = IOInterface.class.getCanonicalName();
 
     // Fields
     private IOInterface ioInterface;
@@ -46,6 +43,13 @@ public class Bootstrap implements InitInterface
     private Saver saver;
     // The user interface that this class can interact with to show status and post messages.
     private InitUIInterface uiInterface;
+    private static Version version;
+
+    static
+    {
+        version = VersionParser.parseJavaVersion("0.6.0-1");
+        System.out.println();
+    }
 
     public Bootstrap()
     {
@@ -77,6 +81,9 @@ public class Bootstrap implements InitInterface
         // tracked classes.
         initModules();
 
+        // TODO Add update check here, and if there is a UI interface ask the UI interface if it can update or not.
+        // TODO If the user select not, it won't prompt for the same update again.
+
         // Load IO interface specified in settings or the default IO interface.
         initIOInterface();
 
@@ -103,6 +110,12 @@ public class Bootstrap implements InitInterface
     public InitUIInterface getInitUIInterface()
     {
         return null;
+    }
+
+    @Override
+    public Version getVersion()
+    {
+        return version;
     }
 
     // ============================================================

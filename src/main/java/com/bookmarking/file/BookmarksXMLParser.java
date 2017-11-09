@@ -193,7 +193,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                     }
 
                     AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings()
-                        .getSetting(Bootstrap.OVERRIDDEN_CLASSES_GROUP, className);
+                        .getSetting(InitInterface.OVERRIDDEN_CLASSES_GROUP, className);
 
                     Class clazz;
 
