@@ -15,6 +15,8 @@
             <xs:element name="string" type="string" maxOccurs="unbounded"/>
             <xs:element name="file" type="file" maxOccurs="unbounded"/>
             <xs:element name="boolean" type="boolean" maxOccurs="unbounded"/>
+            <xs:element name="overridingClass" type="overridingClass" maxOccurs="unbounded"/>
+            <xs:element name="interfaceClass" type="interfaceClass" maxOccurs="unbounded"/>
             <xs:element name="class" type="class" maxOccurs="unbounded"/>
             <xs:element name="double" type="double" maxOccurs="unbounded"/>
             <xs:element name="integer" type="integer" maxOccurs="unbounded"/>
@@ -35,6 +37,18 @@
     </xs:complexType>
 
     <xs:complexType name="boolean">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="overridingClass">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="interfaceClass">
         <xs:sequence>
             <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>

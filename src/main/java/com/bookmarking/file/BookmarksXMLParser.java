@@ -59,7 +59,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
             if (!n.getNodeName().startsWith("#"))
             {
                 abs = abstractBookmark.getNew();
-                if (ioInterface.getUIInterface()!=null)
+                if (ioInterface.getUIInterface() != null)
                 {
                     abs.setUiInterface(ioInterface.getUIInterface().getBookmarkUIInterface());
                 }
@@ -178,50 +178,63 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
 
             if (n.getNodeName().equals(BookmarksXMLParser.BLOCK_TAG))
             {
+                try
+                {
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings().getSetting(Bootstrap.OVERRIDDEN_CLASSES_GROUP, className);
-
-                    if (setting != null)
-                    {//Override class name specified in bookmark file with one specified in the settings file.
-//                        String replacementClassName = setting.getValue();
-
-//                        if (replacementClassName != null && !replacementClassName.isEmpty())
-//                        {
-//                            System.out.println("Overriding bookmark class name \"" + className + "\" with this class name \"" + replacementClassName +
-//                                "\" from the settings file.");
-//                            className = replacementClassName;
-//                        }
+                    if (className!=null)
+                    {
+                        className = className.trim();
+                        if (className.isEmpty())
+                        {
+                            throw new Exception("Empty class name");
+                        }
                     }
 
-                    //TODO Somethings not right with the settings loading. It should not be overriding bookmark with the same bookmark class name.
+                    AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings()
+                        .getSetting(Bootstrap.OVERRIDDEN_CLASSES_GROUP, className);
 
-                    className = className.trim();
+                    Class clazz;
 
-                    Class clazz = loadedClasses.get(className);
-                    AbstractBookmark abs = null;
-                    if (clazz == null)
+                    // Override class name specified in bookmark file with one specified in the settings file.
+                    if (setting != null)
                     {
-
-                        //TODO HANDLE WHEN A BOOKMARK CLASS IS NOT FOUND...
-                        //TODO Possibly have a base class, or error class that can load the data, and then save to the xml again on exit.
-                        try
+                        if (setting instanceof OverridingClassSetting)
                         {
-                            abs = ModuleLoader.use().instantiateClass(className, AbstractBookmark.class);
-                            loadedClasses.put(className, abs.getClass());
+                            OverridingClassSetting o = (OverridingClassSetting) setting;
+                            clazz = o.getValue();
+                            className = clazz.getCanonicalName();
                         }
-                        catch (Exception e)
+                        else
                         {
-                            System.out.println();
-                            ((FileIO)ioInterface).getParsedBookmarks().addErrorText(n);
-                            continue;
+                            throw new Exception("Setting type not matched: " + setting.getClass().getCanonicalName());
                         }
+                    }
+                    else
+                    {
+                        clazz = loadedClasses.get(className);
+                    }
 
+                    AbstractBookmark abs = null;
+
+                    if (clazz!=null)
+                    {
+                        abs = (AbstractBookmark) clazz.newInstance();
+                    }
+                    else
+                    {
+                        abs = ModuleLoader.use().instantiateClass(className, AbstractBookmark.class);
+                        loadedClasses.put(className, abs.getClass());
                     }
 
                     //add all bookmarks of this group
                     parseBookmark(n, abs);
+                }
+                catch (Exception e)
+                {
+                    ioInterface.getParsedBookmarks().addErrorText(n);
+                }
             }
         }
 

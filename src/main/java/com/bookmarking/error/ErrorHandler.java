@@ -25,10 +25,11 @@ public class ErrorHandler
         if (uiInterface!=null)
         {
             uiInterface.setUIState(UIStateEnum.ERROR);
-            uiInterface.setText(ex.getMessage());
+            uiInterface.setText(ex.toString());
         }
 
         logger.error(ex);
+        ex.printStackTrace();
     }
 
     public static ErrorHandler use()

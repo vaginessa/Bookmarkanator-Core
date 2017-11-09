@@ -68,6 +68,14 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
             {
                 type = SettingsXMLParser.FILE_ELEMENT;
             }
+            else if (settingItem instanceof OverridingClassSetting)
+            {
+                type = SettingsXMLParser.OVERRIDING_CLASS_ELEMENT;
+            }
+            else if (settingItem instanceof InterfaceSelectSetting)
+            {
+                type = SettingsXMLParser.INTERFACE_CLASS_ELEMENT;
+            }
             else if (settingItem instanceof ClassSetting)
             {
                 type = SettingsXMLParser.CLASS_ELEMENT;

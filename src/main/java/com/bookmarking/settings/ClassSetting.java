@@ -41,7 +41,6 @@ public class ClassSetting extends AbstractSetting<Class>
         throws Exception
     {
         super.setKey(key);
-        Class.forName(key);
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.bookmarking.module.*;
  * This class allows one to select one class that overrides another class.
  * The classes available for selection (key values) are the tracked classes, and the classes available for
  * value selection are classes assignable from the key class.
- *
+ * <p>
  * For example if one had two implementations of the same bookmark, this setting could be used to substitute one
  * implementation class for another.
  */
@@ -57,7 +57,7 @@ public class OverridingClassSetting extends ClassSetting
     public void setGroup(String group)
         throws Exception
     {
-        throw new Exception("Cannot change Group of overriding classes setting");
+       // Do nothing
     }
 
     @Override
@@ -67,16 +67,7 @@ public class OverridingClassSetting extends ClassSetting
         Objects.requireNonNull(this.getKey(),
             "The key must not be null, and must be in the tracked class list." + " Please set the key prior to setting the value.");
 
-        Class clazz = Class.forName(key);
-
-        if (ModuleLoader.use().getClassesFound(getKey()).contains(clazz))
-        {
-            setValue(clazz);
-        }
-        else
-        {
-            throw new Exception("Value must be present in list of tracked classes for key");
-        }
+        super.setValue(value);
     }
 
     @Override
@@ -84,13 +75,6 @@ public class OverridingClassSetting extends ClassSetting
         throws Exception
     {
         Objects.requireNonNull(key);
-
-        Class clazz = Class.forName(key);
-
-        if (!trackedClasses.contains(clazz))
-        {
-            throw new Exception("Cannot accept class \"" + key + "\" as it is not a tracked class");
-        }
 
         super.setKey(key);
     }
@@ -201,7 +185,7 @@ public class OverridingClassSetting extends ClassSetting
     @Override
     public boolean isKeyValid(String key)
     {
-        if (key==null)
+        if (key == null)
         {
             return false;
         }
@@ -228,6 +212,6 @@ public class OverridingClassSetting extends ClassSetting
     @Override
     public boolean isValueValid(Class value)
     {
-        return value!=null && getValueOptions(keyAsClass()).contains(value);
+        return value != null && getValueOptions(keyAsClass()).contains(value);
     }
 }

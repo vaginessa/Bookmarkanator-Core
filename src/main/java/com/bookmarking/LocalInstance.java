@@ -53,8 +53,8 @@ public class LocalInstance implements MainInterface
     public void init(Settings settings, InitUIInterface initUIInterface)
         throws Exception
     {
-        initInterface = new Bootstrap(settings);
-        initInterface.init();
+        initInterface = new Bootstrap();
+        initInterface.init(settings);
         initInterface.setInitUIInterface(initUIInterface);
     }
 

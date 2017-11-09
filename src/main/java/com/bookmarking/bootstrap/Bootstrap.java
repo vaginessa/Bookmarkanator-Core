@@ -51,11 +51,6 @@ public class Bootstrap implements InitInterface
     {
     }
 
-    public Bootstrap(Settings settings)
-    {
-        this.settings = settings;
-    }
-
     // ============================================================
     // Methods
     // ============================================================
@@ -173,9 +168,10 @@ public class Bootstrap implements InitInterface
         FileService.use().addFile(fileSync, MainInterface.SETTINGS_FILE_CONTEXT);
 
         fileSync.readFromDisk();
-        this.settings = fileSync.getParsedObject();
-
-        this.settings.importSettings(getDefaultSettings());
+        Settings parsedSettings = fileSync.getParsedObject();
+        parsedSettings.importSettings(this.settings);
+        parsedSettings.importSettings(getDefaultSettings());
+        this.settings = parsedSettings;
     }
 
     /**

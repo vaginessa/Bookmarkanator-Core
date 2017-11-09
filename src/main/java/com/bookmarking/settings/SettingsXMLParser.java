@@ -13,6 +13,8 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     public static final String GROUP_ELEMENT = "group";
     public static final String FILE_ELEMENT = "file";
     public static final String CLASS_ELEMENT = "class";
+    public static final String OVERRIDING_CLASS_ELEMENT = "overridingClass";
+    public static final String INTERFACE_CLASS_ELEMENT = "interfaceClass";
     public static final String STRING_ELEMENT = "string";
     public static final String DOUBLE_ELEMENT = "double";
     public static final String INTEGER_ELEMENT = "integer";
@@ -101,7 +103,6 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
         return FileSync.FileBackupPolicy.SINGLE_BACKUP;
     }
 
-
     private void getGroup(Node groupNode)
         throws Exception
     {
@@ -147,7 +148,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                 continue;
             }
 
-            settings.putSetting(getKeyValue(n,group, node.getNodeName()));
+            settings.putSetting(getKeyValue(n, group, node.getNodeName()));
         }
     }
 
@@ -164,6 +165,12 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
             case CLASS_ELEMENT:
                 res = getKeyValue(node, new ClassSetting(), typeString);
                 break;
+            case OVERRIDING_CLASS_ELEMENT:
+                res = getKeyValue(node, new OverridingClassSetting(), typeString);
+                break;
+            case INTERFACE_CLASS_ELEMENT:
+                res = getKeyValue(node, new InterfaceSelectSetting(), typeString);
+                break;
             case DOUBLE_ELEMENT:
                 res = getKeyValue(node, new DoubleSetting(), typeString);
                 break;
@@ -175,12 +182,12 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                 break;
             case BOOLEAN_ELEMENT:
                 res = getKeyValue(node, new BooleanSetting(), typeString);
-                    break;
-                default:
-                    throw new Exception("Unknown element encountered "+node.getNodeName());
+                break;
+            default:
+                throw new Exception("Unknown element encountered " + node.getNodeName());
         }
 
-        if (res!=null)
+        if (res != null)
         {
             res.setGroup(group);
         }
@@ -214,6 +221,8 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                             abstractSetting.setValue(new File(n.getTextContent()));
                             break;
                         case CLASS_ELEMENT:
+                        case OVERRIDING_CLASS_ELEMENT:
+                        case INTERFACE_CLASS_ELEMENT:
                             abstractSetting.setValue(Class.forName(n.getTextContent()));
                             break;
                         case DOUBLE_ELEMENT:
@@ -229,11 +238,11 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                             abstractSetting.setValue(Boolean.parseBoolean(n.getTextContent()));
                             break;
                         default:
-                            throw new Exception("Unknown element encountered "+node.getNodeName());
+                            throw new Exception("Unknown element encountered " + node.getNodeName());
                     }
                     break;
                 default:
-                    throw new Exception("Unknown element encountered "+node.getNodeName());
+                    throw new Exception("Unknown element encountered " + node.getNodeName());
             }
         }
         return abstractSetting;
