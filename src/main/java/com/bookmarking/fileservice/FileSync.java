@@ -7,7 +7,9 @@ import org.apache.commons.io.*;
 import org.apache.logging.log4j.*;
 
 /**
- * A class used to read in, validate, and write out information to files on the file system.
+ * File sync is used to read in, validate, and write out information to files on the file system.
+ *
+ * After supplying a reader and writer class, it then enables the user to perform actions on that file with a simple interface.
  *
  * @param <T> The type of object that is supplied to the reader and writer interfaces.
  */
@@ -19,6 +21,9 @@ public class FileSync<T>
     // Enums
     // ============================================================
 
+    /**
+     * The action the writer will take when the file is loaded.
+     */
     public enum FileBackupPolicy
     {
         SINGLE_BACKUP,
@@ -26,12 +31,18 @@ public class FileSync<T>
         NO_BACKUP
     }
 
+    /**
+     * The action the writer will take if the attempt to parse the file fails.
+     */
     public enum InvalidFilePolicy
     {
         markBadAndContinue,
         thowError,
     }
 
+    /**
+     * The action to take if the file doesn't exist.
+     */
     public enum MissingFilePolicy
     {
         createNew,
@@ -51,6 +62,13 @@ public class FileSync<T>
     // Constructors
     // ============================================================
 
+    /**
+     * Create a FileSync object. With the supplied RileWriterInterface, and FileReaderInterface, it can read and write T objects to/from disk.
+     *
+     * @param fileWriter    The class that will be used to write the file to disk.
+     * @param fileReader    The class that will be used to read the file from disk.
+     * @param file          The location of the file.
+     */
     public FileSync(FileWriterInterface<T> fileWriter, FileReaderInterface<T> fileReader, File file)
     {
         Objects.requireNonNull(fileWriter);

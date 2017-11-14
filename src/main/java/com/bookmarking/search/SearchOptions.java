@@ -31,6 +31,8 @@ public class SearchOptions
 
     // List of tag search options along with type (all, any, none)
     private List<TagsInfo> tagsInfoList;
+    private TagsInfo lastTagsInfo;
+    private Set<String> tagsPresent;
 
     // Exclude all bookmark types not present, unless the list is null. If null include all.
     private Set<String> selectedBookmarkTypes;
@@ -38,6 +40,7 @@ public class SearchOptions
     public SearchOptions()
     {
         tagsInfoList = new ArrayList<>();
+        tagsPresent = new HashSet<>();
     }
 
     public String getSearchTerm()
@@ -116,24 +119,52 @@ public class SearchOptions
         tmp.setTags(tags);
         tmp.setOperation(operation);
 
+        lastTagsInfo = tmp;
+        tagsPresent.addAll(tags);
+
         tagsInfoList.add(tmp);
+    }
+
+    public void addTags(TagsInfo tagsInfo)
+    {
+        tagsInfoList.add(tagsInfo);
+        tagsPresent.addAll(tagsInfo.getTags());
+        lastTagsInfo = tagsInfo;
     }
 
     public List<TagsInfo> getTagGroups()
     {
-        return tagsInfoList;
+        return Collections.unmodifiableList(tagsInfoList);
     }
 
-    public Set<String> getTagsFromAllGroups()
+    public TagsInfo getLastTagsInfo()
     {
-        Set<String> res = new HashSet<>();
+        return lastTagsInfo;
+    }
 
-        for (TagsInfo tagsInfo : tagsInfoList)
+    public void clearTagGroups()
+    {
+        tagsInfoList.clear();
+        lastTagsInfo = null;
+        tagsPresent.clear();
+    }
+
+    public Set<String> getTagsPresent()
+    {
+        return tagsPresent;
+    }
+
+    public void removeTag(String tag)
+    {
+        if (tagsInfoList!=null)
         {
-            res.addAll(tagsInfo.getTags());
+            for (TagsInfo tagsInfo: tagsInfoList)
+            {
+                tagsInfo.getTags().remove(tag);
+            }
         }
 
-        return res;
+        tagsPresent.remove(tag);
     }
 
     public void setSelectedBKType(String bkType)

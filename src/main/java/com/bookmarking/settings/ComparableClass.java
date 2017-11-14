@@ -2,6 +2,9 @@ package com.bookmarking.settings;
 
 import java.util.*;
 
+/**
+ * A class to use for comparing class objects.
+ */
 public class ComparableClass implements Comparable<ComparableClass>
 {
         private Class clazz;

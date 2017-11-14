@@ -157,40 +157,70 @@ public interface IOInterface
      */
     AbstractBookmark getBookmark(UUID bookmarkId);
 
+    /**
+     * Get bookmarks with supplied Id's
+     * @param bookmarkIds  The bookmark Id's to obtain.
+     * @return  A set of bookmarks found with the supplied Id's
+     */
     Set<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds);
 
+    /**
+     * Add a new bookmark.
+     * @param bookmark  The new bookmark.
+     * @throws Exception
+     */
     void addBookmark(AbstractBookmark bookmark)
         throws Exception;
 
+    /**
+     * Add a collection of bookmarks all at once.
+     * @param bookmarks  The collection of bookmarks to add.
+     * @throws Exception
+     */
     void addAllBookmarks(Collection<AbstractBookmark> bookmarks)
         throws Exception;
 
+    /**
+     * Locates the bookmark with the Id of the supplied bookmark and replaces it.
+     *
+     * Note: the updated bookmark should be a complete representation. Id does not do incremental updates.
+     * @param bookmark  The bookmark to update.
+     * @throws Exception
+     */
     void updateBookmark(AbstractBookmark bookmark)
         throws Exception;
 
+    /**
+     * Update a collection of bookmarks
+     * @param bookmarks  The collection of bookmarks to update.
+     * @throws Exception
+     */
     void updateAll(Collection<AbstractBookmark> bookmarks)
         throws Exception;
 
+    /**
+     * Remove the bookmark with the specified Id.
+     * @param bookmarkId  The Id of the bookmark to delete.
+     * @return  The removed bookmark.
+     */
     AbstractBookmark deleteBookmark(UUID bookmarkId);
 
+    /**
+     * Delete bookmark.
+     * @param bookmark  The bookmark to delete
+     * @return  The bookmark that was deleted (returned to allow for changes during deletion)
+     */
     AbstractBookmark deleteBookmark(AbstractBookmark bookmark);
 
     //------------------------------------
     // Tags
     //------------------------------------
 
-    default Set<String> extractTags(List<AbstractBookmark> bookmarks)
-    {
-        Set<String> res = new HashSet<>();
-
-        for (AbstractBookmark abs : bookmarks)
-        {
-            res.addAll(abs.getTags());
-        }
-        return res;
-    }
-
-
+    /**
+     * Perform a brute force search (tag.contains(text) or text.contains(tag)) for the string withing tags.
+     * @param searchTerm  the search term
+     * @return  All tags found
+     */
     default Set<String> searchTags(String searchTerm)
     {
         Set<String> tags = getAllTags();
@@ -310,6 +340,24 @@ public interface IOInterface
     }
 
     /**
+     * Default method to extract tags from a list of bookmarks. Uses brute force to extract tags. If large lists are going to be used a more elegant
+     * solution should be implemented.
+     *
+     * @param bookmarks  The list of bookmarks to extract tags from.
+     * @return  A set of tags contained in all the supplied bookmarks.
+     */
+    default Set<String> extractTags(List<AbstractBookmark> bookmarks)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abs : bookmarks)
+        {
+            res.addAll(abs.getTags());
+        }
+        return res;
+    }
+
+    /**
      * Gets all tags from all bookmarks present.
      * @return  A set of every tag present in all the bookmarks in the system.
      */
@@ -353,16 +401,32 @@ public interface IOInterface
     // Bookmark Types
     //------------------------------------
 
+    /**
+     * Returns a set of bookmark types present in the collection of bookmark Id's
+     * @param bookmarkIds  The collection of Id's to extract types for.
+     * @return  A set of types (such as text, web, etc...)
+     */
     Set<String> extractTypeNames(Collection<UUID> bookmarkIds);
 
+    /**
+     * @return  A set of all types present in this IOInterface
+     */
     Set<String> getAllTypeNames();
 
     //------------------------------------
     // Settings Types
     //------------------------------------
 
+    /**
+     * Obtains the settings present in this interface.
+     * @return  Settings stored in this interface
+     */
     Settings getSettings();
 
+    /**
+     * Set the settings for this interface.
+     * @param settings  The new settings.
+     */
     void setSettings(Settings settings);
 
     //------------------------------------
@@ -371,5 +435,9 @@ public interface IOInterface
 
     void undo() throws Exception;
     void redo() throws Exception;
+
+    /**
+     * Start over with the undo/redo stack.
+     */
     void clearUndoRedoStack() throws Exception;
 }

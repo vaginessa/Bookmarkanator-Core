@@ -36,6 +36,12 @@ public class TagsInfo implements Comparable
         operation = TagOptions.ALL_TAGS;
     }
 
+    public TagsInfo(TagOptions tagOptions)
+    {
+        this();
+        this.operation = tagOptions;
+    }
+
     public Set<String> getTags()
     {
         return tags;
