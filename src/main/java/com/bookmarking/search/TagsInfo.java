@@ -27,6 +27,7 @@ public class TagsInfo implements Comparable
     private Date date;
     private TagOptions operation;
     private UUID id;
+    private SearchOptions searchOptions;
 
     public TagsInfo()
     {
@@ -36,21 +37,69 @@ public class TagsInfo implements Comparable
         operation = TagOptions.ALL_TAGS;
     }
 
-    public TagsInfo(TagOptions tagOptions)
-    {
-        this();
-        this.operation = tagOptions;
-    }
-
     public Set<String> getTags()
     {
-        return tags;
+        return Collections.unmodifiableSet(tags);
     }
 
-    public void setTags(Set<String> tags)
+    public Date getCreationDate()
     {
-        this.tags.clear();
+        return new Date(date.toInstant().toEpochMilli());
+    }
+
+    public TagOptions getOperation()
+    {
+        return operation;
+    }
+
+    public UUID getId()
+    {
+        return id;
+    }
+
+    public void setId(UUID id)
+    {
+        this.id = id;
+    }
+
+    public void addTag(String tag)
+    {
+        this.tags.add(tag);
+
+        if (searchOptions!=null)
+        {
+            searchOptions.computeTagsPresent();
+        }
+    }
+
+    public void addTags(Collection<String> tags)
+    {
         this.tags.addAll(tags);
+
+        if (searchOptions!=null)
+        {
+            searchOptions.computeTagsPresent();
+        }
+    }
+
+    public void removeTag(String tag)
+    {
+        this.tags.remove(tag);
+
+        if (searchOptions!=null)
+        {
+            searchOptions.computeTagsPresent();
+        }
+    }
+
+    public void removeTags(Collection<String> tags)
+    {
+        this.tags.removeAll(tags);
+
+        if (searchOptions!=null)
+        {
+            searchOptions.computeTagsPresent();
+        }
     }
 
     public Date getDate()
@@ -63,24 +112,19 @@ public class TagsInfo implements Comparable
         this.date = date;
     }
 
-    public TagOptions getOperation()
-    {
-        return operation;
-    }
-
     public void setOperation(TagOptions operation)
     {
         this.operation = operation;
     }
 
-    public UUID getId()
+    public SearchOptions getSearchOptions()
     {
-        return id;
+        return searchOptions;
     }
 
-    public void setId(UUID id)
+    public void setSearchOptions(SearchOptions searchOptions)
     {
-        this.id = id;
+        this.searchOptions = searchOptions;
     }
 
     @Override

@@ -115,7 +115,8 @@ public class SearchOptions
     public void addTags(TagsInfo.TagOptions operation, Set<String> tags)
     {
         TagsInfo tmp = new TagsInfo();
-        tmp.setTags(tags);
+        tmp.setSearchOptions(this);
+        tmp.addTags(tags);
         tmp.setOperation(operation);
 
         tagsInfoList.add(tmp);
@@ -126,6 +127,7 @@ public class SearchOptions
     public void addTags(TagsInfo tagsInfo)
     {
         tagsInfoList.add(tagsInfo);
+        tagsInfo.setSearchOptions(this);
 
         computeTagsPresent();
     }
@@ -158,39 +160,19 @@ public class SearchOptions
 
     public void removeAllTags(String tag)
     {
-        List<TagsInfo> removals = new ArrayList<>();
 
         if (tagsInfoList!=null)
         {
             for (TagsInfo tagsInfo: tagsInfoList)
             {
-                tagsInfo.getTags().remove(tag);
-
-                if (tagsInfo.getTags().isEmpty())
-                {
-                    removals.add(tagsInfo);
-                }
+                // Setting search options to null temporarily so it doesn't call this class for each item.
+                tagsInfo.setSearchOptions(null);
+                tagsInfo.removeTag(tag);
+                tagsInfo.setSearchOptions(this);
             }
         }
 
-        tagsInfoList.removeAll(removals);
-
-        tagsPresent.remove(tag);
-    }
-
-    public void removeTag(String tag, TagsInfo tagsInfo)
-    {
-        if (tagsInfo !=null)
-        {
-            tagsInfo.getTags().remove(tag);
-
-            if (tagsInfo.getTags().isEmpty())
-            {
-                tagsInfoList.remove(tagsInfo);
-            }
-        }
-
-        tagsPresent.remove(tag);
+        computeTagsPresent();
     }
 
     public void setSelectedBKType(String bkType)
@@ -230,20 +212,22 @@ public class SearchOptions
 
     public void computeTagsPresent()
     {
+        List<TagsInfo> removals = new ArrayList<>();
         tagsPresent.clear();
 
         for (TagsInfo tagsInfo: tagsInfoList)
         {
-            tagsPresent.addAll(tagsInfo.getTags());
+            if (tagsInfo.getTags().isEmpty())
+            {
+                removals.add(tagsInfo);
+            }
+            else
+            {
+                tagsPresent.addAll(tagsInfo.getTags());
+            }
         }
-    }
 
-    private void initSelectedTypes()
-    {
-        if (selectedBookmarkTypes==null)
-        {
-            selectedBookmarkTypes = new HashSet<>();
-        }
+        tagsInfoList.removeAll(removals);
     }
 
     public DateType getDateType()
@@ -254,5 +238,17 @@ public class SearchOptions
     public void setDateType(DateType dateType)
     {
         this.dateType = dateType;
+    }
+
+    // ============================================================
+    // Private Methods
+    // ============================================================
+
+    private void initSelectedTypes()
+    {
+        if (selectedBookmarkTypes==null)
+        {
+            selectedBookmarkTypes = new HashSet<>();
+        }
     }
 }
