@@ -31,7 +31,6 @@ public class SearchOptions
 
     // List of tag search options along with type (all, any, none)
     private List<TagsInfo> tagsInfoList;
-    private TagsInfo lastTagsInfo;
     private Set<String> tagsPresent;
 
     // Exclude all bookmark types not present, unless the list is null. If null include all.
@@ -119,17 +118,16 @@ public class SearchOptions
         tmp.setTags(tags);
         tmp.setOperation(operation);
 
-        lastTagsInfo = tmp;
-        tagsPresent.addAll(tags);
-
         tagsInfoList.add(tmp);
+
+        computeTagsPresent();
     }
 
     public void addTags(TagsInfo tagsInfo)
     {
         tagsInfoList.add(tagsInfo);
-        tagsPresent.addAll(tagsInfo.getTags());
-        lastTagsInfo = tagsInfo;
+
+        computeTagsPresent();
     }
 
     public List<TagsInfo> getTagGroups()
@@ -139,28 +137,56 @@ public class SearchOptions
 
     public TagsInfo getLastTagsInfo()
     {
-        return lastTagsInfo;
+        if (tagsInfoList==null || tagsInfoList.isEmpty())
+        {
+            return null;
+        }
+
+        return tagsInfoList.get(tagsInfoList.size()-1);
     }
 
     public void clearTagGroups()
     {
         tagsInfoList.clear();
-        lastTagsInfo = null;
         tagsPresent.clear();
     }
 
     public Set<String> getTagsPresent()
     {
-        return tagsPresent;
+        return Collections.unmodifiableSet(tagsPresent);
     }
 
-    public void removeTag(String tag)
+    public void removeAllTags(String tag)
     {
+        List<TagsInfo> removals = new ArrayList<>();
+
         if (tagsInfoList!=null)
         {
             for (TagsInfo tagsInfo: tagsInfoList)
             {
                 tagsInfo.getTags().remove(tag);
+
+                if (tagsInfo.getTags().isEmpty())
+                {
+                    removals.add(tagsInfo);
+                }
+            }
+        }
+
+        tagsInfoList.removeAll(removals);
+
+        tagsPresent.remove(tag);
+    }
+
+    public void removeTag(String tag, TagsInfo tagsInfo)
+    {
+        if (tagsInfo !=null)
+        {
+            tagsInfo.getTags().remove(tag);
+
+            if (tagsInfo.getTags().isEmpty())
+            {
+                tagsInfoList.remove(tagsInfo);
             }
         }
 
@@ -200,6 +226,16 @@ public class SearchOptions
         }
 
         return Collections.unmodifiableSet(selectedBookmarkTypes);
+    }
+
+    public void computeTagsPresent()
+    {
+        tagsPresent.clear();
+
+        for (TagsInfo tagsInfo: tagsInfoList)
+        {
+            tagsPresent.addAll(tagsInfo.getTags());
+        }
     }
 
     private void initSelectedTypes()
