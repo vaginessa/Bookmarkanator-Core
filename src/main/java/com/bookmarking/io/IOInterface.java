@@ -363,6 +363,10 @@ public interface IOInterface
      */
     Set<String> getAllTags();
 
+    SortedMap<String, Set<String>> getAllTagsAlphabetical(Set<String> tagsToRemove);
+
+    SortedMap<String, Set<String>> orderTagsAlphabetical(Set<String> tags);
+
     /**
      * Renames a tag in the entire system.
      * @param originalTagName  The tag to rename

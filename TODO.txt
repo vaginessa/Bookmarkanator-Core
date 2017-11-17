@@ -1,6 +1,4 @@
--Either create a single xsd structure for all versions up till now, or create multiple xsd files for the different versions.
--Modify the bookmarks parser to capture individual bookmarks that have errors, and parse the rest of the non erroring bookmarks. Then write the bad bookmarks out again on saving.
-That way data is never lost. Then a mitigation plan can be implemented.
-
--Modify the settings format with an optional version number.
--Modify the parser and writer to capture bad data, load good data, and write bad data back out when saving. That way data is never lost. Then a mitigation plan can be implemented.
+-Implement Undo/Redo in FileIO
+-Implement DatabaseIO as an alternative to FileIO
+-Windows Testing
+-Linux Testing
