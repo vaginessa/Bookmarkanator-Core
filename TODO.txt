@@ -2,3 +2,4 @@
 -Implement DatabaseIO as an alternative to FileIO
 -Windows Testing
 -Linux Testing
+-Modify Search Options with distance from now setting.

@@ -264,7 +264,7 @@ public interface IOInterface
         try
         {
             SearchOptions searchOptions = new SearchOptions();
-            searchOptions.addTags(TagsInfo.TagOptions.ALL_TAGS, abstractBookmark.getTags());
+            searchOptions.add(Operation.TagOptions.ALL_TAGS, abstractBookmark.getTags());
             List<AbstractBookmark> bks = applySearchOptions(searchOptions);
 
             Set<String> tags = extractTags(bks);
@@ -298,7 +298,7 @@ public interface IOInterface
                 }
 
                 searchOptions = new SearchOptions();
-                searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG, abstractBookmark.getTags());
+                searchOptions.add(Operation.TagOptions.ANY_TAG, abstractBookmark.getTags());
                 bks = applySearchOptions(searchOptions);
 
                 tags = extractTags(bks);
@@ -348,6 +348,7 @@ public interface IOInterface
      */
     default Set<String> extractTags(List<AbstractBookmark> bookmarks)
     {
+        Objects.requireNonNull(bookmarks);
         Set<String> res = new HashSet<>();
 
         for (AbstractBookmark abs : bookmarks)

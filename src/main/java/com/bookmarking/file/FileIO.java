@@ -401,7 +401,7 @@ public class FileIO implements IOInterface
         SearchOptions searchOptions = new SearchOptions();
         Set<String> tags = new HashSet<>();
         tags.add(originalTagName);
-        searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG,tags);
+        searchOptions.add(Operation.TagOptions.ANY_TAG,tags);
         List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
 
         for (AbstractBookmark bookmark: bookmarks)
@@ -421,7 +421,7 @@ public class FileIO implements IOInterface
     {
         //TODO Add/update to search methods
         SearchOptions searchOptions = new SearchOptions();
-        searchOptions.addTags(TagsInfo.TagOptions.ANY_TAG,tagsToReplace);
+        searchOptions.add(Operation.TagOptions.ANY_TAG,tagsToReplace);
         List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
 
         for (AbstractBookmark bookmark: bookmarks)

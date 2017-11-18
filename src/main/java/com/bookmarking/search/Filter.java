@@ -419,18 +419,18 @@ public class Filter
         }
 
         //Filter by selected tags blocks.
-        for (TagsInfo tagsInfo : searchOptions.getTagGroups())
+        for (Operation operation : searchOptions.getTagOperations())
         {
-            switch (tagsInfo.getOperation())
+            switch (operation.getOperation())
             {
                 case ALL_TAGS:
-                    this.keepWithAllTags(tagsInfo.getTags());
+                    this.keepWithAllTags(operation.getTags());
                     break;
                 case ANY_TAG:
-                    this.keepWithAnyTag(tagsInfo.getTags());
+                    this.keepWithAnyTag(operation.getTags());
                     break;
                 case WITHOUT_TAGS:
-                    this.excludeWithTags(tagsInfo.getTags());
+                    this.excludeWithTags(operation.getTags());
                     break;
             }
         }

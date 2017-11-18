@@ -2,7 +2,7 @@ package com.bookmarking.search;
 
 import java.util.*;
 
-public class TagsInfo implements Comparable
+public class Operation implements Comparable
 {
     public enum TagOptions
     {
@@ -27,9 +27,8 @@ public class TagsInfo implements Comparable
     private Date date;
     private TagOptions operation;
     private UUID id;
-    private SearchOptions searchOptions;
 
-    public TagsInfo()
+    public Operation()
     {
         tags = new HashSet<>();
         date = new Date();
@@ -37,14 +36,9 @@ public class TagsInfo implements Comparable
         operation = TagOptions.ALL_TAGS;
     }
 
-    public Set<String> getTags()
-    {
-        return Collections.unmodifiableSet(tags);
-    }
-
     public Date getCreationDate()
     {
-        return new Date(date.toInstant().toEpochMilli());
+        return date;
     }
 
     public TagOptions getOperation()
@@ -62,46 +56,6 @@ public class TagsInfo implements Comparable
         this.id = id;
     }
 
-    public void addTag(String tag)
-    {
-        this.tags.add(tag);
-
-        if (searchOptions!=null)
-        {
-            searchOptions.computeTagsPresent();
-        }
-    }
-
-    public void addTags(Collection<String> tags)
-    {
-        this.tags.addAll(tags);
-
-        if (searchOptions!=null)
-        {
-            searchOptions.computeTagsPresent();
-        }
-    }
-
-    public void removeTag(String tag)
-    {
-        this.tags.remove(tag);
-
-        if (searchOptions!=null)
-        {
-            searchOptions.computeTagsPresent();
-        }
-    }
-
-    public void removeTags(Collection<String> tags)
-    {
-        this.tags.removeAll(tags);
-
-        if (searchOptions!=null)
-        {
-            searchOptions.computeTagsPresent();
-        }
-    }
-
     public Date getDate()
     {
         return date;
@@ -114,25 +68,31 @@ public class TagsInfo implements Comparable
 
     public void setOperation(TagOptions operation)
     {
-        this.operation = operation;
+        if (operation!=null)
+        {
+            this.operation = operation;
+        }
     }
 
-    public SearchOptions getSearchOptions()
+    public Set<String> getTags()
     {
-        return searchOptions;
+        return tags;
     }
 
-    public void setSearchOptions(SearchOptions searchOptions)
+    public void setTags(Set<String> tags)
     {
-        this.searchOptions = searchOptions;
+        if (tags!=null)
+        {
+            this.tags = tags;
+        }
     }
 
     @Override
     public int compareTo(Object o)
     {
-        if (o instanceof TagsInfo)
+        if (o instanceof Operation)
         {
-            TagsInfo tmp = (TagsInfo) o;
+            Operation tmp = (Operation) o;
             id.compareTo(tmp.getId());
         }
         if (o instanceof UUID)

@@ -19,6 +19,7 @@ public class SearchOptions
     // Date range's to locate bookmarks in (inclusive) can be null.
     private Date startDate;
     private Date endDate;
+    private long offsetFromNow;
 
     // Which date type to use for filtering.
     private DateType dateType;
@@ -30,16 +31,14 @@ public class SearchOptions
     private boolean searchTags = true;
 
     // List of tag search options along with type (all, any, none)
-    private List<TagsInfo> tagsInfoList;
-    private Set<String> tagsPresent;
+    private List<Operation> operationList;
 
     // Exclude all bookmark types not present, unless the list is null. If null include all.
     private Set<String> selectedBookmarkTypes;
 
     public SearchOptions()
     {
-        tagsInfoList = new ArrayList<>();
-        tagsPresent = new HashSet<>();
+        operationList = new ArrayList<>();
     }
 
     public String getSearchTerm()
@@ -70,6 +69,16 @@ public class SearchOptions
     public void setEndDate(Date endDate)
     {
         this.endDate = endDate;
+    }
+
+    public long getOffsetFromNow()
+    {
+        return offsetFromNow;
+    }
+
+    public void setOffsetFromNow(long offsetFromNow)
+    {
+        this.offsetFromNow = offsetFromNow;
     }
 
     public boolean getSearchBookmarkText()
@@ -112,67 +121,102 @@ public class SearchOptions
         this.searchTags = searchTags;
     }
 
-    public void addTags(TagsInfo.TagOptions operation, Set<String> tags)
+    public Operation add(Operation.TagOptions operation, String tag)
     {
-        TagsInfo tmp = new TagsInfo();
-        tmp.setSearchOptions(this);
-        tmp.addTags(tags);
-        tmp.setOperation(operation);
-
-        tagsInfoList.add(tmp);
-
-        computeTagsPresent();
+        Set<String> tags = new HashSet<>();
+        tags.add(tag);
+        return add(operation, tags);
     }
 
-    public void addTags(TagsInfo tagsInfo)
+    public Operation add(Operation.TagOptions operation, Set<String> tags)
     {
-        tagsInfoList.add(tagsInfo);
-        tagsInfo.setSearchOptions(this);
+        Operation tagsInfo = new Operation();
+        tagsInfo.setOperation(operation);
+        tagsInfo.setTags(tags);
 
-        computeTagsPresent();
+        operationList.add(tagsInfo);
+
+        return tagsInfo;
     }
 
-    public List<TagsInfo> getTagGroups()
+    public void add(Operation operation)
     {
-        return Collections.unmodifiableList(tagsInfoList);
+        if (operation != null)
+        {
+           operationList.add(operation);
+        }
     }
 
-    public TagsInfo getLastTagsInfo()
+    public void remove(Operation operation)
     {
-        if (tagsInfoList==null || tagsInfoList.isEmpty())
+        operationList.remove(operation);
+    }
+
+    public List<Operation> getTagOperations()
+    {
+        List<Operation> res = new ArrayList<>();
+        Set<Operation> removals = new HashSet<>();
+
+        for (Operation o: operationList)
+        {
+            if (o.getTags().isEmpty())
+            {
+                removals.add(o);
+            }
+            else
+            {
+                res.add(o);
+            }
+        }
+
+        operationList.removeAll(removals);
+
+        return res;
+    }
+
+    public Operation getLastOperation()
+    {
+        if (operationList==null || operationList.isEmpty())
         {
             return null;
         }
 
-        return tagsInfoList.get(tagsInfoList.size()-1);
+        return operationList.get(operationList.size()-1);
     }
 
-    public void clearTagGroups()
+    public void clear()
     {
-        tagsInfoList.clear();
-        tagsPresent.clear();
+        operationList.clear();
     }
 
     public Set<String> getTagsPresent()
     {
-        return Collections.unmodifiableSet(tagsPresent);
-    }
+        Set<String> res = new HashSet<>();
+        Set<Operation> removals = new HashSet<>();
 
-    public void removeAllTags(String tag)
-    {
-
-        if (tagsInfoList!=null)
+        for (Operation o: operationList)
         {
-            for (TagsInfo tagsInfo: tagsInfoList)
+            if (o.getTags().isEmpty())
             {
-                // Setting search options to null temporarily so it doesn't call this class for each item.
-                tagsInfo.setSearchOptions(null);
-                tagsInfo.removeTag(tag);
-                tagsInfo.setSearchOptions(this);
+                removals.add(o);
+            }
+            else
+            {
+                res.addAll(o.getTags());
             }
         }
 
-        computeTagsPresent();
+        operationList.removeAll(removals);
+
+        return res;
+    }
+
+    public void removeAll(String tag)
+    {
+        for (Operation o : operationList)
+        {
+            o.getTags().remove(tag);
+        }
     }
 
     public void setSelectedBKType(String bkType)
@@ -202,32 +246,12 @@ public class SearchOptions
 
     public Set<String> getSelectedBKTypes()
     {
-        if (selectedBookmarkTypes==null)
+        if (selectedBookmarkTypes == null)
         {
             return null;
         }
 
         return Collections.unmodifiableSet(selectedBookmarkTypes);
-    }
-
-    public void computeTagsPresent()
-    {
-        List<TagsInfo> removals = new ArrayList<>();
-        tagsPresent.clear();
-
-        for (TagsInfo tagsInfo: tagsInfoList)
-        {
-            if (tagsInfo.getTags().isEmpty())
-            {
-                removals.add(tagsInfo);
-            }
-            else
-            {
-                tagsPresent.addAll(tagsInfo.getTags());
-            }
-        }
-
-        tagsInfoList.removeAll(removals);
     }
 
     public DateType getDateType()
@@ -246,7 +270,7 @@ public class SearchOptions
 
     private void initSelectedTypes()
     {
-        if (selectedBookmarkTypes==null)
+        if (selectedBookmarkTypes == null)
         {
             selectedBookmarkTypes = new HashSet<>();
         }
