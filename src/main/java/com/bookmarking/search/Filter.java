@@ -134,13 +134,13 @@ public class Filter
             boolean s1;
             boolean s2;
 
-            if (includeIfBefore==null)
+            if (includeIfBefore == null)
             {
                 s1 = true;
             }
             else
             {
-                if (bk.getCreationDate()==null)
+                if (bk.getCreationDate() == null)
                 {
                     s1 = true;
                 }
@@ -150,13 +150,13 @@ public class Filter
                 }
             }
 
-            if (includeIfAfter==null)
+            if (includeIfAfter == null)
             {
                 s2 = true;
             }
             else
             {
-                if (bk.getCreationDate()==null)
+                if (bk.getCreationDate() == null)
                 {
                     s2 = true;
                 }
@@ -186,13 +186,13 @@ public class Filter
             boolean s1;
             boolean s2;
 
-            if (includeIfBefore==null)
+            if (includeIfBefore == null)
             {
                 s1 = true;
             }
             else
             {
-                if (bk.getCreationDate()==null)
+                if (bk.getCreationDate() == null)
                 {
                     s1 = true;
                 }
@@ -202,13 +202,13 @@ public class Filter
                 }
             }
 
-            if (includeIfAfter==null)
+            if (includeIfAfter == null)
             {
                 s2 = true;
             }
             else
             {
-                if (bk.getCreationDate()==null)
+                if (bk.getCreationDate() == null)
                 {
                     s2 = true;
                 }
@@ -240,7 +240,7 @@ public class Filter
     {
         if (dateType == SearchOptions.DateType.CREATION_DATE)
         {
-            filterByCreatedDate(includeIfAfter,includeIfBefore);
+            filterByCreatedDate(includeIfAfter, includeIfBefore);
         }
         else
         {
@@ -389,33 +389,44 @@ public class Filter
             this.keepBookmarkTypesByClassName(searchOptions.getSelectedBKTypes());
         }
 
-        //Remove all that don't fit within the date range.
-        if (searchOptions.getStartDate() != null || searchOptions.getEndDate() != null)
-        {
-            Date start;
+        Date startDate = null;
+        Date endDate = null;
 
-            if (searchOptions.getStartDate() != null)
+        if (searchOptions.getOffsetFromNow() > 0)
+        {
+            endDate = new Date();
+            startDate = new Date(endDate.toInstant().toEpochMilli()-searchOptions.getOffsetFromNow());
+        }
+        else
+        {
+            startDate = searchOptions.getStartDate();
+            endDate = searchOptions.getEndDate();
+        }
+
+        //Remove all that don't fit within the date range.
+        if (startDate != null || endDate != null)
+        {
+
+            if (startDate != null)
             {
-                start = searchOptions.getStartDate();
+                startDate = searchOptions.getStartDate();
             }
             else
             {
                 // Super old date as beginning range.
-                start = new Date(Long.MIN_VALUE);
+                startDate = new Date(Long.MIN_VALUE);
             }
 
-            Date end;
-
-            if (searchOptions.getEndDate() != null)
+            if (endDate != null)
             {
-                end = searchOptions.getEndDate();
+                endDate = searchOptions.getEndDate();
             }
             else
             {
-                end = new Date();
+                endDate = new Date();
             }
 
-            this.keepWithinDateRange(start, end, searchOptions.getDateType());
+            this.keepWithinDateRange(startDate, endDate, searchOptions.getDateType());
         }
 
         //Filter by selected tags blocks.
