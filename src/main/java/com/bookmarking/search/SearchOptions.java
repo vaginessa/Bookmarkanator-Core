@@ -1,5 +1,6 @@
 package com.bookmarking.search;
 
+import java.time.*;
 import java.util.*;
 
 /**
@@ -8,21 +9,62 @@ import java.util.*;
  */
 public class SearchOptions
 {
+    // ============================================================
+    // Enums
+    // ============================================================
+
     public enum DateType
     {
         CREATION_DATE,
         ACCESSED_DATE
     }
 
+    public enum DateOffset
+    {
+        TODAY (LocalDateTime.of(LocalDate.now(), earlyMorning)),
+        THIS_WEEK(LocalDateTime.of(LocalDate.now(), earlyMorning).minusDays(7)),
+        THIS_MONTH(LocalDateTime.of(LocalDate.now(), earlyMorning).minusMonths(1)),
+        THIS_YEAR(LocalDateTime.of(LocalDate.now(), earlyMorning).minusYears(1));
+
+        LocalDateTime localDateTime;
+
+        DateOffset(LocalDateTime localDateTime)
+        {
+            this.localDateTime = localDateTime;
+        }
+    }
+
+    // ============================================================
+    // Fields
+    // ============================================================
+
     private String searchTerm;
 
-    // Date range's to locate bookmarks in (inclusive) can be null.
-    private Date startDate;
-    private Date endDate;
-    private long offsetFromNow;
+    // -------------------------------------------
+    // Date settings variables:
+    //
+    // Note: if more than one is set it the filter by search options method considers dates in the following order:
+    // -dateOffset
+    // -absoluteDateOffset
+    // -absoluteStartDate/absoluteEndDate
+    // It will then apply them using the date type (created date vs modified date)
+    // -------------------------------------------
+
+    // Start capturing bookmarks at this date.
+    private Date absoluteStartDate;
+    // Stop capturing bookmarks at this date.
+    private Date absoluteEndDate;
+    // Capture bookmarks from now minus this date value. A simple literal subtraction of milliseconds from now.
+    private long absoluteDateOffset;
+
+    // Capture bookmarks from now minus a specific amount rounded to the morning of the day closest to the value.
+    // For example if it was TODAY it would be all bookmarks created today at 12:00am to now
+    // Or if it were THIS_WEEK it would be all bookmarks 7 days from now (12:00am again) to now.
+    private DateOffset dateOffset;
 
     // Which date type to use for filtering.
     private DateType dateType;
+    private static final LocalTime earlyMorning = LocalTime.of(0, 0);
 
     // Aspects of bookmarks to search
     private boolean searchBookmarkText = true;
@@ -36,9 +78,14 @@ public class SearchOptions
     // Exclude all bookmark types not present, unless the list is null. If null include all.
     private Set<String> selectedBookmarkTypes;
 
+    // ============================================================
+    // Methods
+    // ============================================================
+
     public SearchOptions()
     {
         operationList = new ArrayList<>();
+        dateType = DateType.CREATION_DATE;
     }
 
     public String getSearchTerm()
@@ -51,34 +98,78 @@ public class SearchOptions
         this.searchTerm = searchTerm;
     }
 
-    public Date getStartDate()
+    public Date computeStartDate()
     {
-        return startDate;
+        Date startDate = null;
+
+        if (getDateOffset() != null)
+        {// Compute the date based on offset value.
+            startDate = getDate(getDateOffset().localDateTime);
+        }
+        else if (getAbsoluteDateOffset() > 0)
+        {
+            startDate = new Date(computeEndDate().toInstant().toEpochMilli() - getAbsoluteDateOffset());
+        }
+        else
+        {
+            startDate = getAbsoluteStartDate();
+
+            if (startDate == null)
+            {
+                // Super old date as beginning range.
+                startDate = new Date(Long.MIN_VALUE);
+            }
+        }
+
+       return startDate;
     }
 
-    public void setStartDate(Date startDate)
+    public Date computeEndDate()
     {
-        this.startDate = startDate;
+        if (getDateOffset() != null || getAbsoluteDateOffset() < 0)
+        {// Return now
+            return new Date();
+        }
+
+        return getAbsoluteEndDate();
     }
 
-    public Date getEndDate()
+    public void resetDateFields()
     {
-        return endDate;
+        absoluteDateOffset = -1;
+        absoluteEndDate = null;
+        absoluteStartDate = null;
+        dateOffset = null;
     }
 
-    public void setEndDate(Date endDate)
+    public Date getAbsoluteStartDate()
     {
-        this.endDate = endDate;
+        return absoluteStartDate;
     }
 
-    public long getOffsetFromNow()
+    public void setAbsoluteStartDate(Date absoluteStartDate)
     {
-        return offsetFromNow;
+        this.absoluteStartDate = absoluteStartDate;
     }
 
-    public void setOffsetFromNow(long offsetFromNow)
+    public Date getAbsoluteEndDate()
     {
-        this.offsetFromNow = offsetFromNow;
+        return absoluteEndDate;
+    }
+
+    public void setAbsoluteEndDate(Date absoluteEndDate)
+    {
+        this.absoluteEndDate = absoluteEndDate;
+    }
+
+    public long getAbsoluteDateOffset()
+    {
+        return absoluteDateOffset;
+    }
+
+    public void setAbsoluteDateOffset(long absoluteDateOffset)
+    {
+        this.absoluteDateOffset = absoluteDateOffset;
     }
 
     public boolean getSearchBookmarkText()
@@ -143,7 +234,7 @@ public class SearchOptions
     {
         if (operation != null)
         {
-           operationList.add(operation);
+            operationList.add(operation);
         }
     }
 
@@ -157,7 +248,7 @@ public class SearchOptions
         List<Operation> res = new ArrayList<>();
         Set<Operation> removals = new HashSet<>();
 
-        for (Operation o: operationList)
+        for (Operation o : operationList)
         {
             if (o.getTags().isEmpty())
             {
@@ -176,12 +267,12 @@ public class SearchOptions
 
     public Operation getLastOperation()
     {
-        if (operationList==null || operationList.isEmpty())
+        if (operationList == null || operationList.isEmpty())
         {
             return null;
         }
 
-        return operationList.get(operationList.size()-1);
+        return operationList.get(operationList.size() - 1);
     }
 
     public void clear()
@@ -194,7 +285,7 @@ public class SearchOptions
         Set<String> res = new HashSet<>();
         Set<Operation> removals = new HashSet<>();
 
-        for (Operation o: operationList)
+        for (Operation o : operationList)
         {
             if (o.getTags().isEmpty())
             {
@@ -264,6 +355,16 @@ public class SearchOptions
         this.dateType = dateType;
     }
 
+    public DateOffset getDateOffset()
+    {
+        return dateOffset;
+    }
+
+    public void setDateOffset(DateOffset dateOffset)
+    {
+        this.dateOffset = dateOffset;
+    }
+
     // ============================================================
     // Private Methods
     // ============================================================
@@ -274,5 +375,14 @@ public class SearchOptions
         {
             selectedBookmarkTypes = new HashSet<>();
         }
+    }
+
+    private Date getDate(LocalDateTime dateTime)
+    {
+        ZoneId myTimeZone = ZoneId.systemDefault();
+        ZoneOffset offset = myTimeZone.getRules().getOffset(Instant.now());
+        Instant instant = dateTime.toInstant(offset);
+        Date start = Date.from(instant);
+        return start;
     }
 }

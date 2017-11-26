@@ -389,45 +389,7 @@ public class Filter
             this.keepBookmarkTypesByClassName(searchOptions.getSelectedBKTypes());
         }
 
-        Date startDate = null;
-        Date endDate = null;
-
-        if (searchOptions.getOffsetFromNow() > 0)
-        {
-            endDate = new Date();
-            startDate = new Date(endDate.toInstant().toEpochMilli()-searchOptions.getOffsetFromNow());
-        }
-        else
-        {
-            startDate = searchOptions.getStartDate();
-            endDate = searchOptions.getEndDate();
-        }
-
-        //Remove all that don't fit within the date range.
-        if (startDate != null || endDate != null)
-        {
-
-            if (startDate != null)
-            {
-                startDate = searchOptions.getStartDate();
-            }
-            else
-            {
-                // Super old date as beginning range.
-                startDate = new Date(Long.MIN_VALUE);
-            }
-
-            if (endDate != null)
-            {
-                endDate = searchOptions.getEndDate();
-            }
-            else
-            {
-                endDate = new Date();
-            }
-
-            this.keepWithinDateRange(startDate, endDate, searchOptions.getDateType());
-        }
+        this.keepWithinDateRange(searchOptions.computeStartDate(), searchOptions.computeEndDate(), searchOptions.getDateType());
 
         //Filter by selected tags blocks.
         for (Operation operation : searchOptions.getTagOperations())
