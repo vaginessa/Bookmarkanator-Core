@@ -542,7 +542,7 @@ public class FileIO implements IOInterface
     public void clearUndoRedoStack()
         throws Exception
     {
-        // TODO Implement stack clear.
+        // TODO Implement stack clearOperationsList.
     }
 
     // ----------

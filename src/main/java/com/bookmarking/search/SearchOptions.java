@@ -275,7 +275,7 @@ public class SearchOptions
         return operationList.get(operationList.size() - 1);
     }
 
-    public void clear()
+    public void clearOperationsList()
     {
         operationList.clear();
     }
@@ -363,6 +363,17 @@ public class SearchOptions
     public void setDateOffset(DateOffset dateOffset)
     {
         this.dateOffset = dateOffset;
+    }
+
+    public void reset()
+    {
+        this.resetDateFields();
+        this.clearOperationsList();
+        this.setSearchBookmarkNames(true);
+        this.setSearchTags(true);
+        this.setSearchBookmarkText(true);
+        this.setSearchBookmarkTypes(true);
+        this.setSearchTerm("");
     }
 
     // ============================================================
