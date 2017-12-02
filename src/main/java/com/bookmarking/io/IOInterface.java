@@ -418,6 +418,13 @@ public interface IOInterface
      */
     Set<String> getAllTypeNames();
 
+    /**
+     * Returns the number of bookmarks that are this type.
+     * @param clazz
+     * @return
+     */
+    int numberOfType(Class clazz);
+
     //------------------------------------
     // Settings Types
     //------------------------------------
@@ -445,4 +452,5 @@ public interface IOInterface
      * Start over with the undo/redo stack.
      */
     void clearUndoRedoStack() throws Exception;
+
 }

@@ -34,6 +34,7 @@ public class FileIO implements IOInterface
     private ParsedBookmarks parsedBookmarks;
     private SearchGroup searchGroup;
 
+
     private boolean isDirty;
 
     public FileIO()
@@ -320,6 +321,19 @@ public class FileIO implements IOInterface
     public Set<String> getAllTypeNames()
     {
         return extractTypeNames(parsedBookmarks.getLoadedBookmarkIds());
+    }
+
+    @Override
+    public int numberOfType(Class clazz)
+    {
+        Set<AbstractBookmark> s = parsedBookmarks.getLoadedByClass(clazz);
+
+        if (s!=null)
+        {
+            return s.size();
+        }
+
+        return 0;
     }
 
     @Override
