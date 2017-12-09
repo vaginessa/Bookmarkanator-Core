@@ -40,7 +40,7 @@ public class Bootstrap implements InitInterface
     private IOInterface ioInterface;
     private File settingsFile;
     private Settings settings;
-    private Saver saver;
+//    private Saver saver;
     // The user interface that this class can interact with to show status and post messages.
     private InitUIInterface uiInterface;
     private static Version version;

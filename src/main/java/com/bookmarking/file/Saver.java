@@ -1,4 +1,4 @@
-package com.bookmarking.util;
+package com.bookmarking.file;
 
 import com.bookmarking.*;
 import com.bookmarking.error.*;
