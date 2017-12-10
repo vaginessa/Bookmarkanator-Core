@@ -76,7 +76,7 @@ public class SearchOptions
     private List<Operation> operationList;
 
     // Exclude all bookmark types not present, unless the list is null. If null include all.
-    private Set<String> selectedBookmarkTypes;
+    private Set<Class> selectedBookmarkTypes;
 
     // ============================================================
     // Methods
@@ -310,32 +310,32 @@ public class SearchOptions
         }
     }
 
-    public void setSelectedBKType(String bkType)
+    public void setSelectedBKType(Class bkType)
     {
         initSelectedTypes();
         selectedBookmarkTypes.add(bkType);
     }
 
-    public void setUnselectedBKType(String bkType)
+    public void setUnselectedBKType(Class bkType)
     {
         initSelectedTypes();
         selectedBookmarkTypes.remove(bkType);
     }
 
-    public void setSelectAllBKTypes(Set<String> bkTypes)
+    public void setSelectAllBKTypes(Set<Class> bkTypes)
     {
         initSelectedTypes();
         selectedBookmarkTypes.clear();
         selectedBookmarkTypes.addAll(bkTypes);
     }
 
-    public void setUnselectAllBKTypes()
+    public void clearSelectedBKTypes()
     {
         initSelectedTypes();
         selectedBookmarkTypes.clear();
     }
 
-    public Set<String> getSelectedBKTypes()
+    public Set<Class> getSelectedBKTypes()
     {
         if (selectedBookmarkTypes == null)
         {

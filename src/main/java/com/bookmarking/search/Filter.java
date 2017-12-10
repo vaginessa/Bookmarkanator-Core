@@ -110,11 +110,11 @@ public class Filter
         return this;
     }
 
-    public Filter keepBookmarkTypesByClassName(Set<String> bookmarkClassNames)
+    public Filter keepBookmarkTypesByClassName(Set<Class> bookmarkClassNames)
     {
         for (AbstractBookmark bk : this.results())
         {
-            if (bookmarkClassNames.contains(bk.getClass().getCanonicalName()))
+            if (bookmarkClassNames.contains(bk.getClass()))
             {
                 tempList.add(bk);
             }
