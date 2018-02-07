@@ -83,6 +83,8 @@ public class Filter
             return this;
         }
 
+        //TODO: One part of the code lower cases the tags, the other does not. Pick one!
+
         for (AbstractBookmark bk : this.bookmarkList)
         {
             if (bk.getTags().containsAll(tags))
