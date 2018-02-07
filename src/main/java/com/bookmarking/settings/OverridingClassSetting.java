@@ -7,7 +7,7 @@ import com.bookmarking.error.*;
 import com.bookmarking.module.*;
 
 /**
- * This class allows one to select one class that overrides another class.
+ * This class allows one to select a single class that overrides another class.
  * The classes available for selection (key values) are the tracked classes, and the classes available for
  * value selection are classes assignable from the key class.
  * <p>
