@@ -4,7 +4,7 @@ import com.bookmarking.ui.*;
 
 /**
  * The ActionInterface is used to have a function, much like a bookmark, but one that is not tied to tagging, and doesn't
- * have data to load/save like bookmarks have.
+ * have data to load/prepExit like bookmarks have.
  */
 public abstract class AbstractAction
 {

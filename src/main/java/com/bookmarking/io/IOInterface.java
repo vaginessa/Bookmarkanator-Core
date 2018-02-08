@@ -8,7 +8,7 @@ import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
 
 /**
- * This is the interface that other classes will use to load, save, and search bookmarks and their data.
+ * This is the interface that other classes will use to load, prepExit, and search bookmarks and their data.
  */
 public interface IOInterface
 {
@@ -16,7 +16,7 @@ public interface IOInterface
     String SETTINGS_FILE_CONTEXT = "ioSettings";
 
     //------------------------------------
-    // Init and save
+    // Init and prepExit
     //------------------------------------
 
     /**
@@ -30,13 +30,13 @@ public interface IOInterface
         throws Exception;
 
     /**
-     * Used to save any data to the back end implemented.
+     * Used to prepExit any data to the back end implemented.
      */
     void save()
         throws Exception;
 
     /**
-     * Used to save any data to the back end implemented with configuration parameters.
+     * Used to prepExit any data to the back end implemented with configuration parameters.
      *
      * @param config Any configs the implementing class requires for saving.
      */

@@ -18,19 +18,6 @@ public interface MainInterface
     // Init
     // ----------------------------------------------
 
-
-    void init()
-        throws Exception;
-
-    void init(Settings settings)
-        throws Exception;
-
-    void init(InitUIInterface bookmarkUIInterface)
-        throws Exception;
-
-    void init(Settings settings, InitUIInterface bookmarkUIInterface)
-        throws Exception;
-
     void exit() throws Exception;
 
     // ----------------------------------------------

@@ -18,13 +18,14 @@ import org.apache.logging.log4j.*;
  */
 public class Bootstrap implements InitInterface
 {
+
     // Static fields
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
 //    private static Bootstrap bootstrap;
 
     // Default names
-    private static final String DEFAULT_SETTINGS_FILE_NAME = "settings.xml";
-    private static final String DEFAULT_SETTINGS_DIRECTORY = "Bookmarkanator";
+
+
 
     // Settings keys
     private static final String GLOBAL_SETTINGS_GROUP = "GLOBAL_SETTINGS";
@@ -92,6 +93,13 @@ public class Bootstrap implements InitInterface
 //        saver.start();
     }
 
+    @Override
+    public void init(SettingsIOInterface settingsIOInterface, InitUIInterface initUIInterface)
+        throws Exception
+    {
+
+    }
+
     public void exit()
         throws Exception
     {
@@ -100,13 +108,11 @@ public class Bootstrap implements InitInterface
         this.getIOInterface().save();
     }
 
-    @Override
+
     public void setInitUIInterface(InitUIInterface initUIInterface)
     {
 
     }
-
-    @Override
     public InitUIInterface getInitUIInterface()
     {
         return null;

@@ -24,7 +24,6 @@ public class LocalInstance implements MainInterface
     // Other
     private MainSettings mainSettings;
 
-    @Override
     public void init()
         throws Exception
     {
@@ -32,7 +31,6 @@ public class LocalInstance implements MainInterface
         initInterface.init();
     }
 
-    @Override
     public void init(Settings settings)
         throws Exception
     {
@@ -40,7 +38,6 @@ public class LocalInstance implements MainInterface
         initInterface.init(settings);
     }
 
-    @Override
     public void init(InitUIInterface initUIInterface)
         throws Exception
     {
@@ -49,7 +46,6 @@ public class LocalInstance implements MainInterface
         initInterface.setInitUIInterface(initUIInterface);
     }
 
-    @Override
     public void init(Settings settings, InitUIInterface initUIInterface)
         throws Exception
     {

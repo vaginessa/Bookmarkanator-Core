@@ -10,6 +10,6 @@ public interface SettingsIOInterface
      */
     Settings init(Settings settings);
 
-    void save();
+    void prepExit();
     void exit();
 }

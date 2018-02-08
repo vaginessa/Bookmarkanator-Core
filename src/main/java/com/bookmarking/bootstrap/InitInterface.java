@@ -15,7 +15,7 @@ public interface InitInterface
     void init(SettingsIOInterface settingsIOInterface, InitUIInterface initUIInterface) throws Exception;
 
     /**
-     * Save settings to disk, call save on IO Interface.
+     * Save settings to disk, call prepExit on IO Interface.
      * @throws Exception
      */
     void exit() throws Exception;

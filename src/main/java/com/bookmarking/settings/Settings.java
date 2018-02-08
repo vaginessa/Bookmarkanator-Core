@@ -12,6 +12,8 @@ import org.apache.logging.log4j.*;
 public class Settings
 {
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
+
+    // The default settings group represents settings that were supplied without a group value.
     public static String DEFAULT_SETTINGS_GROUP = "default";
 
     // <Group String, SetingsGroup>
