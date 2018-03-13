@@ -5,7 +5,7 @@ import com.bookmarking.util.*;
 
 public interface InitInterface
 {
-    String OVERRIDDEN_CLASSES_GROUP = "overridden-classes";
+//    String OVERRIDDEN_CLASSES_GROUP = "overridden-classes";
 
     /**
      * - Load settings file from disk.

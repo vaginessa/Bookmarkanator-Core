@@ -1,8 +1,12 @@
 package com.bookmarking;
 
+import java.util.*;
 import com.bookmarking.bootstrap.*;
+import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.update.*;
+import org.apache.logging.log4j.*;
 
 /**
  * Main entry point for the bookmarkanator program. Starts the loading process that will dynamically load
@@ -10,8 +14,26 @@ import com.bookmarking.settings.*;
  */
 public class Start
 {
-    // The group to use when specifying any class that implements an interface. key = interface class name, value = implementing class.
-    public static String INTERFACE_IMPLEMENTATIONS_GROUP = "interface-implementations-group";
+    // ============================================================
+    // Static Fields
+    // ============================================================
+
+    private static final Logger logger = LogManager.getLogger(Start.class.getCanonicalName());
+
+    /**
+     * The group that is used to specify implementing classes, or overriding classes.
+     * <p>
+     * For example you can only have a single IOInterface implementation loaded at a time. So you would add an entry here specifying the key as the
+     * interface class, and the value as the implementation you want to load for that interface.
+     * <p>
+     * If you want to replace a class with another one, say class 'A' with class 'B', you would add an entry with key 'A' and the value would be
+     * 'B'. When the module loader is asked for class 'A' it would check this value, and return class 'B' instead.
+     */
+    public static final String DEFAULT_CLASSES_GROUP = "default-classes";
+
+    // ============================================================
+    // Fields
+    // ============================================================
 
     private Settings settings;
     private MainUIInterface mainUIInterface;
@@ -33,12 +55,12 @@ public class Start
 
     public Start(Settings settings, MainUIInterface mainUIInterface)
     {
-        if (settings!=null)
+        if (settings != null)
         {
             this.settings = settings;
         }
 
-        if (mainUIInterface!=null)
+        if (mainUIInterface != null)
         {
             this.mainUIInterface = mainUIInterface;
         }
@@ -48,17 +70,20 @@ public class Start
     public MainInterface init()
         throws Exception
     {
-        // TODO how to properly update the code?
         MainInterface mainInterface = null;
 
         SettingsIOInterface settingsIOInterface = loadSettingsIOInterface();
+
+        UpdateInterface updateInterface = loadUdatesInterface();
+
+        IOInterface ioInterface = loadInitInterface(settingsIOInterface);
+
         // load the main interface class
         // init module loader
         // init io interface
         // set all the interfaces in the main interface and return.
 
-
-//        InitInterface initInterface = loadInitInterface(settingsIOInterface);
+        //        InitInterface initInterface = loadInitInterface(settingsIOInterface);
 
         return mainInterface;
     }
@@ -67,15 +92,43 @@ public class Start
     // Private Methods
     // ============================================================
 
+    private UpdateInterface loadUdatesInterface()
+        throws Exception
+    {
+        AbstractSetting settingsIOClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, UpdateInterface.class.getCanonicalName());
+
+        // This should not happen because of default settings but lets check anyway...
+        Objects.requireNonNull(settingsIOClass, "SettingsIOClass is not present in settings.");
+
+        ClassSetting setting;
+
+        if (settingsIOClass instanceof ClassSetting)
+        {
+            setting = (ClassSetting) settingsIOClass;
+        }
+        else
+        {
+            throw new Exception("Setting used to specify SettingsIOInterface is not of the correct type. Must be of type ClassSetting.");
+        }
+
+        UpdateInterface updateInterface = ModuleLoader.use()
+            .instantiateClass(setting.getValue().getCanonicalName(),UpdateInterface.class);
+
+        updateInterface.checkForUpdates();
+
+        return updateInterface;
+    }
+
     /**
      * Loads the init interface which will in turn load the IO interface.
-     * @return  An init interface that has been initialized.
+     *
+     * @return An init interface that has been initialized.
      * @throws Exception
      */
     private InitInterface loadInitInterface(SettingsIOInterface settingsIOInterface)
         throws Exception
     {
-        AbstractSetting initInterfaceClass = this.settings.getSetting(Settings.DEFAULT_SETTINGS_GROUP, InitInterface.class.getCanonicalName());
+        AbstractSetting initInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, InitInterface.class.getCanonicalName());
         ClassSetting setting;
 
         if (initInterfaceClass instanceof ClassSetting)
@@ -103,6 +156,7 @@ public class Start
 
     /**
      * Loads the SettingsIOInterface class specified in the settings. Calls init(Settings) on it and returns.
+     *
      * @return SettingsIOInterface  The settings interface that will be used to load further settings.
      * @throws Exception
      */
@@ -111,7 +165,11 @@ public class Start
     {
         initSettings();
 
-        AbstractSetting settingsIOClass = this.settings.getSetting(Settings.DEFAULT_SETTINGS_GROUP, SettingsIOInterface.class.getCanonicalName());
+        // Uses default settingsIOClass name or one supplied when starting up Start...
+        AbstractSetting settingsIOClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
+
+        // This should not happen but lets check anyway...
+        Objects.requireNonNull(settingsIOClass, "SettingsIOClass is not present in settings.");
 
         ClassSetting setting;
 
@@ -124,7 +182,9 @@ public class Start
             throw new Exception("Setting used to specify SettingsIOInterface is not of the correct type. Must be of type ClassSetting.");
         }
 
-        SettingsIOInterface settingsIOInterface = ModuleLoader.use().instantiateClass(setting.getValue().getCanonicalName(), SettingsIOInterface.class);
+        // Load the settingsIO class and merge it with the current (default) settings.
+        SettingsIOInterface settingsIOInterface = ModuleLoader.use()
+            .instantiateClass(setting.getValue().getCanonicalName(), SettingsIOInterface.class);
 
         this.settings = settingsIOInterface.init(this.settings);
 
@@ -133,12 +193,13 @@ public class Start
 
     /**
      * Create settings if necessary. Load default settings.
+     *
      * @throws Exception
      */
     private void initSettings()
         throws Exception
     {
-        if (settings==null)
+        if (settings == null)
         {
             settings = getDefaultSettings();
         }
@@ -149,7 +210,8 @@ public class Start
     /**
      * Default settings. Here it is mostly used to set default interface implementations in order to find the correct classes to use
      * for each particular part of the program.
-     * @return  A settings object containing default settings.
+     *
+     * @return A settings object containing default settings.
      * @throws Exception
      */
     private Settings getDefaultSettings()
@@ -157,13 +219,13 @@ public class Start
     {
         Settings res = new Settings();
 
-        ClassSetting classSetting = new ClassSetting(Start.INTERFACE_IMPLEMENTATIONS_GROUP, InitInterface.class.getCanonicalName(), Bootstrap.class);
+        ClassSetting classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, InitInterface.class.getCanonicalName(), Bootstrap.class);
         res.putSetting(classSetting);
 
-        classSetting = new ClassSetting(Start.INTERFACE_IMPLEMENTATIONS_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
+        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
-        classSetting = new ClassSetting(Start.INTERFACE_IMPLEMENTATIONS_GROUP, SettingsIOInterface.class.getCanonicalName(), SettingsIO.class );
+        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), SettingsIO.class);
         res.putSetting(classSetting);
 
         return res;

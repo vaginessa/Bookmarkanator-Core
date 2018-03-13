@@ -2,6 +2,7 @@ package com.bookmarking.settings;
 
 public interface SettingsIOInterface
 {
+    String SETTINGS_INIT = "settings-init";
     /**
      * Loads/reads settings based on specifications in the supplied settings object. Merges the loaded settings
      * with the current settings (creating a new settings object in the process) and returns it.

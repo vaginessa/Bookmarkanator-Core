@@ -14,13 +14,14 @@ public class Settings
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
 
     // The default settings group represents settings that were supplied without a group value.
-    public static String DEFAULT_SETTINGS_GROUP = "default";
+    public static String NO_GROUP = "no-group";
 
     // <Group String, SetingsGroup>
     private HashMap<String, SettingsGroup> groups;
 
     public Settings()
     {
+        logger.debug("Settings Init");
         groups = new HashMap<>();
     }
 
@@ -59,7 +60,7 @@ public class Settings
 
         if (setting.getGroup()==null || setting.getGroup().trim().isEmpty())
         {
-            setting.setGroup(DEFAULT_SETTINGS_GROUP);
+            setting.setGroup(NO_GROUP);
         }
 
         SettingsGroup group = this.groups.get(setting.getGroup());

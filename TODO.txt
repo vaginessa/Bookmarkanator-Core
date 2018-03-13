@@ -3,3 +3,6 @@
 -Windows Testing
 -Linux Testing
 -Modify Search Options with distance from now setting.
+- TODO Create a way (later) to have a main interface that runs in the background, and a UI or other items that can start up and connect to that
+  running interface. That way if a note is openened and the main program is closed, the note can still be saved. Should have a way to indicate
+  that the interface should close down.

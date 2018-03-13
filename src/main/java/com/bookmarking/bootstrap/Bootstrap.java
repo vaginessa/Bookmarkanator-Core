@@ -33,8 +33,6 @@ public class Bootstrap implements InitInterface
     // Module loader keys
     private static final String MODULE_LOCATIONS_GROUP = "module-locations";
 
-    // General keys
-    public static final String DEFAULT_CLASSES_GROUP = "default-classes";
     public static final String INIT_SETTING_KEY = "init-setting";
 
     // Fields
