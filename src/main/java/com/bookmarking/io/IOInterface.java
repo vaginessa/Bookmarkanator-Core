@@ -14,6 +14,7 @@ public interface IOInterface
 {
 
     String SETTINGS_FILE_CONTEXT = "ioSettings";
+    String IO_INTERFACE_GROUP = "io-interface-group";
 
     //------------------------------------
     // Init and prepExit
@@ -23,10 +24,13 @@ public interface IOInterface
      * Used to initiate the particular back end. If this initialization process needs to notify the front end the IOUIInterface should be supplied
      * prior to calling this method.
      *
-     * @param config Configuration string needed by this implementation.
+     * @param settingsIOInterface  The settings interface used by a particular implementation to pull init settings from.
      * @throws Exception
      */
-    void init(String config)
+    void init(SettingsIOInterface settingsIOInterface)
+        throws Exception;
+
+    void init(SettingsIOInterface settingsIOInterface, IOUIInterface iouiInterface)
         throws Exception;
 
     /**

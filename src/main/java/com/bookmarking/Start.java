@@ -74,9 +74,10 @@ public class Start
 
         SettingsIOInterface settingsIOInterface = loadSettingsIOInterface();
 
-        UpdateInterface updateInterface = loadUdatesInterface();
+        UpdateServiceInterface updateServiceInterface = loadUpdaterInterface();
 
-        IOInterface ioInterface = loadInitInterface(settingsIOInterface);
+        InitInterface ioInterface =  loadInitInterface(settingsIOInterface);
+
 
         // load the main interface class
         // init module loader
@@ -91,68 +92,6 @@ public class Start
     // ============================================================
     // Private Methods
     // ============================================================
-
-    private UpdateInterface loadUdatesInterface()
-        throws Exception
-    {
-        AbstractSetting settingsIOClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, UpdateInterface.class.getCanonicalName());
-
-        // This should not happen because of default settings but lets check anyway...
-        Objects.requireNonNull(settingsIOClass, "SettingsIOClass is not present in settings.");
-
-        ClassSetting setting;
-
-        if (settingsIOClass instanceof ClassSetting)
-        {
-            setting = (ClassSetting) settingsIOClass;
-        }
-        else
-        {
-            throw new Exception("Setting used to specify SettingsIOInterface is not of the correct type. Must be of type ClassSetting.");
-        }
-
-        UpdateInterface updateInterface = ModuleLoader.use()
-            .instantiateClass(setting.getValue().getCanonicalName(),UpdateInterface.class);
-
-        updateInterface.checkForUpdates();
-
-        return updateInterface;
-    }
-
-    /**
-     * Loads the init interface which will in turn load the IO interface.
-     *
-     * @return An init interface that has been initialized.
-     * @throws Exception
-     */
-    private InitInterface loadInitInterface(SettingsIOInterface settingsIOInterface)
-        throws Exception
-    {
-        AbstractSetting initInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, InitInterface.class.getCanonicalName());
-        ClassSetting setting;
-
-        if (initInterfaceClass instanceof ClassSetting)
-        {
-            setting = (ClassSetting) initInterfaceClass;
-        }
-        else
-        {
-            throw new Exception("Setting used to specify InitInterface is not of the correct type. Must be of type ClassSetting.");
-        }
-
-        InitInterface initInterface = ModuleLoader.use().instantiateClass(setting.getValue().getCanonicalName(), InitInterface.class);
-
-        if (this.mainUIInterface != null)
-        {
-            initInterface.init(settingsIOInterface, this.mainUIInterface.getInitUIInterface());
-        }
-        else
-        {
-            initInterface.init(settingsIOInterface, null);
-        }
-
-        return initInterface;
-    }
 
     /**
      * Loads the SettingsIOInterface class specified in the settings. Calls init(Settings) on it and returns.
@@ -179,7 +118,7 @@ public class Start
         }
         else
         {
-            throw new Exception("Setting used to specify SettingsIOInterface is not of the correct type. Must be of type ClassSetting.");
+            throw new Exception("Setting used to specify SettingsIOInterface class is not of the correct type. Must be of type ClassSetting.");
         }
 
         // Load the settingsIO class and merge it with the current (default) settings.
@@ -190,6 +129,71 @@ public class Start
 
         return settingsIOInterface;
     }
+
+
+    private UpdaterInterface loadUpdaterInterface()
+        throws Exception
+    {
+        AbstractSetting updaterClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName());
+
+        // This should not happen because of default settings but lets check anyway...
+        Objects.requireNonNull(updaterClass, "UpdatesInterface class setting is not present in settings.");
+
+        ClassSetting setting;
+
+        if (updaterClass instanceof ClassSetting)
+        {
+            setting = (ClassSetting) updaterClass;
+        }
+        else
+        {
+            throw new Exception("Setting used to specify SettingsIOInterface class is not of the correct type. Must be of type ClassSetting.");
+        }
+
+        UpdaterInterface updateServiceInterface = ModuleLoader.use()
+            .instantiateClass(setting.getValue().getCanonicalName(),UpdaterInterface.class);
+
+        Set<UpdateConfigEntry> updates = updateServiceInterface.checkForUpdates(this.settings);
+        updateServiceInterface.performUpdates(updates);
+
+        return updateServiceInterface;
+    }
+
+    /**
+     * Loads the init interface which will in turn load the IO interface.
+     *
+     * @return An init interface that has been initialized.
+     * @throws Exception
+     */
+    private IOInterface loadInitInterface(SettingsIOInterface settingsIOInterface)
+        throws Exception
+    {
+        AbstractSetting initInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
+        ClassSetting setting;
+
+        if (initInterfaceClass instanceof ClassSetting)
+        {
+            setting = (ClassSetting) initInterfaceClass;
+        }
+        else
+        {
+            throw new Exception("Setting used to specify IOInterface class is not of the correct type. Must be of type ClassSetting.");
+        }
+
+        IOInterface ioInterface = ModuleLoader.use().instantiateClass(setting.getValue().getCanonicalName(), IOInterface.class);
+
+        if (this.mainUIInterface != null && this.mainUIInterface.getInitUIInterface()!=null)
+        {
+            ioInterface.init(settingsIOInterface, this.mainUIInterface.getInitUIInterface().getIOUIInterface());
+        }
+        else
+        {
+            ioInterface.init(settingsIOInterface);
+        }
+
+        return ioInterface;
+    }
+
 
     /**
      * Create settings if necessary. Load default settings.
