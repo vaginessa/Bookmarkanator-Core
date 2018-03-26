@@ -26,4 +26,8 @@ public interface UpdaterInterface
      * @return  A map representing the status of each updated item.
      */
     Map<String, String> performUpdates(Set<UpdateConfigEntry> updates);
+
+    void setUpdateUIInterface(UpdateUIInterface updateUIInterface);
+
+    UpdateUIInterface getUpdateUIInterface();
 }

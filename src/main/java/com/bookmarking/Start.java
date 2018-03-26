@@ -1,7 +1,6 @@
 package com.bookmarking;
 
 import java.util.*;
-import com.bookmarking.bootstrap.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
@@ -72,19 +71,14 @@ public class Start
     {
         MainInterface mainInterface = null;
 
+        // Load default settings, and then load settings IO interface from settings.
         SettingsIOInterface settingsIOInterface = loadSettingsIOInterface();
 
-        UpdateServiceInterface updateServiceInterface = loadUpdaterInterface();
+        // Check for and apply updates
+        UpdaterInterface updateServiceInterface = loadUpdaterInterface();
 
-        InitInterface ioInterface =  loadInitInterface(settingsIOInterface);
-
-
-        // load the main interface class
-        // init module loader
-        // init io interface
-        // set all the interfaces in the main interface and return.
-
-        //        InitInterface initInterface = loadInitInterface(settingsIOInterface);
+        // Load io interface.
+        IOInterface ioInterface =  loadIOInterface(settingsIOInterface);
 
         return mainInterface;
     }
@@ -153,8 +147,13 @@ public class Start
         UpdaterInterface updateServiceInterface = ModuleLoader.use()
             .instantiateClass(setting.getValue().getCanonicalName(),UpdaterInterface.class);
 
-        Set<UpdateConfigEntry> updates = updateServiceInterface.checkForUpdates(this.settings);
-        updateServiceInterface.performUpdates(updates);
+        if (mainUIInterface!=null && mainUIInterface.getUpdateUIInterface()!=null)
+        {
+            updateServiceInterface.setUpdateUIInterface(mainUIInterface.getUpdateUIInterface());
+        }
+
+        // At this point if the UpdateUIInterface is present it will have already been given the chance to have a say on the updates so just do them.
+        updateServiceInterface.performUpdates(updateServiceInterface.checkForUpdates(this.settings));
 
         return updateServiceInterface;
     }
@@ -165,7 +164,7 @@ public class Start
      * @return An init interface that has been initialized.
      * @throws Exception
      */
-    private IOInterface loadInitInterface(SettingsIOInterface settingsIOInterface)
+    private IOInterface loadIOInterface(SettingsIOInterface settingsIOInterface)
         throws Exception
     {
         AbstractSetting initInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
@@ -223,10 +222,7 @@ public class Start
     {
         Settings res = new Settings();
 
-        ClassSetting classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, InitInterface.class.getCanonicalName(), Bootstrap.class);
-        res.putSetting(classSetting);
-
-        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
+        ClassSetting classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
         classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), SettingsIO.class);
