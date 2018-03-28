@@ -16,7 +16,6 @@ public class TestXMLValidator
         InputStream xml = this.getClass().getResourceAsStream("/com.bookmarkanator.xml/BookmarksXMLTemplate.xml");
 
         XMLValidator.validate(xml, xsd);
-        System.out.println();
     }
 
     @Ignore

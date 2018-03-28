@@ -59,16 +59,19 @@ public class FileSettingsIO implements SettingsIOInterface
             {
                 fileInUse = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
+                logger.info("-- Using primary setting location of \""+fileInUse+"\"");
             }
             else if (hasSettings(FILE_SETTINGS_GROUP_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
             {
                 fileInUse = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
+                logger.info("-- Using secondary setting location \""+fileInUse+"\"");
             }
             else
             {// No settings have been found, use the fallback settings to create a file.
                 fileInUse = getFile(FALLBACK_SETTINGS_DIRECTORY, FALLBACK_SETTGINS_FILE_NAME);
                 ensureFileExists(fileInUse);
+                logger.info("-- Using fallback setting location \""+fileInUse+"\"");
             }
 
             logger.info("-- Created settings file at \""+fileInUse+"\n");

@@ -47,7 +47,6 @@ public class Bootstrap
     static
     {
         version = VersionParser.parseJavaVersion("0.6.0-1");
-        System.out.println();
     }
 
     public Bootstrap()
