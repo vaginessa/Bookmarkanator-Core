@@ -1,6 +1,5 @@
 package com.bookmarking;
 
-import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
@@ -20,14 +19,13 @@ public interface MainInterface
 
     void exit() throws Exception;
 
+    Start getStartClass();
+
+    void setStartClass(Start start);
+
     // ----------------------------------------------
     // Interfaces
     // ----------------------------------------------
-
-    /**
-     * The InitInterface is responsible for loading the settings file, loading modules, and doing other pre-run tasks.
-     */
-    InitInterface getInitInterface();
 
     /**
      * The module loader inspects the classpath, and locates various classes or interfaces that have been added to it's watch list. It also enables

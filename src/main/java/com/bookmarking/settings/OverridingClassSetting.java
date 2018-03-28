@@ -2,7 +2,7 @@ package com.bookmarking.settings;
 
 import java.lang.reflect.*;
 import java.util.*;
-import com.bookmarking.bootstrap.*;
+import com.bookmarking.*;
 import com.bookmarking.error.*;
 import com.bookmarking.module.*;
 
@@ -23,7 +23,7 @@ public class OverridingClassSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(InitInterface.OVERRIDDEN_CLASSES_GROUP);
+        super.setGroup(Start.DEFAULT_CLASSES_GROUP);
     }
 
     public OverridingClassSetting(String group, String key, Class value)

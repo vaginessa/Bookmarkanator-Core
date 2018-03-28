@@ -17,7 +17,7 @@ public class LocalInstance implements MainInterface
     private static LocalInstance localInstance;
 
     // Interfaces
-    private Bootstrap initInterface;
+//    private Bootstrap initInterface;
     private IOInterface ioInterface;
     private UIInterface uiInterface;
 
@@ -27,32 +27,32 @@ public class LocalInstance implements MainInterface
     public void init()
         throws Exception
     {
-        initInterface = new Bootstrap();
-        initInterface.init();
+//        initInterface = new Bootstrap();
+//        initInterface.init();
     }
 
     public void init(Settings settings)
         throws Exception
     {
-        initInterface = new Bootstrap();
-        initInterface.init(settings);
+//        initInterface = new Bootstrap();
+//        initInterface.init(settings);
     }
 
-    public void init(InitUIInterface initUIInterface)
-        throws Exception
-    {
-        initInterface = new Bootstrap();
-        initInterface.init();
-        initInterface.setInitUIInterface(initUIInterface);
-    }
-
-    public void init(Settings settings, InitUIInterface initUIInterface)
-        throws Exception
-    {
-        initInterface = new Bootstrap();
-        initInterface.init(settings);
-        initInterface.setInitUIInterface(initUIInterface);
-    }
+//    public void init(InitUIInterface initUIInterface)
+//        throws Exception
+//    {
+//        initInterface = new Bootstrap();
+//        initInterface.init();
+//        initInterface.setInitUIInterface(initUIInterface);
+//    }
+//
+//    public void init(Settings settings, InitUIInterface initUIInterface)
+//        throws Exception
+//    {
+//        initInterface = new Bootstrap();
+//        initInterface.init(settings);
+//        initInterface.setInitUIInterface(initUIInterface);
+//    }
 
     @Override
     public void exit()
@@ -62,10 +62,22 @@ public class LocalInstance implements MainInterface
     }
 
     @Override
-    public InitInterface getInitInterface()
+    public Start getStartClass()
     {
-        return initInterface;
+        return null;
     }
+
+    @Override
+    public void setStartClass(Start start)
+    {
+
+    }
+
+    //    @Override
+//    public InitInterface getInitInterface()
+//    {
+//        return initInterface;
+//    }
 
     @Override
     public ModuleLoader getModuleLoader()
@@ -82,7 +94,8 @@ public class LocalInstance implements MainInterface
     @Override
     public IOInterface getIOInterface()
     {
-        return this.initInterface.getIOInterface();
+//        return this.initInterface.getIOInterface();
+        return null;
     }
 
     @Override
@@ -213,7 +226,7 @@ public class LocalInstance implements MainInterface
         if (localInstance == null)
         {
             localInstance = new LocalInstance();
-            localInstance.init(initUIInterface);
+//            localInstance.init(initUIInterface);
         }
         return localInstance;
     }
@@ -224,7 +237,7 @@ public class LocalInstance implements MainInterface
         if (localInstance == null)
         {
             localInstance = new LocalInstance();
-            localInstance.init(settings, initUIInterface);
+//            localInstance.init(settings, initUIInterface);
         }
         return localInstance;
     }

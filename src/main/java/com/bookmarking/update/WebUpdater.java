@@ -3,7 +3,10 @@ package com.bookmarking.update;
 import java.util.*;
 import com.bookmarking.settings.*;
 
-public class WebUpdator implements UpdaterInterface
+/**
+ * Updater that checks web repositories for updates.
+ */
+public class WebUpdater implements UpdaterInterface
 {
     private UpdateUIInterface updateUIInterface;
     private boolean updateInterfacePresent = false;

@@ -2,7 +2,7 @@ package com.bookmarking.settings;
 
 import java.lang.reflect.*;
 import java.util.*;
-import com.bookmarking.bootstrap.*;
+import com.bookmarking.*;
 import com.bookmarking.error.*;
 import com.bookmarking.module.*;
 
@@ -19,7 +19,7 @@ public class InterfaceSelectSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(Bootstrap.DEFAULT_CLASSES_GROUP);
+        super.setGroup(Start.IMPLEMENTING_CLASSES_GROUP);
     }
 
     // TODO implement proper overridden versions of all constructors.

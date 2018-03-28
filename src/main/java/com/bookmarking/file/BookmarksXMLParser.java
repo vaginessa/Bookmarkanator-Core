@@ -6,7 +6,6 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
-import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
@@ -193,7 +192,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                     }
 
                     AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings()
-                        .getSetting(InitInterface.OVERRIDDEN_CLASSES_GROUP, className);
+                        .getSetting(Start.IMPLEMENTING_CLASSES_GROUP, className);
 
                     Class clazz;
 

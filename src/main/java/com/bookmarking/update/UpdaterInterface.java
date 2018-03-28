@@ -11,7 +11,7 @@ public interface UpdaterInterface
     public static final String UPDATE_CONFIG_GROUP_KEY = "update-config-group";
     public static final String UPDATE_CONFIG_ITEMS_GROUP_KEY = "update-config-items-group";
     public static final String UPDATER_CLASS_KEY = "updater-class";
-    public static final String REPO_DIR_KEY = "repo-directory-key";
+    public static final String REPO_CONFIG_KEY = "repo-config-key";
 
     /**
      * Checks the update service for things that are available for update, compares their versions to what is installed locally,

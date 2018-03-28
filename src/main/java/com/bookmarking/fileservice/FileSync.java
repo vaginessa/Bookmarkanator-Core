@@ -178,7 +178,7 @@ public class FileSync<T>
         {
             if (file.length() == 0)
             {// Write initial xml if file contains nothing
-                logger.info("Writing initial file bytes... ");
+                logger.info("Writing initial file bytes to \""+file.getCanonicalPath()+"\n");
                 FileOutputStream fout = new FileOutputStream(file);
                 try
                 {

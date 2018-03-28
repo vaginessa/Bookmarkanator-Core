@@ -52,7 +52,6 @@ public class FileIO implements IOInterface
         isDirty = dirty;
     }
 
-    @Override
     public void init(String config)
         throws Exception
     {
@@ -109,6 +108,20 @@ public class FileIO implements IOInterface
     public void setParsedBookmarks(ParsedBookmarks parsedBookmarks)
     {
         this.parsedBookmarks = parsedBookmarks;
+    }
+
+    @Override
+    public void init(SettingsIOInterface settingsIOInterface)
+        throws Exception
+    {
+
+    }
+
+    @Override
+    public void init(SettingsIOInterface settingsIOInterface, IOUIInterface iouiInterface)
+        throws Exception
+    {
+
     }
 
     @Override

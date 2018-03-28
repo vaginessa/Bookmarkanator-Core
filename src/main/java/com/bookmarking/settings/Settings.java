@@ -13,7 +13,7 @@ public class Settings
 {
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
 
-    // The default settings group represents settings that were supplied without a group value.
+    // The group for settings without a group
     public static String NO_GROUP = "no-group";
 
     // <Group String, SetingsGroup>

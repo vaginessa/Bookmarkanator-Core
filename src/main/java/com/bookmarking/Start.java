@@ -1,6 +1,8 @@
 package com.bookmarking;
 
+import java.io.*;
 import java.util.*;
+import com.bookmarking.file.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
@@ -9,7 +11,7 @@ import org.apache.logging.log4j.*;
 
 /**
  * Main entry point for the bookmarkanator program. Starts the loading process that will dynamically load
- * all parts of the program. It is used to start the program up, and pretty much dies after that.
+ * all parts of the program.
  */
 public class Start
 {
@@ -28,7 +30,8 @@ public class Start
      * If you want to replace a class with another one, say class 'A' with class 'B', you would add an entry with key 'A' and the value would be
      * 'B'. When the module loader is asked for class 'A' it would check this value, and return class 'B' instead.
      */
-    public static final String DEFAULT_CLASSES_GROUP = "default-classes";
+    public static final String DEFAULT_CLASSES_GROUP = "default-classes-group";
+    public static final String IMPLEMENTING_CLASSES_GROUP = "implementing-classes-group";
 
     // ============================================================
     // Fields
@@ -36,6 +39,10 @@ public class Start
 
     private Settings settings;
     private MainUIInterface mainUIInterface;
+    private SettingsIOInterface settingsIOInterface;
+    private UpdaterInterface updaterInterface;
+    private IOInterface ioInterface;
+    private MainInterface mainInterface;
 
     public Start()
     {
@@ -54,6 +61,7 @@ public class Start
 
     public Start(Settings settings, MainUIInterface mainUIInterface)
     {
+        logger.debug("Start class constructor. MainUIInterface = \n"+mainUIInterface+"\n. Settings =  \n"+settings+"\n");
         if (settings != null)
         {
             this.settings = settings;
@@ -63,24 +71,27 @@ public class Start
         {
             this.mainUIInterface = mainUIInterface;
         }
-
     }
 
     public MainInterface init()
         throws Exception
     {
-        MainInterface mainInterface = null;
+        logger.info("--------------------------------------------------------------");
+        logger.info("Start init");
+        logger.info("--------------------------------------------------------------");
 
         // Load default settings, and then load settings IO interface from settings.
-        SettingsIOInterface settingsIOInterface = loadSettingsIOInterface();
+        this.settingsIOInterface = loadSettingsIOInterface();
 
         // Check for and apply updates
-        UpdaterInterface updateServiceInterface = loadUpdaterInterface();
+        this.updaterInterface = loadUpdaterInterface();
 
         // Load io interface.
-        IOInterface ioInterface =  loadIOInterface(settingsIOInterface);
+        this.ioInterface =  loadIOInterface();
 
-        return mainInterface;
+        this.mainInterface = loadMainInterface();
+
+        return this.mainInterface;
     }
 
     // ============================================================
@@ -96,6 +107,7 @@ public class Start
     private SettingsIOInterface loadSettingsIOInterface()
         throws Exception
     {
+        logger.info("- Loading SettingsIOInterface");
         initSettings();
 
         // Uses default settingsIOClass name or one supplied when starting up Start...
@@ -121,13 +133,14 @@ public class Start
 
         this.settings = settingsIOInterface.init(this.settings);
 
+        logger.info("- Done.");
         return settingsIOInterface;
     }
-
 
     private UpdaterInterface loadUpdaterInterface()
         throws Exception
     {
+        logger.info("- Loading updater interface");
         AbstractSetting updaterClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName());
 
         // This should not happen because of default settings but lets check anyway...
@@ -155,6 +168,7 @@ public class Start
         // At this point if the UpdateUIInterface is present it will have already been given the chance to have a say on the updates so just do them.
         updateServiceInterface.performUpdates(updateServiceInterface.checkForUpdates(this.settings));
 
+        logger.info("- Done.");
         return updateServiceInterface;
     }
 
@@ -164,15 +178,16 @@ public class Start
      * @return An init interface that has been initialized.
      * @throws Exception
      */
-    private IOInterface loadIOInterface(SettingsIOInterface settingsIOInterface)
+    private IOInterface loadIOInterface()
         throws Exception
     {
-        AbstractSetting initInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
+        logger.info("- Loading IOInterface");
+        AbstractSetting IOInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
         ClassSetting setting;
 
-        if (initInterfaceClass instanceof ClassSetting)
+        if (IOInterfaceClass instanceof ClassSetting)
         {
-            setting = (ClassSetting) initInterfaceClass;
+            setting = (ClassSetting) IOInterfaceClass;
         }
         else
         {
@@ -181,18 +196,47 @@ public class Start
 
         IOInterface ioInterface = ModuleLoader.use().instantiateClass(setting.getValue().getCanonicalName(), IOInterface.class);
 
-        if (this.mainUIInterface != null && this.mainUIInterface.getInitUIInterface()!=null)
+        if (this.mainUIInterface != null && this.mainUIInterface.getIOUIInterface()!=null)
         {
-            ioInterface.init(settingsIOInterface, this.mainUIInterface.getInitUIInterface().getIOUIInterface());
+            ioInterface.init(this.settingsIOInterface, this.mainUIInterface.getIOUIInterface());
         }
         else
         {
             ioInterface.init(settingsIOInterface);
         }
 
+        logger.info("- Done.");
         return ioInterface;
     }
 
+    private MainInterface loadMainInterface()
+        throws Exception
+    {
+        logger.info("- Loading MainInterface");
+
+        // Uses default MainInterface class name or one supplied when starting up Start...
+        AbstractSetting mainInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
+
+        // This should not happen but lets check anyway...
+        Objects.requireNonNull(mainInterfaceClass, "MainInterfaceClass is not present in settings.");
+
+        ClassSetting setting;
+
+        if (mainInterfaceClass instanceof ClassSetting)
+        {
+            setting = (ClassSetting) mainInterfaceClass;
+        }
+        else
+        {
+            throw new Exception("Setting used to specify MainInterface class is not of the correct type. Must be of type ClassSetting.");
+        }
+
+        MainInterface mainInterface = ModuleLoader.use()
+            .instantiateClass(setting.getValue().getCanonicalName(), MainInterface.class);
+
+        logger.info("- Done.");
+        return mainInterface;
+    }
 
     /**
      * Create settings if necessary. Load default settings.
@@ -225,7 +269,26 @@ public class Start
         ClassSetting classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
-        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), SettingsIO.class);
+        // Setting the default to FileSettingsIO
+        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
+        res.putSetting(classSetting);
+
+        FileSetting fileSetting = new FileSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
+        res.putSetting(fileSetting);
+
+        StringSetting stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        res.putSetting(stringSetting);
+
+        fileSetting = new FileSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
+        res.putSetting(fileSetting);
+
+        stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        res.putSetting(stringSetting);
+
+        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
+        res.putSetting(classSetting);
+
+        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
         res.putSetting(classSetting);
 
         return res;

@@ -3,6 +3,10 @@ package com.bookmarking.settings;
 import java.util.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * Abstract class representing the minimum each setting type must contain
+ * @param <T> The class this setting represents.
+ */
 public abstract class AbstractSetting<T> implements Comparable<AbstractSetting>
 {
     private static final Logger logger = LogManager.getLogger(AbstractSetting.class.getCanonicalName());

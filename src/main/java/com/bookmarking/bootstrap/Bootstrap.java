@@ -16,7 +16,7 @@ import org.apache.logging.log4j.*;
 /**
  * This class is responsible for doing the initial settings, and class loading.
  */
-public class Bootstrap implements InitInterface
+public class Bootstrap
 {
 
     // Static fields
@@ -91,7 +91,7 @@ public class Bootstrap implements InitInterface
 //        saver.start();
     }
 
-    @Override
+//    @Override
     public void init(SettingsIOInterface settingsIOInterface, InitUIInterface initUIInterface)
         throws Exception
     {
@@ -116,7 +116,7 @@ public class Bootstrap implements InitInterface
         return null;
     }
 
-    @Override
+//    @Override
     public Version getVersion()
     {
         return version;
@@ -179,7 +179,7 @@ public class Bootstrap implements InitInterface
         File currentDir = new File(".");
         logger.info("Current directory " + currentDir.getCanonicalPath());
         logger.info("Locating settings file...");
-        settingsFile = locateSettingsDirectory();
+//        settingsFile = locateSettingsDirectory();
 
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
         FileService.use().addFile(fileSync, MainInterface.SETTINGS_FILE_CONTEXT);
@@ -252,20 +252,20 @@ public class Bootstrap implements InitInterface
     {
         logger.trace("Searching for default IO interface setting");
         String config = null;
-        AbstractSetting defaultIOInterface = settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
+//        AbstractSetting defaultIOInterface = settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
         Class ioInterfaceFound = null;
 
-        if (defaultIOInterface != null)
-        {
-            if (defaultIOInterface instanceof ClassSetting)
-            {
-                ioInterfaceFound = ((ClassSetting) defaultIOInterface).getValue();
-            }
-            else if (defaultIOInterface instanceof StringSetting)
-            {
-                ioInterfaceFound = Class.forName(((StringSetting) defaultIOInterface).getValue());
-            }
-        }
+//        if (defaultIOInterface != null)
+//        {
+//            if (defaultIOInterface instanceof ClassSetting)
+//            {
+//                ioInterfaceFound = ((ClassSetting) defaultIOInterface).getValue();
+//            }
+//            else if (defaultIOInterface instanceof StringSetting)
+//            {
+//                ioInterfaceFound = Class.forName(((StringSetting) defaultIOInterface).getValue());
+//            }
+//        }
 
         if (ioInterfaceFound == null)
         {// It is still null so load default FileIO interface
@@ -303,7 +303,7 @@ public class Bootstrap implements InitInterface
 
         this.ioInterface = bkio2;
 
-        bkio2.init(config);
+//        bkio2.init(config);
 
         logger.info("Done.");
     }
@@ -323,35 +323,35 @@ public class Bootstrap implements InitInterface
         return res;
     }
 
-    private File locateSettingsDirectory()
-        throws Exception
-    {
+//    private File locateSettingsDirectory()
+//        throws Exception
+//    {
         // Try [current dir]/Settings.xml
-        File file = new File(getCurrentDirSettingsFile());
+//        File file = new File(getCurrentDirSettingsFile());
 
-        if (file.exists())
-        {
-            logger.info("Using settings file at " + file.getCanonicalPath());
-            return file;
-        }
+//        if (file.exists())
+//        {
+//            logger.info("Using settings file at " + file.getCanonicalPath());
+//            return file;
+//        }
 
         // Try [current dir]/Bookmark-anator/Settings.xml
-        file = new File(getCurrentDirSettingsFileInBKFolder());
+//        file = new File(getCurrentDirSettingsFileInBKFolder());
 
-        if (file.exists())
-        {
-            logger.info("Using settings file at " + file.getCanonicalPath());
-            return file;
-        }
+//        if (file.exists())
+//        {
+//            logger.info("Using settings file at " + file.getCanonicalPath());
+//            return file;
+//        }
 
         // Try [user home]/Bookmarkanator/Settings.xml
-        file = new File(getDefaultHomeDirSettingsFileInBKFolder());
+//        file = new File(getDefaultHomeDirSettingsFileInBKFolder());
 
-        if (file.exists())
-        {
-            logger.info("Using settings file at " + file.getCanonicalPath());
-            return file;
-        }
+//        if (file.exists())
+//        {
+//            logger.info("Using settings file at " + file.getCanonicalPath());
+//            return file;
+//        }
 
         //        // Try [user home]/settings/Settings.xml
         //        file = new File(getDefaultHomeDirSettingsFile());
@@ -363,35 +363,35 @@ public class Bootstrap implements InitInterface
         //        }
 
         // Default to [user home]/Bookmark-anator/Settings.xml and let the settings engine handle creating the file if necessary.
-        file = new File(getDefaultHomeDirSettingsFileInBKFolder());
-        logger.info("No settings files exist at this time. Defaulting to " + file.getCanonicalPath());
+//        file = new File(getDefaultHomeDirSettingsFileInBKFolder());
+//        logger.info("No settings files exist at this time. Defaulting to " + file.getCanonicalPath());
 
-        return file;
-    }
+//        return file;
+//    }
 
-    private String getCurrentDirSettingsFile()
-    {
-        String directory = System.getProperty("user.dir");
-        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
-    }
-
-    private String getCurrentDirSettingsFileInBKFolder()
-    {
-        String directory = System.getProperty("user.dir");
-        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
-    }
-
-    private String getDefaultHomeDirSettingsFile()
-    {
-        String directory = System.getProperty("user.home");
-        return directory + File.separatorChar + "settings" + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
-    }
-
-    private String getDefaultHomeDirSettingsFileInBKFolder()
-    {
-        String directory = System.getProperty("user.home");
-        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
-    }
+//    private String getCurrentDirSettingsFile()
+//    {
+//        String directory = System.getProperty("user.dir");
+////        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+//    }
+//
+//    private String getCurrentDirSettingsFileInBKFolder()
+//    {
+//        String directory = System.getProperty("user.dir");
+////        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+//    }
+//
+//    private String getDefaultHomeDirSettingsFile()
+//    {
+//        String directory = System.getProperty("user.home");
+////        return directory + File.separatorChar + "settings" + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+//    }
+//
+//    private String getDefaultHomeDirSettingsFileInBKFolder()
+//    {
+//        String directory = System.getProperty("user.home");
+////        return directory + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_DIRECTORY + File.separatorChar + Bootstrap.DEFAULT_SETTINGS_FILE_NAME;
+//    }
 
     public InitUIInterface getUiInterface()
     {
