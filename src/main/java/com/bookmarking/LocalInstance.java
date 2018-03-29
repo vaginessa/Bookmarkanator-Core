@@ -62,13 +62,13 @@ public class LocalInstance implements MainInterface
     }
 
     @Override
-    public Start getStartClass()
+    public Bootstrap getStartClass()
     {
         return null;
     }
 
     @Override
-    public void setStartClass(Start start)
+    public void setStartClass(Bootstrap bootstrap)
     {
 
     }

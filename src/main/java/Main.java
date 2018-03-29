@@ -7,7 +7,7 @@ public class Main
     {
 
 
-        Start start = new Start();
-        start.init();
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.init();
     }
 }

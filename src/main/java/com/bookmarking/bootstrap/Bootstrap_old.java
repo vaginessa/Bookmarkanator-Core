@@ -16,11 +16,11 @@ import org.apache.logging.log4j.*;
 /**
  * This class is responsible for doing the initial settings, and class loading.
  */
-public class Bootstrap
+public class Bootstrap_old
 {
 
     // Static fields
-    private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
+    private static final Logger logger = LogManager.getLogger(Bootstrap_old.class.getCanonicalName());
 //    private static Bootstrap bootstrap;
 
     // Default names
@@ -49,7 +49,7 @@ public class Bootstrap
         version = VersionParser.parseJavaVersion("0.6.0-1");
     }
 
-    public Bootstrap()
+    public Bootstrap_old()
     {
     }
 
@@ -205,7 +205,7 @@ public class Bootstrap
         ModuleLoader.use().addClassToWatch(FileWriterInterface.class);
         ModuleLoader.use().addClassToWatch(String.class);
 
-        Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap.MODULE_LOCATIONS_GROUP, File.class);
+        Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap_old.MODULE_LOCATIONS_GROUP, File.class);
 
         Set<File> jarLocations = new HashSet<>();
         for (AbstractSetting abstractSetting : moduleLocations)

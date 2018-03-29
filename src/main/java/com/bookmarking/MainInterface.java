@@ -19,9 +19,9 @@ public interface MainInterface
 
     void exit() throws Exception;
 
-    Start getStartClass();
+    Bootstrap getStartClass();
 
-    void setStartClass(Start start);
+    void setStartClass(Bootstrap bootstrap);
 
     // ----------------------------------------------
     // Interfaces

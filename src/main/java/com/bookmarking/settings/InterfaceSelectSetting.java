@@ -19,7 +19,7 @@ public class InterfaceSelectSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(Start.IMPLEMENTING_CLASSES_GROUP);
+        super.setGroup(Bootstrap.IMPLEMENTING_CLASSES_GROUP);
     }
 
     // TODO implement proper overridden versions of all constructors.

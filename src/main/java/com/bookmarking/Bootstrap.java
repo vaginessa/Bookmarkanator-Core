@@ -13,13 +13,13 @@ import org.apache.logging.log4j.*;
  * Main entry point for the bookmarkanator program. Starts the loading process that will dynamically load
  * all parts of the program.
  */
-public class Start
+public class Bootstrap
 {
     // ============================================================
     // Static Fields
     // ============================================================
 
-    private static final Logger logger = LogManager.getLogger(Start.class.getCanonicalName());
+    private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
 
     /**
      * The group that is used to specify implementing classes, or overriding classes.
@@ -44,22 +44,22 @@ public class Start
     private IOInterface ioInterface;
     private MainInterface mainInterface;
 
-    public Start()
+    public Bootstrap()
     {
         this(null, null);
     }
 
-    public Start(Settings settings)
+    public Bootstrap(Settings settings)
     {
         this(settings, null);
     }
 
-    public Start(MainUIInterface mainUIInterface)
+    public Bootstrap(MainUIInterface mainUIInterface)
     {
         this(null, mainUIInterface);
     }
 
-    public Start(Settings settings, MainUIInterface mainUIInterface)
+    public Bootstrap(Settings settings, MainUIInterface mainUIInterface)
     {
         logger.debug("Start class constructor. MainUIInterface = \n"+mainUIInterface+"\n. Settings =  \n"+settings+"\n");
         if (settings != null)
@@ -111,7 +111,7 @@ public class Start
         initSettings();
 
         // Uses default settingsIOClass name or one supplied when starting up Start...
-        AbstractSetting settingsIOClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
+        AbstractSetting settingsIOClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
         Objects.requireNonNull(settingsIOClass, "SettingsIOClass is not present in settings.");
@@ -141,7 +141,7 @@ public class Start
         throws Exception
     {
         logger.info("- Loading updater interface");
-        AbstractSetting updaterClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName());
+        AbstractSetting updaterClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName());
 
         // This should not happen because of default settings but lets check anyway...
         Objects.requireNonNull(updaterClass, "UpdatesInterface class setting is not present in settings.");
@@ -182,7 +182,7 @@ public class Start
         throws Exception
     {
         logger.info("- Loading IOInterface");
-        AbstractSetting IOInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
+        AbstractSetting IOInterfaceClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
         ClassSetting setting;
 
         if (IOInterfaceClass instanceof ClassSetting)
@@ -215,7 +215,7 @@ public class Start
         logger.info("- Loading MainInterface");
 
         // Uses default MainInterface class name or one supplied when starting up Start...
-        AbstractSetting mainInterfaceClass = this.settings.getSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
+        AbstractSetting mainInterfaceClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
         Objects.requireNonNull(mainInterfaceClass, "MainInterfaceClass is not present in settings.");
@@ -266,11 +266,11 @@ public class Start
     {
         Settings res = new Settings();
 
-        ClassSetting classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
+        ClassSetting classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
         // Setting the default to FileSettingsIO
-        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
+        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
         res.putSetting(classSetting);
 
         FileSetting fileSetting = new FileSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
@@ -285,10 +285,10 @@ public class Start
         stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
-        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
+        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
         res.putSetting(classSetting);
 
-        classSetting = new ClassSetting(Start.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
+        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
         res.putSetting(classSetting);
 
         return res;

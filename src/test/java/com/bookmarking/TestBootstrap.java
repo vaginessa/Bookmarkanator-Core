@@ -4,14 +4,14 @@ import com.bookmarking.io.*;
 import com.bookmarking.update.*;
 import org.junit.*;
 
-public class TestStart
+public class TestBootstrap
 {
     @Test
     public void testBootstrap()
         throws Exception
     {
-        Start start = new Start();
-        start.init();
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.init();
     }
 
     private class MainUI implements MainUIInterface
