@@ -1,4 +1,6 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
+
+import com.bookmarking.settings.types.*;
 
 public class BooleanSetting extends AbstractSetting<Boolean>
 {

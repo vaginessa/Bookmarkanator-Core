@@ -2,6 +2,7 @@ package com.bookmarking;
 
 import java.io.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.settings.types.*;
 import org.junit.*;
 
 public class TestSettings

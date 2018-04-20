@@ -1,4 +1,4 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 /**
  * This setting links one class to another so that things like setting default classes, and overriding classes can be set.

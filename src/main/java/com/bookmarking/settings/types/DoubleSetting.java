@@ -1,6 +1,7 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 import javax.xml.bind.annotation.*;
+import com.bookmarking.settings.types.*;
 
 @XmlType
 public class DoubleSetting extends AbstractSetting<Double>

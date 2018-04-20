@@ -1,6 +1,7 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 import java.io.*;
+import com.bookmarking.settings.types.*;
 
 public class FileSetting extends AbstractSetting<File>
 {

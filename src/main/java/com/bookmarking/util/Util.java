@@ -3,6 +3,7 @@ package com.bookmarking.util;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import javax.xml.bind.*;
 import org.apache.commons.io.*;
 import org.w3c.dom.*;
 import org.w3c.dom.ls.*;
@@ -192,4 +193,24 @@ public class Util
         return sb.toString();
     }
 
+
+    public static <T> T convertStreamToObject(Class<T> clazz, ByteArrayInputStream bin)
+        throws JAXBException
+    {
+        JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+        T res = null;
+
+        try (BufferedReader buff = new BufferedReader(new InputStreamReader(bin)))
+        {
+            res = (T) unmarshaller.unmarshal(buff);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
 }

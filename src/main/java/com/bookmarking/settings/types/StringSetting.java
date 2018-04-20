@@ -1,4 +1,4 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 import javax.xml.bind.annotation.*;
 

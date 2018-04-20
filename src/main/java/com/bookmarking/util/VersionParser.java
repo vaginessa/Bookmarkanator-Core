@@ -9,12 +9,19 @@ import com.bookmarking.error.*;
 public class VersionParser
 {
 
-    public boolean checkMyVersion(String lowestVersion, String additionalMessage, boolean exitIfBadVersion)
+    /**
+     * If the system version is not higher than the lowest version string supplied it will pop up a JDialog with the supplied message.
+     * @param lowestVersion  the lowest java system version acceptable
+     * @param additionalMessage  the message to display if the java version does not meet the minimum version.
+     * @param exitIfBadVersion  Calls system.exit if the version is too low.
+     * @return  Returns true if running a system with java version higher than the supplied string, false otherwise.
+     */
+    public boolean checkMyJavaVersion(String lowestVersion, String additionalMessage, boolean exitIfBadVersion)
     {
         // Detecting java version, and bailing if it is not the right version.
         Version systemVersion = VersionParser.getJavaVersion();
         System.out.println("System Java Version: " + systemVersion);
-        Version requiredVersion = VersionParser.parseJavaVersion(lowestVersion);
+        Version requiredVersion = VersionParser.parse(lowestVersion);
         System.out.println("Required Java Version: " + requiredVersion);
 
         if (requiredVersion.compareTo(systemVersion) > 0)
@@ -93,22 +100,30 @@ public class VersionParser
 
     public Version getVersion()
     {
-        return parseJavaVersion(System.getProperty("java.version"));
+        return parse(System.getProperty("java.version"));
     }
 
-    public Version parseVersion(String javaVersionString)
+    public Version parseVersion(String versionString)
     {
         Version version = new Version();
-        version.setJavaVersionString(javaVersionString);
+        version.setJavaVersionString(versionString);
 
-        String[] numStrings = javaVersionString.split("\\.");
+        String[] numStrings = versionString.split("\\.");
+
+        if (numStrings.length>=3)
+        {
+            throw new NumberFormatException("Version \""+versionString+"\" must have one the following formats xx.xx.xx, xx.xx.xx-xx, or xx.xx.xx_xx ");
+        }
 
         version.setMajorVersion(Integer.parseInt(numStrings[0]));
         version.setMinorVersion(Integer.parseInt(numStrings[1]));
 
-        if (numStrings[2].contains("_") || numStrings[2].contains("-"))
+        boolean containsHyphen = numStrings[2].contains("-");
+        boolean containsUnderscore = numStrings[2].contains("_");
+
+        if ( containsHyphen || containsUnderscore )
         {
-            if (numStrings[2].contains("_"))
+            if (containsUnderscore)
             {
                 numStrings = numStrings[2].split("_");
             }
@@ -130,7 +145,7 @@ public class VersionParser
         return versionParser.getVersion();
     }
 
-    public static Version parseJavaVersion(String javaVersionString)
+    public static Version parse(String javaVersionString)
     {
         VersionParser versionParser = new VersionParser();
         return versionParser.parseVersion(javaVersionString);
@@ -139,12 +154,7 @@ public class VersionParser
     public static boolean javaVersionCheck(String lowestVersion, String additionalMessage, boolean exitIfBad)
     {
         VersionParser versionParser = new VersionParser();
-        return versionParser.checkMyVersion(lowestVersion, additionalMessage, exitIfBad);
+        return versionParser.checkMyJavaVersion(lowestVersion, additionalMessage, exitIfBad);
     }
 
-    public static Version parse(String versionString)
-    {
-        VersionParser versionParser = new VersionParser();
-        return versionParser.parseVersion(versionString);
-    }
 }

@@ -1,4 +1,4 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 public class IntegerSetting extends AbstractSetting<Integer>
 {

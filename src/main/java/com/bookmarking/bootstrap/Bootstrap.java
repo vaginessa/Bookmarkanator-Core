@@ -1,11 +1,14 @@
-package com.bookmarking;
+package com.bookmarking.bootstrap;
 
 import java.io.*;
+import java.net.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.file.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.settings.types.*;
 import com.bookmarking.update.*;
 import org.apache.logging.log4j.*;
 
@@ -61,7 +64,6 @@ public class Bootstrap
 
     public Bootstrap(Settings settings, MainUIInterface mainUIInterface)
     {
-        logger.debug("Start class constructor. MainUIInterface = \n"+mainUIInterface+"\n. Settings =  \n"+settings+"\n");
         if (settings != null)
         {
             this.settings = settings;
@@ -73,11 +75,15 @@ public class Bootstrap
         }
     }
 
+    // ============================================================
+    // Methods
+    // ============================================================
+
     public MainInterface init()
         throws Exception
     {
         logger.info("--------------------------------------------------------------");
-        logger.info("Start init");
+        logger.info("Bootstrap init");
         logger.info("--------------------------------------------------------------");
 
         // Load default settings, and then load settings IO interface from settings.
@@ -94,6 +100,36 @@ public class Bootstrap
         return this.mainInterface;
     }
 
+    public Settings getSettings()
+    {
+        return settings;
+    }
+
+    public MainUIInterface getMainUIInterface()
+    {
+        return mainUIInterface;
+    }
+
+    public SettingsIOInterface getSettingsIOInterface()
+    {
+        return settingsIOInterface;
+    }
+
+    public UpdaterInterface getUpdaterInterface()
+    {
+        return updaterInterface;
+    }
+
+    public IOInterface getIoInterface()
+    {
+        return ioInterface;
+    }
+
+    public MainInterface getMainInterface()
+    {
+        return mainInterface;
+    }
+
     // ============================================================
     // Private Methods
     // ============================================================
@@ -108,9 +144,9 @@ public class Bootstrap
         throws Exception
     {
         logger.info("- Loading SettingsIOInterface");
-        initSettings();
+        getOrCreateSettings();
 
-        // Uses default settingsIOClass name or one supplied when starting up Start...
+        // Uses default settingsIOClass name or one supplied when starting up.
         AbstractSetting settingsIOClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
@@ -133,7 +169,7 @@ public class Bootstrap
 
         this.settings = settingsIOInterface.init(this.settings);
 
-        logger.info("- Done.");
+        logger.info("- Done loading settings IO interface.");
         return settingsIOInterface;
     }
 
@@ -168,7 +204,7 @@ public class Bootstrap
         // At this point if the UpdateUIInterface is present it will have already been given the chance to have a say on the updates so just do them.
         updateServiceInterface.performUpdates(updateServiceInterface.checkForUpdates(this.settings));
 
-        logger.info("- Done.");
+        logger.info("- Done loading updater interface.");
         return updateServiceInterface;
     }
 
@@ -205,7 +241,7 @@ public class Bootstrap
             ioInterface.init(settingsIOInterface);
         }
 
-        logger.info("- Done.");
+        logger.info("- Done loading IO interface.");
         return ioInterface;
     }
 
@@ -214,7 +250,7 @@ public class Bootstrap
     {
         logger.info("- Loading MainInterface");
 
-        // Uses default MainInterface class name or one supplied when starting up Start...
+        // Uses default MainInterface class name or one supplied when starting up.
         AbstractSetting mainInterfaceClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
@@ -234,7 +270,7 @@ public class Bootstrap
         MainInterface mainInterface = ModuleLoader.use()
             .instantiateClass(setting.getValue().getCanonicalName(), MainInterface.class);
 
-        logger.info("- Done.");
+        logger.info("- Done loading main interface.");
         return mainInterface;
     }
 
@@ -243,7 +279,7 @@ public class Bootstrap
      *
      * @throws Exception
      */
-    private void initSettings()
+    private void getOrCreateSettings()
         throws Exception
     {
         if (settings == null)
@@ -266,10 +302,11 @@ public class Bootstrap
     {
         Settings res = new Settings();
 
+        // Main interface defaults.
         ClassSetting classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
-        // Setting the default to FileSettingsIO
+        // FileSettingsIO defaults
         classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
         res.putSetting(classSetting);
 
@@ -285,9 +322,18 @@ public class Bootstrap
         stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
+        // Updater default class.
         classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
         res.putSetting(classSetting);
 
+        // Updater repository config - Zero will be the first repository it will try.
+        URLSetting urlSetting = new URLSetting(WebUpdater.WEB_UPDATER_REPOSITORIES_GROUP_KEY, String.valueOf(0), new URL("http://localhost:8080/bookmakanator/update"));
+        res.putSetting(urlSetting);
+
+        stringSetting = new StringSetting(WebUpdater.UPDAT_CONFIG_SETTINGS_GROUP_KEY, String.valueOf(0), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><updateConfigEntry><currentResource>file:.</currentResource><currentVersion>0.0.0-2</currentVersion><resourceKey>desktop</resourceKey></updateConfigEntry>");
+        res.putSetting(stringSetting);
+
+        // IOInterface defaults.
         classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
         res.putSetting(classSetting);
 

@@ -1,7 +1,7 @@
 package com.bookmarking.ui;
 
 import java.util.*;
-import com.bookmarking.settings.*;
+import com.bookmarking.settings.input.*;
 
 /**
  * This interface is the base interface for all UI Interfaces. These interfaces will be used by any UI elements

@@ -1,4 +1,6 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.input;
+
+import com.bookmarking.settings.types.*;
 
 /**
  * This class is used to wrap a setting with a message and required flag for the purpose of sending to the UI requesting information from the user.

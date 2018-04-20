@@ -1,8 +1,8 @@
-package com.bookmarking.settings;
+package com.bookmarking.settings.types;
 
 import java.lang.reflect.*;
 import java.util.*;
-import com.bookmarking.*;
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.error.*;
 import com.bookmarking.module.*;
 

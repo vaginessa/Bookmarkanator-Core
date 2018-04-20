@@ -1,5 +1,6 @@
 package com.bookmarking;
 
+import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;

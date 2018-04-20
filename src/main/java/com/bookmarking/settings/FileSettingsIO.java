@@ -3,6 +3,7 @@ package com.bookmarking.settings;
 import java.io.*;
 import java.util.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.settings.types.*;
 import org.apache.logging.log4j.*;
 
 public class FileSettingsIO implements SettingsIOInterface
@@ -27,6 +28,7 @@ public class FileSettingsIO implements SettingsIOInterface
     public Settings init(Settings settings)
         throws Exception
     {
+        logger.info("- Init FileSettingsIO");
         this.settings = settings;
 
         // Locate the settings file based on settings being brought in, and check if it exists.
@@ -91,7 +93,7 @@ public class FileSettingsIO implements SettingsIOInterface
 
         // Write the settings out again with defaults merged in.
         fileSync.writeToDisk();
-
+        logger.info("- Done.");
         return settings;
     }
 

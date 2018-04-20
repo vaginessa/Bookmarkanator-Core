@@ -1,6 +1,7 @@
 package com.bookmarking.settings;
 
 import java.util.*;
+import com.bookmarking.settings.types.*;
 
 public class SettingsGroup implements Comparable
 {

@@ -10,6 +10,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.settings.types.*;
 import com.bookmarking.util.*;
 import org.apache.logging.log4j.*;
 
@@ -46,7 +47,7 @@ public class Bootstrap_old
 
     static
     {
-        version = VersionParser.parseJavaVersion("0.6.0-1");
+        version = VersionParser.parse("0.6.0-1");
     }
 
     public Bootstrap_old()

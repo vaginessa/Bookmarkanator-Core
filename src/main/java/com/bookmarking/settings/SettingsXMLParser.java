@@ -3,6 +3,7 @@ package com.bookmarking.settings;
 import java.io.*;
 import javax.xml.parsers.*;
 import com.bookmarking.fileservice.*;
+import com.bookmarking.settings.types.*;
 import com.bookmarking.xml.*;
 import org.w3c.dom.*;
 

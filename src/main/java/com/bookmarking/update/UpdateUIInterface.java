@@ -1,6 +1,7 @@
 package com.bookmarking.update;
 
 import java.util.*;
+import com.bookmarking.update.config.*;
 
 public interface UpdateUIInterface
 {
