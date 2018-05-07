@@ -232,13 +232,6 @@ public class Bootstrap_old
         throws Exception
     {
         loadIOInterface();
-
-        // Give bookmark access to the message board
-        MessageBoard messageBoard = MessageBoard.use();
-        for (AbstractBookmark abs : this.ioInterface.getAllBookmarks())
-        {
-            messageBoard.setSecretKey(abs);
-        }
     }
 
     /**

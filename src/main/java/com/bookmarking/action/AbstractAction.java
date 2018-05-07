@@ -13,7 +13,7 @@ public abstract class AbstractAction
 
     public AbstractAction()
     {
-        isHidden = true;
+        isHidden = false;
     }
 
     /**
