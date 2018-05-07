@@ -43,7 +43,6 @@ public class Bootstrap
     private Settings settings;
     private MainUIInterface mainUIInterface;
     private SettingsIOInterface settingsIOInterface;
-    private UpdaterInterface updaterInterface;
     private IOInterface ioInterface;
     private MainInterface mainInterface;
 
@@ -89,9 +88,6 @@ public class Bootstrap
         // Load default settings, and then load settings IO interface from settings.
         this.settingsIOInterface = loadSettingsIOInterface();
 
-        // Check for and apply updates
-        this.updaterInterface = loadUpdaterInterface();
-
         // Load io interface.
         this.ioInterface =  loadIOInterface();
 
@@ -113,11 +109,6 @@ public class Bootstrap
     public SettingsIOInterface getSettingsIOInterface()
     {
         return settingsIOInterface;
-    }
-
-    public UpdaterInterface getUpdaterInterface()
-    {
-        return updaterInterface;
     }
 
     public IOInterface getIoInterface()
@@ -171,41 +162,6 @@ public class Bootstrap
 
         logger.info("- Done loading settings IO interface.");
         return settingsIOInterface;
-    }
-
-    private UpdaterInterface loadUpdaterInterface()
-        throws Exception
-    {
-        logger.info("- Loading updater interface");
-        AbstractSetting updaterClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName());
-
-        // This should not happen because of default settings but lets check anyway...
-        Objects.requireNonNull(updaterClass, "UpdatesInterface class setting is not present in settings.");
-
-        ClassSetting setting;
-
-        if (updaterClass instanceof ClassSetting)
-        {
-            setting = (ClassSetting) updaterClass;
-        }
-        else
-        {
-            throw new Exception("Setting used to specify SettingsIOInterface class is not of the correct type. Must be of type ClassSetting.");
-        }
-
-        UpdaterInterface updateServiceInterface = ModuleLoader.use()
-            .instantiateClass(setting.getValue().getCanonicalName(),UpdaterInterface.class);
-
-        if (mainUIInterface!=null && mainUIInterface.getUpdateUIInterface()!=null)
-        {
-            updateServiceInterface.setUpdateUIInterface(mainUIInterface.getUpdateUIInterface());
-        }
-
-        // At this point if the UpdateUIInterface is present it will have already been given the chance to have a say on the updates so just do them.
-        updateServiceInterface.performUpdates(updateServiceInterface.checkForUpdates(this.settings));
-
-        logger.info("- Done loading updater interface.");
-        return updateServiceInterface;
     }
 
     /**

@@ -5,6 +5,9 @@ import org.apache.logging.log4j.*;
 
 /**
  * The base class for all bookmarks.
+ *
+ * What is a bookmark? A bookmark is a group of code designed to work with a specific chunk of data. For example a web bookmark can operate on
+ * hypertext links.
  */
 public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 {
@@ -23,14 +26,14 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     protected Set<String> tags;
 
     // Dates
-    protected Date creationDate;
-    protected Date modificationDate;
-    protected Date lastAccessedDate;
+    private Date creationDate;
+    private Date modificationDate;
+    private Date lastAccessedDate;
 
     // The list of actions this bookmark supports or understands
-    protected Set<String> supportedActions;
-    protected Map<String, Set<AbstractBookmark>> beforeListeners;
-    protected Map<String, Set<AbstractBookmark>> afterListeners;
+    private Set<String> supportedActions;
+    private Map<String, Set<AbstractBookmark>> beforeListeners;
+    private Map<String, Set<AbstractBookmark>> afterListeners;
 
     // ============================================================
     // Constructors
@@ -133,11 +136,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * @return True if it was set.
      */
     public abstract boolean setMessageBoardKey(String messageBoardKey);
-
-    protected void setSupportedActions(Set<String> newActions)
-    {
-        this.supportedActions = newActions;
-    }
 
     public Set<String> getSupportedActions()
     {
@@ -313,9 +311,9 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         throws Exception;
 
     /**
-     * Gets a new instance of this group of bookmark;
+     * Gets a new instance of this type of bookmark.
      *
-     * @return A new instance of this class of bookmark.
+     * @return A new instance of this type of bookmark.
      */
     public abstract AbstractBookmark getNew();
 

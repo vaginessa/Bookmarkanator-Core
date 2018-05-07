@@ -9,6 +9,12 @@ import com.bookmarking.ui.*;
 public abstract class AbstractAction
 {
     private ActionUIInterface uiInterface;
+    private boolean isHidden;
+
+    public AbstractAction()
+    {
+        isHidden = true;
+    }
 
     /**
      * Run specified action.
@@ -31,6 +37,17 @@ public abstract class AbstractAction
      */
     public abstract String runAction(String actionString)
         throws Exception;
+
+    /**
+     * Called as the system is starting up so that if individual actions want to do some kind of configuration they can.
+     */
+    public abstract void systemInit();
+
+    /**
+     * Called prior to shutting the system down, so that individual actions can perform any actions they deem necessary
+     * prior to being shut down.
+     */
+    public abstract void systemShuttingDown();
 
     public UIInterface getUiInterface()
     {
