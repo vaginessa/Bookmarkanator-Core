@@ -30,8 +30,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     private Date modificationDate;
     private Date lastAccessedDate;
 
-    // The list of actions this bookmark supports or understands
-    private Set<String> supportedActions;
     private Map<String, Set<AbstractBookmark>> beforeListeners;
     private Map<String, Set<AbstractBookmark>> afterListeners;
 
@@ -46,7 +44,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         name = "";
         creationDate = new Date();
         lastAccessedDate = new Date();
-        supportedActions = new HashSet<>();
         beforeListeners = new HashMap<>();
         afterListeners = new HashMap<>();
     }
@@ -123,23 +120,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public void setLastAccessedDate(Date lastAccessedDate)
     {
         this.lastAccessedDate = lastAccessedDate;
-    }
-
-    /**
-     * This is a secret key that is intended to be set by the message board
-     * as the key that this bookmark can use to post to the message board.
-     *
-     * This must remain an abstract method because the key needs to be specific to each class, and that has to
-     * be implemented in the extending class.
-     *
-     * @param messageBoardKey The secret key to use when modifying message board messages.
-     * @return True if it was set.
-     */
-    public abstract boolean setMessageBoardKey(String messageBoardKey);
-
-    public Set<String> getSupportedActions()
-    {
-        return supportedActions;
     }
 
     /**

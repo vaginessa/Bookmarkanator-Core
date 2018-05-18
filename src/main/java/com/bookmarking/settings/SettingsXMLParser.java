@@ -1,6 +1,7 @@
 package com.bookmarking.settings;
 
 import java.io.*;
+import java.net.*;
 import javax.xml.parsers.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.types.*;
@@ -20,6 +21,7 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
     public static final String DOUBLE_ELEMENT = "double";
     public static final String INTEGER_ELEMENT = "integer";
     public static final String BOOLEAN_ELEMENT = "boolean";
+    public static final String URL_ELEMENT = "url";
     public static final String SETTING_ELEMENT = "setting";
     public static final String KEY_ELEMENT = "key";
     public static final String VALUE_ELEMENT = "value";
@@ -184,6 +186,9 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
             case BOOLEAN_ELEMENT:
                 res = getKeyValue(node, new BooleanSetting(), typeString);
                 break;
+            case URL_ELEMENT:
+                res = getKeyValue(node, new URLSetting(), typeString);
+                break;
             default:
                 throw new Exception("Unknown element encountered " + node.getNodeName());
         }
@@ -237,6 +242,9 @@ public class SettingsXMLParser implements FileReaderInterface<Settings>
                             break;
                         case BOOLEAN_ELEMENT:
                             abstractSetting.setValue(Boolean.parseBoolean(n.getTextContent()));
+                            break;
+                        case URL_ELEMENT:
+                            abstractSetting.setValue(new URL(n.getTextContent()));
                             break;
                         default:
                             throw new Exception("Unknown element encountered " + node.getNodeName());

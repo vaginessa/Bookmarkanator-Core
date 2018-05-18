@@ -96,6 +96,26 @@ public class Bootstrap
         return this.mainInterface;
     }
 
+    public MainInterface init(Settings settings)
+        throws Exception
+    {
+        logger.info("--------------------------------------------------------------");
+        logger.info("Bootstrap init");
+        logger.info("--------------------------------------------------------------");
+
+        this.settings = settings;
+
+        // Load default settings, and then load settings IO interface from settings.
+        this.settingsIOInterface = loadSettingsIOInterface();
+
+        // Load io interface.
+        this.ioInterface =  loadIOInterface();
+
+        this.mainInterface = loadMainInterface();
+
+        return this.mainInterface;
+    }
+
     public Settings getSettings()
     {
         return settings;

@@ -13,4 +13,16 @@ public class TestAction extends AbstractAction
         logger.info("Executing single action "+actionString);
         return actionString;
     }
+
+    @Override
+    public void systemInit()
+    {
+
+    }
+
+    @Override
+    public void systemShuttingDown()
+    {
+
+    }
 }

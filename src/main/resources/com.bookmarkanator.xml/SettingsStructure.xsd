@@ -20,6 +20,7 @@
             <xs:element name="class" type="class" maxOccurs="unbounded"/>
             <xs:element name="double" type="double" maxOccurs="unbounded"/>
             <xs:element name="integer" type="integer" maxOccurs="unbounded"/>
+            <xs:element name="url" type="url" maxOccurs="unbounded"/>
         </xs:choice>
         <xs:attribute name="name" type="xs:string"/>
     </xs:complexType>
@@ -37,6 +38,12 @@
     </xs:complexType>
 
     <xs:complexType name="boolean">
+        <xs:sequence>
+            <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="url">
         <xs:sequence>
             <xs:element name="setting" type="setting" minOccurs="0" maxOccurs='unbounded'/>
         </xs:sequence>

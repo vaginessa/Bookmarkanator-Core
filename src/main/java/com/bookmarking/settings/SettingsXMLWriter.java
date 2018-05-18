@@ -97,6 +97,10 @@ public class SettingsXMLWriter implements FileWriterInterface<Settings>
             {
                 type = SettingsXMLParser.BOOLEAN_ELEMENT;
             }
+            else if (settingItem instanceof URLSetting)
+            {
+                type = SettingsXMLParser.URL_ELEMENT;
+            }
             else
             {
                 throw new Exception("Unknown setting type encountered: "+settingItem.getClass().getCanonicalName());

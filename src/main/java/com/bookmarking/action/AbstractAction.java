@@ -8,13 +8,27 @@ import com.bookmarking.ui.*;
  */
 public abstract class AbstractAction
 {
+    // ============================================================
+    // Fields
+    // ============================================================
+
     private ActionUIInterface uiInterface;
     private boolean isHidden;
+    private boolean enabled;
+
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     public AbstractAction()
     {
         isHidden = false;
+        enabled = true;
     }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     /**
      * Run specified action.
@@ -57,5 +71,25 @@ public abstract class AbstractAction
     public void setUiInterface(ActionUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;
+    }
+
+    public boolean isHidden()
+    {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden)
+    {
+        isHidden = hidden;
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 }

@@ -17,8 +17,7 @@ public class LocalInstance implements MainInterface
     private static LocalInstance localInstance;
 
     // Interfaces
-//    private Bootstrap initInterface;
-    private IOInterface ioInterface;
+    private Bootstrap initInterface;
     private UIInterface uiInterface;
 
     // Other
@@ -27,15 +26,15 @@ public class LocalInstance implements MainInterface
     public void init()
         throws Exception
     {
-//        initInterface = new Bootstrap();
-//        initInterface.init();
+        initInterface = new Bootstrap();
+        initInterface.init();
     }
 
     public void init(Settings settings)
         throws Exception
     {
-//        initInterface = new Bootstrap();
-//        initInterface.init(settings);
+        initInterface = new Bootstrap();
+        initInterface.init(settings);
     }
 
 //    public void init(InitUIInterface initUIInterface)
@@ -73,7 +72,7 @@ public class LocalInstance implements MainInterface
 
     }
 
-    //    @Override
+//        @Override
 //    public InitInterface getInitInterface()
 //    {
 //        return initInterface;
@@ -94,8 +93,7 @@ public class LocalInstance implements MainInterface
     @Override
     public IOInterface getIOInterface()
     {
-//        return this.initInterface.getIOInterface();
-        return null;
+        return this.initInterface.getIoInterface();
     }
 
     @Override
@@ -105,7 +103,7 @@ public class LocalInstance implements MainInterface
         {
             MainSettings mSettings = new MainSettings();
             mSettings.setMainSettings((Settings) getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT).getObject());
-            if (this.ioInterface != null)
+            if (this.getIOInterface() != null)
             {
                 mSettings.setIoSettings((Settings) getFileService().getFileSync(IOInterface.SETTINGS_FILE_CONTEXT).getObject());
             }
@@ -149,15 +147,6 @@ public class LocalInstance implements MainInterface
     }
 
     @Override
-    public MainSettings saveSettings(MainSettings mainSettings)
-        throws Exception
-    {
-        Objects.requireNonNull(mainSettings);
-        this.mainSettings = mainSettings;
-        return saveSettings();
-    }
-
-    @Override
     public void setUIInterface(UIInterface uiInterface)
         throws Exception
     {
@@ -169,29 +158,6 @@ public class LocalInstance implements MainInterface
     public UIInterface getUIInterface()
     {
         return this.uiInterface;
-    }
-
-    @Override
-    public void undo()
-        throws Exception
-    {
-        // TODO undo IOInterface
-        // TODO undo Main Settings changes.
-    }
-
-    @Override
-    public void redo()
-        throws Exception
-    {
-        // TODO redo IOInterface
-        // TODO redo Main Settings changes.
-    }
-
-    @Override
-    public void clearUndoRedoStack()
-        throws Exception
-    {
-        // TODO Implement clear stack.
     }
 
     // ============================================================
@@ -220,25 +186,25 @@ public class LocalInstance implements MainInterface
         return localInstance;
     }
 
-    public static LocalInstance use(InitUIInterface initUIInterface)
-        throws Exception
-    {
-        if (localInstance == null)
-        {
-            localInstance = new LocalInstance();
+//    public static LocalInstance use(InitUIInterface initUIInterface)
+//        throws Exception
+//    {
+//        if (localInstance == null)
+//        {
+//            localInstance = new LocalInstance();
 //            localInstance.init(initUIInterface);
-        }
-        return localInstance;
-    }
-
-    public static LocalInstance use(Settings settings, InitUIInterface initUIInterface)
-        throws Exception
-    {
-        if (localInstance == null)
-        {
-            localInstance = new LocalInstance();
+//        }
+//        return localInstance;
+//    }
+//
+//    public static LocalInstance use(Settings settings, InitUIInterface initUIInterface)
+//        throws Exception
+//    {
+//        if (localInstance == null)
+//        {
+//            localInstance = new LocalInstance();
 //            localInstance.init(settings, initUIInterface);
-        }
-        return localInstance;
-    }
+//        }
+//        return localInstance;
+//    }
 }

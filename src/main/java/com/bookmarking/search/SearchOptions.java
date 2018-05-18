@@ -86,6 +86,7 @@ public class SearchOptions
     {
         operationList = new ArrayList<>();
         dateType = DateType.CREATION_DATE;
+        selectedBookmarkTypes = new HashSet<>();
     }
 
     public String getSearchTerm()
@@ -312,26 +313,22 @@ public class SearchOptions
 
     public void setSelectedBKType(Class bkType)
     {
-        initSelectedTypes();
         selectedBookmarkTypes.add(bkType);
     }
 
     public void setUnselectedBKType(Class bkType)
     {
-        initSelectedTypes();
         selectedBookmarkTypes.remove(bkType);
     }
 
     public void setSelectAllBKTypes(Set<Class> bkTypes)
     {
-        initSelectedTypes();
         selectedBookmarkTypes.clear();
         selectedBookmarkTypes.addAll(bkTypes);
     }
 
     public void clearSelectedBKTypes()
     {
-        initSelectedTypes();
         selectedBookmarkTypes.clear();
     }
 
@@ -379,14 +376,6 @@ public class SearchOptions
     // ============================================================
     // Private Methods
     // ============================================================
-
-    private void initSelectedTypes()
-    {
-        if (selectedBookmarkTypes == null)
-        {
-            selectedBookmarkTypes = new HashSet<>();
-        }
-    }
 
     private Date getDate(LocalDateTime dateTime)
     {

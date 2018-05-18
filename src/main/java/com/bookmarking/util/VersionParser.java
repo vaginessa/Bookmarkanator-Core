@@ -110,7 +110,7 @@ public class VersionParser
 
         String[] numStrings = versionString.split("\\.");
 
-        if (numStrings.length>=3)
+        if (numStrings.length>3)
         {
             throw new NumberFormatException("Version \""+versionString+"\" must have one the following formats xx.xx.xx, xx.xx.xx-xx, or xx.xx.xx_xx ");
         }

@@ -6,24 +6,12 @@ import org.apache.logging.log4j.*;
 public class TestBookmark extends AbstractBookmark
 {
     private static final Logger logger = LogManager.getLogger(TestBookmark.class.getCanonicalName());
-    private static String secretKey;
     private String content;
     private Set<String> searchWords;
 
     public TestBookmark()
     {
         searchWords = new HashSet<>();
-    }
-
-    @Override
-    public boolean setMessageBoardKey(String messageBoardKey)
-    {
-        if (TestBookmark.secretKey == null && messageBoardKey != null)
-        {
-            TestBookmark.secretKey = messageBoardKey;
-            return true;
-        }
-        return false;
     }
 
     @Override

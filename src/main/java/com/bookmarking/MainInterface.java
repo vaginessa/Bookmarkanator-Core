@@ -68,8 +68,9 @@ public interface MainInterface
     MainSettings saveSettings()
         throws Exception;
 
-    MainSettings saveSettings(MainSettings mainSettings)
-        throws Exception;
+    // ----------------------------------------------
+    // UI
+    // ----------------------------------------------
 
     /**
      * Set the interface that will be used to write status messages to the UI. All other sub UI Interfaces will need to be obtained from this one.
@@ -77,20 +78,10 @@ public interface MainInterface
     void setUIInterface(UIInterface uiInterface)
         throws Exception;
 
-    // ----------------------------------------------
-    // UI
-    // ----------------------------------------------
 
     /**
      * @return  Return the UI interface this class is using to communicate with the front end.
      */
     UIInterface getUIInterface();
 
-    // ----------------------------------------------
-    // Undo/Redo
-    // ----------------------------------------------
-
-    void undo() throws Exception;
-    void redo() throws Exception;
-    void clearUndoRedoStack() throws Exception;
 }
