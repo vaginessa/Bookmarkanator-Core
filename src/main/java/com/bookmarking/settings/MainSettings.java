@@ -5,8 +5,6 @@ import com.bookmarking.*;
 
 public class MainSettings
 {
-    private static String CORE_SETTINGS = "Core Settings";
-
     private Settings mainSettings;
     private Settings ioSettings;
 
@@ -68,6 +66,6 @@ public class MainSettings
 
     public String getMainSettingsName()
     {
-        return CORE_SETTINGS;
+        return Defaults.CORE_SETTINGS;
     }
 }

@@ -25,7 +25,7 @@ public class ErrorHandler
         if (uiInterface!=null)
         {
             uiInterface.setUIState(UIStateEnum.ERROR);
-            uiInterface.setText(ex.toString());
+            uiInterface.setStatus(ex.toString());
         }
 
         logger.error(ex);

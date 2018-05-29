@@ -14,7 +14,6 @@ public interface IOInterface
 {
 
     String SETTINGS_FILE_CONTEXT = "ioSettings";
-    String IO_INTERFACE_GROUP = "io-interface-group";
 
     //------------------------------------
     // Init and prepExit

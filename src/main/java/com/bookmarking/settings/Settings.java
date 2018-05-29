@@ -1,6 +1,7 @@
 package com.bookmarking.settings;
 
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.exception.*;
 import com.bookmarking.settings.types.*;
 import org.apache.logging.log4j.*;
@@ -13,9 +14,6 @@ import org.apache.logging.log4j.*;
 public class Settings
 {
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
-
-    // The group for settings without a group
-    public static String NO_GROUP = "no-group";
 
     // <Group String, SetingsGroup>
     private HashMap<String, SettingsGroup> groups;
@@ -61,7 +59,7 @@ public class Settings
 
         if (setting.getGroup()==null || setting.getGroup().trim().isEmpty())
         {
-            setting.setGroup(NO_GROUP);
+            setting.setGroup(Defaults.NO_GROUP);
         }
 
         SettingsGroup group = this.groups.get(setting.getGroup());

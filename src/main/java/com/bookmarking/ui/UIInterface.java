@@ -9,17 +9,9 @@ import com.bookmarking.settings.input.*;
  */
 public interface UIInterface
 {
-    /**
-     * Tell the ui to show a notification message (e.g. in a dialog, or box, or however the UI does it)
-     * @param message
-     */
-    void notifyUI(String message);
-
-    /**
-     * The text of this UI element. For bookmark it might be bookmark name, for IO interface it might be the common name.
-     * @param text
-     */
-    void setText(String text);
+    // =====================================================================================
+    // This bookmarks status changes (Modify elements of the UI that displays this bookmark)
+    // =====================================================================================
 
     /**
      * Sets the state of this item so the UI can show it. Typically the UI would add an icon to the ui element, or change it's color
@@ -27,6 +19,12 @@ public interface UIInterface
      * @param state
      */
     void setUIState(UIStateEnum state);
+
+    /**
+     * Tell the ui to show a notification message (e.g. in a dialog, or box, or however the UI does it)
+     * @param message
+     */
+    void setStatus(String message);
 
     /**
      * Intended to allow the items to show a progress indicator with value.
@@ -45,6 +43,26 @@ public interface UIInterface
      * Used to hide indeterminate progress indicator.
      */
     void setProgressOff();
+
+    // =====================================================================================
+    // Messages to the user (in message area not as strong as a notification)
+    // =====================================================================================
+
+    /**
+     * A message for the user that will be displayed in whatever general message form the UI implements.
+     */
+    void postMessage(String message);
+
+    // =====================================================================================
+    // Higher level notifications and interactions
+    // =====================================================================================
+
+    /**
+     * Requests a higher level notification in the UI. For example maybe it needs to grab the users attention with a
+     * dialog. It would call this method and the UI would do whatever prominent message action it implements.
+     * @param message
+     */
+    void notifyUI(String message);
 
     /**
      * Requests the users input from a set of values.

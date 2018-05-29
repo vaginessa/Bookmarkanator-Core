@@ -2,6 +2,7 @@ package com.bookmarking.settings;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.types.*;
 import org.apache.logging.log4j.*;
@@ -9,18 +10,6 @@ import org.apache.logging.log4j.*;
 public class FileSettingsIO implements SettingsIOInterface
 {
     private static final Logger logger = LogManager.getLogger(FileSettingsIO.class.getCanonicalName());
-
-    // Settings keys
-    public static final String FILE_SETTINGS_GROUP_KEY = "file-settings-group-key";
-    public static final String DEFAULT_SETTINGS_FILE_NAME_KEY = "default-file-settings-name";
-    public static final String DEFAULT_SETTINGS_FILE_LOCATION_KEY = "default-settings-file-location";
-    public static final String DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY = "default-secondary-file-settings-name";
-    public static final String DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY = "default-secondary-settings-file-location";
-
-    // Fallback values in case settings are not present.
-    private static final File FALLBACK_SETTINGS_DIRECTORY = new File(".");
-    private static final String FALLBACK_SETTGINS_FILE_NAME = "settings.xml";
-    private static final String FILE_SYNC_CONTEXT = "Settings File";
 
     private Settings settings;
 
@@ -57,21 +46,24 @@ public class FileSettingsIO implements SettingsIOInterface
         if (fileInUse==null)
         {
             logger.info("- Settings file doesn't exist. Creating now...");
-            if (hasSettings(FILE_SETTINGS_GROUP_KEY, DEFAULT_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SETTINGS_FILE_NAME_KEY))
+            if (hasSettings(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY))
             {
-                fileInUse = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SETTINGS_FILE_NAME_KEY);
+                fileInUse = getFile(
+                    Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using primary setting location of \""+fileInUse+"\"");
             }
-            else if (hasSettings(FILE_SETTINGS_GROUP_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
+            else if (hasSettings(
+                Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
             {
-                fileInUse = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
+                fileInUse = getFile(
+                    Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using secondary setting location \""+fileInUse+"\"");
             }
             else
             {// No settings have been found, use the fallback settings to create a file.
-                fileInUse = getFile(FALLBACK_SETTINGS_DIRECTORY, FALLBACK_SETTGINS_FILE_NAME);
+                fileInUse = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTGINS_FILE_NAME);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using fallback setting location \""+fileInUse+"\"");
             }
@@ -81,7 +73,7 @@ public class FileSettingsIO implements SettingsIOInterface
 
         // Read settings file in...
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(),new SettingsXMLParser(), fileInUse);
-        FileService.use().addFile(fileSync, FILE_SYNC_CONTEXT);
+        FileService.use().addFile(fileSync, Defaults.FILE_SYNC_CONTEXT);
 
         fileSync.readFromDisk();
 
@@ -101,7 +93,7 @@ public class FileSettingsIO implements SettingsIOInterface
     public void prepExit()
         throws Exception
     {
-        FileService.use().getFileSync(FILE_SYNC_CONTEXT).writeToDisk();
+        FileService.use().getFileSync(Defaults.FILE_SYNC_CONTEXT).writeToDisk();
     }
 
     @Override
@@ -113,7 +105,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatPrimarySettingsFile()
         throws Exception
     {
-        File file = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SETTINGS_FILE_NAME_KEY);
+        File file = getFile(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
 
         if (file != null && file.exists())
         {
@@ -126,7 +118,8 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatSecondarySettingsFile()
         throws Exception
     {
-        File file = getFile(FILE_SETTINGS_GROUP_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
+        File file = getFile(
+            Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
 
         if (file != null && file.exists())
         {
@@ -139,7 +132,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatFallbackSettingsFile()
         throws Exception
     {
-        File file = getFile(FALLBACK_SETTINGS_DIRECTORY, FALLBACK_SETTGINS_FILE_NAME);
+        File file = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTGINS_FILE_NAME);
 
         if (file != null && file.exists())
         {

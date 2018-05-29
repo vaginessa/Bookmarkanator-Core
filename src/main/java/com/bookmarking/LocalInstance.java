@@ -8,6 +8,9 @@ import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.ui.*;
 
+/**
+ * The local instance is the interface implementation intended for use on a local system such as a users desktop computer.
+ */
 public class LocalInstance implements MainInterface
 {
     // ============================================================

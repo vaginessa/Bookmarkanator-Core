@@ -27,8 +27,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     // Dates
     private Date creationDate;
+    private UUID creationUser;
+
     private Date modificationDate;
+    private UUID modificationUser;
+
     private Date lastAccessedDate;
+    private UUID lastAccessedBy;
 
     private Map<String, Set<AbstractBookmark>> beforeListeners;
     private Map<String, Set<AbstractBookmark>> afterListeners;
@@ -123,24 +128,13 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * Run whatever default action this bookmark has.
+     * Run specified action(s) with action string.
      *
-     * @return The result string for the action
+     * @param actionStrings Zero or more specific configuration instructions or actions for running the action.
+     * @return The result of the action. Returns an array of strings so that individual statuses can be given to the individual strings sent in.
      * @throws Exception
      */
-    public String runAction()
-        throws Exception
-    {
-        return runAction("");
-    }
-
-    /**
-     * Run specified action.
-     *
-     * @return The result string for the action
-     * @throws Exception
-     */
-    public abstract String runAction(String actionString)
+    public abstract String[] runAction(String[] ... actionStrings)
         throws Exception;
 
     /**
@@ -262,6 +256,35 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         this.uiInterface = uiInterface;
     }
 
+    public UUID getCreationUser()
+    {
+        return creationUser;
+    }
+
+    public void setCreationUser(UUID creationUser)
+    {
+        this.creationUser = creationUser;
+    }
+
+    public UUID getModificationUser()
+    {
+        return modificationUser;
+    }
+
+    public void setModificationUser(UUID modificationUser)
+    {
+        this.modificationUser = modificationUser;
+    }
+
+    public UUID getLastAccessedBy()
+    {
+        return lastAccessedBy;
+    }
+
+    public void setLastAccessedBy(UUID lastAccessedBy)
+    {
+        this.lastAccessedBy = lastAccessedBy;
+    }
     // ============================================================
     // Abstract Methods
     // ============================================================

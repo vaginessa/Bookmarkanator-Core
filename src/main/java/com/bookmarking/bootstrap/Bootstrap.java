@@ -24,18 +24,6 @@ public class Bootstrap
 
     private static final Logger logger = LogManager.getLogger(Bootstrap.class.getCanonicalName());
 
-    /**
-     * The group that is used to specify implementing classes, or overriding classes.
-     * <p>
-     * For example you can only have a single IOInterface implementation loaded at a time. So you would add an entry here specifying the key as the
-     * interface class, and the value as the implementation you want to load for that interface.
-     * <p>
-     * If you want to replace a class with another one, say class 'A' with class 'B', you would add an entry with key 'A' and the value would be
-     * 'B'. When the module loader is asked for class 'A' it would check this value, and return class 'B' instead.
-     */
-    public static final String DEFAULT_CLASSES_GROUP = "default-classes-group";
-    public static final String IMPLEMENTING_CLASSES_GROUP = "implementing-classes-group";
-
     // ============================================================
     // Fields
     // ============================================================
@@ -158,7 +146,7 @@ public class Bootstrap
         getOrCreateSettings();
 
         // Uses default settingsIOClass name or one supplied when starting up.
-        AbstractSetting settingsIOClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
+        AbstractSetting settingsIOClass = this.settings.getSetting(Defaults.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
         Objects.requireNonNull(settingsIOClass, "SettingsIOClass is not present in settings.");
@@ -194,7 +182,7 @@ public class Bootstrap
         throws Exception
     {
         logger.info("- Loading IOInterface");
-        AbstractSetting IOInterfaceClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
+        AbstractSetting IOInterfaceClass = this.settings.getSetting(Defaults.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName());
         ClassSetting setting;
 
         if (IOInterfaceClass instanceof ClassSetting)
@@ -227,7 +215,7 @@ public class Bootstrap
         logger.info("- Loading MainInterface");
 
         // Uses default MainInterface class name or one supplied when starting up.
-        AbstractSetting mainInterfaceClass = this.settings.getSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
+        AbstractSetting mainInterfaceClass = this.settings.getSetting(Defaults.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName());
 
         // This should not happen but lets check anyway...
         Objects.requireNonNull(mainInterfaceClass, "MainInterfaceClass is not present in settings.");
@@ -279,27 +267,28 @@ public class Bootstrap
         Settings res = new Settings();
 
         // Main interface defaults.
-        ClassSetting classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
+        ClassSetting classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
         // FileSettingsIO defaults
-        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
+        classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
         res.putSetting(classSetting);
 
-        FileSetting fileSetting = new FileSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
+        FileSetting fileSetting = new FileSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
         res.putSetting(fileSetting);
 
-        StringSetting stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        StringSetting stringSetting = new StringSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
-        fileSetting = new FileSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
+        fileSetting = new FileSetting(
+            Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
         res.putSetting(fileSetting);
 
-        stringSetting = new StringSetting(FileSettingsIO.FILE_SETTINGS_GROUP_KEY, FileSettingsIO.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        stringSetting = new StringSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
         // Updater default class.
-        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
+        classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
         res.putSetting(classSetting);
 
         // Updater repository config - Zero will be the first repository it will try.
@@ -310,7 +299,7 @@ public class Bootstrap
         res.putSetting(stringSetting);
 
         // IOInterface defaults.
-        classSetting = new ClassSetting(Bootstrap.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
+        classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
         res.putSetting(classSetting);
 
         return res;

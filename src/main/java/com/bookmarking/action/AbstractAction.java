@@ -4,7 +4,8 @@ import com.bookmarking.ui.*;
 
 /**
  * The ActionInterface is used to have a function, much like a bookmark, but one that is not tied to tagging, and doesn't
- * have data to load/prepExit like bookmarks have.
+ * have data to load/save during startup/shutdown like bookmarks have. Any information that needs to be saved should be limited, and written to
+ * settings by the action it self when necessary.
  */
 public abstract class AbstractAction
 {
@@ -31,25 +32,13 @@ public abstract class AbstractAction
     // ============================================================
 
     /**
-     * Run specified action.
+     * Run specified action(s) with action string.
      *
-     * @return The result of the action
+     * @param actionStrings Zero or more specific configuration instructions or actions for running the action.
+     * @return The result of the action. Returns an array of strings so that individual statuses can be given to the individual strings sent in.
      * @throws Exception
      */
-    String runAction()
-        throws Exception
-    {
-        return runAction("");
-    }
-
-    /**
-     * Run run specified action with action string.
-     *
-     * @param actionString Specific configuration instructions for running the action.
-     * @return The result of the action
-     * @throws Exception
-     */
-    public abstract String runAction(String actionString)
+    public abstract String[] runAction(String[] ... actionStrings)
         throws Exception;
 
     /**
@@ -73,6 +62,9 @@ public abstract class AbstractAction
         this.uiInterface = uiInterface;
     }
 
+    /**
+     * Hidden actions are actions intended to be used internally by the program or other actions.
+     */
     public boolean isHidden()
     {
         return isHidden;
@@ -83,6 +75,10 @@ public abstract class AbstractAction
         isHidden = hidden;
     }
 
+    /**
+     * Enabling/Disabling actions bascially specifies which ones will loaded and not loaded. It is important to have this field for when the user
+     * needs to enable a disabled action. It must be possible to list it so they can select it.
+     */
     public boolean isEnabled()
     {
         return enabled;

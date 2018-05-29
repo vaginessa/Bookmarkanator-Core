@@ -6,7 +6,6 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
-import com.bookmarking.bootstrap.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.types.*;
@@ -16,6 +15,7 @@ import org.w3c.dom.*;
 
 public class BookmarksXMLParser implements FileReaderInterface<FileIO>
 {
+    // TODO Replace with generic xml marshaller/unmarshaller to lesson code complexity.
     private static final Logger logger = LogManager.getLogger(BookmarksXMLParser.class.getCanonicalName());
     //Tags
     public static final String BOOKMARKS_TAG = "bookmarks";
@@ -193,7 +193,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                     }
 
                     AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings()
-                        .getSetting(Bootstrap.IMPLEMENTING_CLASSES_GROUP, className);
+                        .getSetting(Defaults.IMPLEMENTING_CLASSES_GROUP, className);
 
                     Class clazz;
 

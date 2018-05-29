@@ -112,7 +112,7 @@ public class VersionParser
 
         if (numStrings.length>3)
         {
-            throw new NumberFormatException("Version \""+versionString+"\" must have one the following formats xx.xx.xx, xx.xx.xx-xx, or xx.xx.xx_xx ");
+            throw new NumberFormatException("Version \""+versionString+"\" must have one of the following formats xx.xx.xx, xx.xx.xx-xx, or xx.xx.xx_xx ");
         }
 
         version.setMajorVersion(Integer.parseInt(numStrings[0]));
