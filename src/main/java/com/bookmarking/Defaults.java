@@ -4,9 +4,9 @@ import java.io.*;
 
 public interface Defaults
 {
-    String CORE_SETTINGS = "Core Settings";
-    // The group for settings without a group
-    String NO_GROUP = "no-group";
+    // ============================================================
+    // Default General Settings Keys
+    // ============================================================
 
     /**
      * The group that is used to specify implementing classes, or overriding classes.
@@ -18,7 +18,14 @@ public interface Defaults
      * 'B'. When the module loader is asked for class 'A' it would check this value, and return class 'B' instead.
      */
     String DEFAULT_CLASSES_GROUP = "default-classes-group";
-    String IO_INTERFACE_GROUP = "io-interface-group";
+
+    // ============================================================
+    // Default Settings Keys
+    // ============================================================
+
+    String CORE_SETTINGS = "Core Settings";
+    // The group for settings without a group
+    String NO_GROUP = "no-group";
     String DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY = "default-secondary-settings-file-location";
     // Settings keys
     String FILE_SETTINGS_GROUP_KEY = "file-settings-group-key";
@@ -29,5 +36,12 @@ public interface Defaults
     File FALLBACK_SETTINGS_DIRECTORY = new File(".");
     String FALLBACK_SETTGINS_FILE_NAME = "settings.xml";
     String FILE_SYNC_CONTEXT = "Settings File";
+
+    // ============================================================
+    // Default File Keys
+    // ============================================================
+
+    String IO_INTERFACE_GROUP = "io-interface-group";
+
     String IMPLEMENTING_CLASSES_GROUP = "implementing-classes-group";
 }
