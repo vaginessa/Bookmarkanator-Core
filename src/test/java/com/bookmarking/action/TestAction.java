@@ -7,11 +7,11 @@ public class TestAction extends AbstractAction
     private static final Logger logger = LogManager.getLogger(TestAction.class.getCanonicalName());
 
     @Override
-    public String runAction(String actionString)
+    public String[] runAction(String[]... actionStrings)
         throws Exception
     {
-        logger.info("Executing single action "+actionString);
-        return actionString;
+        logger.info("Executing single action "+actionStrings);
+        return new String[0];
     }
 
     @Override

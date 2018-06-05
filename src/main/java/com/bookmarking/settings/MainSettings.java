@@ -2,6 +2,7 @@ package com.bookmarking.settings;
 
 import java.util.*;
 import com.bookmarking.*;
+import com.bookmarking.ui.defaults.*;
 
 public class MainSettings
 {

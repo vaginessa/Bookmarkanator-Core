@@ -1,9 +1,9 @@
 package com.bookmarking.settings;
 
 import java.util.*;
-import com.bookmarking.*;
 import com.bookmarking.exception.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.defaults.*;
 import org.apache.logging.log4j.*;
 
 /**

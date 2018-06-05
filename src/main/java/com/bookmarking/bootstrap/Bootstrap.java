@@ -9,6 +9,8 @@ import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.*;
+import com.bookmarking.ui.defaults.*;
 import com.bookmarking.update.*;
 import org.apache.logging.log4j.*;
 
@@ -55,11 +57,20 @@ public class Bootstrap
         {
             this.settings = settings;
         }
+        else
+        {
+            this.settings = new Settings();
+        }
 
         if (mainUIInterface != null)
         {
             this.mainUIInterface = mainUIInterface;
         }
+        else
+        {// Default to logging everything out.
+            this.mainUIInterface = new ConsoleUI();
+        }
+
     }
 
     // ============================================================
@@ -87,21 +98,8 @@ public class Bootstrap
     public MainInterface init(Settings settings)
         throws Exception
     {
-        logger.info("--------------------------------------------------------------");
-        logger.info("Bootstrap init");
-        logger.info("--------------------------------------------------------------");
-
         this.settings = settings;
-
-        // Load default settings, and then load settings IO interface from settings.
-        this.settingsIOInterface = loadSettingsIOInterface();
-
-        // Load io interface.
-        this.ioInterface =  loadIOInterface();
-
-        this.mainInterface = loadMainInterface();
-
-        return this.mainInterface;
+        return init();
     }
 
     public Settings getSettings()
@@ -165,6 +163,7 @@ public class Bootstrap
         // Load the settingsIO class and merge it with the current (default) settings.
         SettingsIOInterface settingsIOInterface = ModuleLoader.use()
             .instantiateClass(setting.getValue().getCanonicalName(), SettingsIOInterface.class);
+
 
         this.settings = settingsIOInterface.init(this.settings);
 

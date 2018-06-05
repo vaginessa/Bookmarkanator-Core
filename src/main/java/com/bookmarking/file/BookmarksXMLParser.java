@@ -9,6 +9,7 @@ import com.bookmarking.bookmark.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.defaults.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;

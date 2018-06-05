@@ -1,8 +1,4 @@
-package com.bookmarking;
-
-import com.bookmarking.io.*;
-import com.bookmarking.ui.*;
-import com.bookmarking.update.*;
+package com.bookmarking.ui;
 
 public interface MainUIInterface extends UIInterface
 {

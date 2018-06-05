@@ -6,6 +6,7 @@ import java.util.*;
 import javax.xml.bind.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.*;
 import com.bookmarking.update.config.*;
 import com.bookmarking.update.manifest.*;
 import com.bookmarking.util.*;

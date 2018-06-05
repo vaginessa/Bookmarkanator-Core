@@ -2,9 +2,9 @@ package com.bookmarking.settings;
 
 import java.io.*;
 import java.util.*;
-import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.defaults.*;
 import org.apache.logging.log4j.*;
 
 public class FileSettingsIO implements SettingsIOInterface

@@ -1,4 +1,4 @@
-package com.bookmarking.update;
+package com.bookmarking.ui;
 
 import java.util.*;
 import com.bookmarking.update.config.*;

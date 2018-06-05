@@ -1,4 +1,4 @@
-package com.bookmarking;
+package com.bookmarking.ui.defaults;
 
 import java.io.*;
 

@@ -2,9 +2,9 @@ package com.bookmarking.settings.types;
 
 import java.lang.reflect.*;
 import java.util.*;
-import com.bookmarking.*;
 import com.bookmarking.error.*;
 import com.bookmarking.module.*;
+import com.bookmarking.ui.defaults.*;
 
 /**
  * This class is used to allow one to select a particular implementation of an interface or abstract class. For instance

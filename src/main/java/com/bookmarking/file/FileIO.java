@@ -10,6 +10,7 @@ import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -27,7 +28,7 @@ public class FileIO implements IOInterface
     private static final String DEFAULT_SEARCH_SETTINGS_FILE_NAME = "file-search-settings.xml";
 
     // Fields
-    private IOUIInterface uiInterface;
+    private IOUIInterface iouiInterface;
     private File file;
     private Settings settings;
 //    private Map<UUID, AbstractBookmark> bookmarks;
@@ -114,7 +115,6 @@ public class FileIO implements IOInterface
     public void init(SettingsIOInterface settingsIOInterface)
         throws Exception
     {
-
     }
 
     @Override
@@ -122,6 +122,7 @@ public class FileIO implements IOInterface
         throws Exception
     {
 
+        this.iouiInterface = iouiInterface;
     }
 
     @Override
@@ -540,13 +541,13 @@ public class FileIO implements IOInterface
     @Override
     public IOUIInterface getUIInterface()
     {
-        return uiInterface;
+        return iouiInterface;
     }
 
     @Override
     public void setUIInterface(IOUIInterface uiInterface)
     {
-        this.uiInterface = uiInterface;
+        this.iouiInterface = uiInterface;
     }
 
     @Override

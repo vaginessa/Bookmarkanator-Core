@@ -15,11 +15,10 @@ public class TestBookmark extends AbstractBookmark
     }
 
     @Override
-    public String runAction(String actionString)
+    public String[] runAction(String[]... actionStrings)
         throws Exception
     {
-        logger.info("Running action "+actionString);
-        return "Ran action "+actionString;
+        return new String[0];
     }
 
     @Override

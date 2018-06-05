@@ -3,6 +3,7 @@ package com.bookmarking.update;
 import java.util.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.settings.types.*;
+import com.bookmarking.ui.*;
 import com.bookmarking.update.config.*;
 
 /**

@@ -1,7 +1,4 @@
-package com.bookmarking.bootstrap;
-
-import com.bookmarking.io.*;
-import com.bookmarking.ui.*;
+package com.bookmarking.ui;
 
 public interface InitUIInterface extends UIInterface
 {
