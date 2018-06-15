@@ -6,10 +6,10 @@ import java.util.*;
 import javax.xml.parsers.*;
 import com.bookmarking.*;
 import com.bookmarking.bookmark.*;
+import com.bookmarking.error.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.types.*;
-import com.bookmarking.ui.defaults.*;
 import com.bookmarking.xml.*;
 import org.apache.logging.log4j.*;
 import org.w3c.dom.*;
@@ -60,7 +60,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
             if (!n.getNodeName().startsWith("#"))
             {
                 abs = abstractBookmark.getNew();
-                if (ioInterface.getUIInterface() != null)
+                if (ioInterface != null && ioInterface.getUIInterface() != null)
                 {
                     abs.setUiInterface(ioInterface.getUIInterface().getBookmarkUIInterface());
                 }
@@ -184,7 +184,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                     Node classNameNode = n.getAttributes().getNamedItem(BookmarksXMLParser.CLASS_ATTRIBUTE);
                     String className = classNameNode.getTextContent();
 
-                    if (className!=null)
+                    if (className != null)
                     {
                         className = className.trim();
                         if (className.isEmpty())
@@ -194,7 +194,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                     }
 
                     AbstractSetting setting = LocalInstance.use().getSettings().getMainSettings()
-                        .getSetting(Defaults.IMPLEMENTING_CLASSES_GROUP, className);
+                        .getSetting(Defaults.OVERRIDDEN_CLASSES_GROUP, className);
 
                     Class clazz;
 
@@ -219,7 +219,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
 
                     AbstractBookmark abs = null;
 
-                    if (clazz!=null)
+                    if (clazz != null)
                     {
                         abs = (AbstractBookmark) clazz.newInstance();
                     }
@@ -235,6 +235,7 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
                 catch (Exception e)
                 {
                     ioInterface.getParsedBookmarks().addErrorText(n);
+                    ErrorHandler.handle(e);
                 }
             }
         }

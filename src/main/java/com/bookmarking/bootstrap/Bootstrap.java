@@ -1,7 +1,6 @@
 package com.bookmarking.bootstrap;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
 import com.bookmarking.*;
 import com.bookmarking.file.*;
@@ -273,29 +272,22 @@ public class Bootstrap
         classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
         res.putSetting(classSetting);
 
-        FileSetting fileSetting = new FileSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
+        FileSetting fileSetting = new FileSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
         res.putSetting(fileSetting);
 
-        StringSetting stringSetting = new StringSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        StringSetting stringSetting = new StringSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
         fileSetting = new FileSetting(
-            Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
+            Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
         res.putSetting(fileSetting);
 
-        stringSetting = new StringSetting(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
+        stringSetting = new StringSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
         res.putSetting(stringSetting);
 
         // Updater default class.
         classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
         res.putSetting(classSetting);
-
-        // Updater repository config - Zero will be the first repository it will try.
-        URLSetting urlSetting = new URLSetting(WebUpdater.WEB_UPDATER_REPOSITORIES_GROUP_KEY, String.valueOf(0), new URL("http://localhost:8080/bookmakanator/update"));
-        res.putSetting(urlSetting);
-
-        stringSetting = new StringSetting(WebUpdater.UPDAT_CONFIG_SETTINGS_GROUP_KEY, String.valueOf(0), "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><updateConfigEntry><currentResource>file:.</currentResource><currentVersion>0.0.0-2</currentVersion><resourceKey>desktop</resourceKey></updateConfigEntry>");
-        res.putSetting(stringSetting);
 
         // IOInterface defaults.
         classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);

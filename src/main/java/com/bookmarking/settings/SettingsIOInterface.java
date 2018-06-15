@@ -11,6 +11,12 @@ public interface SettingsIOInterface
     Settings init(Settings settings)
         throws Exception;
 
+    Settings getSettings();
+
+    void setSettings(Settings settings);
+
+    void save() throws Exception;
+
     /**
      * Prepare to exit - save settings and other such related items.
       */

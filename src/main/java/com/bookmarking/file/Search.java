@@ -56,6 +56,11 @@ public class Search<T>
      */
     public void add(T item, String word)
     {
+        if (item == null || word ==null )
+        {
+            return;
+        }
+
         String newWord = word.toLowerCase();
         theFullText.add(item, newWord);
 
@@ -77,6 +82,11 @@ public class Search<T>
 
     public void add(T item, Set<String> items)
     {
+        if (items==null || item==null)
+        {
+            return;
+        }
+
         for (String s : items)
         {
             s = s.toLowerCase();

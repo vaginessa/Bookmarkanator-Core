@@ -2,9 +2,9 @@ package com.bookmarking.settings.types;
 
 import java.lang.reflect.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.error.*;
 import com.bookmarking.module.*;
-import com.bookmarking.ui.defaults.*;
 
 /**
  * This class allows one to select a single class that overrides another class.
@@ -23,7 +23,7 @@ public class OverridingClassSetting extends ClassSetting
         throws Exception
     {
         super();
-        super.setGroup(Defaults.DEFAULT_CLASSES_GROUP);
+        super.setGroup(Defaults.OVERRIDDEN_CLASSES_GROUP);
     }
 
     public OverridingClassSetting(String group, String key, Class value)

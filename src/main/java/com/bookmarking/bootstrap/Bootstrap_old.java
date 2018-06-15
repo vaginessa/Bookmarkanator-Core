@@ -27,16 +27,6 @@ public class Bootstrap_old
 
     // Default names
 
-
-
-    // Settings keys
-    private static final String GLOBAL_SETTINGS_GROUP = "GLOBAL_SETTINGS";
-
-    // Module loader keys
-    private static final String MODULE_LOCATIONS_GROUP = "module-locations";
-
-    public static final String INIT_SETTING_KEY = "init-setting";
-
     // Fields
     private IOInterface ioInterface;
     private File settingsFile;
@@ -152,7 +142,7 @@ public class Bootstrap_old
     protected void saveSettingsFile()
         throws Exception
     {
-        FileSync<Settings> fileSync = FileService.use().getFileSync(GLOBAL_SETTINGS_GROUP);
+        FileSync<Settings> fileSync = FileService.use().getFileSync(Defaults.GLOBAL_SETTINGS_GROUP);
         fileSync.setObjectToWrite(settings);
         fileSync.writeToDisk();
     }
@@ -183,7 +173,7 @@ public class Bootstrap_old
 //        settingsFile = locateSettingsDirectory();
 
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
-        FileService.use().addFile(fileSync, MainInterface.SETTINGS_FILE_CONTEXT);
+        FileService.use().addFile(fileSync, Defaults.SETTINGS_FILE_CONTEXT);
 
         fileSync.readFromDisk();
         Settings parsedSettings = fileSync.getParsedObject();
@@ -207,7 +197,7 @@ public class Bootstrap_old
         ModuleLoader.use().addClassToWatch(FileWriterInterface.class);
         ModuleLoader.use().addClassToWatch(String.class);
 
-        Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Bootstrap_old.MODULE_LOCATIONS_GROUP, File.class);
+        Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Defaults.MODULE_LOCATIONS_GROUP, File.class);
 
         Set<File> jarLocations = new HashSet<>();
         for (AbstractSetting abstractSetting : moduleLocations)
@@ -269,7 +259,7 @@ public class Bootstrap_old
         Objects.requireNonNull(ioInterfaceFound);
 
         // Obtain the init setting for this particular IO interface implementation.
-        AbstractSetting configSetting = settings.getSetting(ioInterfaceFound.getCanonicalName(), INIT_SETTING_KEY);
+        AbstractSetting configSetting = settings.getSetting(ioInterfaceFound.getCanonicalName(), Defaults.INIT_SETTING_KEY);
 
         if (configSetting != null)
         {

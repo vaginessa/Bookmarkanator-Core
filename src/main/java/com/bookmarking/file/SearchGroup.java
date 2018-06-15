@@ -49,6 +49,8 @@ public class SearchGroup implements Serializable
     public void addBookmark(AbstractBookmark abstractBookmark)
         throws Exception
     {
+        Objects.requireNonNull(abstractBookmark);
+
         if (!bookmarkNames.contains(abstractBookmark.getId()))
         {
             bookmarkNames.add(abstractBookmark.getId(), abstractBookmark.getName());

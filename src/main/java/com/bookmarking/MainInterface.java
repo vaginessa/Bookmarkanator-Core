@@ -12,8 +12,6 @@ import com.bookmarking.ui.*;
  */
 public interface MainInterface
 {
-    String SETTINGS_FILE_CONTEXT = "mainSettings";
-
     // ----------------------------------------------
     // Init
     // ----------------------------------------------

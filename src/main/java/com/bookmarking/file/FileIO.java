@@ -18,23 +18,18 @@ import org.apache.logging.log4j.*;
  */
 public class FileIO implements IOInterface
 {
-    // Static fields
     private static final Logger logger = LogManager.getLogger(FileIO.class.getCanonicalName());
-    private static final String FILE_IO_KEY = "FILE_IO";
-    private static final String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
-    private static final String FILE_IO_SETTINGS_KEY = "FILE_IO_SETTINGS";
-    private static final String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
-    private static final String FILE_SEARCH_SETTINGS_KEY = "FILE_SEARCH_SETTINGS";
-    private static final String DEFAULT_SEARCH_SETTINGS_FILE_NAME = "file-search-settings.xml";
 
+    // ============================================================
     // Fields
-    private IOUIInterface iouiInterface;
+    // ============================================================
+    private IOUIInterface ioUIInterface;
     private File file;
-    private Settings settings;
-//    private Map<UUID, AbstractBookmark> bookmarks;
+    private Settings fileIOSettings;
+    //    private Map<UUID, AbstractBookmark> bookmarks;
     private ParsedBookmarks parsedBookmarks;
     private SearchGroup searchGroup;
-
+    private SettingsIOInterface settingsIOInterface;
 
     private boolean isDirty;
 
@@ -53,54 +48,6 @@ public class FileIO implements IOInterface
         isDirty = dirty;
     }
 
-    public void init(String config)
-        throws Exception
-    {
-        logger.trace("Entering use method with config \"" + config + "\"");
-        //TODO Figure out what to do about the bookmark.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
-        this.settings = this.getSettings();
-
-        if (config == null || config.trim().isEmpty())
-        {//
-            logger.trace("No file location sent in. Inferring location from settings file used.");
-            File settingsFile = LocalInstance.use().getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT).getFile();
-            Objects.requireNonNull(settingsFile, "Settings file is not set.");
-
-            String parent = settingsFile.getParent();
-
-            String bookmarkFileName = parent + File.separatorChar + DEFAULT_BOOKMARKS_FILE_NAME;
-            logger.trace("Bookmarks file inferred from settings file is \"" + bookmarkFileName + "\"");
-            file = new File(bookmarkFileName);
-        }
-        else
-        {// Using file sent in.
-            file = new File(config);
-        }
-
-        // Create bookmark file
-        FileSync<FileIO> fileSync = new FileSync<>(new BookmarksXMLWriter(), new BookmarksXMLParser(), file);
-        FileService.use().addFile(fileSync, FILE_IO_KEY);
-
-        // Create file io settings file
-        File settingsFile = createSettingsFile(file);
-        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
-        FileService.use().addFile(fileSync2, FILE_IO_SETTINGS_KEY);
-
-//        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
-//        FileSync<SearchGroup> searchGroupFileSync = new FileSync<>(new SearchSettingsWriter(), new SearchSettingsReader(), searchSettingsFile);
-//        FileService.use().addFile(searchGroupFileSync,FILE_SEARCH_SETTINGS_KEY);
-
-        // Load files in.
-        load();
-
-        searchGroup = new SearchGroup();
-
-        for (AbstractBookmark abstractBookmark: parsedBookmarks.getLoadedBookmarks())
-        {
-            searchGroup.addBookmark(abstractBookmark);
-        }
-    }
-
     public ParsedBookmarks getParsedBookmarks()
     {
         return parsedBookmarks;
@@ -111,63 +58,73 @@ public class FileIO implements IOInterface
         this.parsedBookmarks = parsedBookmarks;
     }
 
+    /**
+     * Initiates FileIO which means use the settingsIOInterface to access configs necessary to init it self.
+     * Specifically FileIO
+     * @param settingsIOInterface  The fileIOSettings interface used by a particular implementation to pull init fileIOSettings from.
+     * @throws Exception
+     */
     @Override
     public void init(SettingsIOInterface settingsIOInterface)
         throws Exception
     {
+        this.settingsIOInterface = settingsIOInterface;
+        //TODO Figure out what to do about the bookmark.xml file getting deleted if the program has an error. Possibly create a temporary file to read from while it is running?
+        this.fileIOSettings = this.getSettings();
+
+        // Using regular settings here instead of having a separate settings file.
+
+        File settingsFile = LocalInstance.use().getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).getFile();
+        Objects.requireNonNull(settingsFile, "Settings file is not set.");
+
+        String parent = settingsFile.getParent();
+        String bookmarkFileName = parent + File.separatorChar + Defaults.DEFAULT_BOOKMARKS_FILE_NAME;
+        logger.trace("Bookmarks file inferred from fileIOSettings file is \"" + bookmarkFileName + "\"");
+        file = new File(bookmarkFileName);
+
+        // Create bookmark file
+        BookmarksXMLParser parser = new BookmarksXMLParser();
+        parser.setObject(this);
+        FileSync<FileIO> fileSync = new FileSync<>(new BookmarksXMLWriter(),parser, file);
+        FileService.use().addFile(fileSync, Defaults.FILE_IO_KEY);
+
+        // Create file io fileIOSettings file
+//        File fileIOSettings = createSettingsFile(file);
+//        FileSync<Settings> fileSync2 = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), settingsFile);
+//        FileService.use().addFile(fileSync2, Defaults.FILE_IO_SETTINGS_KEY);
+
+        //        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
+        //        FileSync<SearchGroup> searchGroupFileSync = new FileSync<>(new SearchSettingsWriter(), new SearchSettingsReader(), searchSettingsFile);
+        //        FileService.use().addFile(searchGroupFileSync,FILE_SEARCH_SETTINGS_KEY);
+
+        // Load files in.
+        load();
+
+        searchGroup = new SearchGroup();
+
+        for (AbstractBookmark abstractBookmark : parsedBookmarks.getLoadedBookmarks())
+        {
+            searchGroup.addBookmark(abstractBookmark);
+        }
     }
 
     @Override
     public void init(SettingsIOInterface settingsIOInterface, IOUIInterface iouiInterface)
         throws Exception
     {
-
-        this.iouiInterface = iouiInterface;
+        this.ioUIInterface = iouiInterface;
+        this.init(settingsIOInterface);
     }
 
     @Override
     public synchronized void save()
         throws Exception
     {
-        FileSync<IOInterface> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
-        fileSync.setObjectToWrite(this);
-        fileSync.writeToDisk();
+        Settings mainSettings = this.settingsIOInterface.getSettings();
+        mainSettings.importSettings(this.fileIOSettings);
+        this.settingsIOInterface.setSettings(mainSettings);
+        this.settingsIOInterface.save();
 
-        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
-
-        fileSync2.setObjectToWrite(settings);
-        fileSync2.writeToDisk();
-
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
-//        fileSync3.setObjectToWrite(searchGroup);
-//        fileSync3.writeToDisk();
-
-        setDirty(false);
-    }
-
-    @Override
-    public synchronized void save(String config)
-        throws Exception
-    {
-        FileSync<IOInterface> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
-        File file = new File(config);
-        fileSync.setFile(file);
-        fileSync.setObjectToWrite(this);
-        fileSync.writeToDisk();
-
-        // Get settings file from current file location
-        File settingsFile = createSettingsFile(file);
-        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
-        fileSync2.setFile(settingsFile);
-        fileSync2.setObjectToWrite(settings);
-        fileSync2.writeToDisk();
-
-//        File searchSettingsFile = new File(file.getParent()+File.separatorChar+DEFAULT_SEARCH_SETTINGS_FILE_NAME);
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
-//        fileSync3.setFile(searchSettingsFile);
-//        fileSync3.setObjectToWrite(searchGroup);
-//        fileSync3.writeToDisk();
-        
         setDirty(false);
     }
 
@@ -175,17 +132,17 @@ public class FileIO implements IOInterface
     public void close()
         throws Exception
     {
-
+        // Do nothing here.
     }
 
     @Override
     public Settings getSettings()
     {
-        if (settings == null)
+        if (fileIOSettings == null)
         {
-            settings = new Settings();
+            fileIOSettings = new Settings();
         }
-        return settings;
+        return fileIOSettings;
     }
 
     @Override
@@ -209,7 +166,7 @@ public class FileIO implements IOInterface
         throws Exception
     {
         Set<String> res = new HashSet<>();
-        for (UUID uuid: bookmarkIds)
+        for (UUID uuid : bookmarkIds)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             Objects.requireNonNull(bookmark);
@@ -223,7 +180,7 @@ public class FileIO implements IOInterface
     public Set<String> extractTypeNames(Collection<UUID> bookmarkIds)
     {
         Set<String> res = new HashSet<>();
-        for (UUID uuid: bookmarkIds)
+        for (UUID uuid : bookmarkIds)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             Objects.requireNonNull(bookmark);
@@ -237,7 +194,7 @@ public class FileIO implements IOInterface
     public List<String> getBookmarkNames(Collection<UUID> bookmarkIds)
     {
         List<String> res = new ArrayList<>();
-        for (UUID uuid: bookmarkIds)
+        for (UUID uuid : bookmarkIds)
         {
             AbstractBookmark bookmark = getBookmark(uuid);
             Objects.requireNonNull(bookmark);
@@ -252,7 +209,7 @@ public class FileIO implements IOInterface
     {
         Set<Class> res = new HashSet<>();
 
-        for (UUID uuid: bookmarkIds)
+        for (UUID uuid : bookmarkIds)
         {
             AbstractBookmark bk = getBookmark(uuid);
             res.add(bk.getClass());
@@ -270,7 +227,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<String> getAllTags()
     {
-       return extractTags(parsedBookmarks.getLoadedBookmarks());
+        return extractTags(parsedBookmarks.getLoadedBookmarks());
     }
 
     @Override
@@ -278,7 +235,7 @@ public class FileIO implements IOInterface
     {
         Set<String> allTags = getAllTags();
 
-        if (tagsToRemove!=null)
+        if (tagsToRemove != null)
         {
             allTags.removeAll(tagsToRemove);
         }
@@ -292,16 +249,16 @@ public class FileIO implements IOInterface
         Map<String, Set<String>> tagsMap = new LinkedHashMap<>();
 
         // Add available tags to map by first letter.
-        for (String tag: tags)
+        for (String tag : tags)
         {
             if (!tag.isEmpty())
             {
-                String s = tag.charAt(0)+"";
+                String s = tag.charAt(0) + "";
                 s = s.toUpperCase();
 
                 Set<String> set = tagsMap.get(s);
 
-                if (set==null)
+                if (set == null)
                 {
                     set = new HashSet<>();
                     tagsMap.put(s, set);
@@ -316,7 +273,7 @@ public class FileIO implements IOInterface
 
         SortedMap<String, Set<String>> res = new TreeMap<>();
 
-        for (String key: tagsMapKeyset)
+        for (String key : tagsMapKeyset)
         {
             res.put(key, tagsMap.get(key));
         }
@@ -342,7 +299,7 @@ public class FileIO implements IOInterface
     {
         Set<AbstractBookmark> s = parsedBookmarks.getLoadedByClass(clazz);
 
-        if (s!=null)
+        if (s != null)
         {
             return s.size();
         }
@@ -365,7 +322,7 @@ public class FileIO implements IOInterface
     @Override
     public void setSettings(Settings settings)
     {
-        this.settings = settings;
+        this.fileIOSettings = settings;
         setDirty(true);
     }
 
@@ -390,7 +347,7 @@ public class FileIO implements IOInterface
         throws Exception
     {
         //TODO Add/update to search methods
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             addBookmark(bookmark);
         }
@@ -405,7 +362,7 @@ public class FileIO implements IOInterface
         Objects.requireNonNull(bookmark);
         if (!parsedBookmarks.contains(bookmark.getId()))
         {
-            throw new Exception("Bookmark "+bookmark.getId()+" not found.");
+            throw new Exception("Bookmark " + bookmark.getId() + " not found.");
         }
         setDirty(true);
     }
@@ -415,7 +372,7 @@ public class FileIO implements IOInterface
         throws Exception
     {
         //TODO Add/update to search methods
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             updateBookmark(bookmark);
         }
@@ -423,16 +380,17 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public List<AbstractBookmark> renameTag(String originalTagName, String newTagName)throws Exception
+    public List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
+        throws Exception
     {
         //TODO Add/update to search methods
         SearchOptions searchOptions = new SearchOptions();
         Set<String> tags = new HashSet<>();
         tags.add(originalTagName);
-        searchOptions.add(Operation.TagOptions.ANY_TAG,tags);
+        searchOptions.add(Operation.TagOptions.ANY_TAG, tags);
         List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
 
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             bookmark.removeTag(originalTagName);
             bookmark.addTag(newTagName);
@@ -445,14 +403,15 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)throws Exception
+    public List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)
+        throws Exception
     {
         //TODO Add/update to search methods
         SearchOptions searchOptions = new SearchOptions();
-        searchOptions.add(Operation.TagOptions.ANY_TAG,tagsToReplace);
+        searchOptions.add(Operation.TagOptions.ANY_TAG, tagsToReplace);
         List<AbstractBookmark> bookmarks = applySearchOptions(searchOptions);
 
-        for (AbstractBookmark bookmark: bookmarks)
+        for (AbstractBookmark bookmark : bookmarks)
         {
             bookmark.getTags().removeAll(tagsToReplace);
             bookmark.addTag(replacement);
@@ -510,8 +469,7 @@ public class FileIO implements IOInterface
     {
         Set<AbstractBookmark> bks;
 
-
-        if (options.getSearchTerm()==null || options.getSearchTerm().trim().isEmpty())
+        if (options.getSearchTerm() == null || options.getSearchTerm().trim().isEmpty())
         {
             bks = new HashSet<>();
             bks.addAll(parsedBookmarks.getLoadedBookmarks());
@@ -541,13 +499,13 @@ public class FileIO implements IOInterface
     @Override
     public IOUIInterface getUIInterface()
     {
-        return iouiInterface;
+        return ioUIInterface;
     }
 
     @Override
     public void setUIInterface(IOUIInterface uiInterface)
     {
-        this.iouiInterface = uiInterface;
+        this.ioUIInterface = uiInterface;
     }
 
     @Override
@@ -580,33 +538,13 @@ public class FileIO implements IOInterface
     private void load()
         throws Exception
     {
-        // Load bookmark
-        FileSync<FileIO> fileSync = FileService.use().getFileSync(FILE_IO_KEY);
-        fileSync.injectParsingObject(this);
-        fileSync.readFromDisk();
-
-        logger.info("Calling systemInit() on the bookmark.");
-        Set<AbstractBookmark> bks = getAllBookmarks();
-        for (AbstractBookmark abs : bks)
-        {
-            abs.systemInit();
-        }
-        logger.trace("Done.");
-
-        // Load settings
-        FileSync<Settings> fileSync2 = FileService.use().getFileSync(FILE_IO_SETTINGS_KEY);
-        fileSync2.readFromDisk();
-        settings = fileSync2.getObject();
-
-        // Load search settings
-//        FileSync<SearchGroup> fileSync3 = FileService.use().getFileSync(FILE_SEARCH_SETTINGS_KEY);
-//        fileSync3.readFromDisk();
-//        searchGroup = fileSync3.getObject();
+       FileSync fileSync =  FileService.use().getFileSync(Defaults.FILE_IO_KEY);
+       fileSync.readFromDisk();
     }
 
     private File createSettingsFile(File input)
     {
         String path = input.getParent();
-        return new File(path + File.separatorChar + DEFAULT_SETTINGS_FILE_NAME);
+        return new File(path + File.separatorChar + Defaults.DEFAULT_SETTINGS_FILE_NAME);
     }
 }

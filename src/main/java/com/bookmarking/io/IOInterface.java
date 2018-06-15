@@ -40,14 +40,6 @@ public interface IOInterface
         throws Exception;
 
     /**
-     * Used to prepExit any data to the back end implemented with configuration parameters.
-     *
-     * @param config Any configs the implementing class requires for saving.
-     */
-    void save(String config)
-        throws Exception;
-
-    /**
      * Used to close any IO streams that are still open for example
      */
     void close()

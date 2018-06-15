@@ -75,12 +75,6 @@ public class LocalInstance implements MainInterface
 
     }
 
-//        @Override
-//    public InitInterface getInitInterface()
-//    {
-//        return initInterface;
-//    }
-
     @Override
     public ModuleLoader getModuleLoader()
     {
@@ -105,10 +99,10 @@ public class LocalInstance implements MainInterface
         if (mainSettings == null)
         {
             MainSettings mSettings = new MainSettings();
-            mSettings.setMainSettings((Settings) getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT).getObject());
+            mSettings.setMainSettings((Settings) getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).getObject());
             if (this.getIOInterface() != null)
             {
-                mSettings.setIoSettings((Settings) getFileService().getFileSync(IOInterface.SETTINGS_FILE_CONTEXT).getObject());
+                mSettings.setIoSettings((Settings) getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).getObject());
             }
             this.mainSettings = mSettings;
         }
@@ -121,7 +115,7 @@ public class LocalInstance implements MainInterface
         throws Exception
     {
         this.mainSettings = mainSettings;
-        this.getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT).setObjectToWrite(mainSettings.getMainSettings());
+        this.getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).setObjectToWrite(mainSettings.getMainSettings());
         if (this.getIOInterface() != null && mainSettings.getIoSettings() != null)
         {
             getIOInterface().setSettings(mainSettings.getIoSettings());
@@ -134,7 +128,7 @@ public class LocalInstance implements MainInterface
     {
         if (mainSettings!=null)
         {
-            FileSync<Settings> mainS = getFileService().getFileSync(MainInterface.SETTINGS_FILE_CONTEXT);
+            FileSync<Settings> mainS = getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT);
             mainS.writeToDisk();
             mainSettings.setMainSettings(mainS.getObject());
 

@@ -2,11 +2,15 @@ package com.bookmarking.settings;
 
 import java.io.*;
 import java.util.*;
+import com.bookmarking.*;
 import com.bookmarking.fileservice.*;
 import com.bookmarking.settings.types.*;
-import com.bookmarking.ui.defaults.*;
 import org.apache.logging.log4j.*;
 
+/**
+ * This class is used to read/write settings files. It uses the default settings, or supplied settings to locate the settings file to read in.
+ * If there is no settings file it will create one with the supplied settings, or the default settings if none are supplied.
+ */
 public class FileSettingsIO implements SettingsIOInterface
 {
     private static final Logger logger = LogManager.getLogger(FileSettingsIO.class.getCanonicalName());
@@ -46,24 +50,24 @@ public class FileSettingsIO implements SettingsIOInterface
         if (fileInUse==null)
         {
             logger.info("- Settings file doesn't exist. Creating now...");
-            if (hasSettings(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY))
+            if (hasFileSettings(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY))
             {
                 fileInUse = getFile(
-                    Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
+                    Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using primary setting location of \""+fileInUse+"\"");
             }
-            else if (hasSettings(
-                Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
+            else if (hasFileSettings(
+                Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
             {
                 fileInUse = getFile(
-                    Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
+                    Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using secondary setting location \""+fileInUse+"\"");
             }
             else
             {// No settings have been found, use the fallback settings to create a file.
-                fileInUse = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTGINS_FILE_NAME);
+                fileInUse = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTINGS_FILE_NAME);
                 ensureFileExists(fileInUse);
                 logger.info("-- Using fallback setting location \""+fileInUse+"\"");
             }
@@ -73,7 +77,7 @@ public class FileSettingsIO implements SettingsIOInterface
 
         // Read settings file in...
         FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(),new SettingsXMLParser(), fileInUse);
-        FileService.use().addFile(fileSync, Defaults.FILE_SYNC_CONTEXT);
+        FileService.use().addFile(fileSync, Defaults.SETTINGS_FILE_CONTEXT);
 
         fileSync.readFromDisk();
 
@@ -90,10 +94,29 @@ public class FileSettingsIO implements SettingsIOInterface
     }
 
     @Override
+    public Settings getSettings()
+    {
+        return this.settings;
+    }
+
+    @Override
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
+
+    @Override
+    public void save()
+        throws Exception
+    {
+        FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
+    }
+
+    @Override
     public void prepExit()
         throws Exception
     {
-        FileService.use().getFileSync(Defaults.FILE_SYNC_CONTEXT).writeToDisk();
+        FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
     }
 
     @Override
@@ -105,7 +128,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatPrimarySettingsFile()
         throws Exception
     {
-        File file = getFile(Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
+        File file = getFile(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
 
         if (file != null && file.exists())
         {
@@ -119,7 +142,7 @@ public class FileSettingsIO implements SettingsIOInterface
         throws Exception
     {
         File file = getFile(
-            Defaults.FILE_SETTINGS_GROUP_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
+            Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
 
         if (file != null && file.exists())
         {
@@ -132,7 +155,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatFallbackSettingsFile()
         throws Exception
     {
-        File file = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTGINS_FILE_NAME);
+        File file = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTINGS_FILE_NAME);
 
         if (file != null && file.exists())
         {
@@ -172,7 +195,14 @@ public class FileSettingsIO implements SettingsIOInterface
         }
     }
 
-    private boolean hasSettings(String groupKey, String directorySettingKey, String fileNameSettingKey)
+    /**
+     * Easy method to determine if a complete file setting is present.
+     * @param groupKey  The group that houses the settings in question.
+     * @param directorySettingKey  Directory setting that will be combined with the file name setting.
+     * @param fileNameSettingKey  The file name setting that will be combined with the directory setting to form a complete file location.
+     * @return  True if both of the settings are not null.
+     */
+    private boolean hasFileSettings(String groupKey, String directorySettingKey, String fileNameSettingKey)
     {
         FileSetting fileSetting = (FileSetting) settings.getSetting(groupKey, directorySettingKey);
         StringSetting fileName = (StringSetting) settings.getSetting(groupKey, fileNameSettingKey);
