@@ -5,9 +5,11 @@ import java.io.*;
 public interface Defaults
 {
     // ============================================================
-    // Default General Settings Keys
+    // Settings... Settings
     // ============================================================
 
+    // Groups:
+    String NO_GROUP = "no-group";// The group for settings without a group
     /**
      * The group that is used to specify implementing classes, or overriding classes.
      * <p>
@@ -18,70 +20,36 @@ public interface Defaults
      * 'B'. When the module loader is asked for class 'A' it would check this value, and return class 'B' instead.
      */
     String DEFAULT_CLASSES_GROUP = "default-classes-group";
+    String DIRECTORIES_GROUP = "directory-settings";
 
-    // ============================================================
-    // Settings... Settings
-    // ============================================================
+    // Keys:
+    String PRIMARY_FILE_LOCATION_KEY = "primary-file-location";
+    String SECONDARY_FILE_LOCATION_KEY = "secondary-file-location";
+    String SELECTED_FILE_LOCATION_KEY = "chosen-file-location";
+    String SETTINGS_FILE_NAME_KEY = "settings-file-name";
 
-    String CORE_SETTINGS = "Core Settings";
-
-    // The group for settings without a group
-    String NO_GROUP = "no-group";
-
-    String DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY = "default-secondary-settings-file-location";
-
-    // Fallback values in case settings are not present.
-    String FALLBACK_SETTINGS_FILE_NAME = "settings.xml";
-    File FALLBACK_SETTINGS_DIRECTORY = new File(".");
-
+    // Values:
+    String CORE_SETTINGS_NAME = "Core Settings";
+    File PRIMARY_DIRECTORY = new File(".");
+    File SECONDARY_DIRECTORY = new File(System.getProperty("user.home"));
+    String SETTINGS_FILE_NAME = "settings.xml";
     String SETTINGS_FILE_CONTEXT = "mainSettings";
-
-    // ============================================================
-    // Default Classes Settings
-    // ============================================================
-
+    String USE_FILE_SYSTEM = "useFileSystem";// Don't read/write settings file if false
 
     // ============================================================
     // FileIO Settings
     // ============================================================
 
-    String FILE_IO_SETTINGS = "FileIO";
+    // Groups:
+    String FILE_IO_SETTINGS_GROUP = "FileIO";
+
+    // Keys:
     String IMPLEMENTING_CLASSES_GROUP = "implementing-classes-group";
-    String OVERRIDDEN_CLASSES_GROUP= "overridden-classes-group";
-    String DEFAULT_SETTINGS_FILE_NAME_KEY = "default-file-settings-name";
-    String DEFAULT_SETTINGS_FILE_LOCATION_KEY = "default-settings-file-location";
-    String DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY = "default-secondary-file-settings-name";
-    String FILE_IO_KEY = "FILE_IO";
-    String DEFAULT_BOOKMARKS_FILE_NAME = "bookmarks.xml";
-    String FILE_IO_SETTINGS_KEY = "FILE_IO_SETTINGS";
-    String DEFAULT_SETTINGS_FILE_NAME = "file-io-settings.xml";
-    String FILE_SEARCH_SETTINGS_KEY = "FILE_SEARCH_SETTINGS";
-    String DEFAULT_SEARCH_SETTINGS_FILE_NAME = "file-search-settings.xml";
-    // Settings keys
-    String GLOBAL_SETTINGS_GROUP = "GLOBAL_SETTINGS";
-    // Module loader keys
-    String MODULE_LOCATIONS_GROUP = "module-locations";
-    String INIT_SETTING_KEY = "init-setting";
+    String OVERRIDDEN_CLASSES_GROUP = "overridden-classes-group";
 
-    /**
-     * Structure:
-     *
-     * default classes - all classes this component uses by default. IO interface, SettingsIOInterface, BookmarkClasses etc... (these are classes that specify an implementation for an interface or abstract class)
-     * default locations - Locations to search for settings files if none are specified.
-     * overridden classes - entries for classes that can be overridden at run time using this setting. This can be used to point to a different implementation of a class at runtime.
-     * file settings - Settings related to FileIO. FileIO is the default storage mechanism, but a different mechanism can be specified at runtime in the default classes. In this case these settings will be ignored.
-     */
-
-
-
-
-
-
-
-
-
-
-
+    // Values:
+    String BOOKMARKS_FILE_NAME = "Bookmarks.xml";
+    String BOOKMARKS_FILE_SYNC_CONTEXT = "bookmark-file-context";
 
 
 }

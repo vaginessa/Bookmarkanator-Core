@@ -116,7 +116,7 @@ public class ModuleLoader
      * Adds a class to track. It will track all instances of this class or interface.
      * @param clazz  The class to track.
      */
-    public void addClassToWatch(Class clazz)
+    public void addClassToWatchFor(Class clazz)
     {
         if (clazz == null)
         {

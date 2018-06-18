@@ -40,21 +40,19 @@ public class LocalInstance implements MainInterface
         initInterface.init(settings);
     }
 
-//    public void init(InitUIInterface initUIInterface)
-//        throws Exception
-//    {
-//        initInterface = new Bootstrap();
-//        initInterface.init();
-//        initInterface.setInitUIInterface(initUIInterface);
-//    }
-//
-//    public void init(Settings settings, InitUIInterface initUIInterface)
-//        throws Exception
-//    {
-//        initInterface = new Bootstrap();
-//        initInterface.init(settings);
-//        initInterface.setInitUIInterface(initUIInterface);
-//    }
+    public void init(InitUIInterface initUIInterface)
+        throws Exception
+    {
+        initInterface = new Bootstrap();
+        initInterface.init();
+    }
+
+    public void init(Settings settings, InitUIInterface initUIInterface)
+        throws Exception
+    {
+        initInterface = new Bootstrap();
+        initInterface.init();
+    }
 
     @Override
     public void exit()

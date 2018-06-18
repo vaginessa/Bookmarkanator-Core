@@ -11,6 +11,7 @@ public class ConsoleUI implements MainUIInterface
 
     private UpdateUIInterface updateUIInterface;
     private IOUIInterface iouiInterface;
+    private InitUIInterface initUIInterface;
 
     public ConsoleUI()
     {
@@ -28,6 +29,12 @@ public class ConsoleUI implements MainUIInterface
     public IOUIInterface getIOUIInterface()
     {
         return iouiInterface;
+    }
+
+    @Override
+    public InitUIInterface getInitUIInterface()
+    {
+        return initUIInterface;
     }
 
     @Override

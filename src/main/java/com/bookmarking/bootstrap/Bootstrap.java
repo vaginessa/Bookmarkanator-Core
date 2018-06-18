@@ -9,8 +9,6 @@ import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.settings.types.*;
 import com.bookmarking.ui.*;
-import com.bookmarking.ui.defaults.*;
-import com.bookmarking.update.*;
 import org.apache.logging.log4j.*;
 
 /**
@@ -35,42 +33,9 @@ public class Bootstrap
     private IOInterface ioInterface;
     private MainInterface mainInterface;
 
-    public Bootstrap()
-    {
-        this(null, null);
-    }
-
-    public Bootstrap(Settings settings)
-    {
-        this(settings, null);
-    }
-
-    public Bootstrap(MainUIInterface mainUIInterface)
-    {
-        this(null, mainUIInterface);
-    }
-
-    public Bootstrap(Settings settings, MainUIInterface mainUIInterface)
-    {
-        if (settings != null)
-        {
-            this.settings = settings;
-        }
-        else
-        {
-            this.settings = new Settings();
-        }
-
-        if (mainUIInterface != null)
-        {
-            this.mainUIInterface = mainUIInterface;
-        }
-        else
-        {// Default to logging everything out.
-            this.mainUIInterface = new ConsoleUI();
-        }
-
-    }
+    // ============================================================
+    // Constructors
+    // ============================================================
 
     // ============================================================
     // Methods
@@ -97,8 +62,25 @@ public class Bootstrap
     public MainInterface init(Settings settings)
         throws Exception
     {
-        this.settings = settings;
+        if (settings!=null)
+        {
+            this.settings = settings;
+        }
         return init();
+    }
+
+    public MainInterface init(Settings settings, MainUIInterface mainUIInterface)
+        throws Exception
+    {
+        this.mainUIInterface = mainUIInterface;
+        return this.init(settings);
+    }
+
+    public MainInterface init(MainUIInterface mainUIInterface)
+        throws Exception
+    {
+        this.mainUIInterface = mainUIInterface;
+        return this.init();
     }
 
     public Settings getSettings()
@@ -268,30 +250,26 @@ public class Bootstrap
         ClassSetting classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, MainInterface.class.getCanonicalName(), LocalInstance.class);
         res.putSetting(classSetting);
 
-        // FileSettingsIO defaults
+        // SettingsIO defaults
         classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, SettingsIOInterface.class.getCanonicalName(), FileSettingsIO.class);
         res.putSetting(classSetting);
 
-        FileSetting fileSetting = new FileSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, new File("."));
+        FileSetting fileSetting = new FileSetting(Defaults.DIRECTORIES_GROUP, Defaults.PRIMARY_FILE_LOCATION_KEY, new File(Defaults.PRIMARY_DIRECTORY+File.separator+Defaults.SETTINGS_FILE_NAME));
         res.putSetting(fileSetting);
 
-        StringSetting stringSetting = new StringSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY, "settings.xml");
-        res.putSetting(stringSetting);
-
-        fileSetting = new FileSetting(
-            Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, new File(System.getProperty("user.home")+File.separatorChar+"Bookmarkanator"));
+        fileSetting = new FileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SECONDARY_FILE_LOCATION_KEY, new File(Defaults.SECONDARY_DIRECTORY+File.separator+Defaults.SETTINGS_FILE_NAME));
         res.putSetting(fileSetting);
-
-        stringSetting = new StringSetting(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY, "settings.xml");
-        res.putSetting(stringSetting);
-
-        // Updater default class.
-        classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, UpdaterInterface.class.getCanonicalName(), WebUpdater.class);
-        res.putSetting(classSetting);
 
         // IOInterface defaults.
+
         classSetting = new ClassSetting(Defaults.DEFAULT_CLASSES_GROUP, IOInterface.class.getCanonicalName(), FileIO.class);
         res.putSetting(classSetting);
+
+        fileSetting = new FileSetting(Defaults.FILE_IO_SETTINGS_GROUP, Defaults.PRIMARY_FILE_LOCATION_KEY, new File(Defaults.PRIMARY_DIRECTORY+File.separator+Defaults.BOOKMARKS_FILE_NAME));
+        res.putSetting(fileSetting);
+
+        fileSetting = new FileSetting(Defaults.FILE_IO_SETTINGS_GROUP, Defaults.SECONDARY_FILE_LOCATION_KEY, new File(Defaults.SECONDARY_DIRECTORY+File.separator+Defaults.BOOKMARKS_FILE_NAME));
+        res.putSetting(fileSetting);
 
         return res;
     }

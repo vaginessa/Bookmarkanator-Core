@@ -66,6 +66,6 @@ public class MainSettings
 
     public String getMainSettingsName()
     {
-        return Defaults.CORE_SETTINGS;
+        return Defaults.CORE_SETTINGS_NAME;
     }
 }

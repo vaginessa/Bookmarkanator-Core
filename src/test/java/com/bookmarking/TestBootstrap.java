@@ -34,6 +34,12 @@ public class TestBootstrap
         }
 
         @Override
+        public InitUIInterface getInitUIInterface()
+        {
+            return null;
+        }
+
+        @Override
         public void setUIState(UIStateEnum state)
         {
 

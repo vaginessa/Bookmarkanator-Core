@@ -74,11 +74,13 @@ public class FileIO implements IOInterface
 
         // Using regular settings here instead of having a separate settings file.
 
-        File settingsFile = LocalInstance.use().getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).getFile();
-        Objects.requireNonNull(settingsFile, "Settings file is not set.");
+//        File settingsFile = LocalInstance.use().getFileService().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).getFile();
+//        Objects.requireNonNull(settingsFile, "Settings file is not set.");
 
-        String parent = settingsFile.getParent();
-        String bookmarkFileName = parent + File.separatorChar + Defaults.DEFAULT_BOOKMARKS_FILE_NAME;
+//        String parent = settingsFile.getParent();
+
+        File directory = settingsIOInterface.getSettings().getFileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SELECTED_FILE_LOCATION_KEY);
+        String bookmarkFileName = directory.getCanonicalPath() + File.separatorChar + Defaults.BOOKMARKS_FILE_NAME;
         logger.trace("Bookmarks file inferred from fileIOSettings file is \"" + bookmarkFileName + "\"");
         file = new File(bookmarkFileName);
 
@@ -86,7 +88,7 @@ public class FileIO implements IOInterface
         BookmarksXMLParser parser = new BookmarksXMLParser();
         parser.setObject(this);
         FileSync<FileIO> fileSync = new FileSync<>(new BookmarksXMLWriter(),parser, file);
-        FileService.use().addFile(fileSync, Defaults.FILE_IO_KEY);
+        FileService.use().addFile(fileSync, Defaults.BOOKMARKS_FILE_SYNC_CONTEXT);
 
         // Create file io fileIOSettings file
 //        File fileIOSettings = createSettingsFile(file);
@@ -98,7 +100,7 @@ public class FileIO implements IOInterface
         //        FileService.use().addFile(searchGroupFileSync,FILE_SEARCH_SETTINGS_KEY);
 
         // Load files in.
-        load();
+//        load();
 
         searchGroup = new SearchGroup();
 
@@ -534,17 +536,17 @@ public class FileIO implements IOInterface
     // ----------
     // private
     // ----------
-
-    private void load()
-        throws Exception
-    {
-       FileSync fileSync =  FileService.use().getFileSync(Defaults.FILE_IO_KEY);
-       fileSync.readFromDisk();
-    }
-
-    private File createSettingsFile(File input)
-    {
-        String path = input.getParent();
-        return new File(path + File.separatorChar + Defaults.DEFAULT_SETTINGS_FILE_NAME);
-    }
+//
+//    private void load()
+//        throws Exception
+//    {
+//       FileSync fileSync =  FileService.use().getFileSync(Defaults.BOOKMARKS_FILE_SYNC_CONTEXT);
+//       fileSync.readFromDisk();
+//    }
+//
+//    private File createSettingsFile(File input)
+//    {
+//        String path = input.getParent();
+//        return new File(path + File.separatorChar + Defaults.DEFAULT_SETTINGS_FILE_NAME);
+//    }
 }

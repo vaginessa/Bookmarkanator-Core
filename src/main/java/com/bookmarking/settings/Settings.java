@@ -1,5 +1,6 @@
 package com.bookmarking.settings;
 
+import java.io.*;
 import java.util.*;
 import com.bookmarking.*;
 import com.bookmarking.exception.*;
@@ -143,6 +144,24 @@ public class Settings
         {return null;}
 
         return settingsGroup.getSettingsMap().get(key);
+    }
+
+    public boolean getBooleanSetting(String group, String key)
+    {
+        BooleanSetting booleanSetting = (BooleanSetting)this.getSetting(group, key);
+        return booleanSetting.getValue();
+    }
+
+    public String getStringSetting(String group, String key)
+    {
+        StringSetting stringSetting = (StringSetting)getSetting(group, key);
+        return stringSetting.getValue();
+    }
+
+    public File getFileSetting(String group, String key)
+    {
+        FileSetting fileSetting = (FileSetting) getSetting(group, key);
+        return fileSetting.getValue();
     }
 
     public void renameGroup(String original, String newName)

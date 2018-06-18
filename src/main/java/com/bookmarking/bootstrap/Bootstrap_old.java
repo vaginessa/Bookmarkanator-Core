@@ -190,12 +190,12 @@ public class Bootstrap_old
         throws Exception
     {
         // Track the classes that can be overridden externally...
-        ModuleLoader.use().addClassToWatch(AbstractBookmark.class);
-        ModuleLoader.use().addClassToWatch(IOInterface.class);
-        ModuleLoader.use().addClassToWatch(AbstractAction.class);
-        ModuleLoader.use().addClassToWatch(FileReaderInterface.class);
-        ModuleLoader.use().addClassToWatch(FileWriterInterface.class);
-        ModuleLoader.use().addClassToWatch(String.class);
+        ModuleLoader.use().addClassToWatchFor(AbstractBookmark.class);
+        ModuleLoader.use().addClassToWatchFor(IOInterface.class);
+        ModuleLoader.use().addClassToWatchFor(AbstractAction.class);
+        ModuleLoader.use().addClassToWatchFor(FileReaderInterface.class);
+        ModuleLoader.use().addClassToWatchFor(FileWriterInterface.class);
+        ModuleLoader.use().addClassToWatchFor(String.class);
 
         Set<AbstractSetting> moduleLocations = settings.getByGroupAndtype(Defaults.MODULE_LOCATIONS_GROUP, File.class);
 

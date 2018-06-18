@@ -1,19 +1,9 @@
 package com.bookmarking.bookmark;
 
 import java.util.*;
-import org.apache.logging.log4j.*;
 
-public class TestBookmark extends AbstractBookmark
+public class TestBookmark3 extends AbstractBookmark
 {
-    private static final Logger logger = LogManager.getLogger(TestBookmark.class.getCanonicalName());
-    private String content;
-    private Set<String> searchWords;
-
-    public TestBookmark()
-    {
-        searchWords = new HashSet<>();
-    }
-
     @Override
     public String[] runAction(String[]... actionStrings)
         throws Exception
@@ -24,19 +14,19 @@ public class TestBookmark extends AbstractBookmark
     @Override
     public void notifyBeforeAction(AbstractBookmark source, String actionString)
     {
-        logger.info("Before action notification");
+
     }
 
     @Override
     public void notifyAfterAction(AbstractBookmark source, String actionString)
     {
-        logger.info("After action notification");
+
     }
 
     @Override
     public String getTypeName()
     {
-        return "Console Out Bookmark";
+        return null;
     }
 
     @Override
@@ -49,50 +39,45 @@ public class TestBookmark extends AbstractBookmark
     public void destroy()
         throws Exception
     {
-        logger.info("Destroy bookmark action");
+
     }
 
     @Override
     public AbstractBookmark getNew()
     {
-        return new TestBookmark();
+        return null;
     }
 
     @Override
     public String getContent()
     {
-        return content;
+        return null;
     }
 
     @Override
     public void setContent(String content)
         throws Exception
     {
-        this.content = content;
 
-        for (String s:this.content.split(" ") )
-        {
-            searchWords.add(s);
-        }
     }
 
     @Override
     public Set<String> getSearchWords()
         throws Exception
     {
-       return this.searchWords;
+        return null;
     }
 
     @Override
     public void systemInit()
     {
-        logger.info("System use");
+
     }
 
     @Override
     public void systemShuttingDown()
     {
-        logger.info("System shutting down.");
+
     }
 
     @Override
@@ -104,6 +89,6 @@ public class TestBookmark extends AbstractBookmark
     @Override
     public int compareTo(AbstractBookmark o)
     {
-        return getId().compareTo(o.getId());
+        return 0;
     }
 }

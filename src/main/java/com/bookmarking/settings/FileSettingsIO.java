@@ -16,6 +16,12 @@ public class FileSettingsIO implements SettingsIOInterface
     private static final Logger logger = LogManager.getLogger(FileSettingsIO.class.getCanonicalName());
 
     private Settings settings;
+    private boolean useFileSystem;
+
+    public FileSettingsIO()
+    {
+        useFileSystem = true;
+    }
 
     @Override
     public Settings init(Settings settings)
@@ -23,72 +29,76 @@ public class FileSettingsIO implements SettingsIOInterface
     {
         logger.info("- Init FileSettingsIO");
         this.settings = settings;
+        this.useFileSystem = this.settings.getBooleanSetting(Defaults.FILE_IO_SETTINGS_GROUP,Defaults.USE_FILE_SYSTEM);
 
-        // Locate the settings file based on settings being brought in, and check if it exists.
-        File fileInUse = null;
-        File primarySettingsFile = locatPrimarySettingsFile();
-        File secondarySettingsFile = locatSecondarySettingsFile();
-        File fallbackSettingsFile = locatFallbackSettingsFile();
+        if (useFileSystem)
+        {
+            // Locate the settings file based on settings being brought in, and check if it exists.
+            File fileInUse;
+            File primarySettingsFile = locatPrimarySettingsFile();
+            File secondarySettingsFile = locatSecondarySettingsFile();
 
-        if (primarySettingsFile != null)
-        {
-            logger.info("- Using primary file setting of \""+primarySettingsFile+"\"");
-            fileInUse = primarySettingsFile;
-        }
-        else if (secondarySettingsFile != null)
-        {
-            logger.info("- Using secondary file setting of \""+secondarySettingsFile+"\"");
-            fileInUse = secondarySettingsFile;
-        }
-        else if (fallbackSettingsFile != null)
-        {
-            logger.info("- Using fallback file setting of \""+fallbackSettingsFile+"\"");
-            fileInUse = fallbackSettingsFile;
-        }
-
-        // If settings file is still null then no existing settings file can be found... Create one by using the settings in order of importance.
-        if (fileInUse==null)
-        {
-            logger.info("- Settings file doesn't exist. Creating now...");
-            if (hasFileSettings(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY))
+            if (primarySettingsFile != null)
             {
-                fileInUse = getFile(
-                    Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
-                ensureFileExists(fileInUse);
-                logger.info("-- Using primary setting location of \""+fileInUse+"\"");
+                logger.info("- Using primary file setting of \"" + primarySettingsFile + "\"");
+                fileInUse = primarySettingsFile;
             }
-            else if (hasFileSettings(
-                Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY))
+            else if (secondarySettingsFile != null)
             {
-                fileInUse = getFile(
-                    Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
-                ensureFileExists(fileInUse);
-                logger.info("-- Using secondary setting location \""+fileInUse+"\"");
+                logger.info("- Using secondary file setting of \"" + secondarySettingsFile + "\"");
+                fileInUse = secondarySettingsFile;
             }
             else
-            {// No settings have been found, use the fallback settings to create a file.
-                fileInUse = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTINGS_FILE_NAME);
-                ensureFileExists(fileInUse);
-                logger.info("-- Using fallback setting location \""+fileInUse+"\"");
+            {
+                throw new FileNotFoundException("No settings file located.");
             }
 
-            logger.info("-- Created settings file at \""+fileInUse+"\n");
+            // If settings file is still null then no existing settings file can be found... Create one by using the settings in order of importance.
+            if (fileInUse == null)
+            {
+                logger.info("- Settings file doesn't exist. Creating now...");
+                if (hasFileSettings(Defaults.DIRECTORIES_GROUP, Defaults.PRIMARY_FILE_LOCATION_KEY, Defaults.SETTINGS_FILE_NAME))
+                {
+                    fileInUse = getFile(Defaults.DIRECTORIES_GROUP, Defaults.PRIMARY_FILE_LOCATION_KEY, Defaults.SETTINGS_FILE_NAME);
+                    ensureFileExists(fileInUse);
+                    logger.info("-- Using primary setting location of \"" + fileInUse + "\"");
+                }
+                else if (hasFileSettings(Defaults.DIRECTORIES_GROUP, Defaults.SECONDARY_FILE_LOCATION_KEY, Defaults.SETTINGS_FILE_NAME))
+                {
+                    fileInUse = getFile(Defaults.FILE_IO_SETTINGS_GROUP, Defaults.SECONDARY_FILE_LOCATION_KEY, Defaults.SETTINGS_FILE_NAME);
+                    ensureFileExists(fileInUse);
+                    logger.info("-- Using secondary setting location \"" + fileInUse + "\"");
+                }
+                else
+                {// No settings have been found, use the fallback settings to create a file.
+                    fileInUse = getFile(Defaults.PRIMARY_DIRECTORY, Defaults.SETTINGS_FILE_NAME);
+                    ensureFileExists(fileInUse);
+                    logger.info("-- Using fallback setting location \"" + fileInUse + "\"");
+                }
+
+                logger.info("-- Created settings file at \"" + fileInUse + "\n");
+            }
+
+            // Read settings file in...
+            FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(), new SettingsXMLParser(), fileInUse);
+            FileService.use().addFile(fileSync, Defaults.SETTINGS_FILE_CONTEXT);
+
+            fileSync.readFromDisk();
+
+            // Get parsed settings file.
+            Settings parsedSettings = fileSync.getObject();
+            Objects.requireNonNull(parsedSettings);
+
+            parsedSettings.importSettings(settings);
+
+            // Write the settings out again with defaults merged in.
+            fileSync.writeToDisk();
+
         }
-
-        // Read settings file in...
-        FileSync<Settings> fileSync = new FileSync<>(new SettingsXMLWriter(),new SettingsXMLParser(), fileInUse);
-        FileService.use().addFile(fileSync, Defaults.SETTINGS_FILE_CONTEXT);
-
-        fileSync.readFromDisk();
-
-        // Get parsed settings file.
-        Settings parsedSettings = fileSync.getObject();
-        Objects.requireNonNull(parsedSettings);
-
-        parsedSettings.importSettings(settings);
-
-        // Write the settings out again with defaults merged in.
-        fileSync.writeToDisk();
+        else
+        {
+            logger.info("Not using file system as indicated by supplied settings");
+        }
         logger.info("- Done.");
         return settings;
     }
@@ -109,14 +119,20 @@ public class FileSettingsIO implements SettingsIOInterface
     public void save()
         throws Exception
     {
-        FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
+        if (useFileSystem)
+        {
+            FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
+        }
     }
 
     @Override
     public void prepExit()
         throws Exception
     {
-        FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
+        if (useFileSystem)
+        {
+            FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
+        }
     }
 
     @Override
@@ -128,7 +144,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatPrimarySettingsFile()
         throws Exception
     {
-        File file = getFile(Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SETTINGS_FILE_NAME_KEY);
+        File file = this.settings.getFileSetting(Defaults.DIRECTORIES_GROUP, Defaults.PRIMARY_FILE_LOCATION_KEY);
 
         if (file != null && file.exists())
         {
@@ -141,8 +157,7 @@ public class FileSettingsIO implements SettingsIOInterface
     private File locatSecondarySettingsFile()
         throws Exception
     {
-        File file = getFile(
-            Defaults.FILE_IO_SETTINGS, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_LOCATION_KEY, Defaults.DEFAULT_SECONDARY_SETTINGS_FILE_NAME_KEY);
+        File file = this.settings.getFileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SECONDARY_FILE_LOCATION_KEY);
 
         if (file != null && file.exists())
         {
@@ -152,18 +167,18 @@ public class FileSettingsIO implements SettingsIOInterface
         return null;
     }
 
-    private File locatFallbackSettingsFile()
-        throws Exception
-    {
-        File file = getFile(Defaults.FALLBACK_SETTINGS_DIRECTORY, Defaults.FALLBACK_SETTINGS_FILE_NAME);
-
-        if (file != null && file.exists())
-        {
-            return file;
-        }
-
-        return null;
-    }
+//    private File locatFallbackSettingsFile()
+//        throws Exception
+//    {
+//        File file = getFile(Defaults.SECONDARY_DIRECTORY, Defaults.SETTINGS_FILE_NAME);
+//
+//        if (file != null && file.exists())
+//        {
+//            return file;
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Create file if it doesn't exist.
