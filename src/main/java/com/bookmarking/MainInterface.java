@@ -47,7 +47,7 @@ public interface MainInterface
     // ----------------------------------------------
 
     /**
-     * The main settins object is a container for the settings loaded by the InitInterface, and the settings from the IOInterface. The InitInterface
+     * The main settings object is a container for the settings loaded by the InitInterface, and the settings from the IOInterface. The InitInterface
      * settings are always obtained from the device storage (hard disk), however the IOInterface settings would be obtained after InitInterface settings
      * and in a manner specific to the type of IO. For example if it was a database it would be from tables.
      */

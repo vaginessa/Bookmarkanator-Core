@@ -17,7 +17,7 @@ public class Settings
     private static final Logger logger = LogManager.getLogger(Settings.class.getCanonicalName());
 
     // <Group String, SetingsGroup>
-    private HashMap<String, SettingsGroup> groups;
+    private Map<String, SettingsGroup> groups;
 
     public Settings()
     {
@@ -25,12 +25,12 @@ public class Settings
         groups = new HashMap<>();
     }
 
-    public HashMap<String, SettingsGroup> getGroups()
+    public Map<String, SettingsGroup> getGroups()
     {
         return groups;
     }
 
-    public void setGroups(HashMap<String, SettingsGroup> groups)
+    public void setGroups(Map<String, SettingsGroup> groups)
     {
         this.groups = groups;
     }
@@ -55,7 +55,7 @@ public class Settings
         Objects.requireNonNull(setting);
         if (setting.getKey()==null && setting.getValue()!=null)
         {
-            throw new Exception("Value present without key");
+            throw new ValueWithoutKeyException("Value present without key");
         }
 
         if (setting.getGroup()==null || setting.getGroup().trim().isEmpty())
@@ -149,18 +149,35 @@ public class Settings
     public boolean getBooleanSetting(String group, String key)
     {
         BooleanSetting booleanSetting = (BooleanSetting)this.getSetting(group, key);
+        if (booleanSetting==null)
+        {
+            return false;
+        }
+
         return booleanSetting.getValue();
     }
 
     public String getStringSetting(String group, String key)
     {
         StringSetting stringSetting = (StringSetting)getSetting(group, key);
+
+        if (stringSetting==null)
+        {
+            return null;
+        }
+
         return stringSetting.getValue();
     }
 
     public File getFileSetting(String group, String key)
     {
         FileSetting fileSetting = (FileSetting) getSetting(group, key);
+
+        if (fileSetting==null)
+        {
+            return null;
+        }
+
         return fileSetting.getValue();
     }
 
@@ -187,13 +204,13 @@ public class Settings
         SettingsGroup settingsGroup = getGroups().get(group);
         if (settingsGroup==null)
         {
-            throw new Exception("Group "+group+" not found.");
+            throw new GroupNotFoundException("Group "+group+" not found.");
         }
 
         AbstractSetting abstractSetting = settingsGroup.getSettingsMap().get(key);
         if (abstractSetting==null)
         {
-            throw new Exception("Key "+key+" not found.");
+            throw new KeyNotFoundException("Key "+key+" not found.");
         }
 
         settingsGroup.getSettingsMap().remove(key);

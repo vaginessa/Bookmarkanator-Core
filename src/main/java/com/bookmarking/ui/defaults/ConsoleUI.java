@@ -9,20 +9,12 @@ public class ConsoleUI implements MainUIInterface
 {
     private static final Logger logger = LogManager.getLogger(ConsoleUI.class.getCanonicalName());
 
-    private UpdateUIInterface updateUIInterface;
     private IOUIInterface iouiInterface;
     private InitUIInterface initUIInterface;
 
     public ConsoleUI()
     {
-        updateUIInterface = new ConsoleUpdatorUI();
         iouiInterface = new ConsoleIOUI();
-    }
-
-    @Override
-    public UpdateUIInterface getUpdateUIInterface()
-    {
-        return updateUIInterface;
     }
 
     @Override
