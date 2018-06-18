@@ -10,6 +10,7 @@ import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.stats.*;
 import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
@@ -80,6 +81,8 @@ public class FileIO implements IOInterface
 //        String parent = settingsFile.getParent();
 
         File directory = settingsIOInterface.getSettings().getFileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SELECTED_FILE_LOCATION_KEY);
+        Objects.requireNonNull(directory);
+
         String bookmarkFileName = directory.getCanonicalPath() + File.separatorChar + Defaults.BOOKMARKS_FILE_NAME;
         logger.trace("Bookmarks file inferred from fileIOSettings file is \"" + bookmarkFileName + "\"");
         file = new File(bookmarkFileName);
@@ -531,6 +534,12 @@ public class FileIO implements IOInterface
         throws Exception
     {
         // TODO Implement stack clearOperationsList.
+    }
+
+    @Override
+    public StatsInterface getStatsInterface()
+    {
+        return null;
     }
 
     // ----------

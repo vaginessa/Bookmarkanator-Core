@@ -5,6 +5,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.stats.*;
 import com.bookmarking.ui.*;
 
 /**
@@ -41,6 +42,12 @@ public interface MainInterface
      * The IOInterface is the main class used to perform CRUD actions with AbstractBookmarks. It also enables searching, and bulk tag CRUD operations.
      */
     IOInterface getIOInterface();
+
+    /**
+     * Stats interface to obtain stats about things the main interface cares about.
+     * @return StatsInterface
+     */
+    StatsInterface getStatsInterface();
 
     // ----------------------------------------------
     // Settings

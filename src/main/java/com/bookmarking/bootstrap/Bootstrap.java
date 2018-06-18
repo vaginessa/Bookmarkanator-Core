@@ -145,7 +145,6 @@ public class Bootstrap
         SettingsIOInterface settingsIOInterface = ModuleLoader.use()
             .instantiateClass(setting.getValue().getCanonicalName(), SettingsIOInterface.class);
 
-
         this.settings = settingsIOInterface.init(this.settings);
 
         logger.info("- Done loading settings IO interface.");

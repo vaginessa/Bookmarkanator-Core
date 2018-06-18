@@ -6,6 +6,7 @@ import com.bookmarking.bookmark.*;
 import com.bookmarking.error.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.stats.*;
 import com.bookmarking.ui.*;
 
 /**
@@ -13,9 +14,6 @@ import com.bookmarking.ui.*;
  */
 public interface IOInterface
 {
-
-    String SETTINGS_FILE_CONTEXT = "ioSettings";
-
     //------------------------------------
     // Init and prepExit
     //------------------------------------
@@ -449,4 +447,9 @@ public interface IOInterface
      */
     void clearUndoRedoStack() throws Exception;
 
+    //------------------------------------
+    // Stats
+    //------------------------------------
+
+    StatsInterface getStatsInterface();
 }

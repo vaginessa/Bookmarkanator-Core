@@ -6,6 +6,7 @@ import com.bookmarking.fileservice.*;
 import com.bookmarking.io.*;
 import com.bookmarking.module.*;
 import com.bookmarking.settings.*;
+import com.bookmarking.stats.*;
 import com.bookmarking.ui.*;
 
 /**
@@ -89,6 +90,12 @@ public class LocalInstance implements MainInterface
     public IOInterface getIOInterface()
     {
         return this.initInterface.getIoInterface();
+    }
+
+    @Override
+    public StatsInterface getStatsInterface()
+    {
+        return null;
     }
 
     @Override

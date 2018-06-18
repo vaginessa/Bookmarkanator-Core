@@ -94,10 +94,14 @@ public class FileSettingsIO implements SettingsIOInterface
             // Write the settings out again with defaults merged in.
             fileSync.writeToDisk();
 
+            FileSetting fileSetting = new FileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SELECTED_FILE_LOCATION_KEY, fileInUse);
+            this.settings.putSetting(fileSetting);
         }
         else
         {
             logger.info("Not using file system as indicated by supplied settings");
+            FileSetting fileSetting = new FileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SELECTED_FILE_LOCATION_KEY, Defaults.PRIMARY_DIRECTORY);
+            this.settings.putSetting(fileSetting);
         }
         logger.info("- Done.");
         return settings;
