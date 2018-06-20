@@ -81,6 +81,7 @@ public class FileIO implements IOInterface
 //        String parent = settingsFile.getParent();
 
         File directory = settingsIOInterface.getSettings().getFileSetting(Defaults.DIRECTORIES_GROUP, Defaults.SELECTED_FILE_LOCATION_KEY);
+        directory = new File(directory.getParent());
         Objects.requireNonNull(directory);
 
         String bookmarkFileName = directory.getCanonicalPath() + File.separatorChar + Defaults.BOOKMARKS_FILE_NAME;
@@ -104,6 +105,7 @@ public class FileIO implements IOInterface
 
         // Load files in.
 //        load();
+        fileSync.readFromDisk();
 
         searchGroup = new SearchGroup();
 

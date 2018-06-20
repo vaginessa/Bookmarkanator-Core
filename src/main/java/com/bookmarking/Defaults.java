@@ -31,8 +31,8 @@ public interface Defaults
     // Values:
     String CORE_SETTINGS_NAME = "Core Settings";
     File PRIMARY_DIRECTORY = new File(".");
-    File SECONDARY_DIRECTORY = new File(System.getProperty("user.home"));
-    String SETTINGS_FILE_NAME = "settings.xml";
+    File SECONDARY_DIRECTORY = new File(System.getProperty("user.home")+File.separator+"Bookmarkanator"+File.separator);
+    String SETTINGS_FILE_NAME = "Settings.xml";
     String SETTINGS_FILE_CONTEXT = "mainSettings";
     String USE_FILE_SYSTEM = "useFileSystem";// Don't read/write settings file if false
 

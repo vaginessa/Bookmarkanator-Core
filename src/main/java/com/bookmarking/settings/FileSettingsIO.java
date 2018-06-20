@@ -16,11 +16,11 @@ public class FileSettingsIO implements SettingsIOInterface
     private static final Logger logger = LogManager.getLogger(FileSettingsIO.class.getCanonicalName());
 
     private Settings settings;
-    private boolean useFileSystem;
+    private boolean skipUsingFileSystem;
 
     public FileSettingsIO()
     {
-        useFileSystem = true;
+        skipUsingFileSystem = true;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class FileSettingsIO implements SettingsIOInterface
     {
         logger.info("- Init FileSettingsIO");
         this.settings = settings;
-        this.useFileSystem = this.settings.getBooleanSetting(Defaults.FILE_IO_SETTINGS_GROUP,Defaults.USE_FILE_SYSTEM);
+        this.skipUsingFileSystem = this.settings.getBooleanSetting(Defaults.FILE_IO_SETTINGS_GROUP,Defaults.USE_FILE_SYSTEM);
 
-        if (useFileSystem)
+        if (!skipUsingFileSystem)
         {
             // Locate the settings file based on settings being brought in, and check if it exists.
             File fileInUse;
@@ -123,7 +123,7 @@ public class FileSettingsIO implements SettingsIOInterface
     public void save()
         throws Exception
     {
-        if (useFileSystem)
+        if (skipUsingFileSystem)
         {
             FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
         }
@@ -133,7 +133,7 @@ public class FileSettingsIO implements SettingsIOInterface
     public void prepExit()
         throws Exception
     {
-        if (useFileSystem)
+        if (skipUsingFileSystem)
         {
             FileService.use().getFileSync(Defaults.SETTINGS_FILE_CONTEXT).writeToDisk();
         }

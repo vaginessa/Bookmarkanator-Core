@@ -13,7 +13,7 @@ public class TestMainInterface
         throws Exception
     {
         Settings settings = new Settings();
-        BooleanSetting useFileSystem = new BooleanSetting(Defaults.FILE_IO_SETTINGS_GROUP, Defaults.USE_FILE_SYSTEM, false);
+        BooleanSetting useFileSystem = new BooleanSetting(Defaults.FILE_IO_SETTINGS_GROUP, Defaults.USE_FILE_SYSTEM, true);
         settings.putSetting(useFileSystem);
 
         LocalInstance localInstance = LocalInstance.use(settings);
