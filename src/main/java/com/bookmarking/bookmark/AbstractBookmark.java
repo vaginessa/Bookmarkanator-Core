@@ -6,7 +6,7 @@ import org.apache.logging.log4j.*;
 
 /**
  * The base class for all bookmarks.
- *
+ * <p>
  * What is a bookmark? A bookmark is a group of code designed to work with a specific chunk of data. For example a web bookmark can operate on
  * hypertext links.
  */
@@ -129,16 +129,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * Run specified action(s) with action string.
-     *
-     * @param actionStrings Zero or more specific configuration instructions or actions for running the action.
-     * @return The result of the action. Returns an array of strings so that individual statuses can be given to the individual strings sent in.
-     * @throws Exception
-     */
-    public abstract String[] runAction(String[] ... actionStrings)
-        throws Exception;
-
-    /**
      * Before listeners will be called prior to this bookmark calling it's runActionCode
      *
      * @param abstractBookmark The bookmark that is listening
@@ -241,7 +231,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     }
 
     /**
-     * @return  The UI element that this bookmark is able to communicate with.
+     * @return The UI element that this bookmark is able to communicate with.
      */
     public BookmarkUIInterface getUiInterface()
     {
@@ -250,7 +240,8 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
 
     /**
      * The class that represents this bookmark to the user.
-     * @param uiInterface  The UI element that this bookmark is able to communicate with.
+     *
+     * @param uiInterface The UI element that this bookmark is able to communicate with.
      */
     public void setUiInterface(BookmarkUIInterface uiInterface)
     {
@@ -286,13 +277,92 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     {
         this.lastAccessedBy = lastAccessedBy;
     }
+
+    /**
+     * The group location is used to organize bookmark by their own defined categories.
+     *
+     * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark group string (UI's could do this in any way of course).
+     */
+    public List<String> getTypeLocation()
+    {
+        return new ArrayList<>();
+    }
+
+    /**
+     * This is the method that will be called by any bookmarks that this bookmark is listening to prior to initiating an action.
+     *
+     * @param source       The source bookmark.
+     * @param actionString The action string that is about to happen (it is assumed that the listener knows what this string
+     *                     will mean)
+     */
+    public void notifyBeforeAction(AbstractBookmark source, String actionString)
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * This is the method that will be called by any bookmarks that this bookmark is listening to after initiating an action.
+     *
+     * @param source       The source bookmark.
+     * @param actionString The action string that has just occurred (it is assumed that the listener knows what this string
+     *                     will mean)
+     */
+    public void notifyAfterAction(AbstractBookmark source, String actionString)
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Called prior to deleting this bookmark.
+     */
+    public void destroy()
+        throws Exception
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Called as the system is starting up so that if individual bookmark want to do some kind of configuration they can.
+     */
+    public void systemInit()
+    {
+
+    }
+
+    /**
+     * Called prior to shutting the system down, so that individual bookmark can perform any actions they deem necessary
+     * prior to being shut down.
+     */
+    public void systemShuttingDown()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * This method is used to determine if this bookmark knows what to do with the string data supplied. For example if there were a drag and drop
+     * action on a bookmark, the data could be encoded in string form, and each bookmark could determine if they want to handle it or not.
+     *
+     * @param data The data the should be consumed.
+     * @return True if this bookmark can handle this form of data, false otherwise.
+     */
+    public boolean canConsume(String data)
+    {
+        return true;
+    }
+
     // ============================================================
     // Abstract Methods
     // ============================================================
 
-    public abstract void notifyBeforeAction(AbstractBookmark source, String actionString);
-
-    public abstract void notifyAfterAction(AbstractBookmark source, String actionString);
+    /**
+     * Run specified action(s) with action string.
+     *
+     * @param actionStrings Zero or more specific configuration instructions or actions for running the action.
+     * @return The result of the action. Returns an array of strings so that individual statuses can be given to the individual strings sent in.
+     * @throws Exception
+     */
+    public abstract String[] runAction(String[]... actionStrings)
+        throws Exception;
 
     /**
      * This is the human readable name for this bookmark group.
@@ -300,19 +370,6 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * @return Text of the name of the group of this bookmark.
      */
     public abstract String getTypeName();
-
-    /**
-     * The group location is used to organize bookmark by their own defined categories.
-     *
-     * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark group string (UI's could do this in any way of course).
-     */
-    public abstract List<String> getTypeLocation();
-
-    /**
-     * Called prior to deleting this bookmark.
-     */
-    public abstract void destroy()
-        throws Exception;
 
     /**
      * Gets a new instance of this type of bookmark.
@@ -347,24 +404,5 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      */
     public abstract Set<String> getSearchWords()
         throws Exception;
-
-    /**
-     * Called as the system is starting up so that if individual bookmark want to do some kind of configuration they can.
-     */
-    public abstract void systemInit();
-
-    /**
-     * Called prior to shutting the system down, so that individual bookmark can perform any actions they deem necessary
-     * prior to being shut down.
-     */
-    public abstract void systemShuttingDown();
-
-    /**
-     * This method is used to determine if this bookmark knows what to do with the string data supplied. For example if there were a drag and drop
-     * action on a bookmark, the data could be encoded in string form, and each bookmark could determine if they want to handle it or not.
-     * @param data  The data the should be consumed.
-     * @return  True if this bookmark can handle this form of data, false otherwise.
-     */
-    public abstract boolean canConsume(String data);
 
 }
