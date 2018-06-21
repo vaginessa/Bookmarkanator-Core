@@ -160,7 +160,14 @@ public class ModuleLoader
 
     public Set<Class> getClassesFound(Class clazz)
     {
-        return classesToTrackMap.get(clazz);
+        Set<Class> res = classesToTrackMap.get(clazz);
+
+        if (res==null)
+        {
+            res = new HashSet<>();
+        }
+
+        return res;
     }
 
     /**

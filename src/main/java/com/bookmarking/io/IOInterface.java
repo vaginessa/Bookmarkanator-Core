@@ -4,6 +4,7 @@ import java.text.*;
 import java.util.*;
 import com.bookmarking.bookmark.*;
 import com.bookmarking.error.*;
+import com.bookmarking.module.*;
 import com.bookmarking.search.*;
 import com.bookmarking.settings.*;
 import com.bookmarking.stats.*;
@@ -249,16 +250,17 @@ public interface IOInterface
      */
     default Map<Integer, Set<String>> getRecommendedTags(AbstractBookmark abstractBookmark, int numResults)
     {
+        Map<Integer, Set<String>> intTagMap = new HashMap<>();
         if (abstractBookmark == null || abstractBookmark.getTags().isEmpty())
         {
-            return new HashMap<>();
+            return intTagMap;
         }
-        Map<Integer, Set<String>> intTagMap = new HashMap<>();
 
         try
         {
             SearchOptions searchOptions = new SearchOptions();
             searchOptions.add(Operation.TagOptions.ALL_TAGS, abstractBookmark.getTags());
+            searchOptions.setSelectAllBKTypes(ModuleLoader.use().getClassesFound(AbstractBookmark.class));
             List<AbstractBookmark> bks = applySearchOptions(searchOptions);
 
             Set<String> tags = extractTags(bks);
