@@ -136,7 +136,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public void close()
+    public void exit()
         throws Exception
     {
         // Do nothing here.
@@ -238,57 +238,6 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public SortedMap<String, Set<String>> getAllTagsAlphabetical(Set<String> tagsToRemove)
-    {
-        Set<String> allTags = getAllTags();
-
-        if (tagsToRemove != null)
-        {
-            allTags.removeAll(tagsToRemove);
-        }
-
-        return orderTagsAlphabetical(allTags);
-    }
-
-    @Override
-    public SortedMap<String, Set<String>> orderTagsAlphabetical(Set<String> tags)
-    {
-        Map<String, Set<String>> tagsMap = new LinkedHashMap<>();
-
-        // Add available tags to map by first letter.
-        for (String tag : tags)
-        {
-            if (!tag.isEmpty())
-            {
-                String s = tag.charAt(0) + "";
-                s = s.toUpperCase();
-
-                Set<String> set = tagsMap.get(s);
-
-                if (set == null)
-                {
-                    set = new HashSet<>();
-                    tagsMap.put(s, set);
-                }
-
-                set.add(tag);
-            }
-        }
-
-        List<String> tagsMapKeyset = new ArrayList<>(tagsMap.keySet());
-        Collections.sort(tagsMapKeyset);
-
-        SortedMap<String, Set<String>> res = new TreeMap<>();
-
-        for (String key : tagsMapKeyset)
-        {
-            res.put(key, tagsMap.get(key));
-        }
-
-        return res;
-    }
-
-    @Override
     public Set<String> getAllSearchWords()
         throws Exception
     {
@@ -302,7 +251,7 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public int numberOfType(Class clazz)
+    public int getInstanceCount(Class clazz)
     {
         Set<AbstractBookmark> s = parsedBookmarks.getLoadedByClass(clazz);
 
@@ -504,13 +453,13 @@ public class FileIO implements IOInterface
     }
 
     @Override
-    public IOUIInterface getUIInterface()
+    public IOUIInterface getIOUIInterface()
     {
         return ioUIInterface;
     }
 
     @Override
-    public void setUIInterface(IOUIInterface uiInterface)
+    public void setIOUIInterface(IOUIInterface uiInterface)
     {
         this.ioUIInterface = uiInterface;
     }

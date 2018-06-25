@@ -60,9 +60,9 @@ public class BookmarksXMLParser implements FileReaderInterface<FileIO>
             if (!n.getNodeName().startsWith("#"))
             {
                 abs = abstractBookmark.getNew();
-                if (ioInterface != null && ioInterface.getUIInterface() != null)
+                if (ioInterface != null && ioInterface.getIOUIInterface() != null)
                 {
-                    abs.setUiInterface(ioInterface.getUIInterface().getBookmarkUIInterface());
+                    abs.setUiInterface(ioInterface.getIOUIInterface().getBookmarkUIInterface());
                 }
                 parseBookmarkDetails(n, abs);
                 ioInterface.addBookmark(abs);

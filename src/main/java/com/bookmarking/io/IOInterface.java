@@ -39,9 +39,9 @@ public interface IOInterface
         throws Exception;
 
     /**
-     * Used to close any IO streams that are still open for example
+     * Used to exit any IO streams that are still open for example
      */
-    void close()
+    void exit()
         throws Exception;
 
     //------------------------------------
@@ -53,14 +53,14 @@ public interface IOInterface
      *
      * @return
      */
-    IOUIInterface getUIInterface();
+    IOUIInterface getIOUIInterface();
 
     /**
      * Sets the IOUIInterface this implementation will use to notify the front end implementation.
      *
      * @param uiInterface
      */
-    void setUIInterface(IOUIInterface uiInterface);
+    void setIOUIInterface(IOUIInterface uiInterface);
 
     //------------------------------------
     // Search
@@ -73,8 +73,20 @@ public interface IOInterface
      * @return A set of search words that are present in the collection of supplied bookmarks.
      * @throws Exception
      */
-    Set<String> getSearchWords(Collection<UUID> bookmarkIds)
-        throws Exception;
+    default Set<String> getSearchWords(Collection<UUID> bookmarkIds)
+        throws Exception
+    {
+        Set<String> res = new HashSet<>();
+
+        Set<AbstractBookmark> bks = this.getBookmarks(new HashSet<>(bookmarkIds));
+
+        for (AbstractBookmark bk: bks)
+        {
+            res.addAll(bk.getSearchWords());
+        }
+
+        return res;
+    }
 
     /**
      * Get all search words present in all bookmarks.
@@ -82,8 +94,18 @@ public interface IOInterface
      * @return A set of search words present for all bookmarks.
      * @throws Exception
      */
-    Set<String> getAllSearchWords()
-        throws Exception;
+    default Set<String> getAllSearchWords()
+        throws Exception
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark bk: this.getAllBookmarks())
+        {
+            res.addAll(bk.getSearchWords());
+        }
+
+        return res;
+    }
 
     /**
      * Returns a list of bookmarks that satisfy the search criteria.
@@ -122,28 +144,72 @@ public interface IOInterface
      *
      * @return A collection of all bookmark names
      */
-    Collection<String> getAllBookmarkNames();
+    default Collection<String> getAllBookmarkNames()
+    {
+        List<String> res = new ArrayList<>();
+
+        for (AbstractBookmark bk: this.getAllBookmarks())
+        {
+            res.add(bk.getName());
+        }
+
+        Collections.sort(res);
+
+        return res;
+    }
 
     /**
      * Extracts a list of bookmark names contained
      * @param bookmarkIds
      * @return
      */
-    List<String> getBookmarkNames(Collection<UUID> bookmarkIds);
+    default List<String> getBookmarkNames(Collection<UUID> bookmarkIds)
+    {
+        List<String> res = new ArrayList<>();
+
+        for (AbstractBookmark bk: this.getBookmarks(new HashSet<>(bookmarkIds)))
+        {
+            res.add(bk.getName());
+        }
+
+        Collections.sort(res);
+
+        return res;
+    }
 
     /**
      * Get all bookmark classes present
      *
      * @return A set of all classnames present
      */
-    Set<Class> getAllBookmarkClasses();
+    default Set<Class> getAllBookmarkClasses()
+    {
+        Set<Class> res = new HashSet<>();
+
+        for (AbstractBookmark bk: getAllBookmarks())
+        {
+            res.add(bk.getClass());
+        }
+
+        return res;
+    }
 
     /**
      * Extracts classes from Bookmarks with Id's in the supplied collection.
      * @param bookmarkIds  A collection of bookmark Id's to return classes for.
      * @return  A set of classes that represent all classes present in the list of bookmarks matched to supplied Id's.
      */
-    Set<Class> getBookmarkClasses(Collection<UUID> bookmarkIds);
+    default Set<Class> getBookmarkClasses(Collection<UUID> bookmarkIds)
+    {
+        Set<Class> res = new HashSet<>();
+
+        for (AbstractBookmark bk: this.getBookmarks(new HashSet<>(bookmarkIds)))
+        {
+            res.add(bk.getClass());
+        }
+
+        return res;
+    }
 
     /**
      * Obtains a single bookmark by bookmark Id
@@ -157,7 +223,17 @@ public interface IOInterface
      * @param bookmarkIds  The bookmark Id's to obtain.
      * @return  A set of bookmarks found with the supplied Id's
      */
-    Set<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds);
+    default Set<AbstractBookmark> getBookmarks(Set<UUID> bookmarkIds)
+    {
+        Set<AbstractBookmark> res = new HashSet<>();
+
+        for (UUID bkid: bookmarkIds)
+        {
+            res.add(getBookmark(bkid));
+        }
+
+        return res;
+    }
 
     /**
      * Add a new bookmark.
@@ -172,8 +248,14 @@ public interface IOInterface
      * @param bookmarks  The collection of bookmarks to add.
      * @throws Exception
      */
-    void addAllBookmarks(Collection<AbstractBookmark> bookmarks)
-        throws Exception;
+    default void addAllBookmarks(Collection<AbstractBookmark> bookmarks)
+        throws Exception
+    {
+        for (AbstractBookmark abstractBookmark: bookmarks)
+        {
+            addBookmark(abstractBookmark);
+        }
+    }
 
     /**
      * Locates the bookmark with the Id of the supplied bookmark and replaces it.
@@ -190,15 +272,24 @@ public interface IOInterface
      * @param bookmarks  The collection of bookmarks to update.
      * @throws Exception
      */
-    void updateAll(Collection<AbstractBookmark> bookmarks)
-        throws Exception;
+    default void updateAll(Collection<AbstractBookmark> bookmarks)
+        throws Exception
+    {
+        for (AbstractBookmark abs: bookmarks)
+        {
+            updateBookmark(abs);
+        }
+    }
 
     /**
      * Remove the bookmark with the specified Id.
      * @param bookmarkId  The Id of the bookmark to delete.
      * @return  The removed bookmark.
      */
-    AbstractBookmark deleteBookmark(UUID bookmarkId);
+    default AbstractBookmark deleteBookmark(UUID bookmarkId)
+    {
+        return deleteBookmark(getBookmark(bookmarkId));
+    }
 
     /**
      * Delete bookmark.
@@ -213,6 +304,8 @@ public interface IOInterface
 
     /**
      * Perform a brute force search (tag.contains(text) or text.contains(tag)) for the string withing tags.
+     * This is left here for cases where there aren't a lot of tags, but should be overridden when a large
+     * bookmark/tag count is expected.
      * @param searchTerm  the search term
      * @return  All tags found
      */
@@ -344,8 +437,12 @@ public interface IOInterface
      */
     default Set<String> extractTags(List<AbstractBookmark> bookmarks)
     {
-        Objects.requireNonNull(bookmarks);
         Set<String> res = new HashSet<>();
+
+        if (bookmarks==null)
+        {
+            return res;
+        }
 
         for (AbstractBookmark abs : bookmarks)
         {
@@ -358,11 +455,47 @@ public interface IOInterface
      * Gets all tags from all bookmarks present.
      * @return  A set of every tag present in all the bookmarks in the system.
      */
-    Set<String> getAllTags();
+    default Set<String> getAllTags()
+    {
+        return extractTags(getAllBookmarks());
+    }
 
-    SortedMap<String, Set<String>> getAllTagsAlphabetical(Set<String> tagsToRemove);
+    default SortedMap<String, Set<String>> getTagsGroupByFirstLetter(Set<String> tags)
+    {
+        Map<String, Set<String>> tagsMap = new LinkedHashMap<>();
 
-    SortedMap<String, Set<String>> orderTagsAlphabetical(Set<String> tags);
+        // Add available tags to map by first letter.
+        for (String tag : tags)
+        {
+            if (!tag.isEmpty())
+            {
+                String s = tag.charAt(0) + "";
+                s = s.toUpperCase();
+
+                Set<String> set = tagsMap.get(s);
+
+                if (set == null)
+                {
+                    set = new HashSet<>();
+                    tagsMap.put(s, set);
+                }
+
+                set.add(tag);
+            }
+        }
+
+        List<String> tagsMapKeyset = new ArrayList<>(tagsMap.keySet());
+        Collections.sort(tagsMapKeyset);
+
+        SortedMap<String, Set<String>> res = new TreeMap<>();
+
+        for (String key : tagsMapKeyset)
+        {
+            res.put(key, tagsMap.get(key));
+        }
+
+        return res;
+    }
 
     /**
      * Renames a tag in the entire system.
@@ -371,8 +504,23 @@ public interface IOInterface
      * @return  A list of bookmarks affected.
      * @throws Exception
      */
-    List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
-        throws Exception;
+    default List<AbstractBookmark> renameTag(String originalTagName, String newTagName)
+        throws Exception
+    {
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        for (AbstractBookmark abs: getAllBookmarks())
+        {
+            if(abs.getTags().contains(originalTagName))
+            {
+                abs.removeTag(originalTagName);
+                abs.addTag(newTagName);
+                res.add(abs);
+            }
+        }
+
+        return res;
+    }
 
     /**
      * Replaces several tags with a single tag everywhere in the system.
@@ -381,22 +529,68 @@ public interface IOInterface
      * @return  A list of bookmarks affected
      * @throws Exception
      */
-    List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)
-        throws Exception;
+    default List<AbstractBookmark> replaceTags(String replacement, Set<String> tagsToReplace)
+        throws Exception
+    {
+        List<AbstractBookmark> res = new ArrayList<>();
+
+        for (AbstractBookmark abs: getAllBookmarks())
+        {
+            if(!Collections.disjoint(abs.getTags(), tagsToReplace))
+            {
+               for (String tagToRemove: tagsToReplace){
+                   abs.removeTag(tagToRemove);
+               }
+               abs.addTag(replacement);
+                res.add(abs);
+            }
+        }
+
+        return res;
+    }
 
     /**
-     * Deletes a tag everywhere
+     * Deletes this tag in all bookmarks.
      * @param tagToDelete  The tag name to delete.
      * @return  A list of bookmarks affected
      */
-    Set<AbstractBookmark> deleteTag(String tagToDelete);
+    default Set<AbstractBookmark> deleteTag(String tagToDelete)
+    {
+        Set<AbstractBookmark> res = new HashSet<>();
+
+        for (AbstractBookmark abs: getAllBookmarks())
+        {
+            if (abs.getTags().contains(tagToDelete))
+            {
+                abs.removeTag(tagToDelete);
+                res.add(abs);
+            }
+        }
+
+        return res;
+    }
 
     /**
      * Deletes the set of tags everywhere.
      * @param tagsToDelete  The set of tags to remove from all bookmarks.
      * @return  A list of bookmarks affected
      */
-    Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete);
+    default Set<AbstractBookmark> deleteTags(Set<String> tagsToDelete)
+    {
+        Set<AbstractBookmark> res = new HashSet<>();
+
+        if (tagsToDelete==null)
+        {
+            return res;
+        }
+
+        for (String tag: tagsToDelete)
+        {
+            res.addAll(deleteTag(tag));
+        }
+
+        return res;
+    }
 
     //------------------------------------
     // Bookmark Types
@@ -407,19 +601,52 @@ public interface IOInterface
      * @param bookmarkIds  The collection of Id's to extract types for.
      * @return  A set of types (such as text, web, etc...)
      */
-    Set<String> extractTypeNames(Collection<UUID> bookmarkIds);
+    default Set<String> extractTypeNames(Collection<UUID> bookmarkIds)
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abs: getBookmarks(new HashSet<>(bookmarkIds)))
+        {
+            res.add(abs.getTypeName());
+        }
+
+        return res;
+    }
 
     /**
      * @return  A set of all types present in this IOInterface
      */
-    Set<String> getAllTypeNames();
+    default Set<String> getAllTypeNames()
+    {
+        Set<String> res = new HashSet<>();
+
+        for (AbstractBookmark abs: getAllBookmarks())
+        {
+            res.add(abs.getTypeName());
+        }
+
+        return res;
+    }
 
     /**
      * Returns the number of bookmarks that are this type.
      * @param clazz
      * @return
      */
-    int numberOfType(Class clazz);
+    default int getInstanceCount(Class clazz)
+    {
+        int res = 0;
+
+        for (AbstractBookmark bookmark: getAllBookmarks())
+        {
+            if (bookmark.getClass().equals(clazz))
+            {
+                res++;
+            }
+        }
+
+        return res;
+    }
 
     //------------------------------------
     // Settings Types
