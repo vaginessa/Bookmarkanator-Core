@@ -28,7 +28,7 @@ public abstract class AbstractAction
     }
 
     // ============================================================
-    // Methods
+    // Public Methods
     // ============================================================
 
     /**
@@ -41,23 +41,12 @@ public abstract class AbstractAction
     public abstract String[] runAction(String[] ... actionStrings)
         throws Exception;
 
-    /**
-     * Called as the system is starting up so that if individual actions want to do some kind of configuration they can.
-     */
-    public abstract void systemInit();
-
-    /**
-     * Called prior to shutting the system down, so that individual actions can perform any actions they deem necessary
-     * prior to being shut down.
-     */
-    public abstract void systemShuttingDown();
-
-    public UIInterface getUiInterface()
+    public UIInterface getUIInterface()
     {
         return uiInterface;
     }
 
-    public void setUiInterface(ActionUIInterface uiInterface)
+    public void setUIInterface(ActionUIInterface uiInterface)
     {
         this.uiInterface = uiInterface;
     }
@@ -88,4 +77,19 @@ public abstract class AbstractAction
     {
         this.enabled = enabled;
     }
+
+    // ============================================================
+    // Abstract Methods
+    // ============================================================
+
+    /**
+     * Called as the system is starting up so that if individual actions want to do some kind of configuration they can.
+     */
+    public abstract void systemInit();
+
+    /**
+     * Called prior to shutting the system down, so that individual actions can perform any actions they deem necessary
+     * prior to being shut down.
+     */
+    public abstract void systemShuttingDown();
 }

@@ -1,6 +1,7 @@
 package com.bookmarking.bookmark;
 
 import java.util.*;
+import com.bookmarking.search.*;
 import com.bookmarking.ui.*;
 import org.apache.logging.log4j.*;
 
@@ -283,7 +284,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      *
      * @return Returns a list of categories. The path will be this list in order, and at the end it the bookmark group string (UI's could do this in any way of course).
      */
-    public List<String> getTypeLocation()
+    public List<String> getGroupingLocation()
     {
         return new ArrayList<>();
     }
@@ -338,6 +339,10 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         // Do nothing by default
     }
 
+    // ============================================================
+    // Abstract Methods
+    // ============================================================
+
     /**
      * This method is used to determine if this bookmark knows what to do with the string data supplied. For example if there were a drag and drop
      * action on a bookmark, the data could be encoded in string form, and each bookmark could determine if they want to handle it or not.
@@ -345,14 +350,7 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
      * @param data The data the should be consumed.
      * @return True if this bookmark can handle this form of data, false otherwise.
      */
-    public boolean canConsume(String data)
-    {
-        return true;
-    }
-
-    // ============================================================
-    // Abstract Methods
-    // ============================================================
+    public abstract boolean canConsume(String data);
 
     /**
      * Run specified action(s) with action string.
@@ -365,9 +363,14 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
         throws Exception;
 
     /**
-     * This is the human readable name for this bookmark group.
+     * @return A list of possible actions this bookmark can do.
+     */
+    public abstract String[] getActions();
+
+    /**
+     * This is the human readable name for this type of bookmark.
      *
-     * @return Text of the name of the group of this bookmark.
+     * @return Human readable type name.
      */
     public abstract String getTypeName();
 
@@ -405,4 +408,105 @@ public abstract class AbstractBookmark implements Comparable<AbstractBookmark>
     public abstract Set<String> getSearchWords()
         throws Exception;
 
+    @Override
+    public int compareTo(AbstractBookmark o)
+    {
+        if (o==null || o.getId()==null)
+        {// Null stuff sorts first
+            return -1;
+        }
+
+        return o.getId().compareTo(this.getId());
+    }
+
+    public static Comparator<AbstractBookmark> getNameComparator()
+    {
+        return (o1, o2) ->
+        {
+            if (o1==o2)
+            {
+                return 0;
+            }
+
+            if (o1 == null)
+            {
+                return -1;
+            }
+
+            if (o2==null)
+            {
+                return 1;
+            }
+
+            String name1 = o1.getName();
+            String name2 = o2.getName();
+
+            if (name1!=null)
+            {
+                return name1.compareTo(name2);
+            }
+            else if (name2==null)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        };
+    }
+
+    public static Comparator<AbstractBookmark> getDateComparator(SearchOptions.DateType dateType)
+    {
+        return (o1, o2) ->
+        {
+            Date o1Date;
+            Date o2Date;
+
+            if (dateType == SearchOptions.DateType.ACCESSED_DATE)
+            {
+                o1Date = o1.getLastAccessedDate();
+                o2Date = o2.getLastAccessedDate();
+            }
+            else
+            {
+                o1Date = o1.getCreationDate();
+                o2Date = o2.getCreationDate();
+            }
+
+            if ((o1 == null && o2 == null))
+            {
+                return 0;
+            }
+
+            if (o1 == null)
+            {
+                return -1;
+            }
+
+            if (o2 == null)
+            {
+                return 1;
+            }
+
+            if (o1Date == null && o2Date == null)
+            {
+                return 0;
+            }
+
+            if (o1Date == null)
+            {
+                return -1;
+            }
+
+            if (o2Date == null)
+            {
+                return 1;
+            }
+
+            return o1Date.compareTo(o2Date);
+        };
+    }
 }
+
+

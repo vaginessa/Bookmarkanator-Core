@@ -43,12 +43,13 @@ public class Filter
 
     public Filter sortAscending()
     {
-        Collections.sort(bookmarkList);
+        Collections.sort(bookmarkList, AbstractBookmark.getNameComparator());
         return this;
     }
 
     public Filter sortDescending()
     {
+        Collections.sort(bookmarkList, AbstractBookmark.getNameComparator());
         Collections.reverse(bookmarkList);
         return this;
     }

@@ -73,7 +73,7 @@ public class SearchGroup implements Serializable
 
         if (!bookmarkTypeLocations.contains(abstractBookmark.getId()))
         {
-            bookmarkTypeLocations.add(abstractBookmark.getId(), new HashSet<>(abstractBookmark.getTypeLocation()));
+            bookmarkTypeLocations.add(abstractBookmark.getId(), new HashSet<>(abstractBookmark.getGroupingLocation()));
         }
     }
 

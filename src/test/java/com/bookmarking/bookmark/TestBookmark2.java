@@ -12,6 +12,12 @@ public class TestBookmark2 extends AbstractBookmark
     }
 
     @Override
+    public String[] getActions()
+    {
+        return new String[0];
+    }
+
+    @Override
     public void notifyBeforeAction(AbstractBookmark source, String actionString)
     {
 
@@ -30,7 +36,7 @@ public class TestBookmark2 extends AbstractBookmark
     }
 
     @Override
-    public List<String> getTypeLocation()
+    public List<String> getGroupingLocation()
     {
         return null;
     }
