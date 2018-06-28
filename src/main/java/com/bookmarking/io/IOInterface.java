@@ -460,7 +460,7 @@ public interface IOInterface
         return extractTags(getAllBookmarks());
     }
 
-    default SortedMap<String, Set<String>> getTagsGroupByFirstLetter(Set<String> tags)
+    default SortedMap<String, Set<String>> getTagsGroupedByFirstLetter(Set<String> tags)
     {
         Map<String, Set<String>> tagsMap = new LinkedHashMap<>();
 
