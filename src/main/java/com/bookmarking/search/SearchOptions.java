@@ -281,6 +281,9 @@ public class SearchOptions
         operationList.clear();
     }
 
+    /**
+     * @return Returns all tags present in the list of tag operations.
+     */
     public Set<String> getTagsPresent()
     {
         Set<String> res = new HashSet<>();
