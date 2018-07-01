@@ -113,6 +113,8 @@ public class FileIO implements IOInterface
         {
             searchGroup.addBookmark(abstractBookmark);
         }
+
+        searchGroup.setNumSearchResults(parsedBookmarks.getLoadedBookmarkIds().size());
     }
 
     @Override
