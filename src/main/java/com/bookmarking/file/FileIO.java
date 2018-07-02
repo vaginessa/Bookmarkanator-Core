@@ -236,7 +236,7 @@ public class FileIO implements IOInterface
     @Override
     public Set<String> getAllTags()
     {
-        return extractTags(parsedBookmarks.getLoadedBookmarks());
+        return searchGroup.getBookmarkTags().getFullTextWords();
     }
 
     @Override
