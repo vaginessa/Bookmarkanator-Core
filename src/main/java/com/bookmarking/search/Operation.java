@@ -2,6 +2,13 @@ package com.bookmarking.search;
 
 import java.util.*;
 
+/**
+ * A Operation represents how it's tags are to be applied to a list of bookmarks. If it's an "All Tags" operation that represents
+ * a sort of AND operation. It's the same as saying "if this bookmark has this tag AND this other tag AND tag n.... then include it"
+ * "Any Tag" is an OR operation, and "Without Tags" is an exclusionary operation, meaning exclude any bookmark with one of these tags.
+ *
+ * Lists of Operation objects can be combined to create specific search results.
+ */
 public class Operation implements Comparable
 {
     public enum TagOptions
