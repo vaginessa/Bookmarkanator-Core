@@ -12,7 +12,6 @@ public class SearchGroup implements Serializable
 {
     @XmlElement
     private Search<UUID> bookmarkNames;
-
     // Search bookmark type names (text, web, terminal etc...)
     @XmlElement
     private Search<UUID> bookmarkTypeNames;

@@ -79,7 +79,7 @@ public class SearchOptions
     private Set<Class> selectedBookmarkTypes;
 
     // ============================================================
-    // Methods
+    // Constructors
     // ============================================================
 
     public SearchOptions()
@@ -88,6 +88,30 @@ public class SearchOptions
         dateType = DateType.CREATION_DATE;
         selectedBookmarkTypes = new HashSet<>();
     }
+
+    public SearchOptions(SearchOptions searchOptions)
+    {
+        this();
+
+        searchTerm = searchOptions.getSearchTerm();
+        absoluteStartDate = searchOptions.getAbsoluteStartDate();
+        absoluteEndDate = searchOptions.getAbsoluteEndDate();
+        absoluteDateOffset = searchOptions.getAbsoluteDateOffset();
+        dateOffset = searchOptions.getDateOffset();
+        dateType = searchOptions.getDateType();
+
+        searchBookmarkText = searchOptions.getSearchBookmarkText();
+        searchBookmarkNames = searchOptions.getSearchBookmarkNames();
+        searchBookmarkTypes = searchOptions.getSearchBookmarkTypes();
+        searchTags = searchOptions.getSearchTags();
+
+        selectedBookmarkTypes.addAll(searchOptions.getSelectedBKTypes());
+        operationList.addAll(searchOptions.getTagOperations());
+    }
+
+    // ============================================================
+    // Methods
+    // ============================================================
 
     public String getSearchTerm()
     {
