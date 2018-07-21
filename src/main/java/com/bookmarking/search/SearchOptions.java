@@ -93,20 +93,25 @@ public class SearchOptions
     {
         this();
 
-        searchTerm = searchOptions.getSearchTerm();
-        absoluteStartDate = searchOptions.getAbsoluteStartDate();
-        absoluteEndDate = searchOptions.getAbsoluteEndDate();
-        absoluteDateOffset = searchOptions.getAbsoluteDateOffset();
-        dateOffset = searchOptions.getDateOffset();
-        dateType = searchOptions.getDateType();
+        this.searchTerm = searchOptions.getSearchTerm();
+        this.absoluteStartDate = searchOptions.getAbsoluteStartDate();
+        this.absoluteEndDate = searchOptions.getAbsoluteEndDate();
+        this.absoluteDateOffset = searchOptions.getAbsoluteDateOffset();
+        this.dateOffset = searchOptions.getDateOffset();
+        this.dateType = searchOptions.getDateType();
 
-        searchBookmarkText = searchOptions.getSearchBookmarkText();
-        searchBookmarkNames = searchOptions.getSearchBookmarkNames();
-        searchBookmarkTypes = searchOptions.getSearchBookmarkTypes();
-        searchTags = searchOptions.getSearchTags();
+        this.searchBookmarkText = searchOptions.getSearchBookmarkText();
+        this.searchBookmarkNames = searchOptions.getSearchBookmarkNames();
+        this.searchBookmarkTypes = searchOptions.getSearchBookmarkTypes();
+        this.searchTags = searchOptions.getSearchTags();
 
-        selectedBookmarkTypes.addAll(searchOptions.getSelectedBKTypes());
-        operationList.addAll(searchOptions.getTagOperations());
+        this.selectedBookmarkTypes.addAll(searchOptions.getSelectedBKTypes());
+
+        // Create a bunch of clones of the operations.
+        for (Operation operation: searchOptions.getTagOperations())
+        {
+            this.operationList.add(new Operation(operation));
+        }
     }
 
     // ============================================================

@@ -31,21 +31,26 @@ public class Operation implements Comparable
     }
 
     private Set<String> tags;
-    private Date date;
+    private Date creationDate;
     private TagOptions operation;
     private UUID id;
 
     public Operation()
     {
         tags = new HashSet<>();
-        date = new Date();
+        creationDate = new Date();
         id = UUID.randomUUID();
         operation = TagOptions.ALL_TAGS;
     }
 
-    public Date getCreationDate()
+    public Operation(Operation operation)
     {
-        return date;
+        tags = new HashSet<>();
+        tags.addAll(operation.getTags());
+
+        creationDate = operation.getCreationDate();
+        id = UUID.randomUUID();
+        this.operation = operation.getOperation();
     }
 
     public TagOptions getOperation()
@@ -63,14 +68,14 @@ public class Operation implements Comparable
         this.id = id;
     }
 
-    public Date getDate()
+    public Date getCreationDate()
     {
-        return date;
+        return creationDate;
     }
 
-    public void setDate(Date date)
+    public void setCreationDate(Date date)
     {
-        this.date = date;
+        this.creationDate = date;
     }
 
     public void setOperation(TagOptions operation)
