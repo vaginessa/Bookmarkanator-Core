@@ -403,6 +403,7 @@ public class SearchOptions
         this.setSearchBookmarkText(true);
         this.setSearchBookmarkTypes(true);
         this.setSearchTerm("");
+        this.setDateType(DateType.CREATION_DATE);
     }
 
     // ============================================================
