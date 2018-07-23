@@ -295,7 +295,7 @@ public class SearchOptions
         return res;
     }
 
-    public Operation getLastOperation()
+    public Operation lastOperation()
     {
         if (operationList == null || operationList.isEmpty())
         {
@@ -371,7 +371,7 @@ public class SearchOptions
             return null;
         }
 
-        return Collections.unmodifiableSet(selectedBookmarkTypes);
+        return selectedBookmarkTypes;
     }
 
     public DateType getDateType()
