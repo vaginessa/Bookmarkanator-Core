@@ -113,27 +113,27 @@ public class TestIOInterface implements IOInterface
     {
         settingsIOInterface.setSettings(settings);
     }
-
-    @Override
-    public void undo()
-        throws Exception
-    {
-
-    }
-
-    @Override
-    public void redo()
-        throws Exception
-    {
-
-    }
-
-    @Override
-    public void clearUndoRedoStack()
-        throws Exception
-    {
-
-    }
+//
+//    @Override
+//    public void undo()
+//        throws Exception
+//    {
+//
+//    }
+//
+//    @Override
+//    public void redo()
+//        throws Exception
+//    {
+//
+//    }
+//
+//    @Override
+//    public void clearUndoRedoStack()
+//        throws Exception
+//    {
+//
+//    }
 
     @Override
     public StatsInterface getStatsInterface()

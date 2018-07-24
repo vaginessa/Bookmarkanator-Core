@@ -664,17 +664,17 @@ public interface IOInterface
      */
     void setSettings(Settings settings);
 
-    //------------------------------------
-    // Undo/Redo
-    //------------------------------------
-
-    void undo() throws Exception;
-    void redo() throws Exception;
-
-    /**
-     * Start over with the undo/redo stack.
-     */
-    void clearUndoRedoStack() throws Exception;
+//    //------------------------------------
+//    // Undo/Redo
+//    //------------------------------------
+//
+//    void undo() throws Exception;
+//    void redo() throws Exception;
+//
+//    /**
+//     * Start over with the undo/redo stack.
+//     */
+//    void clearUndoRedoStack() throws Exception;
 
     //------------------------------------
     // Stats

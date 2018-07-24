@@ -466,28 +466,28 @@ public class FileIO implements IOInterface
         this.ioUIInterface = uiInterface;
     }
 
-    @Override
-    public void undo()
-        throws Exception
-    {
-        // TODO undo IOInterface
-        // TODO undo Main Settings changes.
-    }
-
-    @Override
-    public void redo()
-        throws Exception
-    {
-        // TODO redo IOInterface
-        // TODO redo Main Settings changes.
-    }
-
-    @Override
-    public void clearUndoRedoStack()
-        throws Exception
-    {
-        // TODO Implement stack clearOperationsList.
-    }
+//    @Override
+//    public void undo()
+//        throws Exception
+//    {
+//        // TODO undo IOInterface
+//        // TODO undo Main Settings changes.
+//    }
+//
+//    @Override
+//    public void redo()
+//        throws Exception
+//    {
+//        // TODO redo IOInterface
+//        // TODO redo Main Settings changes.
+//    }
+//
+//    @Override
+//    public void clearUndoRedoStack()
+//        throws Exception
+//    {
+//        // TODO Implement stack clearOperationsList.
+//    }
 
     @Override
     public StatsInterface getStatsInterface()
